@@ -1,524 +1,511 @@
-/* =========================================================
-   HEXA APP
-   LOGIN PAGE
-   ========================================================= */
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
+/* =========================
+   GLOBAL
+   ========================= */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+
+  overflow-x: hidden;
+
+  background: #ff9218;
 }
 
 
-/* =========================================================
+
+/* =========================
    LOGIN PAGE
-   ========================================================= */
+   ========================= */
 
 .login-page {
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
+  position: relative;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  min-height: 100vh;
 
-    overflow: hidden;
-
-    background: #ff9418;
+  background: #ff9218;
 }
 
 
-/* =========================================================
-   BACKGROUND DOODLE
-   Area bagian atas
-   ========================================================= */
 
-.login-page::before {
-    content: "";
+/* =========================
+   HERO / DOODLE AREA
+   ========================= */
 
-    position: absolute;
-    top: 0;
-    left: 0;
+.hero-section {
+  position: relative;
 
-    width: 100%;
-    height: 55%;
+  width: 100%;
 
-    background-image: url("hexa-doodle.png");
-    background-repeat: repeat;
-    background-position: center;
-    background-size: cover;
+  height: 55vh;
+  min-height: 420px;
 
-    z-index: 0;
+  background-color: #ffffff;
+
+  background-image:
+
+    linear-gradient(
+      rgba(255, 255, 255, 0.76),
+      rgba(255, 255, 255, 0.76)
+    ),
+
+    url("hexa-doodle.png");
+
+  background-size: cover;
+
+  background-position: center;
+
+  background-repeat: no-repeat;
+
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-end;
 }
 
 
-/* Lapisan putih transparan agar doodle lebih lembut */
 
-.login-page::after {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 55%;
-
-    background: rgba(255, 255, 255, 0.70);
-
-    z-index: 1;
-}
-
-
-/* =========================================================
-   LOGIN WRAPPER
-   ========================================================= */
-
-.login-wrapper {
-    position: relative;
-    z-index: 10;
-
-    width: 100%;
-    min-height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-/* =========================================================
-   LOGO HEXA
-   ========================================================= */
+/* =========================
+   HEXA LOGO
+   ========================= */
 
 .hexa-logo {
-    position: absolute;
+  display: block;
 
-    top: 20%;
-    left: 50%;
+  width: min(350px, 65vw);
 
-    transform: translate(-50%, -50%);
+  height: auto;
 
-    width: 350px;
-    max-width: 70%;
+  margin-bottom: 115px;
 
-    height: auto;
-
-    z-index: 10;
-
-    filter: drop-shadow(
-        0 6px 8px rgba(0, 0, 0, 0.10)
-    );
+  object-fit: contain;
 }
 
 
-/* =========================================================
+
+/* =========================
+   ORANGE AREA
+   ========================= */
+
+.orange-section {
+  width: 100%;
+
+  min-height: 45vh;
+
+  background: #ff9218;
+}
+
+
+
+/* =========================
+   LOGIN WRAPPER
+   ========================= */
+
+.login-wrapper {
+  position: absolute;
+
+  top: 55vh;
+
+  left: 50%;
+
+  transform: translate(
+    -50%,
+    -50px
+  );
+
+
+  width: min(
+    380px,
+    calc(100% - 36px)
+  );
+
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+}
+
+
+
+/* =========================
    LOGIN CARD
-   ========================================================= */
+   ========================= */
 
 .login-card {
-    position: absolute;
+  width: 100%;
 
-    top: 55%;
-    left: 50%;
+  padding:
+    24px
+    28px
+    24px;
 
-    transform: translate(-50%, -50%);
 
-    width: 420px;
-    max-width: calc(100% - 40px);
+  background: #f3fbfc;
 
-    padding: 30px 32px 34px;
 
-    /*
-       Sedikit transparan supaya terasa lebih premium,
-       tetapi tetap sangat mudah dibaca.
-    */
+  border-radius: 12px;
 
-    background: rgba(244, 251, 252, 0.97);
 
-    border-radius: 16px;
+  /*
+     PREMIUM FLOATING SHADOW
 
-    /*
-       Border putih tipis memberikan efek highlight
-       pada pinggir card.
-    */
+     Hanya bagian ini yang berbeda
+     dari desain lama.
+  */
 
-    border: 1px solid rgba(255, 255, 255, 0.85);
-
-    /*
-       PREMIUM SHADOW
-
-       Layer pertama:
-       bayangan dekat card.
-
-       Layer kedua:
-       memberi efek card melayang.
-
-       Layer ketiga:
-       shadow lembut yang lebih luas.
-    */
-
-    box-shadow:
-        0 6px 15px rgba(0, 0, 0, 0.10),
-        0 18px 35px rgba(0, 0, 0, 0.14),
-        0 35px 70px rgba(0, 0, 0, 0.10);
-
-    z-index: 20;
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.12),
+    0 20px 40px rgba(0, 0, 0, 0.16),
+    0 35px 65px rgba(0, 0, 0, 0.08);
 }
 
 
-/* Efek sedikit terangkat pada desktop */
 
-.login-card:hover {
-    transform: translate(-50%, -52%);
+/* =========================
+   INPUT GROUP
+   ========================= */
 
-    box-shadow:
-        0 8px 18px rgba(0, 0, 0, 0.11),
-        0 22px 42px rgba(0, 0, 0, 0.16),
-        0 40px 80px rgba(0, 0, 0, 0.12);
+.input-group {
+  width: 100%;
+
+  margin-bottom: 18px;
 }
 
 
-/* =========================================================
-   FORM GROUP
-   ========================================================= */
+.input-group label {
+  display: block;
 
-.form-group {
-    width: 100%;
-    margin-bottom: 18px;
+  margin-bottom: 8px;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
+  color: #111111;
 }
 
 
-/* =========================================================
-   LABEL
-   ========================================================= */
 
-.form-group label {
-    display: block;
-
-    margin-bottom: 8px;
-
-    font-size: 14px;
-    font-weight: 500;
-
-    color: #161616;
-}
-
-
-/* =========================================================
+/* =========================
    INPUT
-   ========================================================= */
+   ========================= */
 
-.form-group input {
-    width: 100%;
-    height: 48px;
+.input-group input {
+  width: 100%;
 
-    padding: 0 14px;
+  height: 42px;
 
-    font-size: 15px;
 
-    color: #222222;
+  padding:
+    0
+    12px;
 
-    background: rgba(255, 255, 255, 0.90);
 
-    border: 1px solid #9da8ad;
-    border-radius: 8px;
+  border:
+    1px
+    solid
+    #89979a;
 
-    outline: none;
 
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
+  border-radius: 6px;
+
+
+  background: #f7fcfd;
+
+
+  font-size: 14px;
+
+
+  outline: none;
+
+
+  transition: 0.2s;
 }
 
 
-/* Placeholder */
+.input-group input:focus {
+  border-color: #0759bd;
 
-.form-group input::placeholder {
-    color: #7a7a7a;
+
+  box-shadow:
+    0 0 0 2px
+    rgba(7, 89, 189, 0.12);
 }
 
 
-/* Input saat dipilih */
 
-.form-group input:focus {
-    background: #ffffff;
-
-    border-color: #1264c4;
-
-    box-shadow:
-        0 0 0 3px rgba(18, 100, 196, 0.12),
-        0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-
-/* =========================================================
-   PASSWORD WRAPPER
-   ========================================================= */
+/* =========================
+   PASSWORD
+   ========================= */
 
 .password-wrapper {
-    position: relative;
-    width: 100%;
+  position: relative;
+
+  width: 100%;
 }
 
-
-/* Beri ruang untuk icon mata */
 
 .password-wrapper input {
-    padding-right: 48px;
+  padding-right: 48px;
 }
 
 
-/* =========================================================
-   SHOW / HIDE PASSWORD
-   ========================================================= */
+
+/* =========================
+   SHOW PASSWORD BUTTON
+   ========================= */
 
 .toggle-password {
-    position: absolute;
+  position: absolute;
 
-    top: 50%;
-    right: 14px;
+  top: 50%;
 
-    transform: translateY(-50%);
+  right: 7px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    width: 28px;
-    height: 28px;
+  transform:
+    translateY(-50%);
 
-    background: transparent;
-    border: none;
 
-    cursor: pointer;
+  width: 34px;
 
-    font-size: 16px;
+  height: 34px;
 
-    color: #222222;
 
-    padding: 0;
+  border: none;
+
+  background: transparent;
+
+
+  cursor: pointer;
+
+
+  font-size: 16px;
 }
 
 
-/* =========================================================
+
+/* =========================
    LOGIN BUTTON
-   ========================================================= */
+   ========================= */
 
 .login-button {
-    width: 100%;
-    height: 48px;
+  width: 100%;
 
-    margin-top: 2px;
+  height: 42px;
 
-    border: none;
-    border-radius: 24px;
 
-    background: linear-gradient(
-        135deg,
-        #0756b5 0%,
-        #126bd1 100%
-    );
+  border: none;
 
-    color: #ffffff;
+  border-radius: 22px;
 
-    font-size: 15px;
-    font-weight: 500;
 
-    cursor: pointer;
+  background: #0759bd;
 
-    box-shadow:
-        0 5px 12px rgba(7, 86, 181, 0.20);
 
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
+  color: #ffffff;
+
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+
+  cursor: pointer;
+
+
+  transition: 0.2s;
 }
 
-
-/* Button hover */
 
 .login-button:hover {
-    background: linear-gradient(
-        135deg,
-        #064b9e 0%,
-        #0d5fbe 100%
-    );
-
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 8px 18px rgba(7, 86, 181, 0.28);
+  background: #064ca1;
 }
 
-
-/* Button ketika ditekan */
 
 .login-button:active {
-    transform: translateY(0);
-
-    box-shadow:
-        0 3px 8px rgba(7, 86, 181, 0.20);
+  transform: scale(0.99);
 }
 
 
-/* =========================================================
-   MESSAGE LOGIN
-   ========================================================= */
+
+/* =========================
+   LOGIN MESSAGE
+   ========================= */
 
 .login-message {
-    margin-top: 12px;
+  min-height: 16px;
 
-    min-height: 18px;
+  margin-top: 10px;
 
-    text-align: center;
 
-    font-size: 13px;
+  text-align: center;
+
+
+  font-size: 12px;
+
+  line-height: 1.4;
 }
 
 
-/* =========================================================
-   LOGO HRS
-   ========================================================= */
+
+/* =========================
+   HRS LOGO
+   ========================= */
 
 .hrs-logo {
-    position: absolute;
+  display: block;
 
-    top: 88%;
-    left: 50%;
 
-    transform: translate(-50%, -50%);
+  width: 170px;
 
-    width: 100px;
-    height: auto;
+  max-width: 50vw;
 
-    z-index: 10;
+
+  height: auto;
+
+
+  margin-top: 28px;
+
+
+  object-fit: contain;
 }
 
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+
+/* =========================
+   TABLET / MOBILE
+   ========================= */
 
 @media (max-width: 600px) {
 
-    .login-page::before,
-    .login-page::after {
-        height: 52%;
-    }
+  .hero-section {
+
+    height: 52vh;
+
+    min-height: 360px;
 
 
-    /* Logo HEXA */
-
-    .hexa-logo {
-        top: 19%;
-
-        width: 250px;
-        max-width: 72%;
-    }
+    background-size:
+      auto
+      100%;
+  }
 
 
-    /* Login Card */
+  .hexa-logo {
 
-    .login-card {
-        top: 54%;
+    width: min(
+      270px,
+      72vw
+    );
 
-        width: calc(100% - 36px);
-        max-width: 380px;
 
-        padding: 26px 24px 30px;
+    margin-bottom: 115px;
+  }
 
-        border-radius: 16px;
 
-        box-shadow:
-            0 6px 14px rgba(0, 0, 0, 0.10),
-            0 16px 32px rgba(0, 0, 0, 0.15),
-            0 30px 60px rgba(0, 0, 0, 0.10);
-    }
+  .orange-section {
 
+    min-height: 48vh;
+  }
+
+
+  .login-wrapper {
+
+    top: 52vh;
+
+
+    width: min(
+      340px,
+      calc(100% - 30px)
+    );
+
+
+    transform:
+      translate(
+        -50%,
+        -55px
+      );
+  }
+
+
+  .login-card {
+
+    padding:
+      22px
+      22px
+      22px;
 
     /*
-       Hover dimatikan di mobile agar card
-       tidak bergeser ketika disentuh.
+       Shadow sedikit disesuaikan
+       untuk layar HP
     */
 
-    .login-card:hover {
-        transform: translate(-50%, -50%);
-
-        box-shadow:
-            0 6px 14px rgba(0, 0, 0, 0.10),
-            0 16px 32px rgba(0, 0, 0, 0.15),
-            0 30px 60px rgba(0, 0, 0, 0.10);
-    }
+    box-shadow:
+      0 7px 16px rgba(0, 0, 0, 0.12),
+      0 18px 36px rgba(0, 0, 0, 0.15),
+      0 30px 55px rgba(0, 0, 0, 0.08);
+  }
 
 
-    /* Input */
+  .hrs-logo {
 
-    .form-group input {
-        height: 48px;
+    width: 150px;
 
-        font-size: 16px;
-    }
+    margin-top: 25px;
+  }
 
-
-    /* Login Button */
-
-    .login-button {
-        height: 48px;
-
-        font-size: 15px;
-    }
-
-
-    /* Logo HRS */
-
-    .hrs-logo {
-        top: 88%;
-        width: 95px;
-    }
 }
 
 
-/* =========================================================
-   MOBILE KECIL
-   ========================================================= */
+
+/* =========================
+   SMALL MOBILE
+   ========================= */
 
 @media (max-width: 380px) {
 
-    .hexa-logo {
-        width: 220px;
-    }
+  .hero-section {
 
-    .login-card {
-        width: calc(100% - 28px);
+    min-height: 340px;
+  }
 
-        padding: 24px 20px 28px;
-    }
 
-    .hrs-logo {
-        width: 85px;
-    }
+  .hexa-logo {
+
+    width: 230px;
+  }
+
+
+  .login-wrapper {
+
+    width:
+      calc(
+        100% - 24px
+      );
+  }
+
+
+  .login-card {
+
+    padding-left: 18px;
+
+    padding-right: 18px;
+  }
+
 }
