@@ -3,6 +3,83 @@
 // main.js
 // ======================================================
 
+// ======================================================
+// HEXA SESSION PROTECTION
+// ======================================================
+
+const hexaLoggedIn =
+  sessionStorage.getItem(
+    "hexaLoggedIn"
+  );
+
+const hexaUserData =
+  sessionStorage.getItem(
+    "hexaUser"
+  );
+
+
+// ======================================================
+// CEK LOGIN
+// ======================================================
+
+if (
+  hexaLoggedIn !== "true" ||
+  !hexaUserData
+) {
+
+  // Tidak memiliki session login
+  // kembali ke Login Page
+
+  window.location.replace(
+    "index.html"
+  );
+
+}
+
+
+// ======================================================
+// BACA DATA USER
+// ======================================================
+
+let currentUser = null;
+
+
+try {
+
+  currentUser =
+    JSON.parse(
+      hexaUserData
+    );
+
+} catch (error) {
+
+  // Session rusak / tidak valid
+
+  sessionStorage.removeItem(
+    "hexaLoggedIn"
+  );
+
+  sessionStorage.removeItem(
+    "hexaUser"
+  );
+
+
+  window.location.replace(
+    "index.html"
+  );
+
+}
+
+
+// ======================================================
+// DEBUG USER
+// Nanti bisa dihapus saat development selesai
+// ======================================================
+
+console.log(
+  "HEXA Current User:",
+  currentUser
+);
 
 // ======================================================
 // 1. BANNER SLIDER
