@@ -36,6 +36,31 @@ const loginButton =
 
 
 // ========================================
+// CEK JIKA USER SUDAH LOGIN
+// ========================================
+
+const existingLogin =
+  sessionStorage.getItem("hexaLoggedIn");
+
+const existingUser =
+  sessionStorage.getItem("hexaUser");
+
+
+if (
+  existingLogin === "true" &&
+  existingUser
+) {
+
+  // Jika user kembali membuka halaman login
+  // dalam tab yang sama dan session masih aktif,
+  // langsung arahkan ke Main Page.
+
+  window.location.replace("main.html");
+
+}
+
+
+// ========================================
 // SHOW / HIDE PASSWORD
 // ========================================
 
@@ -48,14 +73,17 @@ if (togglePassword && passwordInput) {
       const passwordHidden =
         passwordInput.type === "password";
 
+
       if (passwordHidden) {
 
         passwordInput.type = "text";
+
         togglePassword.textContent = "🙈";
 
       } else {
 
         passwordInput.type = "password";
+
         togglePassword.textContent = "👁";
 
       }
@@ -76,7 +104,7 @@ if (loginForm) {
     "submit",
     async function (event) {
 
-      // Mencegah form reload halaman
+      // Mencegah form melakukan reload
       event.preventDefault();
 
 
@@ -103,11 +131,12 @@ if (loginForm) {
         );
 
         return;
+
       }
 
 
       // ==================================
-      // TAMPILKAN LOADING
+      // LOADING
       // ==================================
 
       setLoading(true);
@@ -121,34 +150,39 @@ if (loginForm) {
       try {
 
         // ==================================
-        // KIRIM DATA KE APPS SCRIPT
+        // KIRIM LOGIN KE APPS SCRIPT
         // ==================================
 
         const response =
-          await fetch(API_URL, {
+          await fetch(
+            API_URL,
+            {
 
-            method: "POST",
+              method: "POST",
 
-            headers: {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
+              headers: {
 
-            body: JSON.stringify({
+                "Content-Type":
+                  "text/plain;charset=utf-8"
 
-              action: "login",
+              },
 
-              userId: userId,
+              body: JSON.stringify({
 
-              password: password
+                action: "login",
 
-            })
+                userId: userId,
 
-          });
+                password: password
+
+              })
+
+            }
+          );
 
 
         // ==================================
-        // BACA HASIL DARI APPS SCRIPT
+        // BACA RESPONSE
         // ==================================
 
         const result =
@@ -165,16 +199,13 @@ if (loginForm) {
         // LOGIN BERHASIL
         // ==================================
 
-        if (result.success) {
-
-          showMessage(
-            "Login berhasil.",
-            "success"
-          );
-
+        if (
+          result.success &&
+          result.user
+        ) {
 
           // ==================================
-          // SIMPAN DATA USER
+          // SIMPAN SESSION USER
           // ==================================
 
           sessionStorage.setItem(
@@ -190,31 +221,49 @@ if (loginForm) {
 
 
           // ==================================
-          // TAMPILKAN NAMA USER
+          // MESSAGE
           // ==================================
-          // Untuk sementara belum redirect
-          // karena Main Page belum dibuat.
+
+          showMessage(
+            "Selamat datang, " +
+            result.user.nama +
+            "!",
+            "success"
+          );
+
+
+          // ==================================
+          // REDIRECT KE MAIN PAGE
+          // ==================================
 
           setTimeout(
             function () {
 
-              showMessage(
-                "Selamat datang, " +
-                result.user.nama +
-                "!",
-                "success"
+              window.location.replace(
+                "main.html"
               );
 
             },
-            500
+            700
           );
 
 
-      // ==================================
-      // LOGIN GAGAL
-      // ==================================
+        // ==================================
+        // LOGIN GAGAL
+        // ==================================
 
         } else {
+
+          // Bersihkan kemungkinan session lama
+
+          sessionStorage.removeItem(
+            "hexaLoggedIn"
+          );
+
+          sessionStorage.removeItem(
+            "hexaUser"
+          );
+
 
           showMessage(
             result.message ||
@@ -242,10 +291,11 @@ if (loginForm) {
           "error"
         );
 
+
       } finally {
 
         // ==================================
-        // KEMBALIKAN BUTTON
+        // KEMBALIKAN LOGIN BUTTON
         // ==================================
 
         setLoading(false);
@@ -276,19 +326,21 @@ function showMessage(
     message;
 
 
-  // WARNA MESSAGE
-
   if (type === "success") {
 
     loginMessage.style.color =
       "#16803c";
 
-  } else if (type === "error") {
+  }
+
+  else if (type === "error") {
 
     loginMessage.style.color =
       "#d93025";
 
-  } else {
+  }
+
+  else {
 
     loginMessage.style.color =
       "#555555";
@@ -302,7 +354,9 @@ function showMessage(
 // FUNCTION LOADING BUTTON
 // ========================================
 
-function setLoading(isLoading) {
+function setLoading(
+  isLoading
+) {
 
   if (!loginButton) {
     return;
@@ -311,7 +365,8 @@ function setLoading(isLoading) {
 
   if (isLoading) {
 
-    loginButton.disabled = true;
+    loginButton.disabled =
+      true;
 
     loginButton.textContent =
       "Memeriksa...";
@@ -322,10 +377,12 @@ function setLoading(isLoading) {
     loginButton.style.cursor =
       "not-allowed";
 
+  }
 
-  } else {
+  else {
 
-    loginButton.disabled = false;
+    loginButton.disabled =
+      false;
 
     loginButton.textContent =
       "Log in";
