@@ -3,8 +3,9 @@
 // main.js
 // ======================================================
 
+
 // ======================================================
-// HEXA SESSION PROTECTION
+// 1. HEXA SESSION PROTECTION
 // ======================================================
 
 const hexaLoggedIn =
@@ -26,9 +27,6 @@ if (
   hexaLoggedIn !== "true" ||
   !hexaUserData
 ) {
-
-  // Tidak memiliki session login
-  // kembali ke Login Page
 
   window.location.replace(
     "index.html"
@@ -53,8 +51,6 @@ try {
 
 } catch (error) {
 
-  // Session rusak / tidak valid
-
   sessionStorage.removeItem(
     "hexaLoggedIn"
   );
@@ -63,7 +59,6 @@ try {
     "hexaUser"
   );
 
-
   window.location.replace(
     "index.html"
   );
@@ -71,93 +66,198 @@ try {
 }
 
 
-// ======================================================
-// DEBUG USER
-// Nanti bisa dihapus saat development selesai
-// ======================================================
-
 console.log(
   "HEXA Current User:",
   currentUser
 );
 
+
 // ======================================================
-// 1. BANNER SLIDER
+// 2. DAFTAR HALAMAN HEXA
+// ======================================================
+//
+// Semua tujuan halaman kita simpan di satu tempat.
+//
+// enabled: true
+// = halaman sudah dibuat dan boleh dibuka.
+//
+// enabled: false
+// = halaman belum dibuat.
+//   Tombol tetap dikenali tetapi belum melakukan redirect.
+//
+// Nanti setelah halaman selesai dibuat,
+// cukup ubah enabled menjadi true.
 // ======================================================
 
-const slides = document.querySelectorAll(".banner-slide");
-const prevButton = document.getElementById("sliderPrev");
-const nextButton = document.getElementById("sliderNext");
-const bannerSlider = document.getElementById("bannerSlider");
+const HEXA_PAGES = {
+
+  "daily-maintenance": {
+    url: "daily-maintenance.html",
+    enabled: true
+  },
+
+  "backlog-monitoring": {
+    url: "backlog-monitoring.html",
+    enabled: false
+  },
+
+  "fui": {
+    url: "fui.html",
+    enabled: false
+  },
+
+  "rotable": {
+    url: "rotable.html",
+    enabled: false
+  },
+
+  "news": {
+    url: "news.html",
+    enabled: false
+  },
+
+  "settings": {
+    url: "settings.html",
+    enabled: false
+  }
+
+};
+
+
+// ======================================================
+// 3. BANNER SLIDER
+// ======================================================
+
+const slides =
+  document.querySelectorAll(
+    ".banner-slide"
+  );
+
+const prevButton =
+  document.getElementById(
+    "sliderPrev"
+  );
+
+const nextButton =
+  document.getElementById(
+    "sliderNext"
+  );
+
+const bannerSlider =
+  document.getElementById(
+    "bannerSlider"
+  );
+
 
 let currentSlide = 0;
+
 let autoSlideTimer;
 
 
-// Tampilkan slide tertentu
+// ======================================================
+// TAMPILKAN SLIDE
+// ======================================================
+
 function showSlide(index) {
 
   if (!slides.length) {
     return;
   }
 
-  // Jika melewati slide terakhir
+
   if (index >= slides.length) {
+
     currentSlide = 0;
+
   }
 
-  // Jika mundur dari slide pertama
   else if (index < 0) {
-    currentSlide = slides.length - 1;
+
+    currentSlide =
+      slides.length - 1;
+
   }
 
   else {
+
     currentSlide = index;
+
   }
 
 
-  slides.forEach(function (slide, slideIndex) {
+  slides.forEach(
+    function (
+      slide,
+      slideIndex
+    ) {
 
-    if (slideIndex === currentSlide) {
-      slide.classList.add("active");
-    } else {
-      slide.classList.remove("active");
+      if (
+        slideIndex ===
+        currentSlide
+      ) {
+
+        slide.classList.add(
+          "active"
+        );
+
+      } else {
+
+        slide.classList.remove(
+          "active"
+        );
+
+      }
+
     }
-
-  });
-
-}
-
-
-// Slide berikutnya
-function nextSlide() {
-
-  showSlide(currentSlide + 1);
-
-}
-
-
-// Slide sebelumnya
-function previousSlide() {
-
-  showSlide(currentSlide - 1);
+  );
 
 }
 
 
 // ======================================================
-// 2. AUTO SLIDE
+// SLIDE BERIKUTNYA
+// ======================================================
+
+function nextSlide() {
+
+  showSlide(
+    currentSlide + 1
+  );
+
+}
+
+
+// ======================================================
+// SLIDE SEBELUMNYA
+// ======================================================
+
+function previousSlide() {
+
+  showSlide(
+    currentSlide - 1
+  );
+
+}
+
+
+// ======================================================
+// 4. AUTO SLIDE
 // ======================================================
 
 function startAutoSlide() {
 
   stopAutoSlide();
 
-  autoSlideTimer = setInterval(function () {
 
-    nextSlide();
+  autoSlideTimer =
+    setInterval(
+      function () {
 
-  }, 5000);
+        nextSlide();
+
+      },
+      5000
+    );
 
 }
 
@@ -166,14 +266,15 @@ function stopAutoSlide() {
 
   if (autoSlideTimer) {
 
-    clearInterval(autoSlideTimer);
+    clearInterval(
+      autoSlideTimer
+    );
 
   }
 
 }
 
 
-// Reset timer setelah user menekan tombol
 function resetAutoSlide() {
 
   stopAutoSlide();
@@ -184,7 +285,7 @@ function resetAutoSlide() {
 
 
 // ======================================================
-// 3. TOMBOL PREVIOUS / NEXT
+// 5. PREVIOUS / NEXT BUTTON
 // ======================================================
 
 if (prevButton) {
@@ -220,10 +321,12 @@ if (nextButton) {
 
 
 // ======================================================
-// 4. SWIPE BANNER UNTUK HP / TABLET
+// 6. SWIPE BANNER
+// MOBILE / TABLET
 // ======================================================
 
 let touchStartX = 0;
+
 let touchEndX = 0;
 
 
@@ -234,10 +337,14 @@ if (bannerSlider) {
     function (event) {
 
       touchStartX =
-        event.changedTouches[0].screenX;
+        event
+          .changedTouches[0]
+          .screenX;
 
     },
-    { passive: true }
+    {
+      passive: true
+    }
   );
 
 
@@ -246,12 +353,17 @@ if (bannerSlider) {
     function (event) {
 
       touchEndX =
-        event.changedTouches[0].screenX;
+        event
+          .changedTouches[0]
+          .screenX;
+
 
       handleBannerSwipe();
 
     },
-    { passive: true }
+    {
+      passive: true
+    }
   );
 
 }
@@ -260,24 +372,26 @@ if (bannerSlider) {
 function handleBannerSwipe() {
 
   const swipeDistance =
-    touchStartX - touchEndX;
+    touchStartX -
+    touchEndX;
 
 
-  // Swipe terlalu pendek
-  if (Math.abs(swipeDistance) < 50) {
+  if (
+    Math.abs(
+      swipeDistance
+    ) < 50
+  ) {
+
     return;
+
   }
 
 
-  // Swipe ke kiri
   if (swipeDistance > 0) {
 
     nextSlide();
 
-  }
-
-  // Swipe ke kanan
-  else {
+  } else {
 
     previousSlide();
 
@@ -290,11 +404,13 @@ function handleBannerSwipe() {
 
 
 // ======================================================
-// 5. REFRESH BUTTON
+// 7. REFRESH BUTTON
 // ======================================================
 
 const refreshButton =
-  document.getElementById("refreshButton");
+  document.getElementById(
+    "refreshButton"
+  );
 
 
 if (refreshButton) {
@@ -312,17 +428,23 @@ if (refreshButton) {
 
 
 // ======================================================
-// 6. SEARCH MENU
+// 8. SEARCH MENU
 // ======================================================
 
 const searchInput =
-  document.getElementById("searchInput");
+  document.getElementById(
+    "searchInput"
+  );
 
 const searchButton =
-  document.getElementById("searchButton");
+  document.getElementById(
+    "searchButton"
+  );
 
 const menuItems =
-  document.querySelectorAll(".menu-item");
+  document.querySelectorAll(
+    ".menu-item"
+  );
 
 
 function searchMenu() {
@@ -338,33 +460,40 @@ function searchMenu() {
       .toLowerCase();
 
 
-  menuItems.forEach(function (item) {
+  menuItems.forEach(
+    function (item) {
 
-    const menuName =
-      item.textContent
-        .trim()
-        .toLowerCase();
+      const menuName =
+        item.textContent
+          .trim()
+          .toLowerCase();
 
 
-    if (
-      keyword === "" ||
-      menuName.includes(keyword)
-    ) {
+      if (
+        keyword === "" ||
+        menuName.includes(
+          keyword
+        )
+      ) {
 
-      item.style.display = "flex";
+        item.style.display =
+          "flex";
 
-    } else {
+      } else {
 
-      item.style.display = "none";
+        item.style.display =
+          "none";
+
+      }
 
     }
-
-  });
+  );
 
 }
 
 
-// Search saat tombol search ditekan
+// SEARCH BUTTON
+
 if (searchButton) {
 
   searchButton.addEventListener(
@@ -375,7 +504,8 @@ if (searchButton) {
 }
 
 
-// Search langsung saat mengetik
+// SEARCH SAAT MENGETIK
+
 if (searchInput) {
 
   searchInput.addEventListener(
@@ -388,7 +518,10 @@ if (searchInput) {
     "keydown",
     function (event) {
 
-      if (event.key === "Enter") {
+      if (
+        event.key ===
+        "Enter"
+      ) {
 
         event.preventDefault();
 
@@ -403,14 +536,18 @@ if (searchInput) {
 
 
 // ======================================================
-// 7. SETTINGS HARUS SELALU TERAKHIR
+// 9. SETTINGS HARUS SELALU TERAKHIR
 // ======================================================
 
 const menuGrid =
-  document.getElementById("menuGrid");
+  document.getElementById(
+    "menuGrid"
+  );
 
 const settingsMenu =
-  document.getElementById("settingsMenu");
+  document.getElementById(
+    "settingsMenu"
+  );
 
 
 function keepSettingsLast() {
@@ -420,130 +557,105 @@ function keepSettingsLast() {
     settingsMenu
   ) {
 
-    menuGrid.appendChild(settingsMenu);
+    menuGrid.appendChild(
+      settingsMenu
+    );
 
   }
 
 }
 
 
-// Jalankan saat halaman dibuka
-keepSettingsLast();
-
-
 // ======================================================
-// 8. MENU CLICK
+// 10. NAVIGASI MENU UTAMA
 // ======================================================
 
-menuItems.forEach(function (item) {
+function openHexaPage(
+  menuName
+) {
 
-  item.addEventListener(
-    "click",
-    function () {
-
-      const menu =
-        item.dataset.menu;
-
-
-      // Untuk sementara kita tampilkan
-      // nama menu di console.
-      //
-      // Nanti setiap menu akan diarahkan
-      // ke halaman masing-masing.
-
-      console.log(
-        "HEXA Menu:",
-        menu
-      );
+  const page =
+    HEXA_PAGES[
+      menuName
+    ];
 
 
-      // ----------------------------------
-      // DAILY MAINTENANCE
-      // ----------------------------------
+  // Menu tidak terdaftar
 
-      if (menu === "daily-maintenance") {
+  if (!page) {
 
-        console.log(
-          "Open Daily Maintenance"
-        );
+    console.log(
+      "Menu HEXA tidak terdaftar:",
+      menuName
+    );
 
-      }
+    return;
 
-
-      // ----------------------------------
-      // BACKLOG MONITORING
-      // ----------------------------------
-
-      else if (
-        menu === "backlog-monitoring"
-      ) {
-
-        console.log(
-          "Open Backlog Monitoring"
-        );
-
-      }
+  }
 
 
-      // ----------------------------------
-      // FUI
-      // ----------------------------------
+  // Halaman sudah tersedia
 
-      else if (menu === "fui") {
+  if (page.enabled) {
 
-        console.log(
-          "Open FUI"
-        );
+    window.location.href =
+      page.url;
 
-      }
+    return;
 
-
-      // ----------------------------------
-      // ROTABLE
-      // ----------------------------------
-
-      else if (menu === "rotable") {
-
-        console.log(
-          "Open Rotable"
-        );
-
-      }
+  }
 
 
-      // ----------------------------------
-      // NEWS
-      // ----------------------------------
+  // Halaman belum dibuat
 
-      else if (menu === "news") {
-
-        console.log(
-          "Open News"
-        );
-
-      }
-
-
-      // ----------------------------------
-      // SETTINGS
-      // ----------------------------------
-
-      else if (menu === "settings") {
-
-        console.log(
-          "Open Settings"
-        );
-
-      }
-
-    }
+  console.log(
+    "Halaman belum tersedia:",
+    page.url
   );
 
-});
+}
 
 
 // ======================================================
-// 9. FLOATING START INSPECTION BUTTON
+// 11. MENU ICON CLICK
+// ======================================================
+//
+// Semua icon Main Page merupakan tombol.
+//
+// data-menu pada HTML menentukan
+// halaman tujuan.
+//
+// Contoh:
+//
+// data-menu="daily-maintenance"
+// -> daily-maintenance.html
+//
+// ======================================================
+
+menuItems.forEach(
+  function (item) {
+
+    item.addEventListener(
+      "click",
+      function () {
+
+        const menu =
+          item.dataset.menu;
+
+
+        openHexaPage(
+          menu
+        );
+
+      }
+    );
+
+  }
+);
+
+
+// ======================================================
+// 12. FLOATING START INSPECTION BUTTON
 // ======================================================
 
 const inspectionShortcut =
@@ -552,7 +664,6 @@ const inspectionShortcut =
   );
 
 
-// LocalStorage key
 const FLOATING_POSITION_KEY =
   "hexaInspectionButtonPosition";
 
@@ -567,7 +678,7 @@ let dragOffsetY = 0;
 
 
 // ======================================================
-// 10. LOAD POSISI TERAKHIR FLOATING BUTTON
+// 13. LOAD POSISI FLOATING BUTTON
 // ======================================================
 
 function loadFloatingButtonPosition() {
@@ -591,12 +702,16 @@ function loadFloatingButtonPosition() {
   try {
 
     const position =
-      JSON.parse(savedPosition);
+      JSON.parse(
+        savedPosition
+      );
 
 
     if (
-      typeof position.left !== "number" ||
-      typeof position.top !== "number"
+      typeof position.left !==
+        "number" ||
+      typeof position.top !==
+        "number"
     ) {
 
       return;
@@ -605,13 +720,13 @@ function loadFloatingButtonPosition() {
 
 
     const buttonWidth =
-      inspectionShortcut.offsetWidth;
+      inspectionShortcut
+        .offsetWidth;
 
     const buttonHeight =
-      inspectionShortcut.offsetHeight;
+      inspectionShortcut
+        .offsetHeight;
 
-
-    // Pastikan tombol tidak keluar layar
 
     const maxLeft =
       window.innerWidth -
@@ -667,7 +782,7 @@ function loadFloatingButtonPosition() {
 
 
 // ======================================================
-// 11. SIMPAN POSISI FLOATING BUTTON
+// 14. SAVE POSISI FLOATING BUTTON
 // ======================================================
 
 function saveFloatingButtonPosition() {
@@ -678,29 +793,33 @@ function saveFloatingButtonPosition() {
 
 
   const rect =
-    inspectionShortcut.getBoundingClientRect();
+    inspectionShortcut
+      .getBoundingClientRect();
 
 
   const position = {
 
-    left: rect.left,
+    left:
+      rect.left,
 
-    top: rect.top
+    top:
+      rect.top
 
   };
 
 
   localStorage.setItem(
     FLOATING_POSITION_KEY,
-    JSON.stringify(position)
+    JSON.stringify(
+      position
+    )
   );
 
 }
 
 
 // ======================================================
-// 12. DRAG FLOATING BUTTON
-// Pointer Event bekerja untuk mouse + touch
+// 15. DRAG FLOATING BUTTON
 // ======================================================
 
 if (inspectionShortcut) {
@@ -738,6 +857,10 @@ if (inspectionShortcut) {
   );
 
 
+  // ====================================================
+  // POINTER MOVE
+  // ====================================================
+
   inspectionShortcut.addEventListener(
     "pointermove",
     function (event) {
@@ -751,10 +874,12 @@ if (inspectionShortcut) {
 
 
       const buttonWidth =
-        inspectionShortcut.offsetWidth;
+        inspectionShortcut
+          .offsetWidth;
 
       const buttonHeight =
-        inspectionShortcut.offsetHeight;
+        inspectionShortcut
+          .offsetHeight;
 
 
       let newLeft =
@@ -766,10 +891,6 @@ if (inspectionShortcut) {
         event.clientY -
         dragOffsetY;
 
-
-      // ----------------------------------
-      // BATAS LAYAR
-      // ----------------------------------
 
       const maxLeft =
         window.innerWidth -
@@ -801,10 +922,6 @@ if (inspectionShortcut) {
         );
 
 
-      // ----------------------------------
-      // PINDAHKAN BUTTON
-      // ----------------------------------
-
       inspectionShortcut.style.left =
         newLeft + "px";
 
@@ -820,6 +937,10 @@ if (inspectionShortcut) {
     }
   );
 
+
+  // ====================================================
+  // POINTER UP
+  // ====================================================
 
   inspectionShortcut.addEventListener(
     "pointerup",
@@ -839,7 +960,6 @@ if (inspectionShortcut) {
         );
 
 
-      // Jika tombol digeser
       if (dragMoved) {
 
         saveFloatingButtonPosition();
@@ -851,14 +971,14 @@ if (inspectionShortcut) {
 
 
   // ====================================================
-  // 13. KLIK SHORTCUT START INSPECTION
+  // 16. FLOATING BUTTON CLICK
   // ====================================================
 
   inspectionShortcut.addEventListener(
     "click",
     function (event) {
 
-      // Jika sebelumnya digeser,
+      // Jika baru digeser,
       // jangan dianggap sebagai klik.
 
       if (dragMoved) {
@@ -872,21 +992,23 @@ if (inspectionShortcut) {
       }
 
 
+      // ================================================
+      // START INSPECTION
+      // ================================================
+      //
+      // Halaman belum dibuat.
+      //
+      // Setelah start-inspection.html selesai,
+      // bagian ini akan kita aktifkan menjadi:
+      //
+      // window.location.href =
+      //   "start-inspection.html";
+      //
+      // ================================================
+
       console.log(
         "Shortcut: Start Inspection"
       );
-
-
-      /*
-        NANTI DI SINI:
-
-        window.location.href =
-          "start-inspection.html";
-
-        Untuk sekarang belum diarahkan
-        karena halaman Start Inspection
-        belum kita buat.
-      */
 
     }
   );
@@ -895,7 +1017,7 @@ if (inspectionShortcut) {
 
 
 // ======================================================
-// 14. JAGA POSISI BUTTON SAAT UKURAN LAYAR BERUBAH
+// 17. JAGA FLOATING BUTTON TETAP DI DALAM LAYAR
 // ======================================================
 
 window.addEventListener(
@@ -913,10 +1035,12 @@ window.addEventListener(
 
 
     const buttonWidth =
-      inspectionShortcut.offsetWidth;
+      inspectionShortcut
+        .offsetWidth;
 
     const buttonHeight =
-      inspectionShortcut.offsetHeight;
+      inspectionShortcut
+        .offsetHeight;
 
 
     const maxLeft =
@@ -928,7 +1052,7 @@ window.addEventListener(
       buttonHeight;
 
 
-    let safeLeft =
+    const safeLeft =
       Math.max(
         0,
         Math.min(
@@ -938,7 +1062,7 @@ window.addEventListener(
       );
 
 
-    let safeTop =
+    const safeTop =
       Math.max(
         0,
         Math.min(
@@ -968,28 +1092,34 @@ window.addEventListener(
 
 
 // ======================================================
-// 15. INITIALIZE HEXA MAIN PAGE
+// 18. INITIALIZE HEXA MAIN PAGE
 // ======================================================
 
 function initializeHexaMain() {
 
   // Banner pertama
+
   showSlide(0);
 
 
   // Auto slide
-  if (slides.length > 1) {
+
+  if (
+    slides.length > 1
+  ) {
 
     startAutoSlide();
 
   }
 
 
-  // Settings terakhir
+  // Settings selalu terakhir
+
   keepSettingsLast();
 
 
   // Posisi floating button
+
   loadFloatingButtonPosition();
 
 
@@ -1000,5 +1130,8 @@ function initializeHexaMain() {
 }
 
 
-// Jalankan
+// ======================================================
+// JALANKAN
+// ======================================================
+
 initializeHexaMain();
