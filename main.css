@@ -13,25 +13,17 @@
   box-sizing: border-box;
 }
 
-
 html,
 body {
   width: 100%;
   min-height: 100%;
 }
 
-
 body {
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
+  font-family: Arial, Helvetica, sans-serif;
   background: #ffffff;
-
   overflow-x: hidden;
 }
-
 
 
 /* =========================================
@@ -39,7 +31,6 @@ body {
    ========================================= */
 
 .main-header {
-
   position: fixed;
 
   top: 0;
@@ -50,22 +41,17 @@ body {
 
   background: #000000;
 
-  border-bottom:
-    15px solid #ff9800;
+  border-bottom: 15px solid #ff9800;
 
   display: flex;
 
   align-items: center;
-
   justify-content: space-between;
 
-  padding:
-    0 32px;
+  padding: 0 32px;
 
   z-index: 1000;
-
 }
-
 
 
 /* =========================================
@@ -73,32 +59,25 @@ body {
    ========================================= */
 
 .header-logo {
-
   height: 73px;
 
   display: flex;
 
   align-items: center;
-
   justify-content: flex-start;
-
 }
 
-
 .header-logo img {
-
   display: block;
 
   width: auto;
 
-  height: 66px;
+  height: 70px;
 
-  max-width: 330px;
+  max-width: none;
 
   object-fit: contain;
-
 }
-
 
 
 /* =========================================
@@ -106,15 +85,12 @@ body {
    ========================================= */
 
 .header-actions {
-
   display: flex;
 
   align-items: center;
 
   gap: 18px;
-
 }
-
 
 
 /* =========================================
@@ -122,15 +98,12 @@ body {
    ========================================= */
 
 .search-box {
-
   position: relative;
 
   width: 290px;
-
   height: 42px;
 
-  border:
-    2px solid #ffa000;
+  border: 2px solid #ffa000;
 
   border-radius: 24px;
 
@@ -141,21 +114,15 @@ body {
   background: transparent;
 
   overflow: hidden;
-
 }
 
-
 .search-box input {
-
   flex: 1;
 
   min-width: 0;
-
   height: 100%;
 
-  padding:
-    0 8px
-    0 18px;
+  padding: 0 8px 0 18px;
 
   border: none;
 
@@ -168,22 +135,11 @@ body {
   font-size: 15px;
 
   cursor: text;
-
 }
-
 
 .search-box input::placeholder {
-
-  color:
-    rgba(
-      255,
-      255,
-      255,
-      0.55
-    );
-
+  color: rgba(255, 255, 255, 0.55);
 }
-
 
 
 /* =========================================
@@ -191,9 +147,7 @@ body {
    ========================================= */
 
 .search-button {
-
   width: 48px;
-
   height: 100%;
 
   flex-shrink: 0;
@@ -205,18 +159,13 @@ body {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   cursor: pointer;
-
 }
 
-
 .search-button svg {
-
   width: 23px;
-
   height: 23px;
 
   fill: none;
@@ -226,9 +175,7 @@ body {
   stroke-width: 2.7;
 
   stroke-linecap: round;
-
 }
-
 
 
 /* =========================================
@@ -236,9 +183,7 @@ body {
    ========================================= */
 
 .refresh-button {
-
   width: 42px;
-
   height: 42px;
 
   border: none;
@@ -248,18 +193,13 @@ body {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   cursor: pointer;
-
 }
 
-
 .refresh-button svg {
-
   width: 30px;
-
   height: 30px;
 
   fill: none;
@@ -269,11 +209,8 @@ body {
   stroke-width: 2.3;
 
   stroke-linecap: round;
-
   stroke-linejoin: round;
-
 }
-
 
 
 /* =========================================
@@ -281,13 +218,10 @@ body {
    ========================================= */
 
 .main-content {
-
   width: 100%;
 
   padding-top: 88px;
-
 }
-
 
 
 /* =========================================
@@ -295,11 +229,8 @@ body {
    ========================================= */
 
 .banner-section {
-
   width: 100%;
-
 }
-
 
 
 /* =========================================
@@ -307,24 +238,20 @@ body {
    ========================================= */
 
 .banner-slider {
-
   position: relative;
 
   width: 100%;
 
-  height:
-    clamp(
-      320px,
-      31vw,
-      500px
-    );
+  height: clamp(
+    320px,
+    31vw,
+    500px
+  );
 
   overflow: hidden;
 
   background: #dddddd;
-
 }
-
 
 
 /* =========================================
@@ -332,46 +259,33 @@ body {
    ========================================= */
 
 .banner-slide {
-
   position: absolute;
 
   top: 0;
-
   left: 0;
 
   width: 100%;
-
   height: 100%;
 
   opacity: 0;
 
-  transition:
-    opacity 0.6s ease;
-
+  transition: opacity 0.6s ease;
 }
-
 
 .banner-slide.active {
-
   opacity: 1;
-
 }
 
-
 .banner-slide img {
-
   display: block;
 
   width: 100%;
-
   height: 100%;
 
   object-fit: cover;
 
   object-position: center;
-
 }
-
 
 
 /* =========================================
@@ -379,34 +293,18 @@ body {
    ========================================= */
 
 .slider-button {
-
   position: absolute;
 
   top: 50%;
 
-  transform:
-    translateY(-50%);
+  transform: translateY(-50%);
 
   width: 76px;
-
   height: 58px;
 
-  border:
-    1px solid
-    rgba(
-      0,
-      60,
-      140,
-      0.45
-    );
+  border: 1px solid rgba(0, 60, 140, 0.45);
 
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.72
-    );
+  background: rgba(255, 255, 255, 0.72);
 
   color: #174b92;
 
@@ -419,36 +317,19 @@ body {
   transition:
     background 0.2s ease,
     transform 0.2s ease;
-
 }
-
 
 .slider-button:hover {
-
-  background:
-    rgba(
-      255,
-      255,
-      255,
-      0.92
-    );
-
+  background: rgba(255, 255, 255, 0.92);
 }
-
 
 .slider-prev {
-
   left: 6%;
-
 }
-
 
 .slider-next {
-
   right: 6%;
-
 }
-
 
 
 /* =========================================
@@ -456,7 +337,6 @@ body {
    ========================================= */
 
 .menu-section {
-
   position: relative;
 
   width: 100%;
@@ -468,26 +348,13 @@ body {
     45px
     55px;
 
-  background-color:
-    #ffffff;
+  background-color: #ffffff;
 
   background-image:
-
     linear-gradient(
-      rgba(
-        255,
-        255,
-        255,
-        0.15
-      ),
-      rgba(
-        255,
-        255,
-        255,
-        0.15
-      )
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.15)
     ),
-
     url("hexa-doodle.png");
 
   background-size: cover;
@@ -495,9 +362,7 @@ body {
   background-position: center;
 
   background-repeat: repeat;
-
 }
-
 
 
 /* =========================================
@@ -505,33 +370,25 @@ body {
    ========================================= */
 
 .menu-grid {
+  width: min(
+    1100px,
+    100%
+  );
 
-  width:
-    min(
-      1100px,
-      100%
-    );
-
-  margin:
-    0 auto;
+  margin: 0 auto;
 
   display: grid;
 
   grid-template-columns:
     repeat(
       6,
-      minmax(
-        110px,
-        1fr
-      )
+      minmax(110px, 1fr)
     );
 
   gap: 30px;
 
   align-items: start;
-
 }
-
 
 
 /* =========================================
@@ -539,7 +396,6 @@ body {
    ========================================= */
 
 .menu-item {
-
   position: relative;
 
   border: none;
@@ -554,8 +410,7 @@ body {
 
   align-items: center;
 
-  justify-content:
-    flex-start;
+  justify-content: flex-start;
 
   gap: 10px;
 
@@ -564,51 +419,40 @@ body {
   transition:
     transform 0.2s ease,
     filter 0.2s ease;
-
 }
-
 
 .menu-item:hover {
-
-  transform:
-    translateY(-6px);
-
+  transform: translateY(-6px);
 }
-
 
 .menu-item:active {
-
-  transform:
-    scale(0.96);
-
+  transform: scale(0.96);
 }
-
 
 
 /* =========================================
    MENU ICON
+   DESKTOP
    ========================================= */
 
 .menu-item > img {
-
   display: block;
 
   width: 125px;
-
   height: 125px;
 
   object-fit: contain;
-
 }
-
 
 
 /* =========================================
    MENU LABEL
+   DESKTOP
+
+   Desktop tetap menampilkan nama lengkap.
    ========================================= */
 
 .menu-item span {
-
   max-width: 150px;
 
   text-align: center;
@@ -620,27 +464,16 @@ body {
   line-height: 1.25;
 
   color: #222222;
-
 }
-
 
 
 /* =========================================
-   SETTINGS
-
-   Settings menggunakan aturan icon yang
-   sama dengan menu lainnya.
-
-   Posisi Settings akan tetap dipindahkan
-   menjadi terakhir oleh main.js.
+   SETTINGS SELALU TERAKHIR
    ========================================= */
 
 .settings-item {
-
   order: 9999;
-
 }
-
 
 
 /* =========================================
@@ -648,43 +481,27 @@ body {
    ========================================= */
 
 .inspection-shortcut {
-
   position: fixed;
 
   right: 34px;
-
   bottom: 28px;
 
   width: 72px;
-
   height: 72px;
 
   border: none;
 
   border-radius: 50%;
 
-  background:
-    rgba(
-      255,
-      152,
-      0,
-      0.72
-    );
+  background: rgba(255, 152, 0, 0.72);
 
   box-shadow:
-
     0 8px 22px
-    rgba(
-      0,
-      0,
-      0,
-      0.20
-    );
+    rgba(0, 0, 0, 0.20);
 
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   cursor: grab;
@@ -695,48 +512,26 @@ body {
 
   touch-action: none;
 
-  backdrop-filter:
-    blur(4px);
+  backdrop-filter: blur(4px);
 
   transition:
     box-shadow 0.2s ease,
     background 0.2s ease;
-
 }
-
 
 .inspection-shortcut:hover {
-
-  background:
-    rgba(
-      255,
-      152,
-      0,
-      0.88
-    );
+  background: rgba(255, 152, 0, 0.88);
 
   box-shadow:
-
     0 10px 28px
-    rgba(
-      0,
-      0,
-      0,
-      0.26
-    );
-
+    rgba(0, 0, 0, 0.26);
 }
-
 
 .inspection-shortcut:active {
-
   cursor: grabbing;
-
 }
 
-
 .inspection-shortcut span {
-
   color: #ffffff;
 
   font-size: 46px;
@@ -746,199 +541,174 @@ body {
   line-height: 1;
 
   pointer-events: none;
-
 }
-
 
 
 /* =========================================
    TABLET
    ========================================= */
 
-@media
-(max-width: 1000px) {
-
+@media (max-width: 1000px) {
 
   .menu-grid {
-
     grid-template-columns:
       repeat(
         3,
-        minmax(
-          110px,
-          1fr
-        )
+        minmax(110px, 1fr)
       );
 
     row-gap: 35px;
-
   }
 
 }
-
 
 
 /* =========================================
    MOBILE
    ========================================= */
 
-@media
-(max-width: 600px) {
+@media (max-width: 600px) {
 
 
-  /* HEADER */
+  /* =======================================
+     HEADER
+     ======================================= */
 
   .main-header {
-
     height: 72px;
 
-    border-bottom-width:
-      8px;
+    border-bottom-width: 8px;
 
-    padding:
-      0 12px;
-
+    padding: 0 12px;
   }
 
 
   .main-content {
-
-    padding-top:
-      72px;
-
+    padding-top: 72px;
   }
 
 
+  /* =======================================
+     LOGO
 
-  /* LOGO */
+     Area hitam efektif 64px.
+     Logo dibuat hampir memenuhi area hitam.
+     ======================================= */
 
   .header-logo {
-
     height: 64px;
 
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
   }
 
 
   .header-logo img {
+    display: block;
 
     width: auto;
 
-    height: 54px;
+    height: 61px;
 
-    max-width: 190px;
+    max-width: none;
 
+    object-fit: contain;
   }
 
 
-
-  /* HEADER ACTIONS */
+  /* =======================================
+     HEADER ACTIONS
+     ======================================= */
 
   .header-actions {
-
     gap: 5px;
-
   }
 
 
-
-  /* SEARCH */
+  /* =======================================
+     SEARCH
+     ======================================= */
 
   .search-box {
-
     width: 125px;
 
     height: 34px;
-
   }
 
 
   .search-box input {
-
-    padding-left:
-      10px;
+    padding-left: 10px;
 
     font-size: 13px;
-
   }
 
 
   .search-button {
-
     width: 38px;
-
   }
 
 
   .search-button svg {
-
     width: 19px;
 
     height: 19px;
-
   }
 
 
-
-  /* REFRESH */
+  /* =======================================
+     REFRESH
+     ======================================= */
 
   .refresh-button {
-
     width: 34px;
 
     height: 34px;
-
   }
 
 
   .refresh-button svg {
-
     width: 25px;
 
     height: 25px;
-
   }
 
 
-
-  /* BANNER */
+  /* =======================================
+     BANNER
+     ======================================= */
 
   .banner-slider {
-
     height: 250px;
-
   }
 
 
   .slider-button {
-
     width: 46px;
 
     height: 46px;
 
     font-size: 17px;
-
   }
 
 
   .slider-prev {
-
     left: 12px;
-
   }
 
 
   .slider-next {
-
     right: 12px;
-
   }
 
 
-
-  /* MENU */
+  /* =======================================
+     MENU SECTION
+     ======================================= */
 
   .menu-section {
-
     min-height: 420px;
 
     padding:
@@ -946,14 +716,11 @@ body {
       18px
       90px;
 
-    background-size:
-      auto 100%;
-
+    background-size: auto 100%;
   }
 
 
   .menu-grid {
-
     grid-template-columns:
       repeat(
         3,
@@ -963,31 +730,63 @@ body {
     column-gap: 12px;
 
     row-gap: 28px;
-
   }
 
 
-  .menu-item > img {
+  /* =======================================
+     MENU ICON MOBILE
 
+     Ukuran icon dipertahankan seperti
+     sebelumnya: 90 x 90px.
+     ======================================= */
+
+  .menu-item > img {
     width: 90px;
 
     height: 90px;
-
   }
 
 
+  /* =======================================
+     MENU LABEL MOBILE
+
+     Label maksimal sama dengan lebar icon.
+
+     Nama asli tetap lengkap di HTML.
+     Jika terlalu panjang, browser akan
+     menampilkan ...
+     ======================================= */
+
   .menu-item span {
+    display: block;
+
+    width: 90px;
+
+    max-width: 90px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    text-align: center;
 
     font-size: 12px;
 
+    font-weight: 600;
+
+    line-height: 1.25;
+
+    color: #222222;
   }
 
 
-
-  /* FLOATING BUTTON */
+  /* =======================================
+     FLOATING BUTTON
+     ======================================= */
 
   .inspection-shortcut {
-
     width: 62px;
 
     height: 62px;
@@ -995,66 +794,73 @@ body {
     right: 18px;
 
     bottom: 20px;
-
   }
 
 
   .inspection-shortcut span {
-
     font-size: 40px;
-
   }
 
 }
-
 
 
 /* =========================================
    SMALL MOBILE
    ========================================= */
 
-@media
-(max-width: 380px) {
+@media (max-width: 380px) {
 
+
+  /* LOGO */
 
   .header-logo img {
-
     width: auto;
 
-    height: 48px;
+    height: 58px;
 
-    max-width: 160px;
-
+    max-width: none;
   }
 
+
+  /* SEARCH */
 
   .search-box {
-
     width: 105px;
-
   }
 
+
+  /* BANNER */
 
   .banner-slider {
-
     height: 220px;
-
   }
 
 
-  .menu-item > img {
+  /* ICON */
 
+  .menu-item > img {
     width: 78px;
 
     height: 78px;
-
   }
 
 
+  /* LABEL
+     Mengikuti lebar icon 78px
+  */
+
   .menu-item span {
+    width: 78px;
+
+    max-width: 78px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
 
     font-size: 11px;
-
   }
 
 }
