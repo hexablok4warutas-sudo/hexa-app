@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
 
@@ -10,30 +11,33 @@
 
   <title>HEXA</title>
 
-  <!-- CSS MAIN PAGE -->
   <link
     rel="stylesheet"
     href="main.css"
   >
 </head>
 
+
 <body>
 
   <!-- =====================================
-       HEADER
+       FIXED HEADER
        ===================================== -->
+
   <header class="main-header">
 
-    <!-- LOGO HEXA -->
+    <!-- HEXA LOGO -->
     <div class="header-logo">
+
       <img
         src="hexa-logo-header.png"
         alt="HEXA"
       >
+
     </div>
 
 
-    <!-- HEADER ACTION -->
+    <!-- HEADER ACTIONS -->
     <div class="header-actions">
 
       <!-- SEARCH -->
@@ -44,6 +48,7 @@
           id="searchInput"
           placeholder=""
           autocomplete="off"
+          aria-label="Search menu"
         >
 
         <button
@@ -52,10 +57,12 @@
           class="search-button"
           aria-label="Search"
         >
+
           <svg
             viewBox="0 0 24 24"
             aria-hidden="true"
           >
+
             <circle
               cx="11"
               cy="11"
@@ -68,7 +75,9 @@
               x2="21"
               y2="21"
             ></line>
+
           </svg>
+
         </button>
 
       </div>
@@ -81,10 +90,12 @@
         class="refresh-button"
         aria-label="Refresh"
       >
+
         <svg
           viewBox="0 0 24 24"
           aria-hidden="true"
         >
+
           <path
             d="M20 6v5h-5"
           ></path>
@@ -92,7 +103,9 @@
           <path
             d="M18.5 15a7 7 0 1 1 .2-6"
           ></path>
+
         </svg>
+
       </button>
 
     </div>
@@ -100,15 +113,18 @@
   </header>
 
 
+
   <!-- =====================================
        MAIN CONTENT
        ===================================== -->
+
   <main class="main-content">
 
 
     <!-- ===================================
-         BANNER / SLIDER
+         BANNER SLIDER
          =================================== -->
+
     <section class="banner-section">
 
       <div
@@ -116,7 +132,8 @@
         id="bannerSlider"
       >
 
-        <!-- BANNER 1 -->
+
+        <!-- BANNER 01 -->
         <div class="banner-slide active">
 
           <img
@@ -127,7 +144,7 @@
         </div>
 
 
-        <!-- BANNER 2 -->
+        <!-- BANNER 02 -->
         <div class="banner-slide">
 
           <img
@@ -159,15 +176,19 @@
           &#8594;
         </button>
 
+
       </div>
 
     </section>
 
 
+
     <!-- ===================================
          MENU AREA
          =================================== -->
+
     <section class="menu-section">
+
 
       <div
         class="menu-grid"
@@ -175,7 +196,10 @@
       >
 
 
-        <!-- DAILY MAINTENANCE -->
+        <!-- ===============================
+             DAILY MAINTENANCE
+             =============================== -->
+
         <button
           type="button"
           class="menu-item"
@@ -194,7 +218,11 @@
         </button>
 
 
-        <!-- BACKLOG MONITORING -->
+
+        <!-- ===============================
+             BACKLOG MONITORING
+             =============================== -->
+
         <button
           type="button"
           class="menu-item"
@@ -213,7 +241,11 @@
         </button>
 
 
-        <!-- FUI -->
+
+        <!-- ===============================
+             FUI
+             =============================== -->
+
         <button
           type="button"
           class="menu-item"
@@ -232,7 +264,11 @@
         </button>
 
 
-        <!-- ROTABLE -->
+
+        <!-- ===============================
+             ROTABLE
+             =============================== -->
+
         <button
           type="button"
           class="menu-item"
@@ -251,7 +287,11 @@
         </button>
 
 
-        <!-- NEWS -->
+
+        <!-- ===============================
+             NEWS
+             =============================== -->
+
         <button
           type="button"
           class="menu-item"
@@ -270,10 +310,12 @@
         </button>
 
 
-        <!-- =================================
+
+        <!-- ===============================
              SETTINGS
-             HARUS SELALU MENU TERAKHIR
-             ================================= -->
+             SELALU MENU TERAKHIR
+             =============================== -->
+
         <button
           type="button"
           class="menu-item settings-item"
@@ -281,74 +323,10 @@
           id="settingsMenu"
         >
 
-          <!--
-            Untuk sementara icon Settings
-            dibuat dengan SVG internal.
-            Nanti bisa diganti file SVG.
-          -->
-
-          <div class="settings-icon">
-
-            <svg
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M12 8.5
-                   a3.5 3.5 0 1 0 0 7
-                   a3.5 3.5 0 1 0 0-7"
-              ></path>
-
-              <path
-                d="M19.4 15
-                   a1.7 1.7 0 0 0 .34 1.88
-                   l.06.06
-                   a2 2 0 1 1-2.83 2.83
-                   l-.06-.06
-                   A1.7 1.7 0 0 0 15 19.4
-                   a1.7 1.7 0 0 0-1 .6
-                   a1.7 1.7 0 0 0-.5 1.2
-                   V21.3
-                   a2 2 0 1 1-4 0
-                   v-.1
-                   A1.7 1.7 0 0 0 8 19.4
-                   a1.7 1.7 0 0 0-1.88.34
-                   l-.06.06
-                   a2 2 0 1 1-2.83-2.83
-                   l.06-.06
-                   A1.7 1.7 0 0 0 3.6 15
-                   a1.7 1.7 0 0 0-.6-1
-                   a1.7 1.7 0 0 0-1.2-.5
-                   H1.7
-                   a2 2 0 1 1 0-4
-                   h.1
-                   A1.7 1.7 0 0 0 3.6 8
-                   a1.7 1.7 0 0 0-.34-1.88
-                   l-.06-.06
-                   a2 2 0 1 1 2.83-2.83
-                   l.06.06
-                   A1.7 1.7 0 0 0 8 3.6
-                   a1.7 1.7 0 0 0 1-.6
-                   a1.7 1.7 0 0 0 .5-1.2
-                   V1.7
-                   a2 2 0 1 1 4 0
-                   v.1
-                   A1.7 1.7 0 0 0 15 3.6
-                   a1.7 1.7 0 0 0 1.88-.34
-                   l.06-.06
-                   a2 2 0 1 1 2.83 2.83
-                   l-.06.06
-                   A1.7 1.7 0 0 0 19.4 8
-                   a1.7 1.7 0 0 0 .6 1
-                   a1.7 1.7 0 0 0 1.2.5
-                   h.1
-                   a2 2 0 1 1 0 4
-                   h-.1
-                   A1.7 1.7 0 0 0 19.4 15Z"
-              ></path>
-            </svg>
-
-          </div>
+          <img
+            src="hexa-icon-svg-settings.svg"
+            alt="Settings"
+          >
 
           <span>
             Settings
@@ -356,11 +334,14 @@
 
         </button>
 
+
       </div>
 
     </section>
 
+
   </main>
+
 
 
   <!-- =====================================
@@ -374,15 +355,20 @@
     aria-label="Start Inspection"
     title="Start Inspection"
   >
+
     <span>+</span>
+
   </button>
 
 
+
   <!-- =====================================
-       JAVASCRIPT MAIN PAGE
+       MAIN JAVASCRIPT
        ===================================== -->
 
   <script src="main.js"></script>
 
+
 </body>
+
 </html>
