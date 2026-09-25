@@ -1,0 +1,1051 @@
+/* =========================================
+   HEXA - DAILY MAINTENANCE
+   ========================================= */
+
+
+/* =========================================
+   GLOBAL
+   ========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+
+/* =========================================
+   FIXED HEADER
+   SAMA DENGAN MAIN PAGE
+   ========================================= */
+
+.main-header {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 88px;
+
+  background: #000000;
+
+  border-bottom: 15px solid #ff9800;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 32px;
+
+  z-index: 1000;
+}
+
+
+/* =========================================
+   HEADER NAVIGATION AREA
+   ========================================= */
+
+.header-navigation {
+  position: relative;
+
+  height: 73px;
+
+  display: flex;
+  align-items: center;
+}
+
+
+/* =========================================
+   HEXA HEADER LOGO
+   SEKARANG MENJADI BUTTON
+   ========================================= */
+
+.header-logo {
+  height: 73px;
+
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-start;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.header-logo img {
+  display: block;
+
+  width: auto;
+
+  height: 70px;
+
+  max-width: none;
+
+  object-fit: contain;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   HEXA NAVIGATION DROPDOWN
+   ========================================= */
+
+.hexa-nav-menu {
+  position: absolute;
+
+  top: calc(100% + 15px);
+  left: 0;
+
+  width: 230px;
+
+  padding: 8px;
+
+  background: rgba(18, 18, 18, 0.97);
+
+  border: 1px solid rgba(255, 152, 0, 0.38);
+
+  border-radius: 0 0 14px 14px;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.28);
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transform: translateY(-8px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+
+  overflow: hidden;
+
+  z-index: 1600;
+}
+
+
+/* DROPDOWN OPEN */
+
+.hexa-nav-menu.open {
+  opacity: 1;
+
+  visibility: visible;
+
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   NAVIGATION MENU ITEM
+   ========================================= */
+
+.nav-menu-item {
+  width: 100%;
+
+  min-height: 42px;
+
+  padding: 0 14px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    padding-left 0.18s ease;
+}
+
+.nav-menu-item:hover {
+  background: rgba(255, 152, 0, 0.14);
+
+  color: #ffab24;
+
+  padding-left: 18px;
+}
+
+
+/* CURRENT PAGE */
+
+.nav-menu-item.active {
+  color: #ff9800;
+
+  font-weight: 700;
+
+  background: rgba(255, 152, 0, 0.10);
+}
+
+
+/* SETTINGS SEPARATOR */
+
+.settings-nav {
+  margin-top: 6px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+
+  border-radius: 0 0 8px 8px;
+}
+
+
+/* =========================================
+   HEADER ACTIONS
+   ========================================= */
+
+.header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   SEARCH BOX
+   ========================================= */
+
+.search-box {
+  position: relative;
+
+  width: 290px;
+  height: 42px;
+
+  border: 2px solid #ffa000;
+
+  border-radius: 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  background: transparent;
+
+  overflow: hidden;
+}
+
+.search-box input {
+  flex: 1;
+
+  min-width: 0;
+  height: 100%;
+
+  padding: 0 8px 0 18px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  cursor: text;
+}
+
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* =========================================
+   SEARCH BUTTON
+   ========================================= */
+
+.search-button {
+  width: 48px;
+  height: 100%;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.search-button svg {
+  width: 23px;
+  height: 23px;
+
+  fill: none;
+
+  stroke: #ffa000;
+
+  stroke-width: 2.7;
+
+  stroke-linecap: round;
+}
+
+
+/* =========================================
+   REFRESH BUTTON
+   ========================================= */
+
+.refresh-button {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.refresh-button svg {
+  width: 30px;
+  height: 30px;
+
+  fill: none;
+
+  stroke: #ffa000;
+
+  stroke-width: 2.3;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* =========================================
+   DAILY MAINTENANCE MAIN CONTENT
+   ========================================= */
+
+.daily-main-content {
+  width: 100%;
+
+  min-height: 100vh;
+
+  padding-top: 88px;
+}
+
+
+/* =========================================
+   DAILY MAINTENANCE SECTION
+   ========================================= */
+
+.daily-section {
+  position: relative;
+
+  width: 100%;
+
+  min-height: calc(100vh - 88px);
+
+  padding:
+    36px
+    45px
+    100px;
+
+  background-color: #ffffff;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.16)
+    ),
+    url("hexa-doodle.png");
+
+  background-size: cover;
+
+  background-position: center;
+
+  background-repeat: repeat;
+}
+
+
+/* =========================================
+   DESCRIPTION
+   ========================================= */
+
+.daily-description {
+  width: min(
+    1180px,
+    100%
+  );
+
+  margin: 0 auto 52px;
+
+  color: #151515;
+
+  font-size: 15px;
+
+  line-height: 1.6;
+
+  text-align: justify;
+}
+
+.daily-description p {
+  margin-bottom: 14px;
+}
+
+.daily-description p:last-child {
+  margin-bottom: 0;
+}
+
+.daily-description strong {
+  font-weight: 700;
+}
+
+
+/* =========================================
+   DAILY MENU GRID
+   ========================================= */
+
+.daily-menu-grid {
+  width: min(
+    760px,
+    100%
+  );
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap: 55px;
+
+  align-items: start;
+}
+
+
+/* =========================================
+   DAILY MENU ITEM
+   ========================================= */
+
+.daily-menu-item {
+  position: relative;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: flex-start;
+
+  gap: 12px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.daily-menu-item:hover {
+  transform: translateY(-6px);
+}
+
+.daily-menu-item:active {
+  transform: scale(0.96);
+}
+
+
+/* =========================================
+   ICON CARD
+   SHADOW ELEGAN
+   ========================================= */
+
+.daily-icon-card {
+  width: 135px;
+  height: 135px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.10);
+
+  filter:
+    drop-shadow(
+      0 7px 8px
+      rgba(0, 0, 0, 0.18)
+    );
+
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.daily-menu-item:hover .daily-icon-card {
+  filter:
+    drop-shadow(
+      0 11px 12px
+      rgba(0, 0, 0, 0.24)
+    );
+}
+
+
+/* =========================================
+   ICON SVG
+   ========================================= */
+
+.daily-icon-card img {
+  display: block;
+
+  width: 125px;
+  height: 125px;
+
+  object-fit: contain;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   DAILY MENU LABEL
+   ========================================= */
+
+.daily-menu-item > span {
+  max-width: 150px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  line-height: 1.25;
+
+  color: #222222;
+}
+
+
+/* =========================================
+   SEARCH HIDDEN RESULT
+   ========================================= */
+
+.daily-menu-item.search-hidden {
+  display: none;
+}
+
+
+/* =========================================
+   FLOATING START INSPECTION BUTTON
+   SAMA DENGAN MAIN PAGE
+   ========================================= */
+
+.inspection-shortcut {
+  position: fixed;
+
+  right: 34px;
+  bottom: 28px;
+
+  width: 72px;
+  height: 72px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: rgba(255, 152, 0, 0.72);
+
+  box-shadow:
+    0 8px 22px
+    rgba(0, 0, 0, 0.20);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: grab;
+
+  z-index: 1500;
+
+  user-select: none;
+
+  touch-action: none;
+
+  backdrop-filter: blur(4px);
+
+  transition:
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.inspection-shortcut:hover {
+  background: rgba(255, 152, 0, 0.88);
+
+  box-shadow:
+    0 10px 28px
+    rgba(0, 0, 0, 0.26);
+}
+
+.inspection-shortcut:active {
+  cursor: grabbing;
+}
+
+.inspection-shortcut span {
+  color: #ffffff;
+
+  font-size: 46px;
+
+  font-weight: 300;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1000px) {
+
+  .daily-menu-grid {
+    width: min(
+      650px,
+      100%
+    );
+
+    gap: 35px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+
+  /* =======================================
+     HEADER
+     ======================================= */
+
+  .main-header {
+    height: 72px;
+
+    border-bottom-width: 8px;
+
+    padding: 0 12px;
+  }
+
+
+  .daily-main-content {
+    padding-top: 72px;
+  }
+
+
+  /* =======================================
+     HEADER NAVIGATION
+     ======================================= */
+
+  .header-navigation {
+    height: 64px;
+  }
+
+
+  /* =======================================
+     LOGO
+     SAMA DENGAN MAIN PAGE
+     ======================================= */
+
+  .header-logo {
+    height: 64px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
+  }
+
+
+  .header-logo img {
+    display: block;
+
+    width: auto;
+
+    height: 61px;
+
+    max-width: none;
+
+    object-fit: contain;
+  }
+
+
+  /* =======================================
+     DROPDOWN MOBILE
+     ======================================= */
+
+  .hexa-nav-menu {
+    position: fixed;
+
+    top: 72px;
+    left: 12px;
+
+    width: min(
+      250px,
+      calc(100vw - 24px)
+    );
+
+    border-radius: 0 0 14px 14px;
+  }
+
+
+  .nav-menu-item {
+    min-height: 43px;
+
+    font-size: 13px;
+  }
+
+
+  /* =======================================
+     HEADER ACTIONS
+     ======================================= */
+
+  .header-actions {
+    gap: 5px;
+  }
+
+
+  /* =======================================
+     SEARCH
+     ======================================= */
+
+  .search-box {
+    width: 125px;
+
+    height: 34px;
+  }
+
+
+  .search-box input {
+    padding-left: 10px;
+
+    font-size: 13px;
+  }
+
+
+  .search-button {
+    width: 38px;
+  }
+
+
+  .search-button svg {
+    width: 19px;
+
+    height: 19px;
+  }
+
+
+  /* =======================================
+     REFRESH
+     ======================================= */
+
+  .refresh-button {
+    width: 34px;
+
+    height: 34px;
+  }
+
+
+  .refresh-button svg {
+    width: 25px;
+
+    height: 25px;
+  }
+
+
+  /* =======================================
+     DAILY SECTION
+     ======================================= */
+
+  .daily-section {
+    min-height: calc(100vh - 72px);
+
+    padding:
+      25px
+      18px
+      100px;
+
+    background-size: auto 100%;
+  }
+
+
+  /* =======================================
+     DESCRIPTION MOBILE
+     ======================================= */
+
+  .daily-description {
+    width: 100%;
+
+    margin-bottom: 38px;
+
+    font-size: 13px;
+
+    line-height: 1.55;
+
+    text-align: justify;
+  }
+
+
+  .daily-description p {
+    margin-bottom: 12px;
+  }
+
+
+  /* =======================================
+     MENU GRID MOBILE
+     3 KOLOM
+     ======================================= */
+
+  .daily-menu-grid {
+    width: 100%;
+
+    grid-template-columns:
+      repeat(
+        3,
+        1fr
+      );
+
+    column-gap: 12px;
+
+    row-gap: 28px;
+  }
+
+
+  /* =======================================
+     ICON CARD MOBILE
+     ======================================= */
+
+  .daily-icon-card {
+    width: 98px;
+    height: 98px;
+
+    border-radius: 19px;
+
+    filter:
+      drop-shadow(
+        0 6px 7px
+        rgba(0, 0, 0, 0.18)
+      );
+  }
+
+
+  /* =======================================
+     ICON MOBILE
+     90 x 90
+     ======================================= */
+
+  .daily-icon-card img {
+    width: 90px;
+
+    height: 90px;
+  }
+
+
+  /* =======================================
+     LABEL MOBILE
+     ======================================= */
+
+  .daily-menu-item > span {
+    display: block;
+
+    width: 90px;
+
+    max-width: 90px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    line-height: 1.25;
+
+    color: #222222;
+  }
+
+
+  /* =======================================
+     FLOATING BUTTON
+     ======================================= */
+
+  .inspection-shortcut {
+    width: 62px;
+
+    height: 62px;
+
+    right: 18px;
+
+    bottom: 20px;
+  }
+
+
+  .inspection-shortcut span {
+    font-size: 40px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 380px) {
+
+
+  /* =======================================
+     LOGO
+     ======================================= */
+
+  .header-logo img {
+    width: auto;
+
+    height: 58px;
+
+    max-width: none;
+  }
+
+
+  /* =======================================
+     SEARCH
+     ======================================= */
+
+  .search-box {
+    width: 105px;
+  }
+
+
+  /* =======================================
+     DAILY SECTION
+     ======================================= */
+
+  .daily-section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  /* =======================================
+     DESCRIPTION
+     ======================================= */
+
+  .daily-description {
+    font-size: 12px;
+  }
+
+
+  /* =======================================
+     ICON CARD
+     ======================================= */
+
+  .daily-icon-card {
+    width: 86px;
+
+    height: 86px;
+
+    border-radius: 17px;
+  }
+
+
+  /* =======================================
+     ICON
+     ======================================= */
+
+  .daily-icon-card img {
+    width: 78px;
+
+    height: 78px;
+  }
+
+
+  /* =======================================
+     LABEL
+     ======================================= */
+
+  .daily-menu-item > span {
+    width: 78px;
+
+    max-width: 78px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+    font-size: 11px;
+  }
+
+}
