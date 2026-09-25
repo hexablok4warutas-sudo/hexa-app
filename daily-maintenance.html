@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Daily Maintenance | HEXA</title>
+
+  <link
+    rel="stylesheet"
+    href="daily-maintenance.css"
+  >
+</head>
+
+
+<body>
+
+  <!-- =====================================
+       FIXED HEADER
+       ===================================== -->
+
+  <header class="main-header">
+
+    <!-- ===================================
+         HEXA LOGO + NAVIGATION
+         =================================== -->
+
+    <div class="header-navigation">
+
+      <button
+        type="button"
+        class="header-logo"
+        id="headerLogoButton"
+        aria-label="Open HEXA menu"
+        aria-expanded="false"
+      >
+
+        <img
+          src="hexa-logo-header.png"
+          alt="HEXA"
+        >
+
+      </button>
+
+
+      <!-- ===============================
+           HEXA NAVIGATION DROPDOWN
+           TEXT ONLY
+           =============================== -->
+
+      <nav
+        class="hexa-nav-menu"
+        id="hexaNavMenu"
+        aria-label="HEXA Navigation"
+      >
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="main"
+        >
+          Main Page
+        </button>
+
+        <button
+          type="button"
+          class="nav-menu-item active"
+          data-page="daily-maintenance"
+        >
+          Daily Maintenance
+        </button>
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="backlog-monitoring"
+        >
+          Backlog Monitoring
+        </button>
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="fui"
+        >
+          FUI
+        </button>
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="rotable"
+        >
+          Rotable
+        </button>
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="news"
+        >
+          News
+        </button>
+
+        <button
+          type="button"
+          class="nav-menu-item settings-nav"
+          data-page="settings"
+        >
+          Settings
+        </button>
+
+      </nav>
+
+    </div>
+
+
+    <!-- ===================================
+         HEADER ACTIONS
+         =================================== -->
+
+    <div class="header-actions">
+
+      <!-- SEARCH -->
+
+      <div class="search-box">
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder=""
+          autocomplete="off"
+          aria-label="Search Daily Maintenance menu"
+        >
+
+        <button
+          type="button"
+          id="searchButton"
+          class="search-button"
+          aria-label="Search"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+            ></circle>
+
+            <line
+              x1="16.5"
+              y1="16.5"
+              x2="21"
+              y2="21"
+            ></line>
+
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <!-- REFRESH -->
+
+      <button
+        type="button"
+        id="refreshButton"
+        class="refresh-button"
+        aria-label="Refresh"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+
+          <path
+            d="M20 6v5h-5"
+          ></path>
+
+          <path
+            d="M18.5 15a7 7 0 1 1 .2-6"
+          ></path>
+
+        </svg>
+
+      </button>
+
+    </div>
+
+  </header>
+
+
+
+  <!-- =====================================
+       DAILY MAINTENANCE CONTENT
+       ===================================== -->
+
+  <main class="daily-main-content">
+
+    <section class="daily-section">
+
+
+      <!-- =================================
+           DESCRIPTION
+           ================================= -->
+
+      <div class="daily-description">
+
+        <p>
+          <strong>Daily Maintenance</strong> adalah Garda Terdepan
+          dalam aktifitas maintenance unit Tim Roda Besi
+          (Track Section) PT HRS Site AGM. Deteksi dini kerusakan
+          atau deviasi unit yang tercapture dapat membantu kita
+          untuk melakukan perencanaan parts, waktu perbaikan dan
+          kebutuhan sumber daya yang tujuan utamanya adalah menjaga
+          performa alat mencapai target physical availability (PA)
+          dengan MTBF dan redo yang terkontrol.
+        </p>
+
+        <p>
+          Untuk memulai input temuan kerusakan kamu bisa memulai di
+          <strong>Start Inspection</strong>. Melihat apa saja temuan
+          DM yang perlu di follow up dan update bisa di
+          <strong>Daily Outstanding</strong>. Sedangkan untuk
+          memantau keseluruhan histori DM kita bisa langsung review
+          di <strong>Unit History</strong>.
+        </p>
+
+      </div>
+
+
+
+      <!-- =================================
+           DAILY MAINTENANCE MENU
+           ================================= -->
+
+      <div
+        class="daily-menu-grid"
+        id="dailyMenuGrid"
+      >
+
+
+        <!-- ===============================
+             START INSPECTION
+             =============================== -->
+
+        <button
+          type="button"
+          class="daily-menu-item"
+          data-menu="start-inspection"
+        >
+
+          <div class="daily-icon-card">
+
+            <img
+              src="hexa-icon-startinspection.svg"
+              alt="Start Inspection"
+            >
+
+          </div>
+
+          <span>
+            Start Inspection
+          </span>
+
+        </button>
+
+
+
+        <!-- ===============================
+             DAILY OUTSTANDING
+             =============================== -->
+
+        <button
+          type="button"
+          class="daily-menu-item"
+          data-menu="daily-outstanding"
+        >
+
+          <div class="daily-icon-card">
+
+            <img
+              src="hexa-icon-dailyoutstanding.svg"
+              alt="Daily Outstanding"
+            >
+
+          </div>
+
+          <span>
+            Daily Outstanding
+          </span>
+
+        </button>
+
+
+
+        <!-- ===============================
+             UNIT HISTORY
+             =============================== -->
+
+        <button
+          type="button"
+          class="daily-menu-item"
+          data-menu="unit-history"
+        >
+
+          <div class="daily-icon-card">
+
+            <img
+              src="hexa-icon-unithistory.svg"
+              alt="Unit History"
+            >
+
+          </div>
+
+          <span>
+            Unit History
+          </span>
+
+        </button>
+
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================
+       FLOATING START INSPECTION SHORTCUT
+       ===================================== -->
+
+  <button
+    type="button"
+    id="inspectionShortcut"
+    class="inspection-shortcut"
+    aria-label="Start Inspection"
+    title="Start Inspection"
+  >
+
+    <span>+</span>
+
+  </button>
+
+
+
+  <!-- =====================================
+       DAILY MAINTENANCE JAVASCRIPT
+       ===================================== -->
+
+  <script src="daily-maintenance.js"></script>
+
+
+</body>
+
+</html>
