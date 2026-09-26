@@ -1,0 +1,1488 @@
+/* =========================================================
+   HEXA APP - UNIT HISTORY
+   =========================================================
+   Global Header TIDAK diatur dari file ini.
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.unit-history-page {
+  position: fixed;
+
+  top: 88px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background-color: #fffaf2;
+  background-image: url("hexa-doodle.png");
+  background-repeat: repeat;
+  background-position: top center;
+  background-size: 760px auto;
+
+  font-family: Arial, Helvetica, sans-serif;
+  color: #111111;
+}
+
+
+/* =========================================================
+   FIXED PAGE BAR
+   ========================================================= */
+
+.unit-history-page-bar {
+  position: relative;
+
+  flex: 0 0 112px;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  padding: 8px 72px 6px 76px;
+
+  background-color: rgba(255, 250, 242, 0.96);
+
+  z-index: 20;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.unit-history-title {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+}
+
+
+.unit-history-title-icon {
+  display: block;
+
+  width: 104px;
+  height: 92px;
+
+  flex: 0 0 auto;
+
+  object-fit: contain;
+}
+
+
+.unit-history-title h1 {
+  margin: 0;
+  padding: 0;
+
+  color: #050505;
+
+  font-size: 40px;
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: -1px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   ACTION AREA
+   ========================================================= */
+
+.unit-history-actions {
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   ACTION BUTTON
+   ========================================================= */
+
+.unit-history-action-button {
+  width: 44px;
+  height: 44px;
+
+  margin: 0;
+  padding: 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  outline: 0;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #f4a000;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease,
+    color 0.15s ease;
+}
+
+
+.unit-history-action-button:hover {
+  background-color: rgba(244, 160, 0, 0.12);
+
+  transform: translateY(-1px);
+}
+
+
+.unit-history-action-button:active {
+  transform: translateY(0);
+}
+
+
+.unit-history-action-button svg {
+  display: block;
+
+  width: 32px;
+  height: 32px;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 2;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* FILTER ICON */
+
+#unitHistoryFilterButton svg {
+  fill: currentColor;
+
+  stroke: currentColor;
+
+  stroke-width: 1;
+}
+
+
+/* DELETE ACTIVE MODE */
+
+.unit-history-delete-button.is-active {
+  color: #ffffff;
+
+  background-color: #d92d20;
+}
+
+
+.unit-history-delete-button.is-active:hover {
+  background-color: #b42318;
+}
+
+
+/* =========================================================
+   ORANGE DIVIDER
+   ========================================================= */
+
+.unit-history-page-divider {
+  position: relative;
+
+  flex: 0 0 3px;
+
+  width: calc(100% - 144px);
+
+  margin: 0 auto;
+
+  background-color: #f4a000;
+
+  border-radius: 999px;
+
+  z-index: 20;
+}
+
+
+/* =========================================================
+   TABLE VIEW
+   ========================================================= */
+
+.unit-history-table-view {
+  position: relative;
+
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  width: calc(100% - 144px);
+
+  margin: 14px auto 18px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   LOADING / EMPTY / ERROR
+   ========================================================= */
+
+.unit-history-state {
+  width: 100%;
+  height: 100%;
+
+  min-height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  text-align: center;
+
+  color: #444444;
+
+  background-color: rgba(255, 255, 255, 0.97);
+
+  border: 1px solid rgba(0, 0, 0, 0.10);
+
+  border-radius: 7px;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.08);
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+.unit-history-state-error {
+  color: #b42318;
+}
+
+
+/* =========================================================
+   TABLE CONTAINER
+   ========================================================= */
+
+.unit-history-table-container {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  background-color: #ffffff;
+
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  border-radius: 6px;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.09);
+}
+
+
+/* =========================================================
+   TABLE SCROLL AREA
+   ONLY THIS AREA SCROLLS
+   ========================================================= */
+
+.unit-history-table-scroll {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: auto;
+
+  overscroll-behavior: contain;
+
+  scrollbar-gutter: stable;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.unit-history-table {
+  width: max-content;
+
+  min-width: 100%;
+
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+
+  border-spacing: 0;
+  border-collapse: separate;
+
+  table-layout: fixed;
+
+  background-color: #ffffff;
+
+  color: #111111;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   TABLE CELLS
+   ========================================================= */
+
+.unit-history-table th,
+.unit-history-table td {
+  margin: 0;
+
+  padding: 11px 13px;
+
+  vertical-align: middle;
+
+  text-align: left;
+
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+.unit-history-table thead th {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 10;
+
+  height: 46px;
+
+  background-color: #111111;
+
+  color: #ffffff;
+
+  font-size: 11px;
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  text-transform: uppercase;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+
+.unit-history-table tbody td {
+  min-height: 66px;
+
+  background-color: #ffffff;
+
+  line-height: 1.35;
+}
+
+
+.unit-history-table tbody tr {
+  cursor: pointer;
+}
+
+
+.unit-history-table tbody tr:hover td {
+  background-color: #fff8e8;
+}
+
+
+/* =========================================================
+   COLUMN WIDTH
+   DEFAULT VIEW
+   ========================================================= */
+
+/* Unit Code */
+
+.unit-history-table th:nth-child(2),
+.unit-history-table td:nth-child(2) {
+  width: 120px;
+  min-width: 120px;
+}
+
+
+/* HM Inspection */
+
+.unit-history-table th:nth-child(3),
+.unit-history-table td:nth-child(3) {
+  width: 130px;
+  min-width: 130px;
+}
+
+
+/* Group Component */
+
+.unit-history-table th:nth-child(4),
+.unit-history-table td:nth-child(4) {
+  width: 180px;
+  min-width: 180px;
+}
+
+
+/* Problem Description */
+
+.unit-history-table th:nth-child(5),
+.unit-history-table td:nth-child(5) {
+  width: 300px;
+  min-width: 300px;
+}
+
+
+/* Photo */
+
+.unit-history-table th:nth-child(6),
+.unit-history-table td:nth-child(6) {
+  width: 105px;
+  min-width: 105px;
+
+  text-align: center;
+}
+
+
+/* Rating */
+
+.unit-history-table th:nth-child(7),
+.unit-history-table td:nth-child(7) {
+  width: 100px;
+  min-width: 100px;
+}
+
+
+/* Status */
+
+.unit-history-table th:nth-child(8),
+.unit-history-table td:nth-child(8) {
+  width: 100px;
+  min-width: 100px;
+}
+
+
+/* Parts Description */
+
+.unit-history-table th:nth-child(9),
+.unit-history-table td:nth-child(9) {
+  width: 230px;
+  min-width: 230px;
+}
+
+
+/* MOL */
+
+.unit-history-table th:nth-child(10),
+.unit-history-table td:nth-child(10) {
+  width: 105px;
+  min-width: 105px;
+}
+
+
+/* Parts Status */
+
+.unit-history-table th:nth-child(11),
+.unit-history-table td:nth-child(11) {
+  width: 145px;
+  min-width: 145px;
+}
+
+
+/* =========================================================
+   DELETE COLUMN
+   ========================================================= */
+
+.unit-history-delete-column {
+  width: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  text-align: center !important;
+}
+
+
+/* checkbox header */
+
+#unitHistorySelectAll {
+  width: 17px;
+  height: 17px;
+
+  margin: 0;
+
+  cursor: pointer;
+
+  accent-color: #f4a000;
+}
+
+
+/* checkbox row */
+
+.unit-history-row-checkbox {
+  width: 17px;
+  height: 17px;
+
+  margin: 0;
+
+  cursor: pointer;
+
+  accent-color: #f4a000;
+}
+
+
+/* =========================================================
+   DELETE MODE
+   ========================================================= */
+
+.unit-history-page.is-delete-mode
+.unit-history-table tbody tr {
+  cursor: default;
+}
+
+
+/* =========================================================
+   PHOTO
+   ========================================================= */
+
+.unit-history-row-photo {
+  display: block;
+
+  width: 70px;
+  height: 52px;
+
+  margin: 0 auto;
+
+  object-fit: cover;
+
+  background-color: #eeeeee;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 6px;
+}
+
+
+.unit-history-row-no-photo {
+  color: #999999;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   EMPTY TABLE VALUE
+   ========================================================= */
+
+.unit-history-empty-value {
+  color: #999999;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.unit-history-badge {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 62px;
+  min-height: 25px;
+
+  padding: 4px 9px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  line-height: 1;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+/* OPEN */
+
+.unit-history-badge-open {
+  color: #b76b00;
+
+  background-color: #fff0d1;
+}
+
+
+/* CLOSE */
+
+.unit-history-badge-close {
+  color: #16783d;
+
+  background-color: #e5f7eb;
+}
+
+
+/* MOL BELUM */
+
+.unit-history-badge-belum {
+  color: #b76b00;
+
+  background-color: #fff0d1;
+}
+
+
+/* MOL SUBMITTED */
+
+.unit-history-badge-submitted {
+  color: #16783d;
+
+  background-color: #e5f7eb;
+}
+
+
+/* =========================================================
+   DETAIL VIEW
+   ========================================================= */
+
+.unit-history-detail-view {
+  position: relative;
+
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  width: calc(100% - 144px);
+
+  margin: 14px auto 18px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background-color: rgba(255, 255, 255, 0.98);
+
+  border: 1px solid rgba(0, 0, 0, 0.10);
+
+  border-radius: 7px;
+
+  box-shadow:
+    0 5px 18px rgba(0, 0, 0, 0.09);
+}
+
+
+/* =========================================================
+   DETAIL HEADER
+   ========================================================= */
+
+.unit-history-detail-header {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 8;
+
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 10px 20px;
+
+  background-color: #ffffff;
+
+  border-bottom: 2px solid #f4a000;
+}
+
+
+.unit-history-detail-label {
+  margin-bottom: 3px;
+
+  color: #777777;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+
+.unit-history-detail-header h2 {
+  margin: 0;
+
+  color: #111111;
+
+  font-size: 24px;
+  line-height: 1.1;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.unit-history-back-button {
+  flex: 0 0 auto;
+
+  width: 42px;
+  height: 42px;
+
+  margin: 0;
+  padding: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background-color: #f4a000;
+
+  color: #ffffff;
+
+  cursor: pointer;
+}
+
+
+.unit-history-back-button:hover {
+  background-color: #db9000;
+}
+
+
+.unit-history-back-button svg {
+  display: block;
+
+  width: 24px;
+  height: 24px;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 2.5;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   DETAIL CONTENT
+   ========================================================= */
+
+.unit-history-detail-content {
+  width: 100%;
+
+  padding: 18px;
+}
+
+
+/* =========================================================
+   DETAIL SECTION
+   ========================================================= */
+
+.unit-history-detail-section {
+  width: 100%;
+
+  margin-bottom: 18px;
+
+  padding: 18px;
+
+  background-color: #ffffff;
+
+  border: 1px solid #e3e3e3;
+
+  border-radius: 7px;
+}
+
+
+.unit-history-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+
+.unit-history-detail-section h3 {
+  margin: 0 0 16px;
+
+  padding-bottom: 9px;
+
+  color: #111111;
+
+  border-bottom: 2px solid #f4a000;
+
+  font-size: 18px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   DETAIL GRID
+   ========================================================= */
+
+.unit-history-detail-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   DETAIL FIELD
+   ========================================================= */
+
+.unit-history-detail-field {
+  min-width: 0;
+
+  padding: 11px 13px;
+
+  background-color: #fafafa;
+
+  border: 1px solid #eeeeee;
+
+  border-radius: 6px;
+}
+
+
+.unit-history-detail-field span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #777777;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+.unit-history-detail-field strong {
+  display: block;
+
+  color: #111111;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  font-weight: 700;
+
+  overflow-wrap: anywhere;
+}
+
+
+.unit-history-detail-wide {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   DETAIL PHOTO
+   ========================================================= */
+
+.unit-history-detail-photo-area {
+  margin-top: 14px;
+}
+
+
+.unit-history-detail-photo-area > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #777777;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+.unit-history-detail-photo-container {
+  width: 100%;
+
+  min-height: 160px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  overflow: hidden;
+
+  background-color: #f4f4f4;
+
+  border: 1px solid #e2e2e2;
+
+  border-radius: 7px;
+}
+
+
+.unit-history-detail-photo {
+  display: block;
+
+  width: auto;
+  max-width: 100%;
+
+  max-height: 420px;
+
+  object-fit: contain;
+
+  border-radius: 6px;
+}
+
+
+/* =========================================================
+   FLOATING START INSPECTION SHORTCUT
+   ========================================================= */
+
+.unit-history-inspection-shortcut {
+  position: fixed;
+
+  right: 26px;
+  bottom: 26px;
+
+  z-index: 80;
+
+  width: 58px;
+  height: 58px;
+
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background-color: #f4a000;
+
+  box-shadow:
+    0 7px 18px rgba(0, 0, 0, 0.24);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.unit-history-inspection-shortcut:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 22px rgba(0, 0, 0, 0.28);
+}
+
+
+/* PLUS HORIZONTAL */
+
+.unit-history-inspection-shortcut::before {
+  content: "";
+
+  position: absolute;
+
+  width: 24px;
+  height: 4px;
+
+  border-radius: 999px;
+
+  background-color: #ffffff;
+}
+
+
+/* PLUS VERTICAL */
+
+.unit-history-inspection-shortcut::after {
+  content: "";
+
+  position: absolute;
+
+  width: 4px;
+  height: 24px;
+
+  border-radius: 999px;
+
+  background-color: #ffffff;
+}
+
+
+/* placeholder span */
+
+.unit-history-inspection-shortcut span {
+  display: none;
+}
+
+
+/* =========================================================
+   DELETE MODAL
+   ========================================================= */
+
+.unit-history-modal {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 300;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+
+/* =========================================================
+   MODAL BACKDROP
+   ========================================================= */
+
+.unit-history-modal-backdrop {
+  position: absolute;
+
+  inset: 0;
+
+  background-color: rgba(0, 0, 0, 0.58);
+}
+
+
+/* =========================================================
+   MODAL CARD
+   ========================================================= */
+
+.unit-history-modal-card {
+  position: relative;
+
+  z-index: 2;
+
+  width: min(420px, 100%);
+
+  padding: 24px;
+
+  background-color: #ffffff;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+
+.unit-history-modal-card h2 {
+  margin: 0 0 12px;
+
+  color: #111111;
+
+  font-size: 21px;
+
+  font-weight: 800;
+}
+
+
+.unit-history-modal-card p {
+  margin: 0;
+
+  color: #444444;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   MODAL ACTIONS
+   ========================================================= */
+
+.unit-history-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+
+.unit-history-modal-no,
+.unit-history-modal-yes {
+  min-width: 86px;
+
+  min-height: 40px;
+
+  padding: 8px 16px;
+
+  border: 0;
+
+  border-radius: 7px;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.unit-history-modal-no {
+  color: #333333;
+
+  background-color: #eeeeee;
+}
+
+
+.unit-history-modal-no:hover {
+  background-color: #dddddd;
+}
+
+
+.unit-history-modal-yes {
+  color: #ffffff;
+
+  background-color: #d92d20;
+}
+
+
+.unit-history-modal-yes:hover {
+  background-color: #b42318;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.unit-history-table-scroll::-webkit-scrollbar,
+.unit-history-detail-view::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+
+.unit-history-table-scroll::-webkit-scrollbar-track,
+.unit-history-detail-view::-webkit-scrollbar-track {
+  background-color: #eeeeee;
+}
+
+
+.unit-history-table-scroll::-webkit-scrollbar-thumb,
+.unit-history-detail-view::-webkit-scrollbar-thumb {
+  background-color: #aaaaaa;
+
+  border: 3px solid #eeeeee;
+
+  border-radius: 999px;
+}
+
+
+.unit-history-table-scroll::-webkit-scrollbar-thumb:hover,
+.unit-history-detail-view::-webkit-scrollbar-thumb:hover {
+  background-color: #888888;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .unit-history-page-bar {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+
+  .unit-history-page-divider {
+    width: calc(100% - 60px);
+  }
+
+
+  .unit-history-table-view,
+  .unit-history-detail-view {
+    width: calc(100% - 60px);
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   Global Header mobile = 72px
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .unit-history-page {
+    top: 72px;
+  }
+
+
+  /* PAGE BAR */
+
+  .unit-history-page-bar {
+    flex-basis: 86px;
+
+    padding:
+      5px
+      10px
+      4px
+      8px;
+
+    gap: 6px;
+  }
+
+
+  /* TITLE */
+
+  .unit-history-title {
+    gap: 4px;
+  }
+
+
+  .unit-history-title-icon {
+    width: 68px;
+    height: 66px;
+  }
+
+
+  .unit-history-title h1 {
+    font-size: 25px;
+
+    letter-spacing: -0.5px;
+  }
+
+
+  /* ACTIONS */
+
+  .unit-history-actions {
+    gap: 2px;
+  }
+
+
+  .unit-history-action-button {
+    width: 34px;
+    height: 34px;
+
+    padding: 5px;
+
+    border-radius: 6px;
+  }
+
+
+  .unit-history-action-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+
+  /* DIVIDER */
+
+  .unit-history-page-divider {
+    flex-basis: 2px;
+
+    width: calc(100% - 20px);
+  }
+
+
+  /* TABLE VIEW */
+
+  .unit-history-table-view {
+    width: calc(100% - 12px);
+
+    margin:
+      8px
+      auto
+      10px;
+  }
+
+
+  /* DETAIL VIEW */
+
+  .unit-history-detail-view {
+    width: calc(100% - 12px);
+
+    margin:
+      8px
+      auto
+      10px;
+  }
+
+
+  /* TABLE */
+
+  .unit-history-table {
+    font-size: 12px;
+  }
+
+
+  .unit-history-table th,
+  .unit-history-table td {
+    padding:
+      9px
+      10px;
+  }
+
+
+  /* DETAIL */
+
+  .unit-history-detail-header {
+    min-height: 62px;
+
+    padding:
+      8px
+      10px;
+
+    gap: 9px;
+  }
+
+
+  .unit-history-detail-header h2 {
+    font-size: 20px;
+  }
+
+
+  .unit-history-back-button {
+    width: 36px;
+    height: 36px;
+
+    padding: 7px;
+  }
+
+
+  .unit-history-detail-content {
+    padding: 10px;
+  }
+
+
+  .unit-history-detail-section {
+    margin-bottom: 10px;
+
+    padding: 12px;
+  }
+
+
+  .unit-history-detail-section h3 {
+    font-size: 16px;
+  }
+
+
+  .unit-history-detail-grid {
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+  }
+
+
+  .unit-history-detail-wide {
+    grid-column: auto;
+  }
+
+
+  /* FLOATING BUTTON */
+
+  .unit-history-inspection-shortcut {
+    right: 16px;
+    bottom: 18px;
+
+    width: 54px;
+    height: 54px;
+  }
+
+
+  /* MODAL */
+
+  .unit-history-modal {
+    padding: 14px;
+  }
+
+
+  .unit-history-modal-card {
+    padding: 20px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .unit-history-title-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+
+  .unit-history-title h1 {
+    font-size: 22px;
+  }
+
+
+  .unit-history-action-button {
+    width: 31px;
+    height: 31px;
+
+    padding: 4px;
+  }
+
+
+  .unit-history-action-button svg {
+    width: 22px;
+    height: 22px;
+  }
+
+
+  .unit-history-actions {
+    gap: 0;
+  }
+
+}
