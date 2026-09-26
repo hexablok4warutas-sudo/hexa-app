@@ -63,23 +63,8 @@ console.log(
 
 
 // ========================================
-// ELEMENT
+// ELEMENT KHUSUS DAILY MAINTENANCE
 // ========================================
-
-const headerLogoButton =
-  document.getElementById(
-    "headerLogoButton"
-  );
-
-const hexaNavMenu =
-  document.getElementById(
-    "hexaNavMenu"
-  );
-
-const refreshButton =
-  document.getElementById(
-    "refreshButton"
-  );
 
 const searchInput =
   document.getElementById(
@@ -96,256 +81,10 @@ const dailyMenuItems =
     ".daily-menu-item"
   );
 
-const navMenuItems =
-  document.querySelectorAll(
-    ".nav-menu-item[data-page]"
-  );
-
 const inspectionShortcut =
   document.getElementById(
     "inspectionShortcut"
   );
-
-
-// ========================================
-// LOGOUT BUTTON
-// ========================================
-
-const logoutButton =
-  document.getElementById(
-    "logoutButton"
-  );
-
-
-// ========================================
-// LOGO HEXA
-// OPEN / CLOSE NAVIGATION
-// ========================================
-
-if (
-  headerLogoButton &&
-  hexaNavMenu
-) {
-
-  headerLogoButton.addEventListener(
-    "click",
-    function (event) {
-
-      event.stopPropagation();
-
-      const isOpen =
-        hexaNavMenu.classList.toggle(
-          "open"
-        );
-
-      headerLogoButton.setAttribute(
-        "aria-expanded",
-        isOpen ? "true" : "false"
-      );
-
-    }
-  );
-
-}
-
-
-// ========================================
-// CLOSE NAVIGATION
-// KETIKA KLIK DI LUAR MENU
-// ========================================
-
-document.addEventListener(
-  "click",
-  function (event) {
-
-    if (
-      !hexaNavMenu ||
-      !headerLogoButton
-    ) {
-      return;
-    }
-
-    const clickedInsideMenu =
-      hexaNavMenu.contains(
-        event.target
-      );
-
-    const clickedLogo =
-      headerLogoButton.contains(
-        event.target
-      );
-
-    if (
-      !clickedInsideMenu &&
-      !clickedLogo
-    ) {
-
-      closeHexaNavigation();
-
-    }
-
-  }
-);
-
-
-// ========================================
-// CLOSE NAVIGATION DENGAN ESC
-// ========================================
-
-document.addEventListener(
-  "keydown",
-  function (event) {
-
-    if (event.key === "Escape") {
-
-      closeHexaNavigation();
-
-    }
-
-  }
-);
-
-
-// ========================================
-// FUNCTION CLOSE NAVIGATION
-// ========================================
-
-function closeHexaNavigation() {
-
-  if (!hexaNavMenu) {
-    return;
-  }
-
-  hexaNavMenu.classList.remove(
-    "open"
-  );
-
-  if (headerLogoButton) {
-
-    headerLogoButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-  }
-
-}
-
-
-// ========================================
-// NAVIGATION ANTAR MODUL HEXA
-// ========================================
-
-navMenuItems.forEach(
-  function (item) {
-
-    item.addEventListener(
-      "click",
-      function () {
-
-        const page =
-          item.dataset.page;
-
-        closeHexaNavigation();
-
-
-        // MAIN PAGE
-
-        if (page === "main") {
-
-          window.location.href =
-            "/main";
-
-          return;
-
-        }
-
-
-        // DAILY MAINTENANCE
-
-        if (
-          page ===
-          "daily-maintenance"
-        ) {
-
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
-
-          return;
-
-        }
-
-
-        // MODUL LAIN BELUM DIBUAT
-
-        console.log(
-          "HEXA Menu:",
-          page
-        );
-
-      }
-    );
-
-  }
-);
-
-
-// ========================================
-// LOGOUT
-// ========================================
-
-if (logoutButton) {
-
-  logoutButton.addEventListener(
-    "click",
-    function () {
-
-      // Tutup dropdown terlebih dahulu
-
-      closeHexaNavigation();
-
-
-      // Hapus session login
-
-      sessionStorage.removeItem(
-        "hexaLoggedIn"
-      );
-
-      sessionStorage.removeItem(
-        "hexaUser"
-      );
-
-
-      // Kembali ke halaman login
-
-      window.location.replace(
-        "index.html"
-      );
-
-    }
-  );
-
-}
-
-
-// ========================================
-// REFRESH BUTTON
-// ========================================
-
-if (refreshButton) {
-
-  refreshButton.addEventListener(
-    "click",
-    function () {
-
-      window.location.reload();
-
-    }
-  );
-
-}
 
 
 // ========================================
@@ -363,6 +102,7 @@ function searchDailyMenu() {
       .trim()
       .toLowerCase();
 
+
   dailyMenuItems.forEach(
     function (item) {
 
@@ -370,6 +110,7 @@ function searchDailyMenu() {
         item.textContent
           .trim()
           .toLowerCase();
+
 
       if (
         !keyword ||
@@ -404,6 +145,7 @@ if (searchInput) {
     "input",
     searchDailyMenu
   );
+
 
   searchInput.addEventListener(
     "keydown",
@@ -452,7 +194,9 @@ dailyMenuItems.forEach(
           item.dataset.menu;
 
 
+        // =================================
         // START INSPECTION
+        // =================================
 
         if (
           menu ===
@@ -466,7 +210,9 @@ dailyMenuItems.forEach(
         }
 
 
+        // =================================
         // DAILY OUTSTANDING
+        // =================================
 
         if (
           menu ===
@@ -482,7 +228,9 @@ dailyMenuItems.forEach(
         }
 
 
+        // =================================
         // UNIT HISTORY
+        // =================================
 
         if (
           menu ===
@@ -546,14 +294,17 @@ function loadFloatingPosition() {
     return;
   }
 
+
   const savedPosition =
     localStorage.getItem(
       FLOATING_POSITION_KEY
     );
 
+
   if (!savedPosition) {
     return;
   }
+
 
   try {
 
@@ -561,6 +312,7 @@ function loadFloatingPosition() {
       JSON.parse(
         savedPosition
       );
+
 
     if (
       typeof position.left !==
@@ -573,11 +325,13 @@ function loadFloatingPosition() {
 
     }
 
+
     const buttonWidth =
       inspectionShortcut.offsetWidth;
 
     const buttonHeight =
       inspectionShortcut.offsetHeight;
+
 
     const maxLeft =
       Math.max(
@@ -586,12 +340,14 @@ function loadFloatingPosition() {
         buttonWidth
       );
 
+
     const maxTop =
       Math.max(
         0,
         window.innerHeight -
         buttonHeight
       );
+
 
     const left =
       Math.min(
@@ -602,6 +358,7 @@ function loadFloatingPosition() {
         maxLeft
       );
 
+
     const top =
       Math.min(
         Math.max(
@@ -610,6 +367,7 @@ function loadFloatingPosition() {
         ),
         maxTop
       );
+
 
     inspectionShortcut.style.left =
       left + "px";
@@ -622,6 +380,7 @@ function loadFloatingPosition() {
 
     inspectionShortcut.style.bottom =
       "auto";
+
 
   } catch (error) {
 
@@ -645,9 +404,11 @@ function saveFloatingPosition() {
     return;
   }
 
+
   const rect =
     inspectionShortcut
       .getBoundingClientRect();
+
 
   localStorage.setItem(
     FLOATING_POSITION_KEY,
@@ -668,7 +429,10 @@ function saveFloatingPosition() {
 
 if (inspectionShortcut) {
 
+
+  // ======================================
   // POINTER DOWN
+  // ======================================
 
   inspectionShortcut.addEventListener(
     "pointerdown",
@@ -677,17 +441,21 @@ if (inspectionShortcut) {
       isDragging = true;
       hasDragged = false;
 
+
       const rect =
         inspectionShortcut
           .getBoundingClientRect();
+
 
       dragOffsetX =
         event.clientX -
         rect.left;
 
+
       dragOffsetY =
         event.clientY -
         rect.top;
+
 
       try {
 
@@ -708,7 +476,9 @@ if (inspectionShortcut) {
   );
 
 
+  // ======================================
   // POINTER MOVE
+  // ======================================
 
   inspectionShortcut.addEventListener(
     "pointermove",
@@ -718,9 +488,11 @@ if (inspectionShortcut) {
         return;
       }
 
+
       const rect =
         inspectionShortcut
           .getBoundingClientRect();
+
 
       const movementX =
         Math.abs(
@@ -731,6 +503,7 @@ if (inspectionShortcut) {
           )
         );
 
+
       const movementY =
         Math.abs(
           event.clientY -
@@ -739,6 +512,7 @@ if (inspectionShortcut) {
             dragOffsetY
           )
         );
+
 
       if (
         movementX > 2 ||
@@ -749,19 +523,24 @@ if (inspectionShortcut) {
 
       }
 
+
       const buttonWidth =
         inspectionShortcut.offsetWidth;
 
+
       const buttonHeight =
         inspectionShortcut.offsetHeight;
+
 
       let left =
         event.clientX -
         dragOffsetX;
 
+
       let top =
         event.clientY -
         dragOffsetY;
+
 
       const maxLeft =
         Math.max(
@@ -770,12 +549,14 @@ if (inspectionShortcut) {
           buttonWidth
         );
 
+
       const maxTop =
         Math.max(
           0,
           window.innerHeight -
           buttonHeight
         );
+
 
       left =
         Math.min(
@@ -786,6 +567,7 @@ if (inspectionShortcut) {
           maxLeft
         );
 
+
       top =
         Math.min(
           Math.max(
@@ -795,14 +577,18 @@ if (inspectionShortcut) {
           maxTop
         );
 
+
       inspectionShortcut.style.left =
         left + "px";
+
 
       inspectionShortcut.style.top =
         top + "px";
 
+
       inspectionShortcut.style.right =
         "auto";
+
 
       inspectionShortcut.style.bottom =
         "auto";
@@ -811,7 +597,9 @@ if (inspectionShortcut) {
   );
 
 
+  // ======================================
   // POINTER UP
+  // ======================================
 
   inspectionShortcut.addEventListener(
     "pointerup",
@@ -821,7 +609,9 @@ if (inspectionShortcut) {
         return;
       }
 
+
       isDragging = false;
+
 
       try {
 
@@ -838,6 +628,7 @@ if (inspectionShortcut) {
 
       }
 
+
       if (hasDragged) {
 
         saveFloatingPosition();
@@ -848,7 +639,9 @@ if (inspectionShortcut) {
   );
 
 
+  // ======================================
   // POINTER CANCEL
+  // ======================================
 
   inspectionShortcut.addEventListener(
     "pointercancel",
@@ -860,7 +653,9 @@ if (inspectionShortcut) {
   );
 
 
+  // ======================================
   // CLICK
+  // ======================================
 
   inspectionShortcut.addEventListener(
     "click",
@@ -873,6 +668,7 @@ if (inspectionShortcut) {
         return;
 
       }
+
 
       openStartInspection();
 
@@ -895,15 +691,19 @@ window.addEventListener(
       return;
     }
 
+
     const rect =
       inspectionShortcut
         .getBoundingClientRect();
 
+
     const buttonWidth =
       inspectionShortcut.offsetWidth;
 
+
     const buttonHeight =
       inspectionShortcut.offsetHeight;
+
 
     const maxLeft =
       Math.max(
@@ -912,12 +712,14 @@ window.addEventListener(
         buttonWidth
       );
 
+
     const maxTop =
       Math.max(
         0,
         window.innerHeight -
         buttonHeight
       );
+
 
     const left =
       Math.min(
@@ -928,6 +730,7 @@ window.addEventListener(
         maxLeft
       );
 
+
     const top =
       Math.min(
         Math.max(
@@ -937,17 +740,22 @@ window.addEventListener(
         maxTop
       );
 
+
     inspectionShortcut.style.left =
       left + "px";
+
 
     inspectionShortcut.style.top =
       top + "px";
 
+
     inspectionShortcut.style.right =
       "auto";
 
+
     inspectionShortcut.style.bottom =
       "auto";
+
 
     saveFloatingPosition();
 
@@ -960,6 +768,7 @@ window.addEventListener(
 // ========================================
 
 loadFloatingPosition();
+
 
 console.log(
   "HEXA Daily Maintenance Ready"
