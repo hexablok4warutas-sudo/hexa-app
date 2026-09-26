@@ -13,9 +13,9 @@
   <title>Unit History | HEXA</title>
 
 
-  <!-- ==========================================
-       GLOBAL HEXA HEADER
-       ========================================== -->
+  <!-- ==================================================
+       GLOBAL HEADER
+       ================================================== -->
 
   <link
     rel="stylesheet"
@@ -23,9 +23,9 @@
   >
 
 
-  <!-- ==========================================
+  <!-- ==================================================
        UNIT HISTORY
-       ========================================== -->
+       ================================================== -->
 
   <link
     rel="stylesheet"
@@ -38,9 +38,10 @@
 <body>
 
 
-  <!-- ==========================================
-       GLOBAL HEXA HEADER
-       ========================================== -->
+  <!-- ==================================================
+       GLOBAL HEADER
+       STRUKTUR SAMA DENGAN DAILY OUTSTANDING
+       ================================================== -->
 
   <header
     id="hexaHeader"
@@ -51,241 +52,311 @@
 
 
 
-  <!-- ==========================================
+  <!-- ==================================================
        UNIT HISTORY PAGE
-       ========================================== -->
+       ================================================== -->
 
-  <main
-    id="unitHistoryPage"
-    class="unit-history-page"
-  >
+  <main class="unit-history-page">
 
 
-    <!-- ========================================
-         FIXED PAGE BAR
-         ======================================== -->
-
-    <section
-      id="unitHistoryPageBar"
-      class="unit-history-page-bar"
-    >
+    <section class="unit-history-container">
 
 
-      <!-- TITLE -->
+      <!-- ==============================================
+           FIXED / STICKY PAGE TITLE
+           ============================================== -->
 
-      <div class="unit-history-title">
-
-
-        <img
-          src="hexa-icon-svg-unithistory.svg"
-          alt="Unit History"
-          class="unit-history-title-icon"
-        >
+      <div class="unit-history-title-bar">
 
 
-        <h1>
-          Unit History
-        </h1>
+        <!-- TITLE -->
 
+        <div class="unit-history-title">
 
-      </div>
-
-
-
-      <!-- ACTION BUTTONS -->
-
-      <div class="unit-history-actions">
-
-
-        <!-- FILTER -->
-
-        <button
-          type="button"
-          id="unitHistoryFilterButton"
-          class="unit-history-action-button"
-          title="Filter"
-          aria-label="Filter"
-        >
-
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          <img
+            src="hexa-icon-svg-unithistory.svg"
+            alt="Unit History"
           >
 
-            <path
-              d="M4 5h16l-6.5 7.2V18l-3 1.5v-7.3L4 5z"
-            ></path>
+          <h1>
+            Unit History
+          </h1>
 
-          </svg>
-
-        </button>
+        </div>
 
 
 
-        <!-- PRINT -->
+        <!-- ============================================
+             PAGE ACTIONS
+             ============================================ -->
 
-        <button
-          type="button"
-          id="unitHistoryPrintButton"
-          class="unit-history-action-button"
-          title="Print / Export"
-          aria-label="Print / Export"
-        >
+        <div class="unit-history-actions">
 
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+
+          <!-- FILTER -->
+
+          <button
+            type="button"
+            id="unitHistoryFilterButton"
+            class="unit-history-action-button"
+            aria-label="Filter Unit History"
+            aria-expanded="false"
           >
 
-            <path
-              d="M7 8V4h10v4"
-            ></path>
+            <svg viewBox="0 0 24 24">
 
-            <path
-              d="M6 17H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
-            ></path>
+              <path
+                d="M4 5h16L14 12v5l-4 2v-7L4 5z"
+              ></path>
 
-            <path
-              d="M7 14h10v6H7z"
-            ></path>
+            </svg>
 
-          </svg>
-
-        </button>
+          </button>
 
 
 
-        <!-- DELETE -->
+          <!-- PRINT -->
 
-        <button
-          type="button"
-          id="unitHistoryDeleteButton"
-          class="unit-history-action-button unit-history-delete-button"
-          title="Delete"
-          aria-label="Delete"
-        >
-
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+          <button
+            type="button"
+            id="unitHistoryPrintButton"
+            class="unit-history-action-button"
+            aria-label="Print / Export Unit History"
           >
 
-            <path
-              d="M3 6h18"
-            ></path>
+            <svg viewBox="0 0 24 24">
 
-            <path
-              d="M8 6V4h8v2"
-            ></path>
+              <path
+                d="M7 8V4h10v4"
+              ></path>
 
-            <path
-              d="M6 6l1 14h10l1-14"
-            ></path>
+              <path
+                d="M6 17H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
+              ></path>
 
-            <path
-              d="M10 10v6"
-            ></path>
+              <path
+                d="M7 14h10v6H7z"
+              ></path>
 
-            <path
-              d="M14 10v6"
-            ></path>
+            </svg>
 
-          </svg>
+          </button>
 
-        </button>
+
+
+          <!-- DELETE -->
+
+          <button
+            type="button"
+            id="unitHistoryDeleteButton"
+            class="unit-history-action-button unit-history-delete-button"
+            aria-label="Delete Unit History"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M3 6h18"
+              ></path>
+
+              <path
+                d="M8 6V4h8v2"
+              ></path>
+
+              <path
+                d="M6 6l1 14h10l1-14"
+              ></path>
+
+              <path
+                d="M10 10v6"
+              ></path>
+
+              <path
+                d="M14 10v6"
+              ></path>
+
+            </svg>
+
+          </button>
+
+
+        </div>
 
 
       </div>
 
 
-    </section>
 
-
-
-    <!-- ========================================
-         PAGE DIVIDER
-         ======================================== -->
-
-    <div class="unit-history-page-divider"></div>
-
-
-
-    <!-- ========================================
-         TABLE VIEW
-         ======================================== -->
-
-    <section
-      id="unitHistoryTableView"
-      class="unit-history-table-view"
-    >
-
-
-      <!-- ======================================
-           LOADING
-           ====================================== -->
+      <!-- ==============================================
+           FILTER PANEL
+           Disiapkan sekarang.
+           Logic akan kita aktifkan setelah view stabil.
+           ============================================== -->
 
       <div
-        id="unitHistoryLoading"
-        class="unit-history-state"
-      >
-
-        Loading Unit History...
-
-      </div>
-
-
-
-      <!-- ======================================
-           EMPTY
-           ====================================== -->
-
-      <div
-        id="unitHistoryEmpty"
-        class="unit-history-state"
-        hidden
-      >
-
-        Belum ada data Unit History.
-
-      </div>
-
-
-
-      <!-- ======================================
-           ERROR
-           ====================================== -->
-
-      <div
-        id="unitHistoryError"
-        class="unit-history-state unit-history-state-error"
-        hidden
-      >
-
-        Data Unit History gagal dimuat.
-
-      </div>
-
-
-
-      <!-- ======================================
-           TABLE CONTAINER
-           ====================================== -->
-
-      <div
-        id="unitHistoryTableContainer"
-        class="unit-history-table-container"
+        id="unitHistoryFilterPanel"
+        class="unit-history-filter-panel"
         hidden
       >
 
 
-        <!-- ====================================
-             SCROLL AREA
-             HANYA BAGIAN INI YANG SCROLL
-             ==================================== -->
+        <div class="unit-history-filter-header">
+
+
+          <h2>
+            Filter Unit History
+          </h2>
+
+
+          <button
+            type="button"
+            id="unitHistoryCloseFilterButton"
+            class="unit-history-filter-close"
+            aria-label="Close Filter"
+          >
+            ×
+          </button>
+
+
+        </div>
+
+
 
         <div
-          id="unitHistoryTableScroll"
-          class="unit-history-table-scroll"
+          id="unitHistoryFilterConditions"
+          class="unit-history-filter-conditions"
+        >
+
+          <!-- FILTER CONDITIONS DIBUAT OLEH JS -->
+
+        </div>
+
+
+
+        <div class="unit-history-filter-actions">
+
+
+          <button
+            type="button"
+            id="unitHistoryAddFilterButton"
+            class="unit-history-add-filter-button"
+          >
+            + Add Filter
+          </button>
+
+
+          <div class="unit-history-filter-action-right">
+
+
+            <button
+              type="button"
+              id="unitHistoryResetFilterButton"
+              class="unit-history-reset-filter-button"
+            >
+              Reset
+            </button>
+
+
+            <button
+              type="button"
+              id="unitHistoryApplyFilterButton"
+              class="unit-history-apply-filter-button"
+            >
+              Apply Filter
+            </button>
+
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ==============================================
+           ACTIVE FILTERS
+           ============================================== -->
+
+      <div
+        id="unitHistoryActiveFilters"
+        class="unit-history-active-filters"
+        hidden
+      >
+
+        <!-- FILTER CHIPS DIBUAT OLEH JS -->
+
+      </div>
+
+
+
+      <!-- ==============================================
+           UNIT HISTORY TABLE SECTION
+           ============================================== -->
+
+      <section class="unit-history-list-section">
+
+
+        <!-- ============================================
+             LOADING
+             ============================================ -->
+
+        <div
+          id="unitHistoryLoading"
+          class="unit-history-state"
+        >
+
+          Loading Unit History...
+
+        </div>
+
+
+
+        <!-- ============================================
+             EMPTY
+             ============================================ -->
+
+        <div
+          id="unitHistoryEmpty"
+          class="unit-history-state"
+          hidden
+        >
+
+          Belum ada data Unit History.
+
+        </div>
+
+
+
+        <!-- ============================================
+             ERROR
+             ============================================ -->
+
+        <div
+          id="unitHistoryError"
+          class="unit-history-state error"
+          hidden
+        >
+
+          Data Unit History gagal dimuat.
+
+        </div>
+
+
+
+        <!-- ============================================
+             TABLE SCROLL CONTAINER
+
+             Scroll vertikal dan horizontal berada
+             di container ini.
+             ============================================ -->
+
+        <div
+          id="unitHistoryScrollContainer"
+          class="unit-history-scroll-container"
+          hidden
         >
 
 
@@ -295,14 +366,18 @@
           >
 
 
+            <!-- ========================================
+                 TABLE HEADER
+                 ======================================== -->
+
             <thead>
 
 
               <tr>
 
 
-                <!-- DELETE CHECKBOX
-                     DEFAULT DISEMBUNYIKAN -->
+                <!-- DELETE CHECKBOX COLUMN
+                     Default hidden -->
 
                 <th
                   id="unitHistoryDeleteHeader"
@@ -377,6 +452,10 @@
 
 
 
+            <!-- ========================================
+                 TABLE BODY
+                 ======================================== -->
+
             <tbody
               id="unitHistoryTableBody"
             >
@@ -392,529 +471,739 @@
         </div>
 
 
-      </div>
 
+        <!-- ============================================
+             SCROLL NAVIGATION
+             Sama konsep dengan Daily Outstanding.
+             ============================================ -->
 
-    </section>
-
-
-
-    <!-- ========================================
-         DETAIL VIEW
-         DEFAULT DISEMBUNYIKAN
-         ======================================== -->
-
-    <section
-      id="unitHistoryDetailView"
-      class="unit-history-detail-view"
-      hidden
-    >
-
-
-      <!-- DETAIL HEADER -->
-
-      <div class="unit-history-detail-header">
-
-
-        <button
-          type="button"
-          id="unitHistoryDetailBackButton"
-          class="unit-history-back-button"
-          aria-label="Kembali ke Unit History"
+        <div
+          id="unitHistoryScrollNavigation"
+          class="unit-history-scroll-navigation"
+          hidden
         >
 
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+
+          <button
+            type="button"
+            id="unitHistoryScrollUpButton"
+            class="unit-history-scroll-nav-button"
+            aria-label="Scroll Up"
           >
-
-            <path
-              d="M15 18l-6-6 6-6"
-            ></path>
-
-          </svg>
-
-        </button>
+            ▲
+          </button>
 
 
-        <div>
+          <button
+            type="button"
+            id="unitHistoryScrollDownButton"
+            class="unit-history-scroll-nav-button"
+            aria-label="Scroll Down"
+          >
+            ▼
+          </button>
 
-          <div class="unit-history-detail-label">
-            Unit History Detail
-          </div>
-
-          <h2 id="unitHistoryDetailUnitCode">
-            -
-          </h2>
 
         </div>
 
 
-      </div>
-
-
-
-      <!-- ======================================
-           DETAIL CONTENT
-           ====================================== -->
-
-      <div
-        id="unitHistoryDetailContent"
-        class="unit-history-detail-content"
-      >
-
-
-        <!-- ====================================
-             INSPECTION
-             ==================================== -->
-
-        <section class="unit-history-detail-section">
-
-
-          <h3>
-            Inspection
-          </h3>
-
-
-          <div class="unit-history-detail-grid">
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Unit Code
-              </span>
-
-              <strong id="detailUnitCode">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                HM Inspection
-              </span>
-
-              <strong id="detailHmInspection">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Date Inspection
-              </span>
-
-              <strong id="detailDateInspection">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Inspectors
-              </span>
-
-              <strong id="detailInspectors">
-                -
-              </strong>
-
-            </div>
-
-
-          </div>
-
-
-
-          <!-- INSPECTION PHOTO -->
-
-          <div class="unit-history-detail-photo-area">
-
-
-            <span>
-              Inspection Photo
-            </span>
-
-
-            <div
-              id="detailPhotoContainer"
-              class="unit-history-detail-photo-container"
-            >
-
-              <!-- PHOTO DIBUAT OLEH JS -->
-
-            </div>
-
-
-          </div>
-
-
-        </section>
-
-
-
-        <!-- ====================================
-             FINDING
-             ==================================== -->
-
-        <section class="unit-history-detail-section">
-
-
-          <h3>
-            Finding
-          </h3>
-
-
-          <div class="unit-history-detail-grid">
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Group Component
-              </span>
-
-              <strong id="detailGroupComponent">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Rating
-              </span>
-
-              <strong id="detailRating">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field unit-history-detail-wide">
-
-              <span>
-                Problem Description
-              </span>
-
-              <strong id="detailProblemDescription">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Parts Description
-              </span>
-
-              <strong id="detailPartsDescription">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Part No
-              </span>
-
-              <strong id="detailPartNo">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Quantity
-              </span>
-
-              <strong id="detailQuantity">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field unit-history-detail-wide">
-
-              <span>
-                Notes
-              </span>
-
-              <strong id="detailNotes">
-                -
-              </strong>
-
-            </div>
-
-
-          </div>
-
-
-        </section>
-
-
-
-        <!-- ====================================
-             FOLLOW UP
-             ==================================== -->
-
-        <section class="unit-history-detail-section">
-
-
-          <h3>
-            Follow Up
-          </h3>
-
-
-          <div class="unit-history-detail-grid">
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                MOL
-              </span>
-
-              <strong id="detailMol">
-                -
-              </strong>
-
-            </div>
-
-
-            <!-- EVIDENCE HANYA STATUS -->
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Evidence
-              </span>
-
-              <strong id="detailEvidenceStatus">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Parts Status
-              </span>
-
-              <strong id="detailPartsStatus">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Status
-              </span>
-
-              <strong id="detailStatus">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field unit-history-detail-wide">
-
-              <span>
-                Action Problems
-              </span>
-
-              <strong id="detailActionProblems">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                HM Action
-              </span>
-
-              <strong id="detailHmAction">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Date Action
-              </span>
-
-              <strong id="detailDateAction">
-                -
-              </strong>
-
-            </div>
-
-
-            <div class="unit-history-detail-field">
-
-              <span>
-                Man Power
-              </span>
-
-              <strong id="detailManPower">
-                -
-              </strong>
-
-            </div>
-
-
-          </div>
-
-
-        </section>
-
-
-      </div>
+      </section>
 
 
     </section>
-
-
-
-    <!-- ========================================
-         FLOATING START INSPECTION SHORTCUT
-         ======================================== -->
-
-    <button
-      type="button"
-      id="unitHistoryInspectionShortcut"
-      class="unit-history-inspection-shortcut"
-      aria-label="Start Inspection"
-      title="Start Inspection"
-    >
-
-      <span></span>
-
-    </button>
-
-
-
-    <!-- ========================================
-         DELETE CONFIRMATION
-         ======================================== -->
-
-    <div
-      id="unitHistoryDeleteModal"
-      class="unit-history-modal"
-      hidden
-    >
-
-
-      <div
-        class="unit-history-modal-backdrop"
-        data-delete-close="true"
-      ></div>
-
-
-      <div
-        class="unit-history-modal-card"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="unitHistoryDeleteModalTitle"
-      >
-
-
-        <h2 id="unitHistoryDeleteModalTitle">
-          Delete Data
-        </h2>
-
-
-        <p id="unitHistoryDeleteModalMessage">
-
-          Apa kamu yakin akan menghapus 0 item dari database?
-
-        </p>
-
-
-        <div class="unit-history-modal-actions">
-
-
-          <button
-            type="button"
-            id="unitHistoryDeleteNoButton"
-            class="unit-history-modal-no"
-          >
-
-            No
-
-          </button>
-
-
-          <button
-            type="button"
-            id="unitHistoryDeleteYesButton"
-            class="unit-history-modal-yes"
-          >
-
-            Yes
-
-          </button>
-
-
-        </div>
-
-
-      </div>
-
-
-    </div>
 
 
   </main>
 
 
 
-  <!-- ==========================================
-       GLOBAL HEXA
-       ========================================== -->
+  <!-- ==================================================
+       DETAIL MODAL
+       ================================================== -->
+
+  <div
+    id="unitHistoryDetailModal"
+    class="unit-history-modal-overlay"
+    hidden
+  >
+
+
+    <section
+      class="unit-history-detail-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="unitHistoryDetailUnitCode"
+    >
+
+
+      <!-- ==============================================
+           INSPECTION PHOTO
+           ============================================== -->
+
+      <button
+        type="button"
+        id="unitHistoryDetailPhotoButton"
+        class="unit-history-detail-photo-button"
+        aria-label="View Inspection Photo"
+      >
+
+        <img
+          id="unitHistoryDetailPhoto"
+          src=""
+          alt="Inspection Photo"
+        >
+
+      </button>
+
+
+
+      <!-- ==============================================
+           UNIT CODE
+           ============================================== -->
+
+      <h2 id="unitHistoryDetailUnitCode">
+        -
+      </h2>
+
+
+
+      <!-- ==============================================
+           INSPECTION
+           ============================================== -->
+
+      <div class="unit-history-detail-section">
+
+
+        <h3>
+          Inspection
+        </h3>
+
+
+        <div class="unit-history-detail-information">
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              HM Inspection
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailHmInspection"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Date Inspection
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailDateInspection"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Inspectors
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailInspectors"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ==============================================
+           FINDING
+           ============================================== -->
+
+      <div class="unit-history-detail-section">
+
+
+        <h3>
+          Finding
+        </h3>
+
+
+        <div class="unit-history-detail-information">
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Group Component
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailGroupComponent"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Problem Description
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailProblemDescription"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Rating
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailRating"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Parts Description
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailPartsDescription"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Part No
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailPartNo"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Quantity
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailQuantity"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Notes
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailNotes"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ==============================================
+           FOLLOW UP
+           ============================================== -->
+
+      <div class="unit-history-detail-section">
+
+
+        <h3>
+          Follow Up
+        </h3>
+
+
+        <div class="unit-history-detail-information">
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              MOL
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailMol"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Evidence
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailEvidence"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Parts Status
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailPartsStatus"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Action Problems
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailActionProblems"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              HM Action
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailHmAction"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Date Action
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailDateAction"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Status
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailStatus"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Man Power
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailManPower"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ==============================================
+           DETAIL ACTION
+           ============================================== -->
+
+      <div class="unit-history-detail-actions">
+
+
+        <button
+          type="button"
+          id="unitHistoryCloseDetailButton"
+          class="unit-history-detail-action-button close"
+          aria-label="Close Detail"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path d="M6 6l12 12"></path>
+
+            <path d="M18 6L6 18"></path>
+
+          </svg>
+
+        </button>
+
+
+      </div>
+
+
+    </section>
+
+
+  </div>
+
+
+
+  <!-- ==================================================
+       FULLSCREEN PHOTO VIEWER
+       ================================================== -->
+
+  <div
+    id="unitHistoryPhotoViewer"
+    class="unit-history-photo-viewer"
+    hidden
+  >
+
+
+    <div class="unit-history-photo-viewer-toolbar">
+
+
+      <button
+        type="button"
+        id="unitHistoryZoomOutButton"
+        class="unit-history-photo-tool-button"
+        aria-label="Zoom Out"
+      >
+        −
+      </button>
+
+
+      <button
+        type="button"
+        id="unitHistoryResetZoomButton"
+        class="unit-history-photo-tool-button"
+        aria-label="Reset Zoom"
+      >
+        100%
+      </button>
+
+
+      <button
+        type="button"
+        id="unitHistoryZoomInButton"
+        class="unit-history-photo-tool-button"
+        aria-label="Zoom In"
+      >
+        +
+      </button>
+
+
+      <button
+        type="button"
+        id="unitHistoryClosePhotoViewerButton"
+        class="unit-history-photo-tool-button close"
+        aria-label="Close Photo"
+      >
+        ×
+      </button>
+
+
+    </div>
+
+
+
+    <div class="unit-history-photo-viewer-stage">
+
+      <img
+        id="unitHistoryPhotoViewerImage"
+        src=""
+        alt="Inspection Photo Fullscreen"
+      >
+
+    </div>
+
+
+  </div>
+
+
+
+  <!-- ==================================================
+       DELETE CONFIRMATION
+       ================================================== -->
+
+  <div
+    id="unitHistoryDeleteModal"
+    class="unit-history-modal-overlay"
+    hidden
+  >
+
+
+    <section
+      class="unit-history-delete-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="unitHistoryDeleteModalTitle"
+    >
+
+
+      <h2 id="unitHistoryDeleteModalTitle">
+        Delete Data
+      </h2>
+
+
+      <p id="unitHistoryDeleteModalMessage">
+        Apa kamu yakin akan menghapus 0 item dari database?
+      </p>
+
+
+      <div class="unit-history-delete-actions">
+
+
+        <button
+          type="button"
+          id="unitHistoryDeleteNoButton"
+          class="unit-history-delete-no"
+        >
+          No
+        </button>
+
+
+        <button
+          type="button"
+          id="unitHistoryDeleteYesButton"
+          class="unit-history-delete-yes"
+        >
+          Yes
+        </button>
+
+
+      </div>
+
+
+    </section>
+
+
+  </div>
+
+
+
+  <!-- ==================================================
+       START INSPECTION SHORTCUT
+
+       Struktur sengaja sama seperti Daily Outstanding:
+       button + span
+       ================================================== -->
+
+  <button
+    type="button"
+    id="unitHistoryStartInspectionShortcut"
+    class="unit-history-start-inspection-shortcut"
+    aria-label="Start Inspection"
+  >
+
+    <span></span>
+
+  </button>
+
+
+
+  <!-- ==================================================
+       JAVASCRIPT
+       Urutan sama dengan Daily Outstanding
+       ================================================== -->
 
   <script src="hexa-menu.js"></script>
 
   <script src="hexa-header.js"></script>
-
-
-
-  <!-- ==========================================
-       UNIT HISTORY
-       ========================================== -->
 
   <script src="unit-history.js"></script>
 
