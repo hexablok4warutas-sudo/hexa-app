@@ -8,38 +8,28 @@
 
 
 // ======================================================
-// 1. HEXA SESSION PROTECTION
+// 1. SESSION PROTECTION
 // ======================================================
 
 const hexaLoggedIn =
-  sessionStorage.getItem(
-    "hexaLoggedIn"
-  );
+  sessionStorage.getItem("hexaLoggedIn");
 
 const hexaUserData =
-  sessionStorage.getItem(
-    "hexaUser"
-  );
+  sessionStorage.getItem("hexaUser");
 
-
-// ======================================================
-// CEK LOGIN
-// ======================================================
 
 if (
   hexaLoggedIn !== "true" ||
   !hexaUserData
 ) {
 
-  window.location.replace(
-    "index.html"
-  );
+  window.location.replace("index.html");
 
 }
 
 
 // ======================================================
-// BACA DATA USER
+// 2. BACA DATA USER
 // ======================================================
 
 let currentUser = null;
@@ -48,9 +38,7 @@ let currentUser = null;
 try {
 
   currentUser =
-    JSON.parse(
-      hexaUserData
-    );
+    JSON.parse(hexaUserData);
 
 } catch (error) {
 
@@ -76,7 +64,7 @@ console.log(
 
 
 // ======================================================
-// 2. DAFTAR HALAMAN HEXA
+// 3. DAFTAR HALAMAN HEXA
 // ======================================================
 
 const HEXA_PAGES = {
@@ -115,7 +103,7 @@ const HEXA_PAGES = {
 
 
 // ======================================================
-// 3. LOGOUT DROPDOWN
+// 4. LOGOUT DROPDOWN
 // ======================================================
 
 const headerLogoButton =
@@ -205,24 +193,17 @@ function closeLogoutMenu() {
 }
 
 
-// Klik di luar dropdown
-
 document.addEventListener(
   "click",
   closeLogoutMenu
 );
 
 
-// ESC menutup dropdown
-
 document.addEventListener(
   "keydown",
   function (event) {
 
-    if (
-      event.key ===
-      "Escape"
-    ) {
+    if (event.key === "Escape") {
 
       closeLogoutMenu();
 
@@ -233,7 +214,7 @@ document.addEventListener(
 
 
 // ======================================================
-// 4. LOGOUT
+// 5. LOGOUT
 // ======================================================
 
 if (logoutButton) {
@@ -263,7 +244,7 @@ if (logoutButton) {
 
 
 // ======================================================
-// 5. BANNER SLIDER
+// 6. BANNER SLIDER
 // ======================================================
 
 const slides =
@@ -289,7 +270,7 @@ const bannerSlider =
 
 let currentSlide = 0;
 
-let autoSlideTimer;
+let autoSlideTimer = null;
 
 
 // ======================================================
@@ -303,40 +284,27 @@ function showSlide(index) {
   }
 
 
-  if (
-    index >= slides.length
-  ) {
+  if (index >= slides.length) {
 
     currentSlide = 0;
 
-  }
-
-  else if (
-    index < 0
-  ) {
+  } else if (index < 0) {
 
     currentSlide =
       slides.length - 1;
 
-  }
+  } else {
 
-  else {
-
-    currentSlide =
-      index;
+    currentSlide = index;
 
   }
 
 
   slides.forEach(
-    function (
-      slide,
-      slideIndex
-    ) {
+    function (slide, slideIndex) {
 
       if (
-        slideIndex ===
-        currentSlide
+        slideIndex === currentSlide
       ) {
 
         slide.classList.add(
@@ -358,7 +326,7 @@ function showSlide(index) {
 
 
 // ======================================================
-// SLIDE BERIKUTNYA
+// NEXT SLIDE
 // ======================================================
 
 function nextSlide() {
@@ -371,7 +339,7 @@ function nextSlide() {
 
 
 // ======================================================
-// SLIDE SEBELUMNYA
+// PREVIOUS SLIDE
 // ======================================================
 
 function previousSlide() {
@@ -384,12 +352,32 @@ function previousSlide() {
 
 
 // ======================================================
-// 6. AUTO SLIDE
+// AUTO SLIDE
 // ======================================================
+
+function stopAutoSlide() {
+
+  if (autoSlideTimer) {
+
+    clearInterval(
+      autoSlideTimer
+    );
+
+    autoSlideTimer = null;
+
+  }
+
+}
+
 
 function startAutoSlide() {
 
   stopAutoSlide();
+
+
+  if (slides.length <= 1) {
+    return;
+  }
 
 
   autoSlideTimer =
@@ -405,22 +393,7 @@ function startAutoSlide() {
 }
 
 
-function stopAutoSlide() {
-
-  if (autoSlideTimer) {
-
-    clearInterval(
-      autoSlideTimer
-    );
-
-  }
-
-}
-
-
 function resetAutoSlide() {
-
-  stopAutoSlide();
 
   startAutoSlide();
 
@@ -428,7 +401,7 @@ function resetAutoSlide() {
 
 
 // ======================================================
-// 7. PREVIOUS / NEXT BUTTON
+// SLIDER BUTTON
 // ======================================================
 
 if (prevButton) {
@@ -464,7 +437,7 @@ if (nextButton) {
 
 
 // ======================================================
-// 8. SWIPE BANNER
+// 7. SWIPE BANNER
 // ======================================================
 
 let touchStartX = 0;
@@ -479,9 +452,7 @@ if (bannerSlider) {
     function (event) {
 
       touchStartX =
-        event
-          .changedTouches[0]
-          .screenX;
+        event.changedTouches[0].screenX;
 
     },
     {
@@ -495,9 +466,7 @@ if (bannerSlider) {
     function (event) {
 
       touchEndX =
-        event
-          .changedTouches[0]
-          .screenX;
+        event.changedTouches[0].screenX;
 
 
       handleBannerSwipe();
@@ -514,14 +483,11 @@ if (bannerSlider) {
 function handleBannerSwipe() {
 
   const swipeDistance =
-    touchStartX -
-    touchEndX;
+    touchStartX - touchEndX;
 
 
   if (
-    Math.abs(
-      swipeDistance
-    ) < 50
+    Math.abs(swipeDistance) < 50
   ) {
 
     return;
@@ -529,9 +495,7 @@ function handleBannerSwipe() {
   }
 
 
-  if (
-    swipeDistance > 0
-  ) {
+  if (swipeDistance > 0) {
 
     nextSlide();
 
@@ -548,7 +512,7 @@ function handleBannerSwipe() {
 
 
 // ======================================================
-// 9. REFRESH BUTTON
+// 8. REFRESH BUTTON
 // ======================================================
 
 const refreshButton =
@@ -572,7 +536,7 @@ if (refreshButton) {
 
 
 // ======================================================
-// 10. SEARCH MENU
+// 9. SEARCH MENU
 // ======================================================
 
 const searchInput =
@@ -615,9 +579,7 @@ function searchMenu() {
 
       if (
         keyword === "" ||
-        menuName.includes(
-          keyword
-        )
+        menuName.includes(keyword)
       ) {
 
         item.style.display =
@@ -636,8 +598,6 @@ function searchMenu() {
 }
 
 
-// SEARCH BUTTON
-
 if (searchButton) {
 
   searchButton.addEventListener(
@@ -647,8 +607,6 @@ if (searchButton) {
 
 }
 
-
-// SEARCH SAAT MENGETIK
 
 if (searchInput) {
 
@@ -662,10 +620,7 @@ if (searchInput) {
     "keydown",
     function (event) {
 
-      if (
-        event.key ===
-        "Enter"
-      ) {
+      if (event.key === "Enter") {
 
         event.preventDefault();
 
@@ -680,7 +635,7 @@ if (searchInput) {
 
 
 // ======================================================
-// 11. SETTINGS HARUS SELALU TERAKHIR
+// 10. SETTINGS SELALU TERAKHIR
 // ======================================================
 
 const menuGrid =
@@ -711,17 +666,13 @@ function keepSettingsLast() {
 
 
 // ======================================================
-// 12. NAVIGASI MENU UTAMA
+// 11. NAVIGASI MENU UTAMA
 // ======================================================
 
-function openHexaPage(
-  menuName
-) {
+function openHexaPage(menuName) {
 
   const page =
-    HEXA_PAGES[
-      menuName
-    ];
+    HEXA_PAGES[menuName];
 
 
   if (!page) {
@@ -755,7 +706,7 @@ function openHexaPage(
 
 
 // ======================================================
-// 13. MENU ICON CLICK
+// MENU ICON CLICK
 // ======================================================
 
 menuItems.forEach(
@@ -769,9 +720,7 @@ menuItems.forEach(
           item.dataset.menu;
 
 
-        openHexaPage(
-          menu
-        );
+        openHexaPage(menu);
 
       }
     );
@@ -781,7 +730,7 @@ menuItems.forEach(
 
 
 // ======================================================
-// 14. FLOATING START INSPECTION BUTTON
+// 12. FLOATING START INSPECTION
 // ======================================================
 
 const inspectionShortcut =
@@ -794,6 +743,10 @@ const FLOATING_POSITION_KEY =
   "hexaInspectionButtonPosition";
 
 
+// ======================================================
+// STATUS DRAG
+// ======================================================
+
 let isDragging = false;
 
 let dragMoved = false;
@@ -802,9 +755,18 @@ let dragOffsetX = 0;
 
 let dragOffsetY = 0;
 
+let dragStartX = 0;
+
+let dragStartY = 0;
+
+
+// Minimum gerakan agar dianggap drag
+
+const DRAG_THRESHOLD = 6;
+
 
 // ======================================================
-// 15. LOAD POSISI FLOATING BUTTON
+// 13. LOAD POSISI FLOATING BUTTON
 // ======================================================
 
 function loadFloatingButtonPosition() {
@@ -828,16 +790,12 @@ function loadFloatingButtonPosition() {
   try {
 
     const position =
-      JSON.parse(
-        savedPosition
-      );
+      JSON.parse(savedPosition);
 
 
     if (
-      typeof position.left !==
-        "number" ||
-      typeof position.top !==
-        "number"
+      typeof position.left !== "number" ||
+      typeof position.top !== "number"
     ) {
 
       return;
@@ -846,17 +804,16 @@ function loadFloatingButtonPosition() {
 
 
     const buttonWidth =
-      inspectionShortcut
-        .offsetWidth;
+      inspectionShortcut.offsetWidth;
 
     const buttonHeight =
-      inspectionShortcut
-        .offsetHeight;
+      inspectionShortcut.offsetHeight;
 
 
     const maxLeft =
       window.innerWidth -
       buttonWidth;
+
 
     const maxTop =
       window.innerHeight -
@@ -886,11 +843,14 @@ function loadFloatingButtonPosition() {
     inspectionShortcut.style.left =
       safeLeft + "px";
 
+
     inspectionShortcut.style.top =
       safeTop + "px";
 
+
     inspectionShortcut.style.right =
       "auto";
+
 
     inspectionShortcut.style.bottom =
       "auto";
@@ -908,7 +868,7 @@ function loadFloatingButtonPosition() {
 
 
 // ======================================================
-// 16. SAVE POSISI FLOATING BUTTON
+// 14. SAVE POSISI FLOATING BUTTON
 // ======================================================
 
 function saveFloatingButtonPosition() {
@@ -925,27 +885,23 @@ function saveFloatingButtonPosition() {
 
   const position = {
 
-    left:
-      rect.left,
+    left: rect.left,
 
-    top:
-      rect.top
+    top: rect.top
 
   };
 
 
   localStorage.setItem(
     FLOATING_POSITION_KEY,
-    JSON.stringify(
-      position
-    )
+    JSON.stringify(position)
   );
 
 }
 
 
 // ======================================================
-// 17. DRAG FLOATING BUTTON
+// 15. POINTER DOWN
 // ======================================================
 
 if (inspectionShortcut) {
@@ -957,6 +913,15 @@ if (inspectionShortcut) {
       isDragging = true;
 
       dragMoved = false;
+
+
+      // Posisi awal pointer
+
+      dragStartX =
+        event.clientX;
+
+      dragStartY =
+        event.clientY;
 
 
       const rect =
@@ -974,16 +939,27 @@ if (inspectionShortcut) {
         rect.top;
 
 
-      inspectionShortcut
-        .setPointerCapture(
-          event.pointerId
-        );
+      try {
+
+        inspectionShortcut
+          .setPointerCapture(
+            event.pointerId
+          );
+
+      } catch (error) {
+
+        // Abaikan jika browser
+        // tidak mendukung pointer capture.
+
+      }
 
     }
   );
 
 
-  // POINTER MOVE
+// ======================================================
+// 16. POINTER MOVE
+// ======================================================
 
   inspectionShortcut.addEventListener(
     "pointermove",
@@ -994,16 +970,47 @@ if (inspectionShortcut) {
       }
 
 
+      // Hitung jarak gerakan dari
+      // posisi pointer awal.
+
+      const moveX =
+        Math.abs(
+          event.clientX -
+          dragStartX
+        );
+
+
+      const moveY =
+        Math.abs(
+          event.clientY -
+          dragStartY
+        );
+
+
+      // Belum melewati threshold,
+      // masih dianggap klik biasa.
+
+      if (
+        moveX <= DRAG_THRESHOLD &&
+        moveY <= DRAG_THRESHOLD
+      ) {
+
+        return;
+
+      }
+
+
+      // Sudah benar-benar drag.
+
       dragMoved = true;
 
 
       const buttonWidth =
-        inspectionShortcut
-          .offsetWidth;
+        inspectionShortcut.offsetWidth;
+
 
       const buttonHeight =
-        inspectionShortcut
-          .offsetHeight;
+        inspectionShortcut.offsetHeight;
 
 
       let newLeft =
@@ -1049,11 +1056,14 @@ if (inspectionShortcut) {
       inspectionShortcut.style.left =
         newLeft + "px";
 
+
       inspectionShortcut.style.top =
         newTop + "px";
 
+
       inspectionShortcut.style.right =
         "auto";
+
 
       inspectionShortcut.style.bottom =
         "auto";
@@ -1062,7 +1072,9 @@ if (inspectionShortcut) {
   );
 
 
-  // POINTER UP
+// ======================================================
+// 17. POINTER UP
+// ======================================================
 
   inspectionShortcut.addEventListener(
     "pointerup",
@@ -1085,7 +1097,7 @@ if (inspectionShortcut) {
 
       } catch (error) {
 
-        // Pointer sudah dilepas browser.
+        // Abaikan.
 
       }
 
@@ -1100,15 +1112,31 @@ if (inspectionShortcut) {
   );
 
 
-  // ====================================================
-  // 18. FLOATING BUTTON CLICK
-  // ====================================================
+// ======================================================
+// 18. POINTER CANCEL
+// ======================================================
+
+  inspectionShortcut.addEventListener(
+    "pointercancel",
+    function () {
+
+      isDragging = false;
+
+    }
+  );
+
+
+// ======================================================
+// 19. CLICK FLOATING BUTTON
+// ======================================================
 
   inspectionShortcut.addEventListener(
     "click",
     function (event) {
 
-      // Setelah drag jangan dianggap klik.
+      // Jika sebelumnya tombol
+      // benar-benar digeser,
+      // jangan buka Start Inspection.
 
       if (dragMoved) {
 
@@ -1121,10 +1149,12 @@ if (inspectionShortcut) {
       }
 
 
+      // ================================================
       // START INSPECTION
+      // ================================================
 
       window.location.href =
-        "/start-inspection";
+        "start-inspection.html";
 
     }
   );
@@ -1133,7 +1163,7 @@ if (inspectionShortcut) {
 
 
 // ======================================================
-// 19. JAGA FLOATING BUTTON DI DALAM LAYAR
+// 20. JAGA FLOATING BUTTON TETAP DI DALAM LAYAR
 // ======================================================
 
 window.addEventListener(
@@ -1151,17 +1181,17 @@ window.addEventListener(
 
 
     const buttonWidth =
-      inspectionShortcut
-        .offsetWidth;
+      inspectionShortcut.offsetWidth;
+
 
     const buttonHeight =
-      inspectionShortcut
-        .offsetHeight;
+      inspectionShortcut.offsetHeight;
 
 
     const maxLeft =
       window.innerWidth -
       buttonWidth;
+
 
     const maxTop =
       window.innerHeight -
@@ -1191,11 +1221,14 @@ window.addEventListener(
     inspectionShortcut.style.left =
       safeLeft + "px";
 
+
     inspectionShortcut.style.top =
       safeTop + "px";
 
+
     inspectionShortcut.style.right =
       "auto";
+
 
     inspectionShortcut.style.bottom =
       "auto";
@@ -1208,7 +1241,7 @@ window.addEventListener(
 
 
 // ======================================================
-// 20. INITIALIZE HEXA MAIN PAGE
+// 21. INITIALIZE HEXA MAIN PAGE
 // ======================================================
 
 function initializeHexaMain() {
@@ -1218,23 +1251,17 @@ function initializeHexaMain() {
   showSlide(0);
 
 
-  // Auto slide
+  // Auto banner
 
-  if (
-    slides.length > 1
-  ) {
-
-    startAutoSlide();
-
-  }
+  startAutoSlide();
 
 
-  // Settings selalu terakhir
+  // Settings tetap terakhir
 
   keepSettingsLast();
 
 
-  // Posisi floating button
+  // Load posisi floating button
 
   loadFloatingButtonPosition();
 
