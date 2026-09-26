@@ -1,4 +1,14 @@
 /* =========================================================
+   UNIT HISTORY BOX MODEL
+   ========================================================= */
+
+.unit-history-page,
+.unit-history-page *,
+.unit-history-page *::before,
+.unit-history-page *::after {
+  box-sizing: border-box;
+}
+/* =========================================================
    HEXA APP - UNIT HISTORY
    =========================================================
    Global Header TIDAK diatur dari file ini.
@@ -43,6 +53,7 @@
   flex: 0 0 112px;
 
   width: 100%;
+  max-width: 100%;
 
   display: flex;
   align-items: center;
@@ -50,7 +61,9 @@
 
   gap: 24px;
 
-  padding: 8px 72px 6px 76px;
+  padding: 8px 76px 6px 76px;
+
+  overflow: hidden;
 
   background-color: rgba(255, 250, 242, 0.96);
 
@@ -62,15 +75,17 @@
    TITLE
    ========================================================= */
 
-.unit-history-title {
+..unit-history-title {
   min-width: 0;
+  flex: 1 1 auto;
 
   display: flex;
   align-items: center;
 
   gap: 14px;
-}
 
+  overflow: hidden;
+}
 
 .unit-history-title-icon {
   display: block;
@@ -98,6 +113,9 @@
   letter-spacing: -1px;
 
   white-space: nowrap;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
@@ -112,7 +130,9 @@
   align-items: center;
   justify-content: flex-end;
 
-  gap: 20px;
+  gap: 12px;
+
+  margin-left: auto;
 }
 
 
@@ -121,11 +141,13 @@
    ========================================================= */
 
 .unit-history-action-button {
-  width: 44px;
-  height: 44px;
+  flex: 0 0 auto;
+
+  width: 40px;
+  height: 40px;
 
   margin: 0;
-  padding: 5px;
+  padding: 6px;
 
   display: flex;
   align-items: center;
@@ -148,6 +170,20 @@
     color 0.15s ease;
 }
 
+.unit-history-action-button svg {
+  display: block;
+
+  width: 27px;
+  height: 27px;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 2;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 .unit-history-action-button:hover {
   background-color: rgba(244, 160, 0, 0.12);
@@ -1486,6 +1522,34 @@
   }
 
 }
+/* =========================================================
+   HIDDEN ELEMENT FIX
+   ========================================================= */
+
+.unit-history-page [hidden] {
+  display: none !important;
+}
+/* =========================================================
+   PAGE OVERFLOW PROTECTION
+   ========================================================= */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.unit-history-page {
+  max-width: 100vw;
+}
+
+.unit-history-table-view,
+.unit-history-table-container,
+.unit-history-table-scroll {
+  max-width: 100%;
+}
+
+
 /* =========================================================
    HIDDEN ELEMENT FIX
    ========================================================= */
