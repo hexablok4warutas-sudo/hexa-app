@@ -11,217 +11,41 @@
 
   <title>Daily Maintenance | HEXA</title>
 
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER CSS
+       ===================================== -->
+
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- =====================================
+       DAILY MAINTENANCE CSS
+       ===================================== -->
+
   <link
     rel="stylesheet"
     href="daily-maintenance.css"
   >
+
 </head>
 
 
 <body>
 
+
   <!-- =====================================
-       FIXED HEADER
+       GLOBAL HEXA HEADER
        ===================================== -->
 
-  <header class="main-header">
-
-    <!-- ===================================
-         HEXA LOGO + NAVIGATION
-         =================================== -->
-
-    <div class="header-navigation">
-
-      <button
-        type="button"
-        class="header-logo"
-        id="headerLogoButton"
-        aria-label="Open HEXA menu"
-        aria-expanded="false"
-      >
-
-        <img
-          src="hexa-logo-header.png"
-          alt="HEXA"
-        >
-
-      </button>
-
-
-      <!-- ===============================
-           HEXA NAVIGATION DROPDOWN
-           TEXT ONLY
-           =============================== -->
-
-      <nav
-        class="hexa-nav-menu"
-        id="hexaNavMenu"
-        aria-label="HEXA Navigation"
-      >
-
-        <button
-          type="button"
-          class="nav-menu-item"
-          data-page="main"
-        >
-          Main Page
-        </button>
-
-        <button
-          type="button"
-          class="nav-menu-item active"
-          data-page="daily-maintenance"
-        >
-          Daily Maintenance
-        </button>
-
-        <button
-          type="button"
-          class="nav-menu-item"
-          data-page="backlog-monitoring"
-        >
-          Backlog Monitoring
-        </button>
-
-        <button
-          type="button"
-          class="nav-menu-item"
-          data-page="fui"
-        >
-          FUI
-        </button>
-
-        <button
-          type="button"
-          class="nav-menu-item"
-          data-page="rotable"
-        >
-          Rotable
-        </button>
-
-        <button
-          type="button"
-          class="nav-menu-item"
-          data-page="news"
-        >
-          News
-        </button>
-
-        <button
-          type="button"
-          class="nav-menu-item settings-nav"
-          data-page="settings"
-        >
-          Settings
-        </button>
-
-
-        <!-- ===============================
-             DIVIDER
-             =============================== -->
-
-        <div
-          class="nav-menu-divider"
-          aria-hidden="true"
-        ></div>
-
-
-        <!-- ===============================
-             LOGOUT
-             =============================== -->
-
-        <button
-          type="button"
-          class="nav-menu-item logout-menu-item"
-          id="logoutButton"
-        >
-          Logout
-        </button>
-
-      </nav>
-
-    </div>
-
-
-    <!-- ===================================
-         HEADER ACTIONS
-         =================================== -->
-
-    <div class="header-actions">
-
-      <!-- SEARCH -->
-
-      <div class="search-box">
-
-        <input
-          type="text"
-          id="searchInput"
-          placeholder=""
-          autocomplete="off"
-          aria-label="Search Daily Maintenance menu"
-        >
-
-        <button
-          type="button"
-          id="searchButton"
-          class="search-button"
-          aria-label="Search"
-        >
-
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-
-            <circle
-              cx="11"
-              cy="11"
-              r="7"
-            ></circle>
-
-            <line
-              x1="16.5"
-              y1="16.5"
-              x2="21"
-              y2="21"
-            ></line>
-
-          </svg>
-
-        </button>
-
-      </div>
-
-
-      <!-- REFRESH -->
-
-      <button
-        type="button"
-        id="refreshButton"
-        class="refresh-button"
-        aria-label="Refresh"
-      >
-
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-
-          <path
-            d="M20 6v5h-5"
-          ></path>
-
-          <path
-            d="M18.5 15a7 7 0 1 1 .2-6"
-          ></path>
-
-        </svg>
-
-      </button>
-
-    </div>
-
-  </header>
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="daily-maintenance"
+  ></header>
 
 
 
@@ -381,8 +205,25 @@
 
 
   <!-- =====================================
-       DAILY MAINTENANCE JAVASCRIPT
+       GLOBAL HEXA SYSTEM
        ===================================== -->
+
+  <!--
+    URUTAN INI PENTING:
+
+    1. hexa-menu.js
+       menyediakan data menu
+
+    2. hexa-header.js
+       membangun global header
+
+    3. daily-maintenance.js
+       menangani fungsi khusus halaman
+  -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
 
   <script src="daily-maintenance.js"></script>
 
