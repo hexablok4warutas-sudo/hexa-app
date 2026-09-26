@@ -165,7 +165,7 @@ function searchFormField() {
 
       const input =
         group.querySelector(
-          "input, select, textarea, button"
+          "input:not([type='hidden']), select, textarea, button"
         );
 
 
@@ -669,6 +669,745 @@ ratingButtons.forEach(
 
 
 /* =====================================================
+   PART REQUIREMENT
+===================================================== */
+
+const partRequirementList =
+  document.getElementById(
+    "partRequirementList"
+  );
+
+
+const addPartButton =
+  document.getElementById(
+    "addPartButton"
+  );
+
+
+const partsDescriptionInput =
+  document.getElementById(
+    "partsDescription"
+  );
+
+
+const partNoInput =
+  document.getElementById(
+    "partNo"
+  );
+
+
+const quantityInput =
+  document.getElementById(
+    "quantity"
+  );
+
+
+/* =====================================================
+   CREATE PART ITEM
+===================================================== */
+
+function createPartItem() {
+
+  const partItem =
+    document.createElement(
+      "div"
+    );
+
+
+  partItem.className =
+    "part-requirement-item";
+
+
+  partItem.innerHTML = `
+
+    <div class="part-item-header">
+
+      <div class="part-item-title">
+        Part
+      </div>
+
+      <button
+        type="button"
+        class="remove-part-button"
+        aria-label="Remove Part"
+      >
+        Remove Part
+      </button>
+
+    </div>
+
+
+    <div class="part-field">
+
+      <label>
+        Part Description
+      </label>
+
+      <input
+        type="text"
+        class="part-description-input"
+        autocomplete="off"
+        placeholder="Input Part Description"
+      >
+
+    </div>
+
+
+    <div class="part-row">
+
+
+      <div class="part-field part-no-field">
+
+        <label>
+          Part No.
+        </label>
+
+        <input
+          type="text"
+          class="part-no-input"
+          autocomplete="off"
+          placeholder="Input Part No."
+        >
+
+      </div>
+
+
+      <div class="part-field quantity-field">
+
+        <label>
+          Qty
+        </label>
+
+        <input
+          type="number"
+          class="part-quantity-input"
+          min="0"
+          step="1"
+          inputmode="numeric"
+          placeholder="0"
+        >
+
+      </div>
+
+
+    </div>
+
+  `;
+
+
+  return partItem;
+
+}
+
+
+/* =====================================================
+   GET PART ITEMS
+===================================================== */
+
+function getPartItems() {
+
+  if (!partRequirementList) {
+    return [];
+  }
+
+
+  return Array.from(
+    partRequirementList.querySelectorAll(
+      ".part-requirement-item"
+    )
+  );
+
+}
+
+
+/* =====================================================
+   RENUMBER PARTS
+===================================================== */
+
+function renumberParts() {
+
+  const items =
+    getPartItems();
+
+
+  items.forEach(
+    function (
+      item,
+      index
+    ) {
+
+      const number =
+        index + 1;
+
+
+      item.dataset.partIndex =
+        String(
+          number
+        );
+
+
+      const title =
+        item.querySelector(
+          ".part-item-title"
+        );
+
+
+      const removeButton =
+        item.querySelector(
+          ".remove-part-button"
+        );
+
+
+      if (title) {
+
+        title.textContent =
+          `Part ${number}`;
+
+      }
+
+
+      if (removeButton) {
+
+        removeButton.setAttribute(
+          "aria-label",
+          `Remove Part ${number}`
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   CLEAR ONE PART ITEM
+===================================================== */
+
+function clearPartItem(
+  item
+) {
+
+  if (!item) {
+    return;
+  }
+
+
+  const description =
+    item.querySelector(
+      ".part-description-input"
+    );
+
+
+  const partNo =
+    item.querySelector(
+      ".part-no-input"
+    );
+
+
+  const quantity =
+    item.querySelector(
+      ".part-quantity-input"
+    );
+
+
+  if (description) {
+    description.value = "";
+  }
+
+
+  if (partNo) {
+    partNo.value = "";
+  }
+
+
+  if (quantity) {
+    quantity.value = "";
+  }
+
+}
+
+
+/* =====================================================
+   ADD PART
+===================================================== */
+
+function addPart() {
+
+  if (!partRequirementList) {
+    return;
+  }
+
+
+  const newPart =
+    createPartItem();
+
+
+  partRequirementList.appendChild(
+    newPart
+  );
+
+
+  renumberParts();
+
+
+  const description =
+    newPart.querySelector(
+      ".part-description-input"
+    );
+
+
+  if (description) {
+
+    description.focus();
+
+  }
+
+
+  newPart.scrollIntoView({
+
+    behavior:
+      "smooth",
+
+    block:
+      "nearest"
+
+  });
+
+}
+
+
+if (addPartButton) {
+
+  addPartButton.addEventListener(
+    "click",
+    addPart
+  );
+
+}
+
+
+/* =====================================================
+   REMOVE PART
+
+   Event delegation digunakan agar tombol Remove
+   pada Part yang dibuat secara dinamis tetap bekerja.
+===================================================== */
+
+if (partRequirementList) {
+
+  partRequirementList.addEventListener(
+    "click",
+    function (event) {
+
+      const removeButton =
+        event.target.closest(
+          ".remove-part-button"
+        );
+
+
+      if (!removeButton) {
+        return;
+      }
+
+
+      const item =
+        removeButton.closest(
+          ".part-requirement-item"
+        );
+
+
+      if (!item) {
+        return;
+      }
+
+
+      const items =
+        getPartItems();
+
+
+      /*
+        Part terakhir tidak dihapus.
+        Jika hanya tersisa satu Part,
+        tombol Remove berfungsi sebagai Clear.
+      */
+
+      if (
+        items.length <= 1
+      ) {
+
+        clearPartItem(
+          item
+        );
+
+
+        const description =
+          item.querySelector(
+            ".part-description-input"
+          );
+
+
+        if (description) {
+          description.focus();
+        }
+
+
+        return;
+
+      }
+
+
+      item.remove();
+
+
+      renumberParts();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   VALIDATE PART REQUIREMENT
+
+   Aturan:
+   - Seluruh Part Requirement boleh kosong.
+   - Jika sebuah card benar-benar kosong, card tersebut
+     tidak dianggap sebagai kebutuhan part.
+   - Jika salah satu field pada card diisi, card tersebut
+     tetap disimpan.
+   - Qty jika diisi tidak boleh negatif.
+===================================================== */
+
+function validatePartRequirements() {
+
+  const items =
+    getPartItems();
+
+
+  for (
+    let index = 0;
+    index < items.length;
+    index++
+  ) {
+
+    const item =
+      items[index];
+
+
+    const descriptionInput =
+      item.querySelector(
+        ".part-description-input"
+      );
+
+
+    const partNumberInput =
+      item.querySelector(
+        ".part-no-input"
+      );
+
+
+    const quantityField =
+      item.querySelector(
+        ".part-quantity-input"
+      );
+
+
+    const description =
+      descriptionInput
+        ? descriptionInput.value.trim()
+        : "";
+
+
+    const partNumber =
+      partNumberInput
+        ? partNumberInput.value.trim()
+        : "";
+
+
+    const quantity =
+      quantityField
+        ? quantityField.value.trim()
+        : "";
+
+
+    const hasAnyValue =
+      Boolean(
+        description ||
+        partNumber ||
+        quantity
+      );
+
+
+    if (!hasAnyValue) {
+      continue;
+    }
+
+
+    if (
+      quantity !== "" &&
+      Number(quantity) < 0
+    ) {
+
+      alert(
+        `Qty pada Part ${index + 1} tidak boleh kurang dari 0.`
+      );
+
+
+      if (quantityField) {
+        quantityField.focus();
+      }
+
+
+      return false;
+
+    }
+
+  }
+
+
+  return true;
+
+}
+
+
+/* =====================================================
+   COLLECT PART REQUIREMENT
+
+   Database tetap menggunakan 3 kolom:
+   Parts Description
+   Part No
+   Quantity
+
+   Setiap Part disimpan pada line yang sama.
+
+   Contoh:
+
+   Description:
+   Hose Assy
+   O-Ring
+
+   Part No:
+   123-456
+   8T-1234
+
+   Quantity:
+   1
+   2
+===================================================== */
+
+function collectPartRequirements() {
+
+  const items =
+    getPartItems();
+
+
+  const parts =
+    [];
+
+
+  items.forEach(
+    function (item) {
+
+      const descriptionInput =
+        item.querySelector(
+          ".part-description-input"
+        );
+
+
+      const partNumberInput =
+        item.querySelector(
+          ".part-no-input"
+        );
+
+
+      const quantityField =
+        item.querySelector(
+          ".part-quantity-input"
+        );
+
+
+      const description =
+        descriptionInput
+          ? descriptionInput.value.trim()
+          : "";
+
+
+      const partNumber =
+        partNumberInput
+          ? partNumberInput.value.trim()
+          : "";
+
+
+      const quantity =
+        quantityField
+          ? quantityField.value.trim()
+          : "";
+
+
+      /*
+        Card yang seluruh field-nya kosong
+        tidak perlu disimpan.
+      */
+
+      if (
+        !description &&
+        !partNumber &&
+        !quantity
+      ) {
+
+        return;
+
+      }
+
+
+      /*
+        Field kosong tetap dimasukkan sebagai
+        string kosong agar posisi antar-kolom
+        tidak bergeser.
+      */
+
+      parts.push({
+
+        description:
+          description,
+
+        partNo:
+          partNumber,
+
+        quantity:
+          quantity
+
+      });
+
+    }
+  );
+
+
+  return {
+
+    parts:
+      parts,
+
+    partsDescription:
+      parts
+        .map(
+          part => part.description
+        )
+        .join("\n"),
+
+    partNo:
+      parts
+        .map(
+          part => part.partNo
+        )
+        .join("\n"),
+
+    quantity:
+      parts
+        .map(
+          part => part.quantity
+        )
+        .join("\n")
+
+  };
+
+}
+
+
+/* =====================================================
+   SYNC PART DATABASE FIELDS
+===================================================== */
+
+function syncPartDatabaseFields() {
+
+  const partData =
+    collectPartRequirements();
+
+
+  if (partsDescriptionInput) {
+
+    partsDescriptionInput.value =
+      partData.partsDescription;
+
+  }
+
+
+  if (partNoInput) {
+
+    partNoInput.value =
+      partData.partNo;
+
+  }
+
+
+  if (quantityInput) {
+
+    quantityInput.value =
+      partData.quantity;
+
+  }
+
+
+  return partData;
+
+}
+
+
+/* =====================================================
+   RESET PART REQUIREMENT
+===================================================== */
+
+function resetPartRequirements() {
+
+  if (!partRequirementList) {
+    return;
+  }
+
+
+  partRequirementList.innerHTML =
+    "";
+
+
+  const firstPart =
+    createPartItem();
+
+
+  partRequirementList.appendChild(
+    firstPart
+  );
+
+
+  renumberParts();
+
+
+  if (partsDescriptionInput) {
+    partsDescriptionInput.value = "";
+  }
+
+
+  if (partNoInput) {
+    partNoInput.value = "";
+  }
+
+
+  if (quantityInput) {
+    quantityInput.value = "";
+  }
+
+}
+
+
+/* =====================================================
+   INITIALIZE EXISTING PART 1
+===================================================== */
+
+renumberParts();
+
+
+/* =====================================================
    INSPECTOR FROM LOGIN
 ===================================================== */
 
@@ -732,11 +1471,15 @@ function setSubmitLoading(
 
 
     submitButton.dataset.originalText =
-      submitButton.textContent;
+      submitButton.innerHTML;
 
 
-    submitButton.textContent =
-      "Submitting...";
+    submitButton.innerHTML =
+      `
+        <span>
+          Submitting...
+        </span>
+      `;
 
   } else {
 
@@ -744,9 +1487,12 @@ function setSubmitLoading(
       false;
 
 
-    submitButton.textContent =
+    submitButton.innerHTML =
       submitButton.dataset.originalText ||
-      "Submit";
+      `
+        <span class="submit-icon">✓</span>
+        <span>Submit Inspection</span>
+      `;
 
   }
 
@@ -762,7 +1508,9 @@ function resetInspectionForm() {
   inspectionForm.reset();
 
 
-  // Inspector tetap dari user login
+  /*
+    Inspector tetap berasal dari user login.
+  */
 
   if (
     currentUser &&
@@ -775,7 +1523,9 @@ function resetInspectionForm() {
   }
 
 
-  // Reset Rating
+  /*
+    Reset Rating.
+  */
 
   ratingInput.value =
     "";
@@ -792,7 +1542,9 @@ function resetInspectionForm() {
   );
 
 
-  // Reset Photo
+  /*
+    Reset Photo.
+  */
 
   photoText.textContent =
     "Add Inspection Photo";
@@ -807,7 +1559,17 @@ function resetInspectionForm() {
   );
 
 
-  // Tanggal kembali hari ini
+  /*
+    Reset Part Requirement menjadi
+    hanya Part 1 kosong.
+  */
+
+  resetPartRequirements();
+
+
+  /*
+    Tanggal kembali hari ini.
+  */
 
   setTodayAsDefaultDate();
 
@@ -878,6 +1640,30 @@ if (inspectionForm) {
       }
 
 
+      /* ===============================================
+         VALIDASI PART REQUIREMENT
+      =============================================== */
+
+      if (
+        !validatePartRequirements()
+      ) {
+
+        return;
+
+      }
+
+
+      /* ===============================================
+         COLLECT PART REQUIREMENT
+
+         Di sinilah semua Part 1, Part 2, Part 3...
+         dikonversi menjadi multiline untuk database.
+      =============================================== */
+
+      const partData =
+        syncPartDatabaseFields();
+
+
       setSubmitLoading(
         true
       );
@@ -934,20 +1720,20 @@ if (inspectionForm) {
           rating:
             ratingInput.value,
 
+          /*
+            MULTI PART
+
+            Payload key tetap sama dengan backend lama.
+          */
+
           partsDescription:
-            document.getElementById(
-              "partsDescription"
-            ).value.trim(),
+            partData.partsDescription,
 
           partNo:
-            document.getElementById(
-              "partNo"
-            ).value.trim(),
+            partData.partNo,
 
           quantity:
-            document.getElementById(
-              "quantity"
-            ).value.trim(),
+            partData.quantity,
 
           inspectors:
             inspectors.value.trim(),
@@ -963,6 +1749,12 @@ if (inspectionForm) {
         console.log(
           "HEXA SUBMIT:",
           inspectionData
+        );
+
+
+        console.log(
+          "HEXA PART REQUIREMENT:",
+          partData.parts
         );
 
 
