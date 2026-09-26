@@ -1,3 +1,6 @@
+"use strict";
+
+
 // ======================================================
 // HEXA MAIN PAGE
 // main.js
@@ -75,21 +78,13 @@ console.log(
 // ======================================================
 // 2. DAFTAR HALAMAN HEXA
 // ======================================================
-//
-// Semua tujuan halaman kita simpan di satu tempat.
-//
-// enabled: true
-// = halaman sudah dibuat dan boleh dibuka.
-//
-// enabled: false
-// = halaman belum dibuat.
-//   Tombol tetap dikenali tetapi belum melakukan redirect.
-//
-// Nanti setelah halaman selesai dibuat,
-// cukup ubah enabled menjadi true.
-// ======================================================
 
 const HEXA_PAGES = {
+
+  main: {
+    url: "main.html",
+    enabled: true
+  },
 
   "daily-maintenance": {
     url: "daily-maintenance.html",
@@ -101,22 +96,22 @@ const HEXA_PAGES = {
     enabled: false
   },
 
-  "fui": {
+  fui: {
     url: "fui.html",
     enabled: false
   },
 
-  "rotable": {
+  rotable: {
     url: "rotable.html",
     enabled: false
   },
 
-  "news": {
+  news: {
     url: "news.html",
     enabled: false
   },
 
-  "settings": {
+  settings: {
     url: "settings.html",
     enabled: false
   }
@@ -125,7 +120,250 @@ const HEXA_PAGES = {
 
 
 // ======================================================
-// 3. BANNER SLIDER
+// 3. OPEN HEXA PAGE
+// ======================================================
+
+function openHexaPage(
+  pageName
+) {
+
+  const page =
+    HEXA_PAGES[
+      pageName
+    ];
+
+
+  if (!page) {
+
+    console.log(
+      "Menu HEXA tidak terdaftar:",
+      pageName
+    );
+
+    return;
+
+  }
+
+
+  if (!page.enabled) {
+
+    console.log(
+      "Halaman belum tersedia:",
+      page.url
+    );
+
+    return;
+
+  }
+
+
+  window.location.href =
+    page.url;
+
+}
+
+
+// ======================================================
+// 4. HEADER HEXA DROPDOWN
+// ======================================================
+
+const headerLogoButton =
+  document.getElementById(
+    "headerLogoButton"
+  );
+
+const hexaNavMenu =
+  document.getElementById(
+    "hexaNavMenu"
+  );
+
+const logoutButton =
+  document.getElementById(
+    "logoutButton"
+  );
+
+
+// ======================================================
+// OPEN / CLOSE DROPDOWN
+// ======================================================
+
+if (
+  headerLogoButton &&
+  hexaNavMenu
+) {
+
+  headerLogoButton.addEventListener(
+    "click",
+    function (event) {
+
+      event.stopPropagation();
+
+
+      const isOpen =
+        hexaNavMenu.classList.toggle(
+          "open"
+        );
+
+
+      headerLogoButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+    }
+  );
+
+
+  hexaNavMenu.addEventListener(
+    "click",
+    function (event) {
+
+      event.stopPropagation();
+
+    }
+  );
+
+}
+
+
+// ======================================================
+// CLOSE DROPDOWN
+// ======================================================
+
+function closeHexaNavigation() {
+
+  if (!hexaNavMenu) {
+    return;
+  }
+
+
+  hexaNavMenu.classList.remove(
+    "open"
+  );
+
+
+  if (headerLogoButton) {
+
+    headerLogoButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+  }
+
+}
+
+
+// Klik di luar dropdown
+
+document.addEventListener(
+  "click",
+  closeHexaNavigation
+);
+
+
+// ESC untuk menutup dropdown
+
+document.addEventListener(
+  "keydown",
+  function (event) {
+
+    if (
+      event.key ===
+      "Escape"
+    ) {
+
+      closeHexaNavigation();
+
+    }
+
+  }
+);
+
+
+// ======================================================
+// 5. DROPDOWN NAVIGATION
+// ======================================================
+
+document
+  .querySelectorAll(
+    ".nav-menu-item[data-page]"
+  )
+  .forEach(
+    function (button) {
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          const page =
+            button.dataset.page;
+
+
+          closeHexaNavigation();
+
+
+          if (
+            page === "main"
+          ) {
+
+            window.scrollTo({
+
+              top: 0,
+
+              behavior:
+                "smooth"
+
+            });
+
+            return;
+
+          }
+
+
+          openHexaPage(
+            page
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+// ======================================================
+// 6. LOGOUT
+// ======================================================
+
+if (logoutButton) {
+
+  logoutButton.addEventListener(
+    "click",
+    function () {
+
+      sessionStorage.removeItem(
+        "hexaLoggedIn"
+      );
+
+
+      sessionStorage.removeItem(
+        "hexaUser"
+      );
+
+
+      window.location.replace(
+        "index.html"
+      );
+
+    }
+  );
+
+}
+
+
+// ======================================================
+// 7. BANNER SLIDER
 // ======================================================
 
 const slides =
@@ -165,13 +403,17 @@ function showSlide(index) {
   }
 
 
-  if (index >= slides.length) {
+  if (
+    index >= slides.length
+  ) {
 
     currentSlide = 0;
 
   }
 
-  else if (index < 0) {
+  else if (
+    index < 0
+  ) {
 
     currentSlide =
       slides.length - 1;
@@ -180,7 +422,8 @@ function showSlide(index) {
 
   else {
 
-    currentSlide = index;
+    currentSlide =
+      index;
 
   }
 
@@ -241,7 +484,7 @@ function previousSlide() {
 
 
 // ======================================================
-// 4. AUTO SLIDE
+// 8. AUTO SLIDE
 // ======================================================
 
 function startAutoSlide() {
@@ -264,7 +507,9 @@ function startAutoSlide() {
 
 function stopAutoSlide() {
 
-  if (autoSlideTimer) {
+  if (
+    autoSlideTimer
+  ) {
 
     clearInterval(
       autoSlideTimer
@@ -285,7 +530,7 @@ function resetAutoSlide() {
 
 
 // ======================================================
-// 5. PREVIOUS / NEXT BUTTON
+// 9. PREVIOUS / NEXT BUTTON
 // ======================================================
 
 if (prevButton) {
@@ -321,7 +566,7 @@ if (nextButton) {
 
 
 // ======================================================
-// 6. SWIPE BANNER
+// 10. SWIPE BANNER
 // MOBILE / TABLET
 // ======================================================
 
@@ -387,7 +632,9 @@ function handleBannerSwipe() {
   }
 
 
-  if (swipeDistance > 0) {
+  if (
+    swipeDistance > 0
+  ) {
 
     nextSlide();
 
@@ -404,7 +651,7 @@ function handleBannerSwipe() {
 
 
 // ======================================================
-// 7. REFRESH BUTTON
+// 11. REFRESH BUTTON
 // ======================================================
 
 const refreshButton =
@@ -428,7 +675,7 @@ if (refreshButton) {
 
 
 // ======================================================
-// 8. SEARCH MENU
+// 12. SEARCH MENU
 // ======================================================
 
 const searchInput =
@@ -536,7 +783,7 @@ if (searchInput) {
 
 
 // ======================================================
-// 9. SETTINGS HARUS SELALU TERAKHIR
+// 13. SETTINGS HARUS SELALU TERAKHIR
 // ======================================================
 
 const menuGrid =
@@ -567,69 +814,7 @@ function keepSettingsLast() {
 
 
 // ======================================================
-// 10. NAVIGASI MENU UTAMA
-// ======================================================
-
-function openHexaPage(
-  menuName
-) {
-
-  const page =
-    HEXA_PAGES[
-      menuName
-    ];
-
-
-  // Menu tidak terdaftar
-
-  if (!page) {
-
-    console.log(
-      "Menu HEXA tidak terdaftar:",
-      menuName
-    );
-
-    return;
-
-  }
-
-
-  // Halaman sudah tersedia
-
-  if (page.enabled) {
-
-    window.location.href =
-      page.url;
-
-    return;
-
-  }
-
-
-  // Halaman belum dibuat
-
-  console.log(
-    "Halaman belum tersedia:",
-    page.url
-  );
-
-}
-
-
-// ======================================================
-// 11. MENU ICON CLICK
-// ======================================================
-//
-// Semua icon Main Page merupakan tombol.
-//
-// data-menu pada HTML menentukan
-// halaman tujuan.
-//
-// Contoh:
-//
-// data-menu="daily-maintenance"
-// -> daily-maintenance.html
-//
+// 14. MENU ICON CLICK
 // ======================================================
 
 menuItems.forEach(
@@ -655,7 +840,7 @@ menuItems.forEach(
 
 
 // ======================================================
-// 12. FLOATING START INSPECTION BUTTON
+// 15. FLOATING START INSPECTION BUTTON
 // ======================================================
 
 const inspectionShortcut =
@@ -678,7 +863,7 @@ let dragOffsetY = 0;
 
 
 // ======================================================
-// 13. LOAD POSISI FLOATING BUTTON
+// 16. LOAD POSISI FLOATING BUTTON
 // ======================================================
 
 function loadFloatingButtonPosition() {
@@ -782,7 +967,7 @@ function loadFloatingButtonPosition() {
 
 
 // ======================================================
-// 14. SAVE POSISI FLOATING BUTTON
+// 17. SAVE POSISI FLOATING BUTTON
 // ======================================================
 
 function saveFloatingButtonPosition() {
@@ -819,7 +1004,7 @@ function saveFloatingButtonPosition() {
 
 
 // ======================================================
-// 15. DRAG FLOATING BUTTON
+// 18. DRAG FLOATING BUTTON
 // ======================================================
 
 if (inspectionShortcut) {
@@ -954,10 +1139,19 @@ if (inspectionShortcut) {
       isDragging = false;
 
 
-      inspectionShortcut
-        .releasePointerCapture(
-          event.pointerId
-        );
+      try {
+
+        inspectionShortcut
+          .releasePointerCapture(
+            event.pointerId
+          );
+
+      } catch (error) {
+
+        // Abaikan jika pointer capture
+        // sudah dilepas browser.
+
+      }
 
 
       if (dragMoved) {
@@ -971,7 +1165,7 @@ if (inspectionShortcut) {
 
 
   // ====================================================
-  // 16. FLOATING BUTTON CLICK
+  // 19. FLOATING BUTTON CLICK
   // ====================================================
 
   inspectionShortcut.addEventListener(
@@ -995,20 +1189,9 @@ if (inspectionShortcut) {
       // ================================================
       // START INSPECTION
       // ================================================
-      //
-      // Halaman belum dibuat.
-      //
-      // Setelah start-inspection.html selesai,
-      // bagian ini akan kita aktifkan menjadi:
-      //
-      // window.location.href =
-      //   "start-inspection.html";
-      //
-      // ================================================
 
-      console.log(
-        "Shortcut: Start Inspection"
-      );
+      window.location.href =
+        "/start-inspection";
 
     }
   );
@@ -1017,7 +1200,7 @@ if (inspectionShortcut) {
 
 
 // ======================================================
-// 17. JAGA FLOATING BUTTON TETAP DI DALAM LAYAR
+// 20. WINDOW RESIZE
 // ======================================================
 
 window.addEventListener(
@@ -1052,7 +1235,7 @@ window.addEventListener(
       buttonHeight;
 
 
-    const safeLeft =
+    let safeLeft =
       Math.max(
         0,
         Math.min(
@@ -1062,7 +1245,7 @@ window.addEventListener(
       );
 
 
-    const safeTop =
+    let safeTop =
       Math.max(
         0,
         Math.min(
@@ -1092,46 +1275,29 @@ window.addEventListener(
 
 
 // ======================================================
-// 18. INITIALIZE HEXA MAIN PAGE
+// 21. INITIALIZE MAIN PAGE
 // ======================================================
 
-function initializeHexaMain() {
+keepSettingsLast();
 
-  // Banner pertama
+showSlide(0);
 
-  showSlide(0);
+startAutoSlide();
 
 
-  // Auto slide
+// Tunggu layout selesai sebelum
+// membaca posisi floating button.
 
-  if (
-    slides.length > 1
-  ) {
+window.addEventListener(
+  "load",
+  function () {
 
-    startAutoSlide();
+    loadFloatingButtonPosition();
 
   }
+);
 
 
-  // Settings selalu terakhir
-
-  keepSettingsLast();
-
-
-  // Posisi floating button
-
-  loadFloatingButtonPosition();
-
-
-  console.log(
-    "HEXA Main Page Ready"
-  );
-
-}
-
-
-// ======================================================
-// JALANKAN
-// ======================================================
-
-initializeHexaMain();
+console.log(
+  "HEXA Main Page Ready"
+);
