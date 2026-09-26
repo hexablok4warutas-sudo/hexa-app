@@ -1,6 +1,14 @@
-/* =========================================================
-   UNIT HISTORY BOX MODEL
-   ========================================================= */
+/* =====================================================
+   HEXA - UNIT HISTORY
+   =====================================================
+   Layout mengikuti Daily Outstanding.
+   Global HEXA Header TIDAK diatur di file ini.
+===================================================== */
+
+
+/* =====================================================
+   PAGE
+===================================================== */
 
 .unit-history-page,
 .unit-history-page *,
@@ -8,360 +16,346 @@
 .unit-history-page *::after {
   box-sizing: border-box;
 }
-/* =========================================================
-   HEXA APP - UNIT HISTORY
-   =========================================================
-   Global Header TIDAK diatur dari file ini.
-   ========================================================= */
-
-
-/* =========================================================
-   PAGE
-   ========================================================= */
 
 .unit-history-page {
-  position: fixed;
+  min-height: 100vh;
 
-  top: 88px;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  padding-top: 88px;
 
-  display: flex;
-  flex-direction: column;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-  overflow: hidden;
+  color: #303030;
 
-  background-color: #fffaf2;
-  background-image: url("hexa-doodle.png");
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.76),
+      rgba(255, 255, 255, 0.76)
+    ),
+    url("hexa-doodle.png");
+
   background-repeat: repeat;
-  background-position: top center;
   background-size: 760px auto;
-
-  font-family: Arial, Helvetica, sans-serif;
-  color: #111111;
 }
 
 
-/* =========================================================
-   FIXED PAGE BAR
-   ========================================================= */
+/* =====================================================
+   TITLE BAR
+   Lebar sama seperti Daily Outstanding
+===================================================== */
 
 .unit-history-page-bar {
-  position: relative;
+  position: sticky;
 
-  flex: 0 0 112px;
+  top: 88px;
 
-  width: 100%;
-  max-width: 100%;
+  z-index: 120;
+
+  width: min(94%, 1220px);
+
+  min-height: 88px;
+
+  margin: 0 auto;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  gap: 24px;
+  gap: 20px;
 
-  padding: 8px 76px 6px 76px;
+  padding: 8px 10px;
 
-  overflow: hidden;
+  background:
+    rgba(255, 255, 255, 0.95);
 
-  background-color: rgba(255, 250, 242, 0.96);
-
-  z-index: 20;
+  border-bottom:
+    3px solid #f5a000;
 }
 
 
-/* =========================================================
+/* =====================================================
    TITLE
-   ========================================================= */
+===================================================== */
 
-..unit-history-title {
+.unit-history-title {
   min-width: 0;
-  flex: 1 1 auto;
 
   display: flex;
   align-items: center;
 
-  gap: 14px;
-
-  overflow: hidden;
+  gap: 12px;
 }
 
 .unit-history-title-icon {
-  display: block;
+  width: 78px;
+  height: 78px;
 
-  width: 104px;
-  height: 92px;
-
-  flex: 0 0 auto;
+  flex-shrink: 0;
 
   object-fit: contain;
 }
 
-
 .unit-history-title h1 {
   margin: 0;
-  padding: 0;
 
-  color: #050505;
+  color: #111;
 
-  font-size: 40px;
+  font-size:
+    clamp(
+      28px,
+      4vw,
+      42px
+    );
+
   line-height: 1;
 
   font-weight: 800;
 
-  letter-spacing: -1px;
+  letter-spacing: -0.8px;
 
   white-space: nowrap;
-
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 
-/* =========================================================
-   ACTION AREA
-   ========================================================= */
+/* =====================================================
+   ACTIONS
+===================================================== */
 
 .unit-history-actions {
-  flex: 0 0 auto;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
-  justify-content: flex-end;
 
-  gap: 12px;
-
-  margin-left: auto;
+  gap: 10px;
 }
 
 
-/* =========================================================
+/* =====================================================
    ACTION BUTTON
-   ========================================================= */
+   Gaya sama dengan Filter Daily Outstanding
+===================================================== */
 
 .unit-history-action-button {
-  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
 
-  width: 40px;
-  height: 40px;
-
-  margin: 0;
-  padding: 6px;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border: 0;
-  outline: 0;
+  padding: 0;
 
-  border-radius: 8px;
+  border:
+    2px solid #f5a000;
 
-  background: transparent;
+  border-radius: 50%;
 
-  color: #f4a000;
+  background: #fff;
+
+  color: #f5a000;
 
   cursor: pointer;
 
   transition:
-    background-color 0.15s ease,
-    transform 0.15s ease,
-    color 0.15s ease;
-}
-
-.unit-history-action-button svg {
-  display: block;
-
-  width: 27px;
-  height: 27px;
-
-  fill: none;
-
-  stroke: currentColor;
-  stroke-width: 2;
-
-  stroke-linecap: round;
-  stroke-linejoin: round;
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
 }
 
 .unit-history-action-button:hover {
-  background-color: rgba(244, 160, 0, 0.12);
+  background: #f5a000;
 
-  transform: translateY(-1px);
+  color: #111;
+
+  transform:
+    translateY(-1px);
 }
-
-
-.unit-history-action-button:active {
-  transform: translateY(0);
-}
-
 
 .unit-history-action-button svg {
-  display: block;
-
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
 
   fill: none;
 
   stroke: currentColor;
-  stroke-width: 2;
-
+  stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-
-/* FILTER ICON */
-
 #unitHistoryFilterButton svg {
-  fill: currentColor;
+  fill: none;
 
   stroke: currentColor;
-
-  stroke-width: 1;
 }
 
 
-/* DELETE ACTIVE MODE */
+/* DELETE MODE */
 
 .unit-history-delete-button.is-active {
-  color: #ffffff;
+  border-color: #d92d20;
 
-  background-color: #d92d20;
+  background: #d92d20;
+
+  color: #fff;
 }
-
 
 .unit-history-delete-button.is-active:hover {
-  background-color: #b42318;
+  background: #b42318;
+
+  border-color: #b42318;
+
+  color: #fff;
 }
 
 
-/* =========================================================
-   ORANGE DIVIDER
-   ========================================================= */
+/* =====================================================
+   OLD DIVIDER
+   Divider sudah menjadi bagian title bar.
+===================================================== */
 
 .unit-history-page-divider {
-  position: relative;
-
-  flex: 0 0 3px;
-
-  width: calc(100% - 144px);
-
-  margin: 0 auto;
-
-  background-color: #f4a000;
-
-  border-radius: 999px;
-
-  z-index: 20;
+  display: none;
 }
 
 
-/* =========================================================
+/* =====================================================
    TABLE VIEW
-   ========================================================= */
+   Container mengikuti Daily Outstanding
+===================================================== */
 
 .unit-history-table-view {
   position: relative;
 
-  flex: 1 1 auto;
+  width: min(94%, 1220px);
 
-  min-height: 0;
+  margin: 8px auto 0;
 
-  width: calc(100% - 144px);
+  background: #fff;
 
-  margin: 14px auto 18px;
+  border:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.06
+    );
 
-  overflow: hidden;
+  box-shadow:
+    0 9px 28px
+    rgba(
+      0,
+      0,
+      0,
+      0.10
+    );
 }
 
 
-/* =========================================================
+/* =====================================================
    LOADING / EMPTY / ERROR
-   ========================================================= */
+===================================================== */
 
 .unit-history-state {
-  width: 100%;
-  height: 100%;
-
-  min-height: 180px;
+  min-height: 350px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 30px;
+  padding: 25px;
+
+  color: #777;
+
+  background: #fff;
+
+  font-size: 14px;
 
   text-align: center;
-
-  color: #444444;
-
-  background-color: rgba(255, 255, 255, 0.97);
-
-  border: 1px solid rgba(0, 0, 0, 0.10);
-
-  border-radius: 7px;
-
-  box-shadow:
-    0 5px 18px rgba(0, 0, 0, 0.08);
-
-  font-size: 15px;
-  font-weight: 700;
 }
-
 
 .unit-history-state-error {
-  color: #b42318;
+  color: #d23b3b;
 }
 
 
-/* =========================================================
+/* =====================================================
    TABLE CONTAINER
-   ========================================================= */
+===================================================== */
 
 .unit-history-table-container {
   position: relative;
 
   width: 100%;
-  height: 100%;
+
+  background: #fff;
 
   overflow: hidden;
-
-  background-color: #ffffff;
-
-  border: 1px solid rgba(0, 0, 0, 0.12);
-
-  border-radius: 6px;
-
-  box-shadow:
-    0 5px 18px rgba(0, 0, 0, 0.09);
 }
 
 
-/* =========================================================
+/* =====================================================
    TABLE SCROLL AREA
-   ONLY THIS AREA SCROLLS
-   ========================================================= */
+
+   Hanya bagian ini yang scroll.
+   Vertikal + horizontal.
+===================================================== */
 
 .unit-history-table-scroll {
   position: relative;
 
   width: 100%;
-  height: 100%;
 
-  overflow: auto;
+  height:
+    calc(
+      100vh - 225px
+    );
 
-  overscroll-behavior: contain;
+  min-height: 350px;
 
-  scrollbar-gutter: stable;
+  max-height: 650px;
+
+  overflow-x: auto;
+  overflow-y: scroll;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #bfc3c7
+    #f3f3f3;
+
+  scroll-behavior: smooth;
+}
+
+.unit-history-table-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.unit-history-table-scroll::-webkit-scrollbar-track {
+  background: #f3f3f3;
+}
+
+.unit-history-table-scroll::-webkit-scrollbar-thumb {
+  background: #bfc3c7;
+
+  border-radius: 8px;
+}
+
+.unit-history-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: #999;
 }
 
 
-/* =========================================================
+/* =====================================================
    TABLE
-   ========================================================= */
+===================================================== */
 
 .unit-history-table {
   width: max-content;
@@ -369,7 +363,6 @@
   min-width: 100%;
 
   margin: 0;
-  padding: 0;
 
   border: 0;
 
@@ -378,49 +371,50 @@
 
   table-layout: fixed;
 
-  background-color: #ffffff;
+  background: #fff;
 
-  color: #111111;
+  color: #222;
 
-  font-size: 13px;
+  font-size: 12px;
 }
 
 
-/* =========================================================
-   TABLE CELLS
-   ========================================================= */
+/* =====================================================
+   TABLE CELL
+===================================================== */
 
 .unit-history-table th,
 .unit-history-table td {
-  margin: 0;
-
-  padding: 11px 13px;
+  padding: 10px 12px;
 
   vertical-align: middle;
 
   text-align: left;
 
-  border-right: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e3e3e3;
+  border-right:
+    1px solid #e1e1e1;
+
+  border-bottom:
+    1px solid #ededed;
 }
 
 
-/* =========================================================
+/* =====================================================
    TABLE HEADER
-   ========================================================= */
+===================================================== */
 
 .unit-history-table thead th {
   position: sticky;
 
   top: 0;
 
-  z-index: 10;
+  z-index: 20;
 
-  height: 46px;
+  height: 48px;
 
-  background-color: #111111;
+  background: #111;
 
-  color: #ffffff;
+  color: #fff;
 
   font-size: 11px;
   line-height: 1.2;
@@ -433,35 +427,49 @@
 }
 
 
-/* =========================================================
+/* =====================================================
    TABLE BODY
-   ========================================================= */
+===================================================== */
 
 .unit-history-table tbody td {
-  min-height: 66px;
+  height: 66px;
 
-  background-color: #ffffff;
+  background: #fff;
 
   line-height: 1.35;
 }
-
 
 .unit-history-table tbody tr {
   cursor: pointer;
 }
 
-
 .unit-history-table tbody tr:hover td {
-  background-color: #fff8e8;
+  background:
+    rgba(
+      245,
+      160,
+      0,
+      0.055
+    );
 }
 
 
-/* =========================================================
+/* =====================================================
    COLUMN WIDTH
-   DEFAULT VIEW
-   ========================================================= */
+   Checkbox adalah child pertama walaupun hidden.
+===================================================== */
 
-/* Unit Code */
+
+/* DELETE */
+
+.unit-history-table th:nth-child(1),
+.unit-history-table td:nth-child(1) {
+  width: 48px;
+  min-width: 48px;
+}
+
+
+/* UNIT CODE */
 
 .unit-history-table th:nth-child(2),
 .unit-history-table td:nth-child(2) {
@@ -470,54 +478,54 @@
 }
 
 
-/* HM Inspection */
+/* HM */
 
 .unit-history-table th:nth-child(3),
 .unit-history-table td:nth-child(3) {
-  width: 130px;
-  min-width: 130px;
+  width: 125px;
+  min-width: 125px;
 }
 
 
-/* Group Component */
+/* GROUP COMPONENT */
 
 .unit-history-table th:nth-child(4),
 .unit-history-table td:nth-child(4) {
-  width: 180px;
-  min-width: 180px;
+  width: 175px;
+  min-width: 175px;
 }
 
 
-/* Problem Description */
+/* PROBLEM */
 
 .unit-history-table th:nth-child(5),
 .unit-history-table td:nth-child(5) {
-  width: 300px;
-  min-width: 300px;
+  width: 280px;
+  min-width: 280px;
 }
 
 
-/* Photo */
+/* PHOTO */
 
 .unit-history-table th:nth-child(6),
 .unit-history-table td:nth-child(6) {
-  width: 105px;
-  min-width: 105px;
+  width: 100px;
+  min-width: 100px;
 
   text-align: center;
 }
 
 
-/* Rating */
+/* RATING */
 
 .unit-history-table th:nth-child(7),
 .unit-history-table td:nth-child(7) {
-  width: 100px;
-  min-width: 100px;
+  width: 95px;
+  min-width: 95px;
 }
 
 
-/* Status */
+/* STATUS */
 
 .unit-history-table th:nth-child(8),
 .unit-history-table td:nth-child(8) {
@@ -526,12 +534,12 @@
 }
 
 
-/* Parts Description */
+/* PART DESCRIPTION */
 
 .unit-history-table th:nth-child(9),
 .unit-history-table td:nth-child(9) {
-  width: 230px;
-  min-width: 230px;
+  width: 210px;
+  min-width: 210px;
 }
 
 
@@ -544,23 +552,22 @@
 }
 
 
-/* Parts Status */
+/* PARTS STATUS */
 
 .unit-history-table th:nth-child(11),
 .unit-history-table td:nth-child(11) {
-  width: 145px;
-  min-width: 145px;
+  width: 135px;
+  min-width: 135px;
 }
 
 
-/* =========================================================
+/* =====================================================
    DELETE COLUMN
-   ========================================================= */
+===================================================== */
 
 .unit-history-delete-column {
   width: 48px !important;
   min-width: 48px !important;
-  max-width: 48px !important;
 
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -568,38 +575,17 @@
   text-align: center !important;
 }
 
-
-/* checkbox header */
-
-#unitHistorySelectAll {
-  width: 17px;
-  height: 17px;
-
-  margin: 0;
-
-  cursor: pointer;
-
-  accent-color: #f4a000;
-}
-
-
-/* checkbox row */
-
+#unitHistorySelectAll,
 .unit-history-row-checkbox {
   width: 17px;
   height: 17px;
 
   margin: 0;
 
+  accent-color: #f5a000;
+
   cursor: pointer;
-
-  accent-color: #f4a000;
 }
-
-
-/* =========================================================
-   DELETE MODE
-   ========================================================= */
 
 .unit-history-page.is-delete-mode
 .unit-history-table tbody tr {
@@ -607,48 +593,46 @@
 }
 
 
-/* =========================================================
+/* =====================================================
    PHOTO
-   ========================================================= */
+===================================================== */
 
 .unit-history-row-photo {
   display: block;
 
-  width: 70px;
+  width: 60px;
   height: 52px;
 
   margin: 0 auto;
 
   object-fit: cover;
 
-  background-color: #eeeeee;
+  overflow: hidden;
 
-  border: 1px solid #dddddd;
+  border-radius: 3px;
 
-  border-radius: 6px;
+  background: #ededed;
 }
-
 
 .unit-history-row-no-photo {
-  color: #999999;
+  color: #999;
 
   font-size: 11px;
-  font-weight: 600;
 }
 
 
-/* =========================================================
-   EMPTY TABLE VALUE
-   ========================================================= */
+/* =====================================================
+   EMPTY VALUE
+===================================================== */
 
 .unit-history-empty-value {
-  color: #999999;
+  color: #aaa;
 }
 
 
-/* =========================================================
+/* =====================================================
    BADGES
-   ========================================================= */
+===================================================== */
 
 .unit-history-badge {
   display: inline-flex;
@@ -671,275 +655,246 @@
   white-space: nowrap;
 }
 
-
-/* OPEN */
-
-.unit-history-badge-open {
-  color: #b76b00;
-
-  background-color: #fff0d1;
-}
-
-
-/* CLOSE */
-
-.unit-history-badge-close {
-  color: #16783d;
-
-  background-color: #e5f7eb;
-}
-
-
-/* MOL BELUM */
-
+.unit-history-badge-open,
 .unit-history-badge-belum {
   color: #b76b00;
 
-  background-color: #fff0d1;
+  background: #fff0d1;
 }
 
-
-/* MOL SUBMITTED */
-
+.unit-history-badge-close,
 .unit-history-badge-submitted {
   color: #16783d;
 
-  background-color: #e5f7eb;
+  background: #e5f7eb;
 }
 
 
-/* =========================================================
+/* =====================================================
    DETAIL VIEW
-   ========================================================= */
+===================================================== */
 
 .unit-history-detail-view {
   position: relative;
 
-  flex: 1 1 auto;
+  width: min(94%, 1220px);
 
-  min-height: 0;
+  height:
+    calc(
+      100vh - 225px
+    );
 
-  width: calc(100% - 144px);
+  min-height: 350px;
 
-  margin: 14px auto 18px;
+  max-height: 650px;
+
+  margin: 8px auto 0;
 
   overflow-y: auto;
   overflow-x: hidden;
 
-  background-color: rgba(255, 255, 255, 0.98);
+  background: #fff;
 
-  border: 1px solid rgba(0, 0, 0, 0.10);
-
-  border-radius: 7px;
+  border:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.06
+    );
 
   box-shadow:
-    0 5px 18px rgba(0, 0, 0, 0.09);
+    0 9px 28px
+    rgba(
+      0,
+      0,
+      0,
+      0.10
+    );
+
+  scrollbar-width: thin;
 }
 
 
-/* =========================================================
+/* =====================================================
    DETAIL HEADER
-   ========================================================= */
+===================================================== */
 
 .unit-history-detail-header {
   position: sticky;
 
   top: 0;
 
-  z-index: 8;
+  z-index: 20;
 
-  min-height: 72px;
+  min-height: 70px;
 
   display: flex;
   align-items: center;
 
-  gap: 14px;
+  gap: 13px;
 
-  padding: 10px 20px;
+  padding: 10px 16px;
 
-  background-color: #ffffff;
+  background: #fff;
 
-  border-bottom: 2px solid #f4a000;
+  border-bottom:
+    3px solid #f5a000;
 }
-
 
 .unit-history-detail-label {
   margin-bottom: 3px;
 
-  color: #777777;
+  color: #777;
 
-  font-size: 11px;
+  font-size: 10px;
 
   font-weight: 700;
 
   text-transform: uppercase;
-
-  letter-spacing: 0.4px;
 }
-
 
 .unit-history-detail-header h2 {
   margin: 0;
 
-  color: #111111;
+  color: #111;
 
-  font-size: 24px;
-  line-height: 1.1;
+  font-size: 23px;
 
   font-weight: 800;
 }
 
 
-/* =========================================================
+/* =====================================================
    BACK BUTTON
-   ========================================================= */
+===================================================== */
 
 .unit-history-back-button {
-  flex: 0 0 auto;
-
   width: 42px;
   height: 42px;
 
-  margin: 0;
-  padding: 8px;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  padding: 0;
+
   border: 0;
 
   border-radius: 50%;
 
-  background-color: #f4a000;
+  background: #f5a000;
 
-  color: #ffffff;
+  color: #fff;
 
   cursor: pointer;
 }
 
-
-.unit-history-back-button:hover {
-  background-color: #db9000;
-}
-
-
 .unit-history-back-button svg {
-  display: block;
-
-  width: 24px;
-  height: 24px;
+  width: 23px;
+  height: 23px;
 
   fill: none;
 
   stroke: currentColor;
-  stroke-width: 2.5;
-
+  stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 
-/* =========================================================
+/* =====================================================
    DETAIL CONTENT
-   ========================================================= */
+===================================================== */
 
 .unit-history-detail-content {
-  width: 100%;
-
-  padding: 18px;
+  padding: 16px;
 }
-
-
-/* =========================================================
-   DETAIL SECTION
-   ========================================================= */
 
 .unit-history-detail-section {
-  width: 100%;
+  margin-bottom: 16px;
 
-  margin-bottom: 18px;
+  padding: 16px;
 
-  padding: 18px;
+  border:
+    1px solid #ededed;
 
-  background-color: #ffffff;
+  border-radius: 8px;
 
-  border: 1px solid #e3e3e3;
-
-  border-radius: 7px;
+  background: #fff;
 }
-
 
 .unit-history-detail-section:last-child {
   margin-bottom: 0;
 }
 
-
 .unit-history-detail-section h3 {
-  margin: 0 0 16px;
+  margin:
+    0
+    0
+    14px;
 
-  padding-bottom: 9px;
+  padding-bottom: 8px;
 
-  color: #111111;
+  border-bottom:
+    2px solid #f5a000;
 
-  border-bottom: 2px solid #f4a000;
+  color: #111;
 
-  font-size: 18px;
-
+  font-size: 17px;
   font-weight: 800;
 }
 
 
-/* =========================================================
+/* =====================================================
    DETAIL GRID
-   ========================================================= */
+===================================================== */
 
 .unit-history-detail-grid {
   display: grid;
 
   grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
 
-  gap: 12px;
+  gap: 10px;
 }
-
-
-/* =========================================================
-   DETAIL FIELD
-   ========================================================= */
 
 .unit-history-detail-field {
   min-width: 0;
 
-  padding: 11px 13px;
+  padding: 10px 12px;
 
-  background-color: #fafafa;
-
-  border: 1px solid #eeeeee;
+  border:
+    1px solid #eee;
 
   border-radius: 6px;
-}
 
+  background: #fafafa;
+}
 
 .unit-history-detail-field span {
   display: block;
 
   margin-bottom: 5px;
 
-  color: #777777;
+  color: #777;
 
-  font-size: 11px;
-
+  font-size: 10px;
   font-weight: 700;
 }
-
 
 .unit-history-detail-field strong {
   display: block;
 
-  color: #111111;
+  color: #222;
 
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.4;
 
   font-weight: 700;
@@ -947,37 +902,32 @@
   overflow-wrap: anywhere;
 }
 
-
 .unit-history-detail-wide {
-  grid-column: 1 / -1;
+  grid-column:
+    1 / -1;
 }
 
 
-/* =========================================================
+/* =====================================================
    DETAIL PHOTO
-   ========================================================= */
+===================================================== */
 
 .unit-history-detail-photo-area {
-  margin-top: 14px;
+  margin-top: 12px;
 }
-
 
 .unit-history-detail-photo-area > span {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 6px;
 
-  color: #777777;
+  color: #777;
 
-  font-size: 11px;
-
+  font-size: 10px;
   font-weight: 700;
 }
 
-
 .unit-history-detail-photo-container {
-  width: 100%;
-
   min-height: 160px;
 
   display: flex;
@@ -986,126 +936,130 @@
 
   padding: 10px;
 
-  overflow: hidden;
+  border:
+    1px solid #eee;
 
-  background-color: #f4f4f4;
+  border-radius: 6px;
 
-  border: 1px solid #e2e2e2;
-
-  border-radius: 7px;
+  background: #f4f4f4;
 }
-
 
 .unit-history-detail-photo {
   display: block;
 
-  width: auto;
   max-width: 100%;
-
-  max-height: 420px;
+  max-height: 400px;
 
   object-fit: contain;
 
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 
-/* =========================================================
-   FLOATING START INSPECTION SHORTCUT
-   ========================================================= */
+/* =====================================================
+   FLOATING START INSPECTION
+   Ukuran/gaya mengikuti Daily Outstanding.
+===================================================== */
 
 .unit-history-inspection-shortcut {
   position: fixed;
 
-  right: 26px;
-  bottom: 26px;
+  right: 28px;
+  bottom: 24px;
 
-  z-index: 80;
+  z-index: 800;
 
-  width: 58px;
-  height: 58px;
-
-  margin: 0;
-  padding: 0;
+  width: 70px;
+  height: 70px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
+  padding: 0;
+
   border: 0;
 
   border-radius: 50%;
 
-  background-color: #f4a000;
+  background:
+    rgba(
+      245,
+      160,
+      0,
+      0.88
+    );
 
   box-shadow:
-    0 7px 18px rgba(0, 0, 0, 0.24);
+    0 10px 25px
+    rgba(
+      0,
+      0,
+      0,
+      0.20
+    );
 
-  cursor: pointer;
+  cursor: grab;
 
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
+  touch-action: none;
+
+  user-select: none;
 }
 
-
-.unit-history-inspection-shortcut:hover {
-  transform: translateY(-2px);
-
-  box-shadow:
-    0 9px 22px rgba(0, 0, 0, 0.28);
+.unit-history-inspection-shortcut:active {
+  cursor: grabbing;
 }
-
-
-/* PLUS HORIZONTAL */
-
-.unit-history-inspection-shortcut::before {
-  content: "";
-
-  position: absolute;
-
-  width: 24px;
-  height: 4px;
-
-  border-radius: 999px;
-
-  background-color: #ffffff;
-}
-
-
-/* PLUS VERTICAL */
-
-.unit-history-inspection-shortcut::after {
-  content: "";
-
-  position: absolute;
-
-  width: 4px;
-  height: 24px;
-
-  border-radius: 999px;
-
-  background-color: #ffffff;
-}
-
-
-/* placeholder span */
 
 .unit-history-inspection-shortcut span {
-  display: none;
+  position: relative;
+
+  display: block;
+
+  width: 34px;
+  height: 34px;
+}
+
+.unit-history-inspection-shortcut span::before,
+.unit-history-inspection-shortcut span::after {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  border-radius: 3px;
+
+  background: #fff;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+}
+
+.unit-history-inspection-shortcut span::before {
+  width: 34px;
+  height: 7px;
+}
+
+.unit-history-inspection-shortcut span::after {
+  width: 7px;
+  height: 34px;
 }
 
 
-/* =========================================================
+/* =====================================================
    DELETE MODAL
-   ========================================================= */
+===================================================== */
 
 .unit-history-modal {
   position: fixed;
 
   inset: 0;
 
-  z-index: 300;
+  z-index: 3000;
 
   display: flex;
   align-items: center;
@@ -1114,66 +1068,67 @@
   padding: 20px;
 }
 
-
-/* =========================================================
-   MODAL BACKDROP
-   ========================================================= */
-
 .unit-history-modal-backdrop {
   position: absolute;
 
   inset: 0;
 
-  background-color: rgba(0, 0, 0, 0.58);
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.56
+    );
 }
-
-
-/* =========================================================
-   MODAL CARD
-   ========================================================= */
 
 .unit-history-modal-card {
   position: relative;
 
   z-index: 2;
 
-  width: min(420px, 100%);
+  width:
+    min(
+      420px,
+      100%
+    );
 
   padding: 24px;
 
-  background-color: #ffffff;
-
   border-radius: 10px;
 
-  box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.28);
-}
+  background: #fff;
 
+  box-shadow:
+    0 16px 40px
+    rgba(
+      0,
+      0,
+      0,
+      0.28
+    );
+}
 
 .unit-history-modal-card h2 {
-  margin: 0 0 12px;
+  margin:
+    0
+    0
+    12px;
 
-  color: #111111;
+  color: #111;
 
   font-size: 21px;
-
   font-weight: 800;
 }
-
 
 .unit-history-modal-card p {
   margin: 0;
 
-  color: #444444;
+  color: #444;
 
   font-size: 14px;
   line-height: 1.5;
 }
-
-
-/* =========================================================
-   MODAL ACTIONS
-   ========================================================= */
 
 .unit-history-modal-actions {
   display: flex;
@@ -1185,250 +1140,198 @@
   margin-top: 22px;
 }
 
-
 .unit-history-modal-no,
 .unit-history-modal-yes {
   min-width: 86px;
-
   min-height: 40px;
 
-  padding: 8px 16px;
+  padding:
+    8px
+    16px;
 
   border: 0;
 
   border-radius: 7px;
 
   font-size: 13px;
-
   font-weight: 800;
 
   cursor: pointer;
 }
 
-
 .unit-history-modal-no {
-  color: #333333;
+  background: #eee;
 
-  background-color: #eeeeee;
+  color: #333;
 }
-
-
-.unit-history-modal-no:hover {
-  background-color: #dddddd;
-}
-
 
 .unit-history-modal-yes {
-  color: #ffffff;
+  background: #d92d20;
 
-  background-color: #d92d20;
+  color: #fff;
 }
 
 
-.unit-history-modal-yes:hover {
-  background-color: #b42318;
+/* =====================================================
+   HIDDEN
+
+   Scoped hanya ke Unit History.
+   Tidak menyentuh Global Header.
+===================================================== */
+
+.unit-history-page [hidden] {
+  display: none !important;
 }
 
 
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
-
-.unit-history-table-scroll::-webkit-scrollbar,
-.unit-history-detail-view::-webkit-scrollbar {
-  width: 11px;
-  height: 11px;
-}
-
-
-.unit-history-table-scroll::-webkit-scrollbar-track,
-.unit-history-detail-view::-webkit-scrollbar-track {
-  background-color: #eeeeee;
-}
-
-
-.unit-history-table-scroll::-webkit-scrollbar-thumb,
-.unit-history-detail-view::-webkit-scrollbar-thumb {
-  background-color: #aaaaaa;
-
-  border: 3px solid #eeeeee;
-
-  border-radius: 999px;
-}
-
-
-.unit-history-table-scroll::-webkit-scrollbar-thumb:hover,
-.unit-history-detail-view::-webkit-scrollbar-thumb:hover {
-  background-color: #888888;
-}
-
-
-/* =========================================================
+/* =====================================================
    TABLET
-   ========================================================= */
+===================================================== */
 
 @media (max-width: 900px) {
 
-  .unit-history-page-bar {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-
-
-  .unit-history-page-divider {
-    width: calc(100% - 60px);
-  }
-
-
-  .unit-history-table-view,
-  .unit-history-detail-view {
-    width: calc(100% - 60px);
+  .unit-history-detail-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
   }
 
 }
 
 
-/* =========================================================
+/* =====================================================
    MOBILE
-   Global Header mobile = 72px
-   ========================================================= */
+   Global Header tetap dikontrol hexa-header.css
+===================================================== */
 
-@media (max-width: 700px) {
+@media (max-width: 600px) {
 
   .unit-history-page {
-    top: 72px;
+    padding-top: 72px;
+
+    background-size:
+      570px auto;
   }
 
 
-  /* PAGE BAR */
+  /* TITLE BAR */
 
   .unit-history-page-bar {
-    flex-basis: 86px;
+    top: 72px;
+
+    width:
+      calc(
+        100% - 16px
+      );
+
+    min-height: 76px;
+
+    gap: 8px;
 
     padding:
-      5px
-      10px
-      4px
-      8px;
+      6px
+      4px;
 
-    gap: 6px;
+    border-bottom-width:
+      2px;
   }
 
 
-  /* TITLE */
-
   .unit-history-title {
-    gap: 4px;
+    gap: 7px;
   }
 
 
   .unit-history-title-icon {
-    width: 68px;
-    height: 66px;
+    width: 58px;
+    height: 58px;
   }
 
 
   .unit-history-title h1 {
-    font-size: 25px;
+    font-size: 24px;
 
-    letter-spacing: -0.5px;
+    letter-spacing:
+      -0.5px;
   }
 
 
-  /* ACTIONS */
+  /* ACTION BUTTON */
 
   .unit-history-actions {
-    gap: 2px;
+    gap: 5px;
   }
 
 
   .unit-history-action-button {
-    width: 34px;
-    height: 34px;
-
-    padding: 5px;
-
-    border-radius: 6px;
+    width: 40px;
+    height: 40px;
   }
 
 
   .unit-history-action-button svg {
-    width: 24px;
-    height: 24px;
-  }
-
-
-  /* DIVIDER */
-
-  .unit-history-page-divider {
-    flex-basis: 2px;
-
-    width: calc(100% - 20px);
-  }
-
-
-  /* TABLE VIEW */
-
-  .unit-history-table-view {
-    width: calc(100% - 12px);
-
-    margin:
-      8px
-      auto
-      10px;
-  }
-
-
-  /* DETAIL VIEW */
-
-  .unit-history-detail-view {
-    width: calc(100% - 12px);
-
-    margin:
-      8px
-      auto
-      10px;
+    width: 20px;
+    height: 20px;
   }
 
 
   /* TABLE */
 
+  .unit-history-table-view {
+    width:
+      calc(
+        100% - 16px
+      );
+
+    margin-top: 5px;
+  }
+
+
+  .unit-history-table-scroll {
+    height:
+      calc(
+        100vh - 175px
+      );
+
+    min-height: 330px;
+
+    max-height: none;
+  }
+
+
   .unit-history-table {
-    font-size: 12px;
+    font-size: 11px;
   }
 
 
   .unit-history-table th,
   .unit-history-table td {
     padding:
-      9px
-      10px;
+      8px
+      9px;
   }
 
 
   /* DETAIL */
 
-  .unit-history-detail-header {
-    min-height: 62px;
+  .unit-history-detail-view {
+    width:
+      calc(
+        100% - 16px
+      );
 
-    padding:
-      8px
-      10px;
+    height:
+      calc(
+        100vh - 175px
+      );
 
-    gap: 9px;
-  }
+    min-height: 330px;
 
+    max-height: none;
 
-  .unit-history-detail-header h2 {
-    font-size: 20px;
-  }
-
-
-  .unit-history-back-button {
-    width: 36px;
-    height: 36px;
-
-    padding: 7px;
+    margin-top: 5px;
   }
 
 
@@ -1438,14 +1341,9 @@
 
 
   .unit-history-detail-section {
-    margin-bottom: 10px;
-
     padding: 12px;
-  }
 
-
-  .unit-history-detail-section h3 {
-    font-size: 16px;
+    margin-bottom: 10px;
   }
 
 
@@ -1464,96 +1362,75 @@
   /* FLOATING BUTTON */
 
   .unit-history-inspection-shortcut {
-    right: 16px;
+    right: 18px;
     bottom: 18px;
 
-    width: 54px;
-    height: 54px;
+    width: 62px;
+    height: 62px;
   }
 
 
-  /* MODAL */
-
-  .unit-history-modal {
-    padding: 14px;
+  .unit-history-inspection-shortcut span {
+    width: 30px;
+    height: 30px;
   }
 
 
-  .unit-history-modal-card {
-    padding: 20px;
+  .unit-history-inspection-shortcut span::before {
+    width: 30px;
+    height: 6px;
+  }
+
+
+  .unit-history-inspection-shortcut span::after {
+    width: 6px;
+    height: 30px;
   }
 
 }
 
 
-/* =========================================================
+/* =====================================================
    SMALL MOBILE
-   ========================================================= */
+===================================================== */
 
-@media (max-width: 430px) {
+@media (max-width: 380px) {
+
+  .unit-history-page-bar,
+  .unit-history-table-view,
+  .unit-history-detail-view {
+    width:
+      calc(
+        100% - 10px
+      );
+  }
+
 
   .unit-history-title-icon {
-    width: 60px;
-    height: 60px;
+    width: 52px;
+    height: 52px;
   }
 
 
   .unit-history-title h1 {
-    font-size: 22px;
-  }
-
-
-  .unit-history-action-button {
-    width: 31px;
-    height: 31px;
-
-    padding: 4px;
-  }
-
-
-  .unit-history-action-button svg {
-    width: 22px;
-    height: 22px;
+    font-size: 21px;
   }
 
 
   .unit-history-actions {
-    gap: 0;
+    gap: 3px;
   }
 
-}
-/* =========================================================
-   HIDDEN ELEMENT FIX
-   ========================================================= */
 
-.unit-history-page [hidden] {
-  display: none !important;
-}
-/* =========================================================
-   PAGE OVERFLOW PROTECTION
-   ========================================================= */
-
-html,
-body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-.unit-history-page {
-  max-width: 100vw;
-}
-
-.unit-history-table-view,
-.unit-history-table-container,
-.unit-history-table-scroll {
-  max-width: 100%;
-}
+  .unit-history-action-button {
+    width: 37px;
+    height: 37px;
+  }
 
 
-/* =========================================================
-   HIDDEN ELEMENT FIX
-   ========================================================= */
+  .unit-history-action-button svg {
+    width: 18px;
+    height: 18px;
+  }
 
-.unit-history-page [hidden] {
-  display: none !important;
 }
