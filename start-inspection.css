@@ -592,6 +592,283 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 /* =====================================================
+   PART REQUIREMENT
+===================================================== */
+
+.part-requirement-group {
+  margin-top: 3px;
+}
+
+
+.part-requirement-main-label {
+  margin-bottom: 10px !important;
+
+  color: #565656 !important;
+
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+
+.part-requirement-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =====================================================
+   PART CARD
+===================================================== */
+
+.part-requirement-item {
+  position: relative;
+
+  padding: 16px;
+
+  border: 1px solid #d7dadd;
+  border-radius: 8px;
+
+  background: #fafafa;
+
+  box-shadow:
+    0 3px 9px rgba(0,0,0,0.035);
+}
+
+
+.part-item-header {
+  min-height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #e7e7e7;
+}
+
+
+.part-item-title {
+  color: #222;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+
+
+/* =====================================================
+   PART FIELDS
+===================================================== */
+
+.part-field {
+  min-width: 0;
+}
+
+
+.part-field + .part-field {
+  margin-top: 0;
+}
+
+
+.part-field > label {
+  margin-bottom: 7px;
+
+  color: #666;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+
+.part-field input {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 12px;
+
+  border: 1px solid #ccd0d5;
+  border-radius: 5px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #333;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.part-field input:focus {
+  border-color: #f5a000;
+
+  box-shadow:
+    0 0 0 3px rgba(245,160,0,0.12);
+}
+
+
+.part-description-input {
+  margin-bottom: 13px;
+}
+
+
+.part-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    115px;
+
+  gap: 12px;
+
+  align-items: end;
+}
+
+
+/* =====================================================
+   REMOVE PART
+===================================================== */
+
+.remove-part-button {
+  flex-shrink: 0;
+
+  padding: 6px 10px;
+
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+
+  background: #fff;
+
+  color: #777;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+
+.remove-part-button:hover {
+  border-color: #d64545;
+
+  background: #fff4f4;
+
+  color: #c83232;
+}
+
+
+/* =====================================================
+   ADD PART
+===================================================== */
+
+.add-part-area {
+  display: flex;
+  justify-content: center;
+
+  padding-top: 12px;
+}
+
+
+.add-part-button {
+  min-width: 145px;
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 7px 15px;
+
+  border: 1px solid #f5a000;
+  border-radius: 7px;
+
+  background: #fff;
+
+  color: #d88900;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.add-part-button:hover {
+  background: rgba(245,160,0,0.09);
+
+  color: #b87500;
+
+  box-shadow:
+    0 4px 10px rgba(245,160,0,0.12);
+
+  transform: translateY(-1px);
+}
+
+
+.add-part-button:active {
+  transform: translateY(0);
+}
+
+
+.add-part-icon {
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f5a000;
+
+  color: #111 !important;
+
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+/* =====================================================
+   PART HIDDEN DATABASE FIELDS
+
+   HTML input hidden tetap benar-benar tidak terlihat
+   walaupun berada di dalam .form-group.
+===================================================== */
+
+.part-requirement-group input[type="hidden"] {
+  display: none;
+}
+
+
+/* =====================================================
    SUBMIT
 ===================================================== */
 
@@ -831,6 +1108,57 @@ input[type="number"]::-webkit-outer-spin-button {
   }
 
 
+  /* ===============================================
+     PART REQUIREMENT MOBILE
+  =============================================== */
+
+  .part-requirement-item {
+    padding: 14px 12px;
+
+    border-radius: 7px;
+  }
+
+
+  .part-item-header {
+    margin-bottom: 12px;
+  }
+
+
+  .part-item-title {
+    font-size: 13px;
+  }
+
+
+  .remove-part-button {
+    padding: 6px 8px;
+
+    font-size: 10px;
+  }
+
+
+  .part-field input {
+    height: 46px;
+
+    font-size: 14px;
+  }
+
+
+  .part-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      90px;
+
+    gap: 8px;
+  }
+
+
+  .add-part-button {
+    min-width: 140px;
+
+    min-height: 41px;
+  }
+
+
   .submit-button {
     width: 100%;
 
@@ -840,6 +1168,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
     border-radius: 17px;
   }
+
 }
 
 
@@ -875,4 +1204,34 @@ input[type="number"]::-webkit-outer-spin-button {
     padding-left: 13px;
     padding-right: 13px;
   }
+
+
+  /* ===============================================
+     PART REQUIREMENT SMALL MOBILE
+  =============================================== */
+
+  .part-requirement-item {
+    padding: 12px 10px;
+  }
+
+
+  .part-row {
+    grid-template-columns:
+      minmax(0, 1fr)
+      78px;
+  }
+
+
+  .part-field input {
+    padding-left: 9px;
+    padding-right: 9px;
+
+    font-size: 13px;
+  }
+
+
+  .remove-part-button {
+    font-size: 9px;
+  }
+
 }
