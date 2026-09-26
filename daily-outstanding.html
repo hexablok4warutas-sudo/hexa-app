@@ -10,20 +10,26 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Daily Outstanding | HEXA</title>
+  <title>Unit History | HEXA</title>
 
 
-  <!-- GLOBAL HEADER -->
+  <!-- ==================================================
+       GLOBAL HEADER
+       ================================================== -->
+
   <link
     rel="stylesheet"
     href="hexa-header.css"
   >
 
 
-  <!-- DAILY OUTSTANDING -->
+  <!-- ==================================================
+       UNIT HISTORY
+       ================================================== -->
+
   <link
     rel="stylesheet"
-    href="daily-outstanding.css"
+    href="unit-history.css"
   >
 
 </head>
@@ -34,67 +40,147 @@
 
   <!-- ==================================================
        GLOBAL HEADER
+       STRUKTUR SAMA DENGAN DAILY OUTSTANDING
        ================================================== -->
 
   <header
     id="hexaHeader"
     data-header-type="standard"
-    data-page="daily-outstanding"
+    data-page="unit-history"
     data-active-nav="daily-maintenance"
   ></header>
 
 
 
   <!-- ==================================================
-       DAILY OUTSTANDING PAGE
+       UNIT HISTORY PAGE
        ================================================== -->
 
-  <main class="outstanding-page">
+  <main class="unit-history-page">
 
 
-    <section class="outstanding-container">
+    <section class="unit-history-container">
 
 
       <!-- ==============================================
            FIXED / STICKY PAGE TITLE
            ============================================== -->
 
-      <div class="outstanding-title-bar">
+      <div class="unit-history-title-bar">
 
 
-        <div class="outstanding-title">
+        <!-- TITLE -->
+
+        <div class="unit-history-title">
 
           <img
-            src="hexa-icon-page-dailyoutstanding.svg"
-            alt="Daily Outstanding"
+            src="hexa-icon-svg-unithistory.svg"
+            alt="Unit History"
           >
 
           <h1>
-            Daily Outstanding
+            Unit History
           </h1>
 
         </div>
 
 
-        <!-- FILTER BUTTON -->
 
-        <button
-          type="button"
-          id="filterButton"
-          class="filter-button"
-          aria-label="Filter Daily Outstanding"
-          aria-expanded="false"
-        >
+        <!-- ============================================
+             PAGE ACTIONS
+             ============================================ -->
 
-          <svg viewBox="0 0 24 24">
+        <div class="unit-history-actions">
 
-            <path
-              d="M4 5h16L14 12v5l-4 2v-7L4 5z"
-            ></path>
 
-          </svg>
+          <!-- FILTER -->
 
-        </button>
+          <button
+            type="button"
+            id="unitHistoryFilterButton"
+            class="unit-history-action-button"
+            aria-label="Filter Unit History"
+            aria-expanded="false"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M4 5h16L14 12v5l-4 2v-7L4 5z"
+              ></path>
+
+            </svg>
+
+          </button>
+
+
+
+          <!-- PRINT -->
+
+          <button
+            type="button"
+            id="unitHistoryPrintButton"
+            class="unit-history-action-button"
+            aria-label="Print / Export Unit History"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M7 8V4h10v4"
+              ></path>
+
+              <path
+                d="M6 17H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"
+              ></path>
+
+              <path
+                d="M7 14h10v6H7z"
+              ></path>
+
+            </svg>
+
+          </button>
+
+
+
+          <!-- DELETE -->
+
+          <button
+            type="button"
+            id="unitHistoryDeleteButton"
+            class="unit-history-action-button unit-history-delete-button"
+            aria-label="Delete Unit History"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M3 6h18"
+              ></path>
+
+              <path
+                d="M8 6V4h8v2"
+              ></path>
+
+              <path
+                d="M6 6l1 14h10l1-14"
+              ></path>
+
+              <path
+                d="M10 10v6"
+              ></path>
+
+              <path
+                d="M14 10v6"
+              ></path>
+
+            </svg>
+
+          </button>
+
+
+        </div>
 
 
       </div>
@@ -103,142 +189,84 @@
 
       <!-- ==============================================
            FILTER PANEL
+           Disiapkan sekarang.
+           Logic akan kita aktifkan setelah view stabil.
            ============================================== -->
 
       <div
-        id="filterPanel"
-        class="filter-panel"
+        id="unitHistoryFilterPanel"
+        class="unit-history-filter-panel"
         hidden
       >
 
 
-        <div class="filter-panel-header">
+        <div class="unit-history-filter-header">
+
 
           <h2>
-            Filter Outstanding
+            Filter Unit History
           </h2>
+
 
           <button
             type="button"
-            id="closeFilterButton"
-            class="filter-close-button"
+            id="unitHistoryCloseFilterButton"
+            class="unit-history-filter-close"
             aria-label="Close Filter"
           >
             ×
           </button>
 
-        </div>
-
-
-
-        <div class="filter-grid">
-
-
-          <!-- UNIT CODE -->
-
-          <div class="filter-group">
-
-            <label for="filterUnitCode">
-              Unit Code
-            </label>
-
-            <select id="filterUnitCode">
-
-              <option value="">
-                All Unit
-              </option>
-
-            </select>
-
-          </div>
-
-
-
-          <!-- PROBLEM -->
-
-          <div class="filter-group">
-
-            <label for="filterProblem">
-              Problem Description
-            </label>
-
-            <input
-              type="text"
-              id="filterProblem"
-              placeholder="Search problem..."
-            >
-
-          </div>
-
-
-
-          <!-- DATE -->
-
-          <div class="filter-group">
-
-            <label for="filterDate">
-              Date Inspection
-            </label>
-
-            <input
-              type="date"
-              id="filterDate"
-            >
-
-          </div>
-
-
-
-          <!-- MOL -->
-
-          <div class="filter-group">
-
-            <label for="filterMol">
-              MOL
-            </label>
-
-            <select id="filterMol">
-
-              <option value="">
-                All MOL
-              </option>
-
-              <option value="Belum">
-                Belum
-              </option>
-
-              <option value="Submitted">
-                Submitted
-              </option>
-
-            </select>
-
-          </div>
-
 
         </div>
 
 
 
-        <div class="filter-actions">
+        <div
+          id="unitHistoryFilterConditions"
+          class="unit-history-filter-conditions"
+        >
+
+          <!-- FILTER CONDITIONS DIBUAT OLEH JS -->
+
+        </div>
+
+
+
+        <div class="unit-history-filter-actions">
 
 
           <button
             type="button"
-            id="resetFilterButton"
-            class="filter-reset-button"
+            id="unitHistoryAddFilterButton"
+            class="unit-history-add-filter-button"
           >
-            Reset
+            + Add Filter
           </button>
 
 
-          <button
-            type="button"
-            id="applyFilterButton"
-            class="filter-apply-button"
-          >
-            Apply Filter
-          </button>
+          <div class="unit-history-filter-action-right">
+
+
+            <button
+              type="button"
+              id="unitHistoryResetFilterButton"
+              class="unit-history-reset-filter-button"
+            >
+              Reset
+            </button>
+
+
+            <button
+              type="button"
+              id="unitHistoryApplyFilterButton"
+              class="unit-history-apply-filter-button"
+            >
+              Apply Filter
+            </button>
+
+
+          </div>
 
 
         </div>
@@ -249,85 +277,217 @@
 
 
       <!-- ==============================================
-           OUTSTANDING LIST
+           ACTIVE FILTERS
            ============================================== -->
 
-      <section class="outstanding-list-section">
+      <div
+        id="unitHistoryActiveFilters"
+        class="unit-history-active-filters"
+        hidden
+      >
+
+        <!-- FILTER CHIPS DIBUAT OLEH JS -->
+
+      </div>
 
 
-        <!-- LOADING -->
+
+      <!-- ==============================================
+           UNIT HISTORY TABLE SECTION
+           ============================================== -->
+
+      <section class="unit-history-list-section">
+
+
+        <!-- ============================================
+             LOADING
+             ============================================ -->
 
         <div
-          id="outstandingLoading"
-          class="outstanding-state"
+          id="unitHistoryLoading"
+          class="unit-history-state"
         >
 
-          Loading Outstanding...
+          Loading Unit History...
 
         </div>
 
 
 
-        <!-- EMPTY -->
+        <!-- ============================================
+             EMPTY
+             ============================================ -->
 
         <div
-          id="outstandingEmpty"
-          class="outstanding-state"
+          id="unitHistoryEmpty"
+          class="unit-history-state"
           hidden
         >
 
-          Tidak ada Daily Outstanding.
+          Belum ada data Unit History.
 
         </div>
 
 
 
-        <!-- ERROR -->
+        <!-- ============================================
+             ERROR
+             ============================================ -->
 
         <div
-          id="outstandingError"
-          class="outstanding-state error"
+          id="unitHistoryError"
+          class="unit-history-state error"
           hidden
         >
 
-          Data Daily Outstanding gagal dimuat.
+          Data Unit History gagal dimuat.
 
         </div>
 
 
 
-        <!-- LIST SCROLL CONTAINER -->
+        <!-- ============================================
+             TABLE SCROLL CONTAINER
+
+             Scroll vertikal dan horizontal berada
+             di container ini.
+             ============================================ -->
 
         <div
-          id="outstandingScrollContainer"
-          class="outstanding-scroll-container"
+          id="unitHistoryScrollContainer"
+          class="unit-history-scroll-container"
           hidden
         >
 
 
-          <div
-            id="outstandingList"
-            class="outstanding-list"
-          ></div>
+          <table
+            id="unitHistoryTable"
+            class="unit-history-table"
+          >
+
+
+            <!-- ========================================
+                 TABLE HEADER
+                 ======================================== -->
+
+            <thead>
+
+
+              <tr>
+
+
+                <!-- DELETE CHECKBOX COLUMN
+                     Default hidden -->
+
+                <th
+                  id="unitHistoryDeleteHeader"
+                  class="unit-history-delete-column"
+                  hidden
+                >
+
+                  <input
+                    type="checkbox"
+                    id="unitHistorySelectAll"
+                    aria-label="Pilih semua data"
+                  >
+
+                </th>
+
+
+
+                <th>
+                  Unit Code
+                </th>
+
+
+                <th>
+                  HM Inspection
+                </th>
+
+
+                <th>
+                  Group Component
+                </th>
+
+
+                <th>
+                  Problem Description
+                </th>
+
+
+                <th>
+                  Photo
+                </th>
+
+
+                <th>
+                  Rating
+                </th>
+
+
+                <th>
+                  Status
+                </th>
+
+
+                <th>
+                  Parts Description
+                </th>
+
+
+                <th>
+                  MOL
+                </th>
+
+
+                <th>
+                  Parts Status
+                </th>
+
+
+              </tr>
+
+
+            </thead>
+
+
+
+            <!-- ========================================
+                 TABLE BODY
+                 ======================================== -->
+
+            <tbody
+              id="unitHistoryTableBody"
+            >
+
+              <!-- DATA DIBUAT OLEH JS -->
+
+            </tbody>
+
+
+          </table>
 
 
         </div>
 
 
 
-        <!-- SCROLL NAVIGATION -->
+        <!-- ============================================
+             SCROLL NAVIGATION
+             Sama konsep dengan Daily Outstanding.
+             ============================================ -->
 
         <div
-          id="scrollNavigation"
-          class="scroll-navigation"
+          id="unitHistoryScrollNavigation"
+          class="unit-history-scroll-navigation"
           hidden
         >
 
 
           <button
             type="button"
-            id="scrollUpButton"
-            class="scroll-nav-button"
+            id="unitHistoryScrollUpButton"
+            class="unit-history-scroll-nav-button"
             aria-label="Scroll Up"
           >
             ▲
@@ -336,8 +496,8 @@
 
           <button
             type="button"
-            id="scrollDownButton"
-            class="scroll-nav-button"
+            id="unitHistoryScrollDownButton"
+            class="unit-history-scroll-nav-button"
             aria-label="Scroll Down"
           >
             ▼
@@ -362,31 +522,33 @@
        ================================================== -->
 
   <div
-    id="detailModal"
-    class="modal-overlay"
+    id="unitHistoryDetailModal"
+    class="unit-history-modal-overlay"
     hidden
   >
 
 
     <section
-      class="detail-modal"
+      class="unit-history-detail-modal"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="detailUnitCode"
+      aria-labelledby="unitHistoryDetailUnitCode"
     >
 
 
-      <!-- DETAIL PHOTO -->
+      <!-- ==============================================
+           INSPECTION PHOTO
+           ============================================== -->
 
       <button
         type="button"
-        id="detailPhotoButton"
-        class="detail-photo-button"
+        id="unitHistoryDetailPhotoButton"
+        class="unit-history-detail-photo-button"
         aria-label="View Inspection Photo"
       >
 
         <img
-          id="detailPhoto"
+          id="unitHistoryDetailPhoto"
           src=""
           alt="Inspection Photo"
         >
@@ -395,182 +557,92 @@
 
 
 
-      <!-- UNIT CODE -->
+      <!-- ==============================================
+           UNIT CODE
+           ============================================== -->
 
-      <h2 id="detailUnitCode">
+      <h2 id="unitHistoryDetailUnitCode">
         -
       </h2>
 
 
 
-      <!-- DETAIL INFORMATION -->
+      <!-- ==============================================
+           INSPECTION
+           ============================================== -->
 
-      <div class="detail-information">
-
-
-        <div class="detail-row">
-
-          <span class="detail-label">
-            HM Inspection
-          </span>
-
-          <span class="detail-separator">
-            :
-          </span>
-
-          <span
-            id="detailHmInspection"
-            class="detail-value"
-          >
-            -
-          </span>
-
-        </div>
+      <div class="unit-history-detail-section">
 
 
+        <h3>
+          Inspection
+        </h3>
 
-        <div class="detail-row">
 
-          <span class="detail-label">
-            Date Inspection
-          </span>
+        <div class="unit-history-detail-information">
 
-          <span class="detail-separator">
-            :
-          </span>
 
-          <span
-            id="detailDateInspection"
-            class="detail-value"
-          >
-            -
-          </span>
+          <div class="unit-history-detail-row">
 
-        </div>
+            <span class="unit-history-detail-label">
+              HM Inspection
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailHmInspection"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
 
 
 
-        <div class="detail-row">
+          <div class="unit-history-detail-row">
 
-          <span class="detail-label">
-            Group Component
-          </span>
+            <span class="unit-history-detail-label">
+              Date Inspection
+            </span>
 
-          <span class="detail-separator">
-            :
-          </span>
+            <span class="unit-history-detail-separator">
+              :
+            </span>
 
-          <span
-            id="detailGroupComponent"
-            class="detail-value"
-          >
-            -
-          </span>
+            <span
+              id="unitHistoryDetailDateInspection"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
 
-        </div>
-
-
-
-        <div class="detail-row">
-
-          <span class="detail-label">
-            Problem Description
-          </span>
-
-          <span class="detail-separator">
-            :
-          </span>
-
-          <span
-            id="detailProblemDescription"
-            class="detail-value"
-          >
-            -
-          </span>
-
-        </div>
+          </div>
 
 
 
-        <div class="detail-row">
+          <div class="unit-history-detail-row">
 
-          <span class="detail-label">
-            Rating
-          </span>
+            <span class="unit-history-detail-label">
+              Inspectors
+            </span>
 
-          <span class="detail-separator">
-            :
-          </span>
+            <span class="unit-history-detail-separator">
+              :
+            </span>
 
-          <span
-            id="detailRating"
-            class="detail-value"
-          >
-            -
-          </span>
+            <span
+              id="unitHistoryDetailInspectors"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
 
-        </div>
+          </div>
 
-
-
-        <div class="detail-row">
-
-          <span class="detail-label">
-            Parts Description
-          </span>
-
-          <span class="detail-separator">
-            :
-          </span>
-
-          <span
-            id="detailPartsDescription"
-            class="detail-value"
-          >
-            -
-          </span>
-
-        </div>
-
-
-
-        <div class="detail-row">
-
-          <span class="detail-label">
-            MOL
-          </span>
-
-          <span class="detail-separator">
-            :
-          </span>
-
-          <span
-            id="detailMol"
-            class="detail-value"
-          >
-            -
-          </span>
-
-        </div>
-
-
-
-        <div class="detail-row">
-
-          <span class="detail-label">
-            Parts Status
-          </span>
-
-          <span class="detail-separator">
-            :
-          </span>
-
-          <span
-            id="detailPartsStatus"
-            class="detail-value"
-          >
-            -
-          </span>
 
         </div>
 
@@ -579,38 +651,374 @@
 
 
 
-      <!-- DETAIL ACTION -->
+      <!-- ==============================================
+           FINDING
+           ============================================== -->
 
-      <div class="detail-actions">
+      <div class="unit-history-detail-section">
+
+
+        <h3>
+          Finding
+        </h3>
+
+
+        <div class="unit-history-detail-information">
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Group Component
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailGroupComponent"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Problem Description
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailProblemDescription"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Rating
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailRating"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Parts Description
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailPartsDescription"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Part No
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailPartNo"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Quantity
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailQuantity"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Notes
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailNotes"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ==============================================
+           FOLLOW UP
+           ============================================== -->
+
+      <div class="unit-history-detail-section">
+
+
+        <h3>
+          Follow Up
+        </h3>
+
+
+        <div class="unit-history-detail-information">
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              MOL
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailMol"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Evidence
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailEvidence"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Parts Status
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailPartsStatus"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Action Problems
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailActionProblems"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              HM Action
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailHmAction"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Date Action
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailDateAction"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Status
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailStatus"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <div class="unit-history-detail-row">
+
+            <span class="unit-history-detail-label">
+              Man Power
+            </span>
+
+            <span class="unit-history-detail-separator">
+              :
+            </span>
+
+            <span
+              id="unitHistoryDetailManPower"
+              class="unit-history-detail-value"
+            >
+              -
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ==============================================
+           DETAIL ACTION
+           ============================================== -->
+
+      <div class="unit-history-detail-actions">
 
 
         <button
           type="button"
-          id="editOutstandingButton"
-          class="detail-action-button edit"
-          aria-label="Edit Outstanding"
-        >
-
-          <svg viewBox="0 0 24 24">
-
-            <path
-              d="M4 20h4L19 9l-4-4L4 16v4z"
-            ></path>
-
-            <path
-              d="M13.5 6.5l4 4"
-            ></path>
-
-          </svg>
-
-        </button>
-
-
-
-        <button
-          type="button"
-          id="closeDetailButton"
-          class="detail-action-button close"
+          id="unitHistoryCloseDetailButton"
+          class="unit-history-detail-action-button close"
           aria-label="Close Detail"
         >
 
@@ -640,19 +1048,19 @@
        ================================================== -->
 
   <div
-    id="photoViewer"
-    class="photo-viewer"
+    id="unitHistoryPhotoViewer"
+    class="unit-history-photo-viewer"
     hidden
   >
 
 
-    <div class="photo-viewer-toolbar">
+    <div class="unit-history-photo-viewer-toolbar">
 
 
       <button
         type="button"
-        id="zoomOutButton"
-        class="photo-tool-button"
+        id="unitHistoryZoomOutButton"
+        class="unit-history-photo-tool-button"
         aria-label="Zoom Out"
       >
         −
@@ -661,8 +1069,8 @@
 
       <button
         type="button"
-        id="resetZoomButton"
-        class="photo-tool-button"
+        id="unitHistoryResetZoomButton"
+        class="unit-history-photo-tool-button"
         aria-label="Reset Zoom"
       >
         100%
@@ -671,8 +1079,8 @@
 
       <button
         type="button"
-        id="zoomInButton"
-        class="photo-tool-button"
+        id="unitHistoryZoomInButton"
+        class="unit-history-photo-tool-button"
         aria-label="Zoom In"
       >
         +
@@ -681,8 +1089,8 @@
 
       <button
         type="button"
-        id="closePhotoViewerButton"
-        class="photo-tool-button close"
+        id="unitHistoryClosePhotoViewerButton"
+        class="unit-history-photo-tool-button close"
         aria-label="Close Photo"
       >
         ×
@@ -693,10 +1101,10 @@
 
 
 
-    <div class="photo-viewer-stage">
+    <div class="unit-history-photo-viewer-stage">
 
       <img
-        id="photoViewerImage"
+        id="unitHistoryPhotoViewerImage"
         src=""
         alt="Inspection Photo Fullscreen"
       >
@@ -709,647 +1117,56 @@
 
 
   <!-- ==================================================
-       UPDATE OUTSTANDING MODAL
+       DELETE CONFIRMATION
        ================================================== -->
 
   <div
-    id="updateModal"
-    class="modal-overlay update-overlay"
+    id="unitHistoryDeleteModal"
+    class="unit-history-modal-overlay"
     hidden
   >
 
 
     <section
-      class="update-modal"
+      class="unit-history-delete-modal"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="updateFormTitle"
+      aria-labelledby="unitHistoryDeleteModalTitle"
     >
 
 
-      <!-- UPDATE TITLE -->
+      <h2 id="unitHistoryDeleteModalTitle">
+        Delete Data
+      </h2>
 
-      <div class="update-title">
 
-        <h2 id="updateFormTitle">
-          Updates Form
-        </h2>
+      <p id="unitHistoryDeleteModalMessage">
+        Apa kamu yakin akan menghapus 0 item dari database?
+      </p>
+
+
+      <div class="unit-history-delete-actions">
+
+
+        <button
+          type="button"
+          id="unitHistoryDeleteNoButton"
+          class="unit-history-delete-no"
+        >
+          No
+        </button>
+
+
+        <button
+          type="button"
+          id="unitHistoryDeleteYesButton"
+          class="unit-history-delete-yes"
+        >
+          Yes
+        </button>
+
 
       </div>
-
-
-
-      <!-- UPDATE FORM -->
-
-      <form
-        id="updateOutstandingForm"
-        class="update-form"
-      >
-
-
-        <!-- INTERNAL ID -->
-
-        <input
-          type="hidden"
-          id="updateInspectionId"
-        >
-
-
-
-        <!-- UNIT CODE -->
-
-        <div class="form-group">
-
-          <label for="updateUnitCode">
-            UNIT CODE <span>*</span>
-          </label>
-
-          <select
-            id="updateUnitCode"
-            required
-          >
-
-            <option value="">
-              Select Unit
-            </option>
-
-          </select>
-
-        </div>
-
-
-
-        <!-- HM INSPECTION -->
-
-        <div class="form-group">
-
-          <label for="updateHmInspection">
-            HM Inspection <span>*</span>
-          </label>
-
-
-          <div class="number-control">
-
-
-            <button
-              type="button"
-              id="updateHmMinus"
-              class="number-button"
-            >
-              −
-            </button>
-
-
-            <input
-              type="number"
-              id="updateHmInspection"
-              min="0"
-              step="1"
-              required
-            >
-
-
-            <button
-              type="button"
-              id="updateHmPlus"
-              class="number-button"
-            >
-              +
-            </button>
-
-
-          </div>
-
-        </div>
-
-
-
-        <!-- DATE INSPECTION -->
-
-        <div class="form-group">
-
-          <label for="updateDateInspection">
-            Date Inspection
-          </label>
-
-          <input
-            type="date"
-            id="updateDateInspection"
-          >
-
-        </div>
-
-
-
-        <!-- INSPECTION PHOTO -->
-
-        <div class="form-group">
-
-          <label>
-            Photo <span>*</span>
-          </label>
-
-
-          <div class="existing-photo">
-
-            <img
-              id="updateInspectionPhotoPreview"
-              src=""
-              alt="Inspection Photo"
-            >
-
-          </div>
-
-
-          <label
-            class="file-upload-button"
-            for="updateInspectionPhoto"
-          >
-
-            Retake / Replace Photo
-
-          </label>
-
-
-          <input
-            type="file"
-            id="updateInspectionPhoto"
-            accept="image/*"
-            capture="environment"
-            hidden
-          >
-
-        </div>
-
-
-
-        <!-- GROUP COMPONENT -->
-
-        <div class="form-group">
-
-          <label for="updateGroupComponent">
-            Group Component <span>*</span>
-          </label>
-
-          <select
-            id="updateGroupComponent"
-            required
-          >
-
-            <option value="">
-              Select Component
-            </option>
-
-            <option value="ENGINE">
-              ENGINE
-            </option>
-
-            <option value="TRANSMISSION">
-              TRANSMISSION
-            </option>
-
-            <option value="HYDRAULIC SYSTEM">
-              HYDRAULIC SYSTEM
-            </option>
-
-            <option value="SWING & TRAVEL">
-              SWING &amp; TRAVEL
-            </option>
-
-            <option value="FINAL DRIVE">
-              FINAL DRIVE
-            </option>
-
-            <option value="UNDER CARRIAGE">
-              UNDER CARRIAGE
-            </option>
-
-          </select>
-
-        </div>
-
-
-
-        <!-- PROBLEM DESCRIPTION -->
-
-        <div class="form-group">
-
-          <label for="updateProblemDescription">
-            Problem Description <span>*</span>
-          </label>
-
-          <textarea
-            id="updateProblemDescription"
-            rows="3"
-            required
-          ></textarea>
-
-        </div>
-
-
-
-        <!-- RATING -->
-
-        <div class="form-group">
-
-          <label>
-            Rating <span>*</span>
-          </label>
-
-
-          <div
-            id="updateRatingGrid"
-            class="rating-grid"
-          >
-
-            <button
-              type="button"
-              class="rating-button"
-              data-rating="RATE A"
-            >
-              RATE A
-            </button>
-
-            <button
-              type="button"
-              class="rating-button"
-              data-rating="RATE B"
-            >
-              RATE B
-            </button>
-
-            <button
-              type="button"
-              class="rating-button"
-              data-rating="RATE C"
-            >
-              RATE C
-            </button>
-
-            <button
-              type="button"
-              class="rating-button"
-              data-rating="RATE X"
-            >
-              RATE X
-            </button>
-
-          </div>
-
-
-          <input
-            type="hidden"
-            id="updateRating"
-            required
-          >
-
-        </div>
-
-
-
-        <!-- PARTS DESCRIPTION -->
-
-        <div class="form-group">
-
-          <label for="updatePartsDescription">
-            Parts Description
-          </label>
-
-          <input
-            type="text"
-            id="updatePartsDescription"
-          >
-
-        </div>
-
-
-
-        <!-- PART NO -->
-
-        <div class="form-group">
-
-          <label for="updatePartNo">
-            Part No
-          </label>
-
-          <input
-            type="text"
-            id="updatePartNo"
-          >
-
-        </div>
-
-
-
-        <!-- QUANTITY -->
-
-        <div class="form-group">
-
-          <label for="updateQuantity">
-            Quantity
-          </label>
-
-          <input
-            type="number"
-            id="updateQuantity"
-            min="0"
-          >
-
-        </div>
-
-
-
-        <!-- NOTES -->
-
-        <div class="form-group">
-
-          <label for="updateNotes">
-            Notes
-          </label>
-
-          <textarea
-            id="updateNotes"
-            rows="3"
-          ></textarea>
-
-        </div>
-
-
-
-        <!-- MOL READ ONLY -->
-
-        <div class="form-group">
-
-          <label for="updateMol">
-            MOL
-          </label>
-
-          <input
-            type="text"
-            id="updateMol"
-            readonly
-          >
-
-        </div>
-
-
-
-        <!-- EVIDENCE -->
-
-        <div class="form-group">
-
-          <label for="updateEvidence">
-            Evidence
-          </label>
-
-
-          <label
-            class="evidence-upload"
-            for="updateEvidence"
-          >
-
-            <svg viewBox="0 0 24 24">
-
-              <path
-                d="M9 4l1.5-2h3L15 4h4a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h4z"
-              ></path>
-
-              <circle
-                cx="12"
-                cy="12"
-                r="4"
-              ></circle>
-
-            </svg>
-
-
-            <span id="evidenceFileText">
-              Upload Photo / PDF
-            </span>
-
-          </label>
-
-
-          <input
-            type="file"
-            id="updateEvidence"
-            accept="image/*,.pdf,application/pdf"
-            hidden
-          >
-
-
-          <div
-            id="existingEvidence"
-            class="existing-evidence"
-            hidden
-          ></div>
-
-        </div>
-
-
-
-        <!-- PARTS STATUS -->
-
-        <div class="form-group">
-
-          <label>
-            Parts Status
-          </label>
-
-
-          <div
-            id="partsStatusGrid"
-            class="parts-status-grid"
-          >
-
-            <button
-              type="button"
-              class="parts-status-button"
-              data-status="Not Process"
-            >
-              Not Process
-            </button>
-
-
-            <button
-              type="button"
-              class="parts-status-button"
-              data-status="Waiting Parts"
-            >
-              Waiting Parts
-            </button>
-
-
-            <button
-              type="button"
-              class="parts-status-button"
-              data-status="Ready"
-            >
-              Ready
-            </button>
-
-
-            <button
-              type="button"
-              class="parts-status-button"
-              data-status="Supply"
-            >
-              Supply
-            </button>
-
-          </div>
-
-
-          <input
-            type="hidden"
-            id="updatePartsStatus"
-          >
-
-        </div>
-
-
-
-        <!-- STATUS READ ONLY -->
-
-        <div class="form-group">
-
-          <label for="updateStatus">
-            Status
-          </label>
-
-          <input
-            type="text"
-            id="updateStatus"
-            readonly
-          >
-
-        </div>
-
-
-
-        <!-- ACTION PROBLEMS -->
-
-        <div class="form-group">
-
-          <label for="updateActionProblems">
-            Action Problems
-          </label>
-
-          <textarea
-            id="updateActionProblems"
-            rows="3"
-          ></textarea>
-
-        </div>
-
-
-
-        <!-- HM ACTION -->
-
-        <div class="form-group">
-
-          <label for="updateHmAction">
-            HM Action
-          </label>
-
-
-          <div class="number-control">
-
-
-            <button
-              type="button"
-              id="updateHmActionMinus"
-              class="number-button"
-            >
-              −
-            </button>
-
-
-            <input
-              type="number"
-              id="updateHmAction"
-              min="0"
-              step="1"
-              value="0"
-            >
-
-
-            <button
-              type="button"
-              id="updateHmActionPlus"
-              class="number-button"
-            >
-              +
-            </button>
-
-
-          </div>
-
-        </div>
-
-
-
-        <!-- DATE ACTION -->
-
-        <div class="form-group">
-
-          <label for="updateDateAction">
-            Date Action
-          </label>
-
-          <input
-            type="date"
-            id="updateDateAction"
-          >
-
-        </div>
-
-
-
-        <!-- MAN POWER -->
-
-        <div class="form-group">
-
-          <label for="updateManPower">
-            Man Power
-          </label>
-
-          <input
-            type="text"
-            id="updateManPower"
-          >
-
-        </div>
-
-
-
-        <!-- UPDATE ACTIONS -->
-
-        <div class="update-form-actions">
-
-
-          <button
-            type="button"
-            id="cancelUpdateButton"
-            class="cancel-update-button"
-          >
-            Cancel
-          </button>
-
-
-          <button
-            type="submit"
-            id="submitUpdateButton"
-            class="submit-update-button"
-          >
-            Update
-          </button>
-
-
-        </div>
-
-
-      </form>
 
 
     </section>
@@ -1361,12 +1178,15 @@
 
   <!-- ==================================================
        START INSPECTION SHORTCUT
+
+       Struktur sengaja sama seperti Daily Outstanding:
+       button + span
        ================================================== -->
 
   <button
     type="button"
-    id="startInspectionShortcut"
-    class="start-inspection-shortcut"
+    id="unitHistoryStartInspectionShortcut"
+    class="unit-history-start-inspection-shortcut"
     aria-label="Start Inspection"
   >
 
@@ -1378,13 +1198,14 @@
 
   <!-- ==================================================
        JAVASCRIPT
+       Urutan sama dengan Daily Outstanding
        ================================================== -->
 
   <script src="hexa-menu.js"></script>
 
   <script src="hexa-header.js"></script>
 
-  <script src="daily-outstanding.js"></script>
+  <script src="unit-history.js"></script>
 
 
 </body>
