@@ -68,18 +68,10 @@ body {
 }
 
 
-/* =========================================
-   HEXA LOGO DROPDOWN CONTAINER
-   ========================================= */
-
 .header-logo-menu {
   position: relative;
 }
 
-
-/* =========================================
-   HEXA LOGO BUTTON
-   ========================================= */
 
 .header-logo-button {
   height: 100%;
@@ -114,18 +106,19 @@ body {
 
 
 /* =========================================
-   HEXA HEADER DROPDOWN
+   LOGOUT DROPDOWN
+   MAIN PAGE
    ========================================= */
 
-.hexa-nav-menu {
+.hexa-logout-menu {
   position: absolute;
 
   top: calc(100% + 15px);
   left: 0;
 
-  width: 230px;
+  width: 140px;
 
-  padding: 8px;
+  padding: 6px;
 
   background: #111111;
 
@@ -133,7 +126,7 @@ body {
     1px solid
     rgba(255, 152, 0, 0.35);
 
-  border-radius: 10px;
+  border-radius: 9px;
 
   box-shadow:
     0 12px 30px
@@ -145,34 +138,30 @@ body {
 }
 
 
-/* =========================================
-   DROPDOWN OPEN
-   ========================================= */
-
-.hexa-nav-menu.open {
+.hexa-logout-menu.open {
   display: block;
 }
 
 
 /* =========================================
-   DROPDOWN ITEM
+   LOGOUT BUTTON
    ========================================= */
 
-.nav-menu-item {
+.logout-menu-item {
   width: 100%;
 
-  min-height: 42px;
+  min-height: 40px;
 
-  padding: 10px 14px;
+  padding: 9px 12px;
 
   border: none;
   outline: none;
 
-  border-radius: 7px;
+  border-radius: 6px;
 
   background: transparent;
 
-  color: #ffffff;
+  color: #ff9800;
 
   font-family:
     Arial,
@@ -181,7 +170,7 @@ body {
 
   font-size: 14px;
 
-  font-weight: 500;
+  font-weight: 700;
 
   text-align: left;
 
@@ -190,55 +179,6 @@ body {
   transition:
     background 0.2s ease,
     color 0.2s ease;
-}
-
-
-.nav-menu-item:hover {
-  background:
-    rgba(255, 255, 255, 0.08);
-}
-
-
-/* =========================================
-   ACTIVE PAGE
-   ========================================= */
-
-.nav-menu-item.active {
-  color: #ff9800;
-
-  font-weight: 700;
-
-  background:
-    rgba(255, 152, 0, 0.08);
-}
-
-
-/* =========================================
-   DROPDOWN DIVIDER
-   ========================================= */
-
-.nav-menu-divider {
-  width: calc(100% - 10px);
-
-  height: 1px;
-
-  margin:
-    7px
-    5px;
-
-  background:
-    rgba(255, 255, 255, 0.16);
-}
-
-
-/* =========================================
-   LOGOUT
-   ========================================= */
-
-.logout-menu-item {
-  color: #ff9800;
-
-  font-weight: 700;
 }
 
 
@@ -617,9 +557,6 @@ body {
 
 /* =========================================
    MENU LABEL
-   DESKTOP
-
-   Desktop tetap menampilkan nama lengkap.
    ========================================= */
 
 .menu-item span {
@@ -740,9 +677,7 @@ body {
 @media (max-width: 600px) {
 
 
-  /* =======================================
-     HEADER
-     ======================================= */
+  /* HEADER */
 
   .main-header {
     height: 72px;
@@ -758,12 +693,7 @@ body {
   }
 
 
-  /* =======================================
-     LOGO
-
-     Area hitam efektif 64px.
-     Logo dibuat hampir memenuhi area hitam.
-     ======================================= */
+  /* LOGO */
 
   .header-logo {
     height: 64px;
@@ -794,42 +724,34 @@ body {
   }
 
 
-  /* =======================================
-     DROPDOWN MOBILE
-     ======================================= */
+  /* LOGOUT DROPDOWN */
 
-  .hexa-nav-menu {
+  .hexa-logout-menu {
     top: calc(100% + 8px);
 
-    width: 215px;
+    width: 130px;
 
-    padding: 7px;
-
-    border-radius: 9px;
+    padding: 6px;
   }
 
 
-  .nav-menu-item {
-    min-height: 40px;
+  .logout-menu-item {
+    min-height: 38px;
 
-    padding: 9px 12px;
+    padding: 8px 11px;
 
     font-size: 13px;
   }
 
 
-  /* =======================================
-     HEADER ACTIONS
-     ======================================= */
+  /* HEADER ACTIONS */
 
   .header-actions {
     gap: 5px;
   }
 
 
-  /* =======================================
-     SEARCH
-     ======================================= */
+  /* SEARCH */
 
   .search-box {
     width: 125px;
@@ -857,9 +779,7 @@ body {
   }
 
 
-  /* =======================================
-     REFRESH
-     ======================================= */
+  /* REFRESH */
 
   .refresh-button {
     width: 34px;
@@ -875,9 +795,7 @@ body {
   }
 
 
-  /* =======================================
-     BANNER
-     ======================================= */
+  /* BANNER */
 
   .banner-slider {
     height: 250px;
@@ -903,9 +821,7 @@ body {
   }
 
 
-  /* =======================================
-     MENU SECTION
-     ======================================= */
+  /* MENU SECTION */
 
   .menu-section {
     min-height: 420px;
@@ -932,12 +848,7 @@ body {
   }
 
 
-  /* =======================================
-     MENU ICON MOBILE
-
-     Ukuran icon dipertahankan seperti
-     sebelumnya: 90 x 90px.
-     ======================================= */
+  /* MENU ICON */
 
   .menu-item > img {
     width: 90px;
@@ -946,15 +857,7 @@ body {
   }
 
 
-  /* =======================================
-     MENU LABEL MOBILE
-
-     Label maksimal sama dengan lebar icon.
-
-     Nama asli tetap lengkap di HTML.
-     Jika terlalu panjang, browser akan
-     menampilkan ...
-     ======================================= */
+  /* MENU LABEL */
 
   .menu-item span {
     display: block;
@@ -981,9 +884,7 @@ body {
   }
 
 
-  /* =======================================
-     FLOATING BUTTON
-     ======================================= */
+  /* FLOATING BUTTON */
 
   .inspection-shortcut {
     width: 62px;
@@ -1021,10 +922,10 @@ body {
   }
 
 
-  /* DROPDOWN */
+  /* LOGOUT */
 
-  .hexa-nav-menu {
-    width: 200px;
+  .hexa-logout-menu {
+    width: 125px;
   }
 
 
@@ -1051,9 +952,7 @@ body {
   }
 
 
-  /* LABEL
-     Mengikuti lebar icon 78px
-  */
+  /* LABEL */
 
   .menu-item span {
     width: 78px;
