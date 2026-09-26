@@ -225,6 +225,40 @@ body {
 
 
 /* =========================================
+   LOGOUT DIVIDER
+   ========================================= */
+
+.nav-menu-divider {
+  width: calc(100% - 16px);
+
+  height: 1px;
+
+  margin: 8px auto;
+
+  background: rgba(255, 255, 255, 0.14);
+}
+
+
+/* =========================================
+   LOGOUT BUTTON
+   ========================================= */
+
+.logout-menu-item {
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+.logout-menu-item:hover {
+  background: rgba(255, 152, 0, 0.16);
+
+  color: #ff9800;
+
+  padding-left: 18px;
+}
+
+
+/* =========================================
    HEADER ACTIONS
    ========================================= */
 
