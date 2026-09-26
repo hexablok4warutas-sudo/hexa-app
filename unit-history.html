@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Unit History | HEXA</title><link rel="stylesheet" href="hexa-header.css"><link rel="stylesheet" href="unit-history.css"></head>
+<body><header id="hexaHeader" data-header-type="standard" data-page="unit-history" data-active-nav="daily-maintenance"></header>
+<main class="history-page"><section class="history-container">
+<div class="history-title-bar"><div class="history-title"><img src="hexa-icon-svg-unithistory.svg" alt="Unit History"><h1>Unit History</h1></div>
+<div class="history-tools">
+<button id="filterButton" class="tool" title="Filter">▼</button><button id="reviewButton" class="tool" title="Review Performance">▥</button><button id="printButton" class="tool" title="Print / Export">▣</button>
+</div></div>
+<section class="table-section"><div id="historyLoading" class="state">Loading Unit History...</div><div id="historyEmpty" class="state" hidden>Belum ada data Unit History.</div><div id="historyError" class="state error" hidden>Data Unit History gagal dimuat.</div>
+<div id="historyTableWrap" class="table-wrap" hidden><table><thead><tr><th>Unit Code</th><th>HM Inspection</th><th>Group Component</th><th>Problem Description</th><th>Photo</th><th>Rating</th><th>Status</th><th>Parts Description</th><th>MOL</th><th>Parts Status</th></tr></thead><tbody id="historyTableBody"></tbody></table></div></section>
+</section></main><script src="hexa-menu.js"></script><script src="hexa-header.js"></script><script src="unit-history.js"></script></body></html>
