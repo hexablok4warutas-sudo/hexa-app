@@ -1,26 +1,26 @@
 /* =====================================================
    HEXA - UNIT HISTORY
    =====================================================
-   Layout mengikuti Daily Outstanding.
-   Global HEXA Header TIDAK diatur di file ini.
+   Layout mengikuti Daily Outstanding sebagai master.
+   Global Header tetap dikontrol hexa-header.css.
 ===================================================== */
 
 
 /* =====================================================
-   PAGE
+   BASE
 ===================================================== */
 
-.unit-history-page,
-.unit-history-page *,
-.unit-history-page *::before,
-.unit-history-page *::after {
+* {
   box-sizing: border-box;
 }
 
-.unit-history-page {
-  min-height: 100vh;
+html {
+  scroll-behavior: smooth;
+}
 
-  padding-top: 88px;
+body {
+  margin: 0;
+  min-height: 100vh;
 
   font-family:
     Arial,
@@ -28,6 +28,18 @@
     sans-serif;
 
   color: #303030;
+  background: #fff;
+}
+
+
+/* =====================================================
+   PAGE
+===================================================== */
+
+.unit-history-page {
+  min-height: 100vh;
+
+  padding-top: 88px;
 
   background:
     linear-gradient(
@@ -42,22 +54,32 @@
 
 
 /* =====================================================
-   TITLE BAR
-   Lebar sama seperti Daily Outstanding
+   MAIN CONTAINER
+   SAMA DENGAN DAILY OUTSTANDING
 ===================================================== */
 
-.unit-history-page-bar {
+.unit-history-container {
+  width: min(94%, 1220px);
+
+  margin: 0 auto;
+
+  padding-bottom: 55px;
+}
+
+
+/* =====================================================
+   TITLE BAR
+   Ukuran sama dengan Daily Outstanding
+===================================================== */
+
+.unit-history-title-bar {
   position: sticky;
 
   top: 88px;
 
   z-index: 120;
 
-  width: min(94%, 1220px);
-
   min-height: 88px;
-
-  margin: 0 auto;
 
   display: flex;
   align-items: center;
@@ -88,7 +110,7 @@
   gap: 12px;
 }
 
-.unit-history-title-icon {
+.unit-history-title img {
   width: 78px;
   height: 78px;
 
@@ -109,8 +131,6 @@
       42px
     );
 
-  line-height: 1;
-
   font-weight: 800;
 
   letter-spacing: -0.8px;
@@ -120,7 +140,8 @@
 
 
 /* =====================================================
-   ACTIONS
+   TITLE ACTIONS
+   Filter + Print + Delete
 ===================================================== */
 
 .unit-history-actions {
@@ -134,8 +155,8 @@
 
 
 /* =====================================================
-   ACTION BUTTON
-   Gaya sama dengan Filter Daily Outstanding
+   ACTION BUTTONS
+   Ukuran dasar sama dengan Filter Daily Outstanding
 ===================================================== */
 
 .unit-history-action-button {
@@ -177,8 +198,8 @@
 }
 
 .unit-history-action-button svg {
-  width: 24px;
-  height: 24px;
+  width: 25px;
+  height: 25px;
 
   fill: none;
 
@@ -188,53 +209,317 @@
   stroke-linejoin: round;
 }
 
-#unitHistoryFilterButton svg {
-  fill: none;
-
-  stroke: currentColor;
-}
-
-
-/* DELETE MODE */
-
 .unit-history-delete-button.is-active {
-  border-color: #d92d20;
+  border-color: #e53935;
 
-  background: #d92d20;
-
-  color: #fff;
-}
-
-.unit-history-delete-button.is-active:hover {
-  background: #b42318;
-
-  border-color: #b42318;
+  background: #e53935;
 
   color: #fff;
 }
 
 
 /* =====================================================
-   OLD DIVIDER
-   Divider sudah menjadi bagian title bar.
+   FILTER PANEL
 ===================================================== */
 
-.unit-history-page-divider {
-  display: none;
-}
-
-
-/* =====================================================
-   TABLE VIEW
-   Container mengikuti Daily Outstanding
-===================================================== */
-
-.unit-history-table-view {
+.unit-history-filter-panel {
   position: relative;
 
-  width: min(94%, 1220px);
+  z-index: 110;
 
-  margin: 8px auto 0;
+  margin-top: 10px;
+
+  padding: 20px;
+
+  background: #fff;
+
+  border:
+    1px solid
+    rgba(
+      245,
+      160,
+      0,
+      0.45
+    );
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 10px 30px
+    rgba(
+      0,
+      0,
+      0,
+      0.10
+    );
+}
+
+.unit-history-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 18px;
+}
+
+.unit-history-filter-header h2 {
+  margin: 0;
+
+  color: #222;
+
+  font-size: 18px;
+}
+
+.unit-history-filter-close {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background: #efefef;
+
+  color: #555;
+
+  font-size: 23px;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   DYNAMIC FILTER CONDITIONS
+===================================================== */
+
+.unit-history-filter-conditions {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.unit-history-filter-condition {
+  display: grid;
+
+  grid-template-columns:
+    minmax(160px, 220px)
+    minmax(0, 1fr)
+    36px;
+
+  align-items: end;
+
+  gap: 10px;
+}
+
+.unit-history-filter-field {
+  min-width: 0;
+}
+
+.unit-history-filter-field label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #555;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.unit-history-filter-field input,
+.unit-history-filter-field select {
+  width: 100%;
+  height: 43px;
+
+  padding: 0 11px;
+
+  border:
+    1px solid #ccd0d5;
+
+  border-radius: 5px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #333;
+
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.unit-history-filter-field input:focus,
+.unit-history-filter-field select:focus {
+  border-color: #f5a000;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      245,
+      160,
+      0,
+      0.10
+    );
+}
+
+.unit-history-filter-remove {
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 3px;
+
+  padding: 0;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background: #efefef;
+
+  color: #777;
+
+  font-size: 18px;
+
+  cursor: pointer;
+}
+
+.unit-history-filter-remove:hover {
+  background: #e53935;
+
+  color: #fff;
+}
+
+
+/* =====================================================
+   FILTER ACTIONS
+===================================================== */
+
+.unit-history-filter-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 18px;
+}
+
+.unit-history-filter-action-right {
+  display: flex;
+
+  gap: 10px;
+}
+
+.unit-history-add-filter-button,
+.unit-history-reset-filter-button,
+.unit-history-apply-filter-button {
+  min-height: 40px;
+
+  padding: 0 18px;
+
+  border-radius: 20px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.unit-history-add-filter-button {
+  border:
+    1px solid #f5a000;
+
+  background: #fff;
+
+  color: #c67e00;
+}
+
+.unit-history-reset-filter-button {
+  min-width: 100px;
+
+  border:
+    1px solid #cfd3d7;
+
+  background: #fff;
+
+  color: #555;
+}
+
+.unit-history-apply-filter-button {
+  min-width: 115px;
+
+  border: 0;
+
+  background: #f5a000;
+
+  color: #111;
+}
+
+
+/* =====================================================
+   ACTIVE FILTER CHIPS
+===================================================== */
+
+.unit-history-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-top: 8px;
+}
+
+.unit-history-filter-chip {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 30px;
+
+  padding: 5px 10px;
+
+  border:
+    1px solid
+    rgba(
+      245,
+      160,
+      0,
+      0.35
+    );
+
+  border-radius: 15px;
+
+  background: #fffaf1;
+
+  color: #555;
+
+  font-size: 11px;
+}
+
+
+/* =====================================================
+   UNIT HISTORY LIST SECTION
+   Sama posisi dengan Outstanding List Section
+===================================================== */
+
+.unit-history-list-section {
+  position: relative;
+
+  margin-top: 8px;
 
   background: #fff;
 
@@ -263,7 +548,7 @@
 ===================================================== */
 
 .unit-history-state {
-  min-height: 350px;
+  min-height: 250px;
 
   display: flex;
   align-items: center;
@@ -273,41 +558,24 @@
 
   color: #777;
 
-  background: #fff;
-
   font-size: 14px;
 
   text-align: center;
 }
 
-.unit-history-state-error {
+.unit-history-state.error {
   color: #d23b3b;
-}
-
-
-/* =====================================================
-   TABLE CONTAINER
-===================================================== */
-
-.unit-history-table-container {
-  position: relative;
-
-  width: 100%;
-
-  background: #fff;
-
-  overflow: hidden;
 }
 
 
 /* =====================================================
    TABLE SCROLL AREA
 
-   Hanya bagian ini yang scroll.
-   Vertikal + horizontal.
+   Perbedaan utama dengan Daily Outstanding:
+   Unit History membutuhkan scroll Y + X.
 ===================================================== */
 
-.unit-history-table-scroll {
+.unit-history-scroll-container {
   position: relative;
 
   width: 100%;
@@ -321,34 +589,30 @@
 
   max-height: 650px;
 
-  overflow-x: auto;
   overflow-y: scroll;
+  overflow-x: auto;
 
   scrollbar-width: thin;
-
-  scrollbar-color:
-    #bfc3c7
-    #f3f3f3;
 
   scroll-behavior: smooth;
 }
 
-.unit-history-table-scroll::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+.unit-history-scroll-container::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
 }
 
-.unit-history-table-scroll::-webkit-scrollbar-track {
+.unit-history-scroll-container::-webkit-scrollbar-track {
   background: #f3f3f3;
 }
 
-.unit-history-table-scroll::-webkit-scrollbar-thumb {
+.unit-history-scroll-container::-webkit-scrollbar-thumb {
   background: #bfc3c7;
 
   border-radius: 8px;
 }
 
-.unit-history-table-scroll::-webkit-scrollbar-thumb:hover {
+.unit-history-scroll-container::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
 
@@ -364,38 +628,14 @@
 
   margin: 0;
 
-  border: 0;
-
-  border-spacing: 0;
   border-collapse: separate;
-
-  table-layout: fixed;
+  border-spacing: 0;
 
   background: #fff;
 
-  color: #222;
+  color: #303030;
 
   font-size: 12px;
-}
-
-
-/* =====================================================
-   TABLE CELL
-===================================================== */
-
-.unit-history-table th,
-.unit-history-table td {
-  padding: 10px 12px;
-
-  vertical-align: middle;
-
-  text-align: left;
-
-  border-right:
-    1px solid #e1e1e1;
-
-  border-bottom:
-    1px solid #ededed;
 }
 
 
@@ -408,9 +648,17 @@
 
   top: 0;
 
-  z-index: 20;
+  z-index: 30;
 
   height: 48px;
+
+  padding: 9px 12px;
+
+  border-right:
+    1px solid #363636;
+
+  border-bottom:
+    1px solid #363636;
 
   background: #111;
 
@@ -419,7 +667,9 @@
   font-size: 11px;
   line-height: 1.2;
 
-  font-weight: 800;
+  font-weight: 750;
+
+  text-align: left;
 
   text-transform: uppercase;
 
@@ -432,15 +682,28 @@
 ===================================================== */
 
 .unit-history-table tbody td {
-  height: 66px;
+  height: 70px;
+
+  padding: 8px 12px;
+
+  border-right:
+    1px solid #ededed;
+
+  border-bottom:
+    1px solid #ededed;
 
   background: #fff;
+
+  vertical-align: middle;
 
   line-height: 1.35;
 }
 
 .unit-history-table tbody tr {
   cursor: pointer;
+
+  transition:
+    background 0.16s ease;
 }
 
 .unit-history-table tbody tr:hover td {
@@ -455,17 +718,17 @@
 
 
 /* =====================================================
-   COLUMN WIDTH
-   Checkbox adalah child pertama walaupun hidden.
+   TABLE COLUMN WIDTH
 ===================================================== */
 
-
-/* DELETE */
+/* DELETE CHECKBOX */
 
 .unit-history-table th:nth-child(1),
 .unit-history-table td:nth-child(1) {
   width: 48px;
   min-width: 48px;
+
+  text-align: center;
 }
 
 
@@ -478,7 +741,7 @@
 }
 
 
-/* HM */
+/* HM INSPECTION */
 
 .unit-history-table th:nth-child(3),
 .unit-history-table td:nth-child(3) {
@@ -496,7 +759,7 @@
 }
 
 
-/* PROBLEM */
+/* PROBLEM DESCRIPTION */
 
 .unit-history-table th:nth-child(5),
 .unit-history-table td:nth-child(5) {
@@ -509,8 +772,8 @@
 
 .unit-history-table th:nth-child(6),
 .unit-history-table td:nth-child(6) {
-  width: 100px;
-  min-width: 100px;
+  width: 95px;
+  min-width: 95px;
 
   text-align: center;
 }
@@ -534,7 +797,7 @@
 }
 
 
-/* PART DESCRIPTION */
+/* PARTS DESCRIPTION */
 
 .unit-history-table th:nth-child(9),
 .unit-history-table td:nth-child(9) {
@@ -547,8 +810,8 @@
 
 .unit-history-table th:nth-child(10),
 .unit-history-table td:nth-child(10) {
-  width: 105px;
-  min-width: 105px;
+  width: 110px;
+  min-width: 110px;
 }
 
 
@@ -556,8 +819,8 @@
 
 .unit-history-table th:nth-child(11),
 .unit-history-table td:nth-child(11) {
-  width: 135px;
-  min-width: 135px;
+  width: 140px;
+  min-width: 140px;
 }
 
 
@@ -568,9 +831,6 @@
 .unit-history-delete-column {
   width: 48px !important;
   min-width: 48px !important;
-
-  padding-left: 0 !important;
-  padding-right: 0 !important;
 
   text-align: center !important;
 }
@@ -587,46 +847,32 @@
   cursor: pointer;
 }
 
-.unit-history-page.is-delete-mode
-.unit-history-table tbody tr {
-  cursor: default;
-}
-
 
 /* =====================================================
-   PHOTO
+   TABLE PHOTO
 ===================================================== */
 
 .unit-history-row-photo {
   display: block;
 
   width: 60px;
-  height: 52px;
+  height: 60px;
 
   margin: 0 auto;
-
-  object-fit: cover;
 
   overflow: hidden;
 
   border-radius: 3px;
 
   background: #ededed;
+
+  object-fit: cover;
 }
 
 .unit-history-row-no-photo {
   color: #999;
 
-  font-size: 11px;
-}
-
-
-/* =====================================================
-   EMPTY VALUE
-===================================================== */
-
-.unit-history-empty-value {
-  color: #aaa;
+  font-size: 10px;
 }
 
 
@@ -636,145 +882,306 @@
 
 .unit-history-badge {
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
   min-width: 62px;
-  min-height: 25px;
 
-  padding: 4px 9px;
+  padding: 5px 9px;
 
-  border-radius: 999px;
+  border-radius: 14px;
 
   font-size: 10px;
   line-height: 1;
 
-  font-weight: 800;
+  font-weight: 750;
 
   white-space: nowrap;
 }
 
 .unit-history-badge-open,
 .unit-history-badge-belum {
-  color: #b76b00;
-
   background: #fff0d1;
+
+  color: #c67e00;
 }
 
 .unit-history-badge-close,
 .unit-history-badge-submitted {
-  color: #16783d;
-
   background: #e5f7eb;
+
+  color: #1a9d50;
+}
+
+.unit-history-empty-value {
+  color: #aaa;
 }
 
 
 /* =====================================================
-   DETAIL VIEW
+   SCROLL NAVIGATION
+   Sama seperti Daily Outstanding
 ===================================================== */
 
-.unit-history-detail-view {
-  position: relative;
+.unit-history-scroll-navigation {
+  position: absolute;
 
-  width: min(94%, 1220px);
+  top: 50%;
+  right: 5px;
 
-  height:
-    calc(
-      100vh - 225px
-    );
+  z-index: 50;
 
-  min-height: 350px;
+  display: flex;
+  flex-direction: column;
 
-  max-height: 650px;
+  gap: 6px;
 
-  margin: 8px auto 0;
-
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  background: #fff;
-
-  border:
-    1px solid
-    rgba(
-      0,
-      0,
-      0,
-      0.06
-    );
-
-  box-shadow:
-    0 9px 28px
-    rgba(
-      0,
-      0,
-      0,
-      0.10
-    );
-
-  scrollbar-width: thin;
+  transform:
+    translateY(-50%);
 }
 
-
-/* =====================================================
-   DETAIL HEADER
-===================================================== */
-
-.unit-history-detail-header {
-  position: sticky;
-
-  top: 0;
-
-  z-index: 20;
-
-  min-height: 70px;
+.unit-history-scroll-nav-button {
+  width: 29px;
+  height: 35px;
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
-  gap: 13px;
+  padding: 0;
 
-  padding: 10px 16px;
+  border: 0;
 
-  background: #fff;
+  border-radius: 15px;
 
-  border-bottom:
-    3px solid #f5a000;
-}
+  background:
+    rgba(
+      20,
+      20,
+      20,
+      0.55
+    );
 
-.unit-history-detail-label {
-  margin-bottom: 3px;
-
-  color: #777;
+  color: #fff;
 
   font-size: 10px;
 
-  font-weight: 700;
-
-  text-transform: uppercase;
+  cursor: pointer;
 }
 
-.unit-history-detail-header h2 {
-  margin: 0;
+.unit-history-scroll-nav-button:hover {
+  background: #f5a000;
+
+  color: #111;
+}
+
+
+/* =====================================================
+   MODAL OVERLAY
+===================================================== */
+
+.unit-history-modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.56
+    );
+
+  overflow-y: auto;
+}
+
+
+/* =====================================================
+   DETAIL MODAL
+   Mengikuti desain Detail Daily Outstanding
+===================================================== */
+
+.unit-history-detail-modal {
+  position: relative;
+
+  width:
+    min(
+      94vw,
+      640px
+    );
+
+  max-height:
+    calc(
+      100vh - 48px
+    );
+
+  overflow-y: auto;
+
+  padding:
+    14px
+    14px
+    78px;
+
+  border:
+    4px solid #111;
+
+  border-radius: 34px;
+
+  background: #ffd1a3;
+
+  box-shadow:
+    0 24px 60px
+    rgba(
+      0,
+      0,
+      0,
+      0.35
+    );
+}
+
+
+/* =====================================================
+   DETAIL PHOTO
+===================================================== */
+
+.unit-history-detail-photo-button {
+  display: block;
+
+  width: 100%;
+
+  height: 285px;
+
+  padding: 0;
+
+  overflow: hidden;
+
+  border: 0;
+
+  border-radius: 24px;
+
+  background: #ddd;
+
+  cursor: zoom-in;
+}
+
+.unit-history-detail-photo-button img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.unit-history-detail-modal > h2 {
+  margin:
+    10px
+    0
+    8px;
 
   color: #111;
 
   font-size: 23px;
 
+  text-align: center;
+}
+
+
+/* =====================================================
+   DETAIL SECTION
+===================================================== */
+
+.unit-history-detail-section {
+  margin-top: 16px;
+}
+
+.unit-history-detail-section h3 {
+  margin:
+    0
+    20px
+    5px;
+
+  padding-bottom: 6px;
+
+  border-bottom:
+    1px solid
+    rgba(
+      0,
+      0,
+      0,
+      0.22
+    );
+
+  color: #111;
+
+  font-size: 15px;
   font-weight: 800;
 }
 
 
 /* =====================================================
-   BACK BUTTON
+   DETAIL INFORMATION
 ===================================================== */
 
-.unit-history-back-button {
-  width: 42px;
-  height: 42px;
+.unit-history-detail-information {
+  padding:
+    0 20px;
+}
 
-  flex-shrink: 0;
+.unit-history-detail-row {
+  display: grid;
+
+  grid-template-columns:
+    205px 12px minmax(0, 1fr);
+
+  gap: 5px;
+
+  padding:
+    7px 0;
+
+  color: #161616;
+
+  font-size: 14px;
+
+  line-height: 1.35;
+}
+
+.unit-history-detail-label {
+  font-weight: 500;
+}
+
+.unit-history-detail-value {
+  overflow-wrap: anywhere;
+}
+
+
+/* =====================================================
+   DETAIL ACTION
+===================================================== */
+
+.unit-history-detail-actions {
+  position: absolute;
+
+  right: 16px;
+  bottom: 10px;
+
+  display: flex;
+
+  gap: 16px;
+}
+
+.unit-history-detail-action-button {
+  width: 52px;
+  height: 52px;
 
   display: flex;
   align-items: center;
@@ -786,182 +1193,232 @@
 
   border-radius: 50%;
 
-  background: #f5a000;
-
   color: #fff;
 
   cursor: pointer;
+
+  box-shadow:
+    0 5px 12px
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
 }
 
-.unit-history-back-button svg {
-  width: 23px;
-  height: 23px;
+.unit-history-detail-action-button.close {
+  background: #ff3535;
+}
+
+.unit-history-detail-action-button svg {
+  width: 27px;
+  height: 27px;
 
   fill: none;
 
   stroke: currentColor;
-  stroke-width: 2.4;
+  stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 
 /* =====================================================
-   DETAIL CONTENT
+   FULLSCREEN PHOTO VIEWER
 ===================================================== */
 
-.unit-history-detail-content {
-  padding: 16px;
+.unit-history-photo-viewer {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 3000;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.96
+    );
 }
 
-.unit-history-detail-section {
-  margin-bottom: 16px;
+.unit-history-photo-viewer-toolbar {
+  position: absolute;
 
-  padding: 16px;
+  top: 15px;
+  right: 15px;
+
+  z-index: 3010;
+
+  display: flex;
+
+  gap: 8px;
+}
+
+.unit-history-photo-tool-button {
+  min-width: 42px;
+  height: 42px;
+
+  padding: 0 11px;
 
   border:
-    1px solid #ededed;
-
-  border-radius: 8px;
-
-  background: #fff;
-}
-
-.unit-history-detail-section:last-child {
-  margin-bottom: 0;
-}
-
-.unit-history-detail-section h3 {
-  margin:
-    0
-    0
-    14px;
-
-  padding-bottom: 8px;
-
-  border-bottom:
-    2px solid #f5a000;
-
-  color: #111;
-
-  font-size: 17px;
-  font-weight: 800;
-}
-
-
-/* =====================================================
-   DETAIL GRID
-===================================================== */
-
-.unit-history-detail-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0, 1fr)
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.35
     );
 
-  gap: 10px;
+  border-radius: 21px;
+
+  background:
+    rgba(
+      30,
+      30,
+      30,
+      0.8
+    );
+
+  color: #fff;
+
+  font-size: 16px;
+
+  cursor: pointer;
 }
 
-.unit-history-detail-field {
-  min-width: 0;
-
-  padding: 10px 12px;
-
-  border:
-    1px solid #eee;
-
-  border-radius: 6px;
-
-  background: #fafafa;
+.unit-history-photo-tool-button.close {
+  background: #e53935;
 }
 
-.unit-history-detail-field span {
-  display: block;
-
-  margin-bottom: 5px;
-
-  color: #777;
-
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.unit-history-detail-field strong {
-  display: block;
-
-  color: #222;
-
-  font-size: 13px;
-  line-height: 1.4;
-
-  font-weight: 700;
-
-  overflow-wrap: anywhere;
-}
-
-.unit-history-detail-wide {
-  grid-column:
-    1 / -1;
-}
-
-
-/* =====================================================
-   DETAIL PHOTO
-===================================================== */
-
-.unit-history-detail-photo-area {
-  margin-top: 12px;
-}
-
-.unit-history-detail-photo-area > span {
-  display: block;
-
-  margin-bottom: 6px;
-
-  color: #777;
-
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.unit-history-detail-photo-container {
-  min-height: 160px;
+.unit-history-photo-viewer-stage {
+  width: 100%;
+  height: 100%;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 10px;
+  overflow: auto;
 
-  border:
-    1px solid #eee;
-
-  border-radius: 6px;
-
-  background: #f4f4f4;
+  padding:
+    70px
+    20px
+    20px;
 }
 
-.unit-history-detail-photo {
+.unit-history-photo-viewer-stage img {
   display: block;
 
-  max-width: 100%;
-  max-height: 400px;
+  max-width: 95%;
+  max-height: 95%;
 
   object-fit: contain;
 
-  border-radius: 4px;
+  transform-origin: center;
+
+  transition:
+    transform 0.15s ease;
 }
 
 
 /* =====================================================
-   FLOATING START INSPECTION
-   Ukuran/gaya mengikuti Daily Outstanding.
+   DELETE CONFIRMATION
 ===================================================== */
 
-.unit-history-inspection-shortcut {
+.unit-history-delete-modal {
+  width:
+    min(
+      92vw,
+      420px
+    );
+
+  padding: 24px;
+
+  border-top:
+    5px solid #e53935;
+
+  border-radius: 16px;
+
+  background: #fff;
+
+  box-shadow:
+    0 20px 50px
+    rgba(
+      0,
+      0,
+      0,
+      0.30
+    );
+}
+
+.unit-history-delete-modal h2 {
+  margin:
+    0
+    0
+    12px;
+
+  color: #111;
+
+  font-size: 22px;
+}
+
+.unit-history-delete-modal p {
+  margin: 0;
+
+  color: #555;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.unit-history-delete-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.unit-history-delete-no,
+.unit-history-delete-yes {
+  min-width: 90px;
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  border: 0;
+
+  border-radius: 21px;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+
+.unit-history-delete-no {
+  background: #ededed;
+
+  color: #555;
+}
+
+.unit-history-delete-yes {
+  background: #e53935;
+
+  color: #fff;
+}
+
+
+/* =====================================================
+   START INSPECTION SHORTCUT
+   Ukuran PERSIS Daily Outstanding
+===================================================== */
+
+.unit-history-start-inspection-shortcut {
   position: fixed;
 
   right: 28px;
@@ -1006,21 +1463,19 @@
   user-select: none;
 }
 
-.unit-history-inspection-shortcut:active {
+.unit-history-start-inspection-shortcut:active {
   cursor: grabbing;
 }
 
-.unit-history-inspection-shortcut span {
+.unit-history-start-inspection-shortcut span {
   position: relative;
-
-  display: block;
 
   width: 34px;
   height: 34px;
 }
 
-.unit-history-inspection-shortcut span::before,
-.unit-history-inspection-shortcut span::after {
+.unit-history-start-inspection-shortcut span::before,
+.unit-history-start-inspection-shortcut span::after {
   content: "";
 
   position: absolute;
@@ -1039,147 +1494,26 @@
     );
 }
 
-.unit-history-inspection-shortcut span::before {
+.unit-history-start-inspection-shortcut span::before {
   width: 34px;
   height: 7px;
 }
 
-.unit-history-inspection-shortcut span::after {
+.unit-history-start-inspection-shortcut span::after {
   width: 7px;
   height: 34px;
 }
 
 
 /* =====================================================
-   DELETE MODAL
+   UTILITY
 ===================================================== */
 
-.unit-history-modal {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 3000;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
+body.modal-open {
+  overflow: hidden;
 }
 
-.unit-history-modal-backdrop {
-  position: absolute;
-
-  inset: 0;
-
-  background:
-    rgba(
-      0,
-      0,
-      0,
-      0.56
-    );
-}
-
-.unit-history-modal-card {
-  position: relative;
-
-  z-index: 2;
-
-  width:
-    min(
-      420px,
-      100%
-    );
-
-  padding: 24px;
-
-  border-radius: 10px;
-
-  background: #fff;
-
-  box-shadow:
-    0 16px 40px
-    rgba(
-      0,
-      0,
-      0,
-      0.28
-    );
-}
-
-.unit-history-modal-card h2 {
-  margin:
-    0
-    0
-    12px;
-
-  color: #111;
-
-  font-size: 21px;
-  font-weight: 800;
-}
-
-.unit-history-modal-card p {
-  margin: 0;
-
-  color: #444;
-
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.unit-history-modal-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  gap: 10px;
-
-  margin-top: 22px;
-}
-
-.unit-history-modal-no,
-.unit-history-modal-yes {
-  min-width: 86px;
-  min-height: 40px;
-
-  padding:
-    8px
-    16px;
-
-  border: 0;
-
-  border-radius: 7px;
-
-  font-size: 13px;
-  font-weight: 800;
-
-  cursor: pointer;
-}
-
-.unit-history-modal-no {
-  background: #eee;
-
-  color: #333;
-}
-
-.unit-history-modal-yes {
-  background: #d92d20;
-
-  color: #fff;
-}
-
-
-/* =====================================================
-   HIDDEN
-
-   Scoped hanya ke Unit History.
-   Tidak menyentuh Global Header.
-===================================================== */
-
-.unit-history-page [hidden] {
+[hidden] {
   display: none !important;
 }
 
@@ -1190,12 +1524,16 @@
 
 @media (max-width: 900px) {
 
-  .unit-history-detail-grid {
+  .unit-history-filter-condition {
     grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+      180px
+      minmax(0, 1fr)
+      36px;
+  }
+
+  .unit-history-detail-row {
+    grid-template-columns:
+      175px 12px minmax(0, 1fr);
   }
 
 }
@@ -1203,7 +1541,7 @@
 
 /* =====================================================
    MOBILE
-   Global Header tetap dikontrol hexa-header.css
+   Ukuran mengikuti Daily Outstanding
 ===================================================== */
 
 @media (max-width: 600px) {
@@ -1216,15 +1554,23 @@
   }
 
 
-  /* TITLE BAR */
+  /* CONTAINER */
 
-  .unit-history-page-bar {
-    top: 72px;
-
+  .unit-history-container {
     width:
       calc(
         100% - 16px
       );
+
+    padding-bottom:
+      35px;
+  }
+
+
+  /* TITLE */
+
+  .unit-history-title-bar {
+    top: 72px;
 
     min-height: 76px;
 
@@ -1238,17 +1584,14 @@
       2px;
   }
 
-
   .unit-history-title {
     gap: 7px;
   }
 
-
-  .unit-history-title-icon {
+  .unit-history-title img {
     width: 58px;
     height: 58px;
   }
-
 
   .unit-history-title h1 {
     font-size: 24px;
@@ -1258,38 +1601,77 @@
   }
 
 
-  /* ACTION BUTTON */
+  /* ACTIONS */
 
   .unit-history-actions {
     gap: 5px;
   }
-
 
   .unit-history-action-button {
     width: 40px;
     height: 40px;
   }
 
-
   .unit-history-action-button svg {
-    width: 20px;
-    height: 20px;
+    width: 21px;
+    height: 21px;
+  }
+
+
+  /* FILTER */
+
+  .unit-history-filter-panel {
+    margin-top: 6px;
+
+    padding: 15px;
+  }
+
+  .unit-history-filter-condition {
+    grid-template-columns:
+      1fr
+      36px;
+
+    gap: 8px;
+  }
+
+  .unit-history-filter-condition
+  .unit-history-filter-field:first-child {
+    grid-column:
+      1 / -1;
+  }
+
+  .unit-history-filter-actions {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .unit-history-add-filter-button {
+    width: 100%;
+  }
+
+  .unit-history-filter-action-right {
+    display: grid;
+
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .unit-history-reset-filter-button,
+  .unit-history-apply-filter-button {
+    width: 100%;
+
+    min-width: 0;
   }
 
 
   /* TABLE */
 
-  .unit-history-table-view {
-    width:
-      calc(
-        100% - 16px
-      );
-
+  .unit-history-list-section {
     margin-top: 5px;
   }
 
-
-  .unit-history-table-scroll {
+  .unit-history-scroll-container {
     height:
       calc(
         100vh - 175px
@@ -1299,69 +1681,140 @@
 
     max-height: none;
   }
-
 
   .unit-history-table {
     font-size: 11px;
   }
 
+  .unit-history-table thead th {
+    height: 44px;
 
-  .unit-history-table th,
-  .unit-history-table td {
     padding:
-      8px
+      7px
+      9px;
+
+    font-size: 10px;
+  }
+
+  .unit-history-table tbody td {
+    height: 64px;
+
+    padding:
+      7px
       9px;
   }
 
+  .unit-history-row-photo {
+    width: 54px;
+    height: 54px;
+  }
 
-  /* DETAIL */
-
-  .unit-history-detail-view {
-    width:
-      calc(
-        100% - 16px
-      );
-
-    height:
-      calc(
-        100vh - 175px
-      );
-
-    min-height: 330px;
-
-    max-height: none;
-
-    margin-top: 5px;
+  .unit-history-scroll-navigation {
+    right: 2px;
   }
 
 
-  .unit-history-detail-content {
+  /* DETAIL MODAL */
+
+  .unit-history-modal-overlay {
     padding: 10px;
   }
 
+  .unit-history-detail-modal {
+    width: 100%;
 
-  .unit-history-detail-section {
-    padding: 12px;
+    max-height:
+      calc(
+        100vh - 20px
+      );
 
-    margin-bottom: 10px;
+    padding:
+      10px
+      10px
+      72px;
+
+    border-width: 3px;
+
+    border-radius: 24px;
+  }
+
+  .unit-history-detail-photo-button {
+    height:
+      min(
+        36vh,
+        260px
+      );
+
+    border-radius: 18px;
+  }
+
+  .unit-history-detail-modal > h2 {
+    font-size: 20px;
+  }
+
+  .unit-history-detail-section h3 {
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+
+  .unit-history-detail-information {
+    padding:
+      0 7px;
+  }
+
+  .unit-history-detail-row {
+    grid-template-columns:
+      125px 8px minmax(0, 1fr);
+
+    gap: 3px;
+
+    padding:
+      6px 0;
+
+    font-size: 12px;
+  }
+
+  .unit-history-detail-actions {
+    right: 12px;
+    bottom: 9px;
+  }
+
+  .unit-history-detail-action-button {
+    width: 48px;
+    height: 48px;
   }
 
 
-  .unit-history-detail-grid {
-    grid-template-columns: 1fr;
+  /* PHOTO VIEWER */
 
-    gap: 8px;
+  .unit-history-photo-viewer-toolbar {
+    top: 10px;
+    right: 10px;
+
+    gap: 5px;
+  }
+
+  .unit-history-photo-tool-button {
+    min-width: 38px;
+    height: 38px;
+
+    padding:
+      0 9px;
+
+    font-size: 14px;
+  }
+
+  .unit-history-photo-viewer-stage {
+    padding:
+      60px
+      8px
+      8px;
   }
 
 
-  .unit-history-detail-wide {
-    grid-column: auto;
-  }
+  /* SHORTCUT */
 
-
-  /* FLOATING BUTTON */
-
-  .unit-history-inspection-shortcut {
+  .unit-history-start-inspection-shortcut {
     right: 18px;
     bottom: 18px;
 
@@ -1369,20 +1822,17 @@
     height: 62px;
   }
 
-
-  .unit-history-inspection-shortcut span {
+  .unit-history-start-inspection-shortcut span {
     width: 30px;
     height: 30px;
   }
 
-
-  .unit-history-inspection-shortcut span::before {
+  .unit-history-start-inspection-shortcut span::before {
     width: 30px;
     height: 6px;
   }
 
-
-  .unit-history-inspection-shortcut span::after {
+  .unit-history-start-inspection-shortcut span::after {
     width: 6px;
     height: 30px;
   }
@@ -1396,41 +1846,41 @@
 
 @media (max-width: 380px) {
 
-  .unit-history-page-bar,
-  .unit-history-table-view,
-  .unit-history-detail-view {
+  .unit-history-container {
     width:
       calc(
         100% - 10px
       );
   }
 
-
-  .unit-history-title-icon {
+  .unit-history-title img {
     width: 52px;
     height: 52px;
   }
-
 
   .unit-history-title h1 {
     font-size: 21px;
   }
 
-
   .unit-history-actions {
     gap: 3px;
   }
-
 
   .unit-history-action-button {
     width: 37px;
     height: 37px;
   }
 
-
   .unit-history-action-button svg {
-    width: 18px;
-    height: 18px;
+    width: 19px;
+    height: 19px;
+  }
+
+  .unit-history-detail-row {
+    grid-template-columns:
+      112px 7px minmax(0, 1fr);
+
+    font-size: 11px;
   }
 
 }
