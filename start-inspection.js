@@ -14,14 +14,26 @@ const HEXA_API_URL =
 ===================================================== */
 
 const isLoggedIn =
-  sessionStorage.getItem("hexaLoggedIn") === "true";
+  sessionStorage.getItem(
+    "hexaLoggedIn"
+  ) === "true";
+
 
 const storedUser =
-  sessionStorage.getItem("hexaUser");
+  sessionStorage.getItem(
+    "hexaUser"
+  );
 
 
-if (!isLoggedIn || !storedUser) {
-  window.location.replace("index.html");
+if (
+  !isLoggedIn ||
+  !storedUser
+) {
+
+  window.location.replace(
+    "index.html"
+  );
+
 }
 
 
@@ -31,7 +43,9 @@ let currentUser = null;
 try {
 
   currentUser =
-    JSON.parse(storedUser);
+    JSON.parse(
+      storedUser
+    );
 
 } catch (error) {
 
@@ -51,226 +65,18 @@ try {
 
 
 /* =====================================================
-   PAGE ROUTING
-===================================================== */
-
-const HEXA_PAGES = {
-
-  main: {
-    url: "main.html",
-    enabled: true
-  },
-
-  "daily-maintenance": {
-    url: "daily-maintenance.html",
-    enabled: true
-  },
-
-  "backlog-monitoring": {
-    url: "backlog-monitoring.html",
-    enabled: false
-  },
-
-  fui: {
-    url: "fui.html",
-    enabled: false
-  },
-
-  rotable: {
-    url: "rotable.html",
-    enabled: false
-  },
-
-  news: {
-    url: "news.html",
-    enabled: false
-  },
-
-  settings: {
-    url: "settings.html",
-    enabled: false
-  }
-
-};
-
-
-function openHexaPage(pageName) {
-
-  const page =
-    HEXA_PAGES[pageName];
-
-  if (!page) {
-    return;
-  }
-
-  if (!page.enabled) {
-
-    console.log(
-      `${pageName} belum diaktifkan.`
-    );
-
-    return;
-  }
-
-  window.location.href =
-    page.url;
-}
-
-
-/* =====================================================
-   HEADER NAVIGATION
-===================================================== */
-
-const headerLogoButton =
-  document.getElementById(
-    "headerLogoButton"
-  );
-
-const hexaNavMenu =
-  document.getElementById(
-    "hexaNavMenu"
-  );
-
-
-function closeHexaNavigation() {
-
-  if (!hexaNavMenu) {
-    return;
-  }
-
-  hexaNavMenu.classList.remove(
-    "open"
-  );
-
-  if (headerLogoButton) {
-
-    headerLogoButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
-
-  }
-}
-
-
-if (
-  headerLogoButton &&
-  hexaNavMenu
-) {
-
-  headerLogoButton.addEventListener(
-    "click",
-    function (event) {
-
-      event.stopPropagation();
-
-      const isOpen =
-        hexaNavMenu.classList.toggle(
-          "open"
-        );
-
-      headerLogoButton.setAttribute(
-        "aria-expanded",
-        String(isOpen)
-      );
-
-    }
-  );
-
-
-  hexaNavMenu.addEventListener(
-    "click",
-    function (event) {
-
-      event.stopPropagation();
-
-    }
-  );
-
-}
-
-
-document.addEventListener(
-  "click",
-  closeHexaNavigation
-);
-
-
-document.addEventListener(
-  "keydown",
-  function (event) {
-
-    if (event.key === "Escape") {
-
-      closeHexaNavigation();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   NAVIGATION ITEMS
-===================================================== */
-
-document
-  .querySelectorAll(
-    ".nav-menu-item"
-  )
-  .forEach(
-    function (button) {
-
-      button.addEventListener(
-        "click",
-        function () {
-
-          const page =
-            button.dataset.page;
-
-          closeHexaNavigation();
-
-          openHexaPage(page);
-
-        }
-      );
-
-    }
-  );
-
-
-/* =====================================================
-   REFRESH
-===================================================== */
-
-const refreshButton =
-  document.getElementById(
-    "refreshButton"
-  );
-
-
-if (refreshButton) {
-
-  refreshButton.addEventListener(
-    "click",
-    function () {
-
-      window.location.reload();
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   SEARCH
+   SEARCH FORM FIELD
+
+   Search UI berasal dari Global Header.
+   Fungsi pencarian tetap khusus halaman
+   Start Inspection.
 ===================================================== */
 
 const searchInput =
   document.getElementById(
     "searchInput"
   );
+
 
 const searchButton =
   document.getElementById(
@@ -280,10 +86,16 @@ const searchButton =
 
 function searchFormField() {
 
+  if (!searchInput) {
+    return;
+  }
+
+
   const query =
     searchInput.value
       .trim()
       .toLowerCase();
+
 
   if (!query) {
 
@@ -307,6 +119,7 @@ function searchFormField() {
         "label"
       );
 
+
     if (!label) {
       continue;
     }
@@ -318,16 +131,20 @@ function searchFormField() {
 
 
     if (
-      labelText.includes(query)
+      labelText.includes(
+        query
+      )
     ) {
 
       const headerOffset =
         180;
 
+
       const elementPosition =
         group
           .getBoundingClientRect()
           .top;
+
 
       const offsetPosition =
         elementPosition +
@@ -360,6 +177,7 @@ function searchFormField() {
         );
 
       }
+
 
       return;
 
@@ -411,10 +229,12 @@ const hmInspection =
     "hmInspection"
   );
 
+
 const hmMinus =
   document.getElementById(
     "hmMinus"
   );
+
 
 const hmPlus =
   document.getElementById(
@@ -435,6 +255,7 @@ if (
         Number(
           hmInspection.value
         ) || 0;
+
 
       hmInspection.value =
         Math.max(
@@ -462,6 +283,7 @@ if (
           hmInspection.value
         ) || 0;
 
+
       hmInspection.value =
         currentValue + 1;
 
@@ -487,18 +309,23 @@ function setTodayAsDefaultDate() {
     return;
   }
 
+
   if (
     dateInspection.value
   ) {
+
     return;
+
   }
 
 
   const today =
     new Date();
 
+
   const year =
     today.getFullYear();
+
 
   const month =
     String(
@@ -507,6 +334,7 @@ function setTodayAsDefaultDate() {
       2,
       "0"
     );
+
 
   const day =
     String(
@@ -535,15 +363,18 @@ const inspectionPhoto =
     "inspectionPhoto"
   );
 
+
 const photoText =
   document.getElementById(
     "photoText"
   );
 
+
 const photoPreviewContainer =
   document.getElementById(
     "photoPreviewContainer"
   );
+
 
 const photoPreview =
   document.getElementById(
@@ -566,12 +397,15 @@ if (inspectionPhoto) {
         photoText.textContent =
           "Add Inspection Photo";
 
+
         photoPreviewContainer.hidden =
           true;
+
 
         photoPreview.removeAttribute(
           "src"
         );
+
 
         return;
 
@@ -588,8 +422,10 @@ if (inspectionPhoto) {
           "File harus berupa gambar."
         );
 
+
         inspectionPhoto.value =
           "";
+
 
         return;
 
@@ -608,6 +444,7 @@ if (inspectionPhoto) {
 
       photoPreview.src =
         imageUrl;
+
 
       photoPreviewContainer.hidden =
         false;
@@ -651,25 +488,26 @@ function compressPhoto(file) {
               let width =
                 image.width;
 
+
               let height =
                 image.height;
 
 
               if (
                 width >
-                maxDimension ||
+                  maxDimension ||
                 height >
-                maxDimension
+                  maxDimension
               ) {
 
                 const scale =
                   Math.min(
 
                     maxDimension /
-                    width,
+                      width,
 
                     maxDimension /
-                    height
+                      height
 
                   );
 
@@ -678,6 +516,7 @@ function compressPhoto(file) {
                   Math.round(
                     width * scale
                   );
+
 
                 height =
                   Math.round(
@@ -695,6 +534,7 @@ function compressPhoto(file) {
 
               canvas.width =
                 width;
+
 
               canvas.height =
                 height;
@@ -787,6 +627,7 @@ const ratingInput =
   document.getElementById(
     "rating"
   );
+
 
 const ratingButtons =
   document.querySelectorAll(
@@ -889,8 +730,10 @@ function setSubmitLoading(
     submitButton.disabled =
       true;
 
+
     submitButton.dataset.originalText =
       submitButton.textContent;
+
 
     submitButton.textContent =
       "Submitting...";
@@ -899,6 +742,7 @@ function setSubmitLoading(
 
     submitButton.disabled =
       false;
+
 
     submitButton.textContent =
       submitButton.dataset.originalText ||
@@ -936,6 +780,7 @@ function resetInspectionForm() {
   ratingInput.value =
     "";
 
+
   ratingButtons.forEach(
     function (button) {
 
@@ -952,8 +797,10 @@ function resetInspectionForm() {
   photoText.textContent =
     "Add Inspection Photo";
 
+
   photoPreviewContainer.hidden =
     true;
+
 
   photoPreview.removeAttribute(
     "src"
@@ -1234,6 +1081,7 @@ if (inspectionForm) {
           error.message
 
         );
+
 
       } finally {
 
