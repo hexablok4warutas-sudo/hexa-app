@@ -404,61 +404,190 @@
 
 
         <!-- ===============================
-             PART DESCRIPTION
+             PART REQUIREMENT
              =============================== -->
 
-        <div class="form-group">
+        <div
+          class="form-group part-requirement-group"
+          id="partRequirementGroup"
+        >
 
-          <label for="partsDescription">
-            Parts Description
+          <label class="part-requirement-main-label">
+            Part Requirement
           </label>
 
+
+          <!--
+            Repeating Part Container
+
+            JavaScript nantinya akan:
+            - menambahkan Part 2, Part 3, dst.
+            - menghapus part
+            - melakukan renumbering
+            - menggabungkan data menjadi multiline
+          -->
+
+          <div
+            id="partRequirementList"
+            class="part-requirement-list"
+          >
+
+
+            <!-- ===========================
+                 PART ITEM 1
+                 =========================== -->
+
+            <div
+              class="part-requirement-item"
+              data-part-index="1"
+            >
+
+
+              <!-- PART HEADER -->
+
+              <div class="part-item-header">
+
+                <div class="part-item-title">
+                  Part 1
+                </div>
+
+
+                <button
+                  type="button"
+                  class="remove-part-button"
+                  aria-label="Remove Part 1"
+                >
+                  Remove Part
+                </button>
+
+              </div>
+
+
+
+              <!-- PART DESCRIPTION -->
+
+              <div class="part-field">
+
+                <label>
+                  Part Description
+                </label>
+
+                <input
+                  type="text"
+                  class="part-description-input"
+                  autocomplete="off"
+                  placeholder="Input Part Description"
+                >
+
+              </div>
+
+
+
+              <!-- PART NO + QTY -->
+
+              <div class="part-row">
+
+
+                <div class="part-field part-no-field">
+
+                  <label>
+                    Part No.
+                  </label>
+
+                  <input
+                    type="text"
+                    class="part-no-input"
+                    autocomplete="off"
+                    placeholder="Input Part No."
+                  >
+
+                </div>
+
+
+                <div class="part-field quantity-field">
+
+                  <label>
+                    Qty
+                  </label>
+
+                  <input
+                    type="number"
+                    class="part-quantity-input"
+                    min="0"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="0"
+                  >
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ===============================
+               ADD PART
+               =============================== -->
+
+          <div class="add-part-area">
+
+            <button
+              type="button"
+              id="addPartButton"
+              class="add-part-button"
+            >
+
+              <span
+                class="add-part-icon"
+                aria-hidden="true"
+              >
+                +
+              </span>
+
+              <span>
+                Add Part
+              </span>
+
+            </button>
+
+          </div>
+
+
+
+          <!-- ===============================
+               HIDDEN DATABASE FIELDS
+
+               Tetap mempertahankan struktur
+               payload/backend lama:
+               - partsDescription
+               - partNo
+               - quantity
+               =============================== -->
+
           <input
-            type="text"
+            type="hidden"
             id="partsDescription"
             name="partsDescription"
           >
 
-        </div>
-
-
-
-        <!-- ===============================
-             PART NO
-             =============================== -->
-
-        <div class="form-group">
-
-          <label for="partNo">
-            Part No
-          </label>
-
           <input
-            type="text"
+            type="hidden"
             id="partNo"
             name="partNo"
           >
 
-        </div>
-
-
-
-        <!-- ===============================
-             QUANTITY
-             =============================== -->
-
-        <div class="form-group">
-
-          <label for="quantity">
-            Quantity
-          </label>
-
           <input
-            type="number"
+            type="hidden"
             id="quantity"
             name="quantity"
-            min="0"
           >
+
 
         </div>
 
