@@ -215,15 +215,13 @@ dailyMenuItems.forEach(
         // =================================
 
         if (
-          menu ===
-          "daily-outstanding"
+        menu ===
+        "daily-outstanding"
         ) {
 
-          console.log(
-            "Daily Outstanding"
-          );
+        openDailyOutstanding();
 
-          return;
+        return;
 
         }
 
@@ -263,6 +261,16 @@ function openStartInspection() {
 
 }
 
+// ========================================
+// OPEN DAILY OUTSTANDING
+// ========================================
+
+function openDailyOutstanding() {
+
+  window.location.href =
+    "/daily-outstanding";
+
+}
 
 // ========================================
 // FLOATING BUTTON
