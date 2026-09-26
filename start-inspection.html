@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Inspection | HEXA</title>
+  <link rel="stylesheet" href="start-inspection.css">
+</head>
+
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="main-header">
+
+    <div class="header-navigation">
+      <button
+        type="button"
+        class="header-logo"
+        id="headerLogoButton"
+        aria-label="Open HEXA menu"
+        aria-expanded="false"
+      >
+        <img src="hexa-logo-header.png" alt="HEXA">
+      </button>
+
+      <nav class="hexa-nav-menu" id="hexaNavMenu">
+        <button type="button" class="nav-menu-item" data-page="main">
+          Main Page
+        </button>
+
+        <button type="button" class="nav-menu-item active" data-page="daily-maintenance">
+          Daily Maintenance
+        </button>
+
+        <button type="button" class="nav-menu-item" data-page="backlog-monitoring">
+          Backlog Monitoring
+        </button>
+
+        <button type="button" class="nav-menu-item" data-page="fui">
+          FUI
+        </button>
+
+        <button type="button" class="nav-menu-item" data-page="rotable">
+          Rotable
+        </button>
+
+        <button type="button" class="nav-menu-item" data-page="news">
+          News
+        </button>
+
+        <button type="button" class="nav-menu-item settings-nav" data-page="settings">
+          Settings
+        </button>
+      </nav>
+    </div>
+
+    <div class="header-actions">
+
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder=""
+          autocomplete="off"
+          aria-label="Search"
+        >
+
+        <button type="button" id="searchButton" class="search-button">
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+          </svg>
+        </button>
+      </div>
+
+      <button type="button" id="refreshButton" class="refresh-button">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 6v5h-5"></path>
+          <path d="M18.5 15a7 7 0 1 1 .2-6"></path>
+        </svg>
+      </button>
+
+    </div>
+  </header>
+
+
+  <!-- ================= PAGE ================= -->
+
+  <main class="inspection-page">
+
+    <section class="inspection-container">
+
+      <!-- STICKY TITLE -->
+      <div class="inspection-title">
+        <img
+          src="hexa-icon-startinspection.svg"
+          alt="Start Inspection"
+        >
+
+        <h1>Start Your Inspection</h1>
+      </div>
+
+
+      <!-- ================= FORM ================= -->
+
+      <form id="inspectionForm" class="inspection-form">
+
+        <!-- UNIT CODE -->
+        <div class="form-group">
+          <label for="unitCode">
+            UNIT CODE <span>*</span>
+          </label>
+
+          <select id="unitCode" name="unitCode" required>
+            <option value="">Search / Select Unit</option>
+            <option value="HEX 1205">HEX 1205</option>
+            <option value="HEX 1207">HEX 1207</option>
+            <option value="HEX 1210">HEX 1210</option>
+          </select>
+        </div>
+
+
+        <!-- HM -->
+        <div class="form-group">
+          <label>
+            HM Inspection <span>*</span>
+          </label>
+
+          <div class="number-control">
+
+            <button
+              type="button"
+              id="hmMinus"
+              class="number-button"
+            >
+              −
+            </button>
+
+            <input
+              type="number"
+              id="hmInspection"
+              name="hmInspection"
+              value="0"
+              min="0"
+              step="1"
+              required
+            >
+
+            <button
+              type="button"
+              id="hmPlus"
+              class="number-button"
+            >
+              +
+            </button>
+
+          </div>
+        </div>
+
+
+        <!-- DATE -->
+        <div class="form-group">
+          <label for="dateInspection">
+            Date Inspection
+          </label>
+
+          <input
+            type="date"
+            id="dateInspection"
+            name="dateInspection"
+          >
+        </div>
+
+
+        <!-- PHOTO -->
+        <div class="form-group">
+          <label for="inspectionPhoto">
+            Photo <span>*</span>
+          </label>
+
+          <label class="photo-input" for="inspectionPhoto">
+
+            <input
+              type="file"
+              id="inspectionPhoto"
+              name="inspectionPhoto"
+              accept="image/*"
+              capture="environment"
+              required
+            >
+
+            <div class="camera-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M9 4l1.5-2h3L15 4h4a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h4z"></path>
+                <circle cx="12" cy="12" r="4"></circle>
+              </svg>
+            </div>
+
+            <span id="photoText">
+              Add Inspection Photo
+            </span>
+
+          </label>
+
+          <div
+            class="photo-preview"
+            id="photoPreviewContainer"
+            hidden
+          >
+            <img id="photoPreview" alt="Inspection Preview">
+          </div>
+        </div>
+
+
+        <!-- GROUP COMPONENT -->
+        <div class="form-group">
+          <label for="groupComponent">
+            Group Component <span>*</span>
+          </label>
+
+          <select
+            id="groupComponent"
+            name="groupComponent"
+            required
+          >
+            <option value="">Search / Select Component</option>
+            <option value="ENGINE">ENGINE</option>
+            <option value="TRANSMISSION">TRANSMISSION</option>
+            <option value="HYDRAULIC SYSTEM">HYDRAULIC SYSTEM</option>
+            <option value="SWING & TRAVEL">SWING &amp; TRAVEL</option>
+            <option value="FINAL DRIVE">FINAL DRIVE</option>
+            <option value="UNDER CARRIAGE">UNDER CARRIAGE</option>
+          </select>
+        </div>
+
+
+        <!-- PROBLEM DESCRIPTION -->
+        <div class="form-group">
+          <label for="problemDescription">
+            Problem Description <span>*</span>
+          </label>
+
+          <textarea
+            id="problemDescription"
+            name="problemDescription"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+
+
+        <!-- RATING -->
+        <div class="form-group">
+          <label>
+            Rating <span>*</span>
+          </label>
+
+          <div class="rating-grid">
+
+            <button type="button" class="rating-button" data-rating="RATE A">
+              RATE A
+            </button>
+
+            <button type="button" class="rating-button" data-rating="RATE B">
+              RATE B
+            </button>
+
+            <button type="button" class="rating-button" data-rating="RATE C">
+              RATE C
+            </button>
+
+            <button type="button" class="rating-button" data-rating="RATE X">
+              RATE X
+            </button>
+
+          </div>
+
+          <input
+            type="hidden"
+            id="rating"
+            name="rating"
+            required
+          >
+        </div>
+
+
+        <!-- PART DESCRIPTION -->
+        <div class="form-group">
+          <label for="partsDescription">
+            Parts Description
+          </label>
+
+          <input
+            type="text"
+            id="partsDescription"
+            name="partsDescription"
+          >
+        </div>
+
+
+        <!-- PART NO -->
+        <div class="form-group">
+          <label for="partNo">
+            Part No
+          </label>
+
+          <input
+            type="text"
+            id="partNo"
+            name="partNo"
+          >
+        </div>
+
+
+        <!-- QUANTITY -->
+        <div class="form-group">
+          <label for="quantity">
+            Quantity
+          </label>
+
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            min="0"
+          >
+        </div>
+
+
+        <!-- INSPECTOR -->
+        <div class="form-group">
+          <label for="inspectors">
+            Inspectors <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            id="inspectors"
+            name="inspectors"
+            required
+          >
+        </div>
+
+
+        <!-- NOTES -->
+        <div class="form-group">
+          <label for="notes">
+            Notes
+          </label>
+
+          <textarea
+            id="notes"
+            name="notes"
+            rows="3"
+          ></textarea>
+        </div>
+
+
+        <!-- SUBMIT -->
+        <div class="submit-area">
+
+          <button
+            type="submit"
+            class="submit-button"
+          >
+            <span class="submit-icon">✓</span>
+            <span>Submit Inspection</span>
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </main>
+
+  <script src="start-inspection.js"></script>
+
+</body>
+</html>
