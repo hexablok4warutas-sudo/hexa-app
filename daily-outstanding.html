@@ -1007,53 +1007,188 @@
 
 
 
-        <!-- PARTS DESCRIPTION -->
+        <!-- ==========================================
+             PART REQUIREMENT
+             ========================================== -->
 
-        <div class="form-group">
+        <div
+          class="form-group update-part-requirement-group"
+          id="updatePartRequirementGroup"
+        >
 
-          <label for="updatePartsDescription">
-            Parts Description
+          <label class="update-part-requirement-main-label">
+            Part Requirement
           </label>
 
+
+          <!-- ========================================
+               REPEATING PART LIST
+               ======================================== -->
+
+          <div
+            id="updatePartRequirementList"
+            class="update-part-requirement-list"
+          >
+
+
+            <!-- ======================================
+                 PART 1
+
+                 Data aktual akan dibentuk ulang
+                 oleh daily-outstanding.js ketika
+                 Edit Outstanding dibuka.
+                 ====================================== -->
+
+            <div
+              class="update-part-requirement-item"
+              data-part-index="1"
+            >
+
+
+              <!-- PART HEADER -->
+
+              <div class="update-part-item-header">
+
+                <div class="update-part-item-title">
+                  Part 1
+                </div>
+
+
+                <button
+                  type="button"
+                  class="update-remove-part-button"
+                  aria-label="Remove Part 1"
+                >
+                  Remove Part
+                </button>
+
+              </div>
+
+
+
+              <!-- PART DESCRIPTION -->
+
+              <div class="update-part-field">
+
+                <label>
+                  Part Description
+                </label>
+
+                <input
+                  type="text"
+                  class="update-part-description-input"
+                  autocomplete="off"
+                  placeholder="Input Part Description"
+                >
+
+              </div>
+
+
+
+              <!-- PART NO + QTY -->
+
+              <div class="update-part-row">
+
+
+                <div class="update-part-field update-part-no-field">
+
+                  <label>
+                    Part No.
+                  </label>
+
+                  <input
+                    type="text"
+                    class="update-part-no-input"
+                    autocomplete="off"
+                    placeholder="Input Part No."
+                  >
+
+                </div>
+
+
+                <div class="update-part-field update-part-quantity-field">
+
+                  <label>
+                    Qty
+                  </label>
+
+                  <input
+                    type="number"
+                    class="update-part-quantity-input"
+                    min="0"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="0"
+                  >
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ========================================
+               ADD PART
+               ======================================== -->
+
+          <div class="update-add-part-area">
+
+            <button
+              type="button"
+              id="updateAddPartButton"
+              class="update-add-part-button"
+            >
+
+              <span
+                class="update-add-part-icon"
+                aria-hidden="true"
+              >
+                +
+              </span>
+
+              <span>
+                Add Part
+              </span>
+
+            </button>
+
+          </div>
+
+
+
+          <!-- ========================================
+               HIDDEN DATABASE FIELDS
+
+               ID lama tetap dipertahankan supaya
+               integrasi JS/API tetap menggunakan:
+
+               updatePartsDescription
+               updatePartNo
+               updateQuantity
+               ======================================== -->
+
           <input
-            type="text"
+            type="hidden"
             id="updatePartsDescription"
           >
 
-        </div>
-
-
-
-        <!-- PART NO -->
-
-        <div class="form-group">
-
-          <label for="updatePartNo">
-            Part No
-          </label>
-
           <input
-            type="text"
+            type="hidden"
             id="updatePartNo"
           >
 
-        </div>
-
-
-
-        <!-- QUANTITY -->
-
-        <div class="form-group">
-
-          <label for="updateQuantity">
-            Quantity
-          </label>
-
           <input
-            type="number"
+            type="hidden"
             id="updateQuantity"
-            min="0"
           >
+
 
         </div>
 
