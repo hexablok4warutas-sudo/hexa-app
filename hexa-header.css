@@ -1,0 +1,668 @@
+/* =========================================
+   HEXA APP
+   GLOBAL HEADER
+   ========================================= */
+
+
+/* =========================================
+   FIXED HEADER
+   ========================================= */
+
+.main-header {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 88px;
+
+  background: #000000;
+
+  border-bottom: 15px solid #ff9800;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 32px;
+
+  z-index: 1000;
+}
+
+
+/* =========================================
+   HEADER NAVIGATION AREA
+   ========================================= */
+
+.header-navigation {
+  position: relative;
+
+  height: 73px;
+
+  display: flex;
+
+  align-items: center;
+}
+
+
+/* =========================================
+   HEXA HEADER LOGO
+   ========================================= */
+
+.header-logo {
+  height: 73px;
+
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-start;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+.header-logo img {
+  display: block;
+
+  width: auto;
+
+  height: 70px;
+
+  max-width: none;
+
+  object-fit: contain;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   HEXA NAVIGATION DROPDOWN
+   ========================================= */
+
+.hexa-nav-menu {
+  position: absolute;
+
+  top: calc(100% + 15px);
+  left: 0;
+
+  width: 230px;
+
+  padding: 8px;
+
+  background: rgba(18, 18, 18, 0.97);
+
+  border:
+    1px solid
+    rgba(255, 152, 0, 0.38);
+
+  border-radius:
+    0 0 14px 14px;
+
+  box-shadow:
+    0 12px 28px
+    rgba(0, 0, 0, 0.28);
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transform:
+    translateY(-8px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+
+  overflow: hidden;
+
+  z-index: 1600;
+}
+
+
+/* =========================================
+   DROPDOWN OPEN
+   ========================================= */
+
+.hexa-nav-menu.open {
+  opacity: 1;
+
+  visibility: visible;
+
+  transform:
+    translateY(0);
+}
+
+
+/* =========================================
+   NAVIGATION MENU ITEM
+   ========================================= */
+
+.nav-menu-item {
+  width: 100%;
+
+  min-height: 42px;
+
+  padding: 0 14px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 500;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    padding-left 0.18s ease;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+/* =========================================
+   MENU HOVER
+   ========================================= */
+
+.nav-menu-item:hover {
+  background:
+    rgba(255, 152, 0, 0.14);
+
+  color: #ffab24;
+
+  padding-left: 18px;
+}
+
+
+/* =========================================
+   CURRENT / ACTIVE PAGE
+   ========================================= */
+
+.nav-menu-item.active {
+  color: #ff9800;
+
+  font-weight: 700;
+
+  background:
+    rgba(255, 152, 0, 0.10);
+}
+
+
+/* =========================================
+   DISABLED / BELUM AKTIF
+
+   Tetap bisa terlihat pada dropdown,
+   tetapi dibuat sedikit berbeda.
+   ========================================= */
+
+.nav-menu-item.disabled {
+  opacity: 0.72;
+}
+
+
+/* =========================================
+   SETTINGS SEPARATOR
+   ========================================= */
+
+.settings-nav {
+  margin-top: 6px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.10);
+
+  border-radius:
+    0 0 8px 8px;
+}
+
+
+/* =========================================
+   LOGOUT DIVIDER
+   ========================================= */
+
+.nav-menu-divider {
+  width:
+    calc(100% - 16px);
+
+  height: 1px;
+
+  margin:
+    8px auto;
+
+  background:
+    rgba(255, 255, 255, 0.14);
+}
+
+
+/* =========================================
+   LOGOUT BUTTON
+   ========================================= */
+
+.logout-menu-item {
+  color: #ffffff;
+
+  font-weight: 600;
+}
+
+
+.logout-menu-item:hover {
+  background:
+    rgba(255, 152, 0, 0.16);
+
+  color: #ff9800;
+
+  padding-left: 18px;
+}
+
+
+/* =========================================
+   HEADER ACTIONS
+   ========================================= */
+
+.header-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   SEARCH BOX
+   ========================================= */
+
+.search-box {
+  position: relative;
+
+  width: 290px;
+  height: 42px;
+
+  border:
+    2px solid
+    #ffa000;
+
+  border-radius: 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  background: transparent;
+
+  overflow: hidden;
+}
+
+
+.search-box input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 100%;
+
+  padding:
+    0 8px
+    0 18px;
+
+  border: none;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+
+  cursor: text;
+}
+
+
+.search-box input::placeholder {
+  color:
+    rgba(255, 255, 255, 0.55);
+}
+
+
+/* =========================================
+   SEARCH BUTTON
+   ========================================= */
+
+.search-button {
+  width: 48px;
+  height: 100%;
+
+  flex-shrink: 0;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+.search-button svg {
+  width: 23px;
+  height: 23px;
+
+  fill: none;
+
+  stroke: #ffa000;
+
+  stroke-width: 2.7;
+
+  stroke-linecap: round;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   REFRESH BUTTON
+   ========================================= */
+
+.refresh-button {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+
+.refresh-button svg {
+  width: 30px;
+  height: 30px;
+
+  fill: none;
+
+  stroke: #ffa000;
+
+  stroke-width: 2.3;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   SEARCH / REFRESH HOVER
+   DESKTOP
+   ========================================= */
+
+.search-button,
+.refresh-button {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.search-button:hover,
+.refresh-button:hover {
+  opacity: 0.82;
+}
+
+
+.refresh-button:hover {
+  transform:
+    rotate(8deg);
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1000px) {
+
+  .main-header {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+
+  /* =======================================
+     HEADER
+     ======================================= */
+
+  .main-header {
+    height: 72px;
+
+    border-bottom-width: 8px;
+
+    padding:
+      0 12px;
+  }
+
+
+  /* =======================================
+     HEADER NAVIGATION
+     ======================================= */
+
+  .header-navigation {
+    height: 64px;
+  }
+
+
+  /* =======================================
+     LOGO
+     ======================================= */
+
+  .header-logo {
+    height: 64px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-start;
+  }
+
+
+  .header-logo img {
+    display: block;
+
+    width: auto;
+
+    height: 61px;
+
+    max-width: none;
+
+    object-fit: contain;
+  }
+
+
+  /* =======================================
+     DROPDOWN
+     ======================================= */
+
+  .hexa-nav-menu {
+    position: fixed;
+
+    top: 72px;
+
+    left: 12px;
+
+    width: min(
+      250px,
+      calc(100vw - 24px)
+    );
+
+    border-radius:
+      0 0 14px 14px;
+  }
+
+
+  .nav-menu-item {
+    min-height: 43px;
+
+    font-size: 13px;
+  }
+
+
+  /* =======================================
+     HEADER ACTIONS
+     ======================================= */
+
+  .header-actions {
+    gap: 5px;
+  }
+
+
+  /* =======================================
+     SEARCH
+     ======================================= */
+
+  .search-box {
+    width: 125px;
+
+    height: 34px;
+  }
+
+
+  .search-box input {
+    padding-left: 10px;
+
+    font-size: 13px;
+  }
+
+
+  .search-button {
+    width: 38px;
+  }
+
+
+  .search-button svg {
+    width: 19px;
+
+    height: 19px;
+  }
+
+
+  /* =======================================
+     REFRESH
+     ======================================= */
+
+  .refresh-button {
+    width: 34px;
+
+    height: 34px;
+  }
+
+
+  .refresh-button svg {
+    width: 25px;
+
+    height: 25px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 380px) {
+
+
+  /* =======================================
+     LOGO
+     ======================================= */
+
+  .header-logo img {
+    width: auto;
+
+    height: 58px;
+
+    max-width: none;
+  }
+
+
+  /* =======================================
+     SEARCH
+     ======================================= */
+
+  .search-box {
+    width: 105px;
+  }
+
+
+  /* =======================================
+     DROPDOWN
+     ======================================= */
+
+  .hexa-nav-menu {
+    width: min(
+      240px,
+      calc(100vw - 24px)
+    );
+  }
+
+}
