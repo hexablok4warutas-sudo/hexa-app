@@ -158,6 +158,10 @@ let updateRatingGrid;
 let updatePartsDescription;
 let updatePartNo;
 let updateQuantity;
+
+let updatePartRequirementList;
+let updateAddPartButton;
+
 let updateNotes;
 let updateMol;
 let updateEvidence;
@@ -469,10 +473,25 @@ function cacheElements() {
       "updatePartNo"
     );
 
-  updateQuantity =
+    updateQuantity =
     document.getElementById(
       "updateQuantity"
     );
+
+
+  updatePartRequirementList =
+    document.getElementById(
+      "updatePartRequirementList"
+    );
+
+
+  updateAddPartButton =
+    document.getElementById(
+      "updateAddPartButton"
+    );
+
+
+  updateNotes =
 
   updateNotes =
     document.getElementById(
@@ -793,11 +812,103 @@ function bindEvents() {
   }
 
 
-  if (partsStatusGrid) {
+    if (partsStatusGrid) {
 
     partsStatusGrid.addEventListener(
       "click",
       handlePartsStatusSelection
+    );
+  }
+
+
+  // ===================================================
+  // PART REQUIREMENT - ADD PART
+  // ===================================================
+
+  if (updateAddPartButton) {
+
+    updateAddPartButton.addEventListener(
+      "click",
+      function () {
+
+        addUpdatePart();
+
+      }
+    );
+  }
+
+
+  // ===================================================
+  // PART REQUIREMENT - REMOVE PART
+  // ===================================================
+
+  if (updatePartRequirementList) {
+
+    updatePartRequirementList.addEventListener(
+      "click",
+      function (event) {
+
+        const removeButton =
+          event.target.closest(
+            ".update-remove-part-button"
+          );
+
+        if (!removeButton) {
+          return;
+        }
+
+
+        const partItem =
+          removeButton.closest(
+            ".update-part-requirement-item"
+          );
+
+        if (!partItem) {
+          return;
+        }
+
+
+        const items =
+          getUpdatePartItems();
+
+
+        /*
+          Part Requirement harus selalu
+          mempunyai minimal satu card.
+        */
+
+        if (items.length <= 1) {
+
+          clearUpdatePartItem(
+            partItem
+          );
+
+          return;
+        }
+
+
+        partItem.remove();
+
+        renumberUpdateParts();
+
+        syncUpdatePartDatabaseFields();
+
+      }
+    );
+
+
+    /*
+      Setiap perubahan pada repeating field
+      langsung disinkronkan ke hidden field.
+    */
+
+    updatePartRequirementList.addEventListener(
+      "input",
+      function () {
+
+        syncUpdatePartDatabaseFields();
+
+      }
     );
   }
 
@@ -1915,7 +2026,9 @@ function fillDetailModal(
 
   setText(
     detailPartsDescription,
-    record.partsDescription
+    formatPartSummary(
+      record.partsDescription
+    )
   );
 
   setText(
@@ -2233,17 +2346,20 @@ function fillUpdateForm(
     record.rating
   );
 
-  updatePartsDescription.value =
-    record.partsDescription ||
-    "";
+  // ===================================================
+  // PART REQUIREMENT
+  // DATABASE MULTILINE -> REPEATING FIELD
+  // ===================================================
 
-  updatePartNo.value =
-    record.partNo ||
-    "";
+  loadUpdatePartRequirements(
 
-  updateQuantity.value =
-    record.quantity ||
-    "";
+    record.partsDescription || "",
+
+    record.partNo || "",
+
+    record.quantity || ""
+
+  );
 
   updateNotes.value =
     record.notes ||
@@ -2391,6 +2507,658 @@ function setRatingSelection(
     );
 }
 
+// =====================================================
+// PART REQUIREMENT
+// =====================================================
+
+function splitMultilineValue(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+
+    return [];
+  }
+
+
+  return String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .split("\n");
+}
+
+
+// =====================================================
+// CREATE PART ITEM
+// =====================================================
+
+function createUpdatePartItem(
+  partDescription = "",
+  partNo = "",
+  quantity = ""
+) {
+
+  const item =
+    document.createElement(
+      "div"
+    );
+
+
+  item.className =
+    "update-part-requirement-item";
+
+
+  item.innerHTML = `
+
+    <div class="update-part-item-header">
+
+      <div class="update-part-item-title">
+        Part
+      </div>
+
+      <button
+        type="button"
+        class="update-remove-part-button"
+        aria-label="Remove Part"
+      >
+        Remove Part
+      </button>
+
+    </div>
+
+
+    <div class="update-part-field">
+
+      <label>
+        Part Description
+      </label>
+
+      <input
+        type="text"
+        class="update-part-description-input"
+        autocomplete="off"
+        placeholder="Input Part Description"
+      >
+
+    </div>
+
+
+    <div class="update-part-row">
+
+
+      <div
+        class="
+          update-part-field
+          update-part-no-field
+        "
+      >
+
+        <label>
+          Part No.
+        </label>
+
+        <input
+          type="text"
+          class="update-part-no-input"
+          autocomplete="off"
+          placeholder="Input Part No."
+        >
+
+      </div>
+
+
+      <div
+        class="
+          update-part-field
+          update-part-quantity-field
+        "
+      >
+
+        <label>
+          Qty
+        </label>
+
+        <input
+          type="number"
+          class="update-part-quantity-input"
+          min="0"
+          step="1"
+          inputmode="numeric"
+          placeholder="0"
+        >
+
+      </div>
+
+
+    </div>
+
+  `;
+
+
+  const descriptionInput =
+    item.querySelector(
+      ".update-part-description-input"
+    );
+
+
+  const partNoInput =
+    item.querySelector(
+      ".update-part-no-input"
+    );
+
+
+  const quantityInput =
+    item.querySelector(
+      ".update-part-quantity-input"
+    );
+
+
+  if (descriptionInput) {
+
+    descriptionInput.value =
+      partDescription || "";
+  }
+
+
+  if (partNoInput) {
+
+    partNoInput.value =
+      partNo || "";
+  }
+
+
+  if (quantityInput) {
+
+    quantityInput.value =
+      quantity || "";
+  }
+
+
+  return item;
+}
+
+
+// =====================================================
+// GET ALL PART ITEMS
+// =====================================================
+
+function getUpdatePartItems() {
+
+  if (!updatePartRequirementList) {
+    return [];
+  }
+
+
+  return Array.from(
+    updatePartRequirementList
+      .querySelectorAll(
+        ".update-part-requirement-item"
+      )
+  );
+}
+
+
+// =====================================================
+// RENUMBER PARTS
+// =====================================================
+
+function renumberUpdateParts() {
+
+  const items =
+    getUpdatePartItems();
+
+
+  items.forEach(
+    function (
+      item,
+      index
+    ) {
+
+      const number =
+        index + 1;
+
+
+      item.dataset.partIndex =
+        String(number);
+
+
+      const title =
+        item.querySelector(
+          ".update-part-item-title"
+        );
+
+
+      if (title) {
+
+        title.textContent =
+          "Part " + number;
+      }
+
+
+      const removeButton =
+        item.querySelector(
+          ".update-remove-part-button"
+        );
+
+
+      if (removeButton) {
+
+        removeButton.setAttribute(
+          "aria-label",
+          "Remove Part " + number
+        );
+      }
+
+    }
+  );
+}
+
+
+// =====================================================
+// CLEAR ONE PART
+// =====================================================
+
+function clearUpdatePartItem(
+  item
+) {
+
+  if (!item) {
+    return;
+  }
+
+
+  const descriptionInput =
+    item.querySelector(
+      ".update-part-description-input"
+    );
+
+
+  const partNoInput =
+    item.querySelector(
+      ".update-part-no-input"
+    );
+
+
+  const quantityInput =
+    item.querySelector(
+      ".update-part-quantity-input"
+    );
+
+
+  if (descriptionInput) {
+    descriptionInput.value = "";
+  }
+
+
+  if (partNoInput) {
+    partNoInput.value = "";
+  }
+
+
+  if (quantityInput) {
+    quantityInput.value = "";
+  }
+
+
+  syncUpdatePartDatabaseFields();
+}
+
+
+// =====================================================
+// ADD NEW PART
+// =====================================================
+
+function addUpdatePart(
+  partDescription = "",
+  partNo = "",
+  quantity = ""
+) {
+
+  if (!updatePartRequirementList) {
+    return;
+  }
+
+
+  const item =
+    createUpdatePartItem(
+      partDescription,
+      partNo,
+      quantity
+    );
+
+
+  updatePartRequirementList
+    .appendChild(
+      item
+    );
+
+
+  renumberUpdateParts();
+
+  syncUpdatePartDatabaseFields();
+
+
+  /*
+    Jika Add Part ditekan manual,
+    fokus langsung ke Part Description baru.
+  */
+
+  if (
+    !partDescription &&
+    !partNo &&
+    !quantity
+  ) {
+
+    item
+      .querySelector(
+        ".update-part-description-input"
+      )
+      ?.focus();
+  }
+}
+
+
+// =====================================================
+// LOAD DATABASE -> REPEATING PART
+// =====================================================
+
+function loadUpdatePartRequirements(
+  partsDescription,
+  partNo,
+  quantity
+) {
+
+  if (!updatePartRequirementList) {
+    return;
+  }
+
+
+  const descriptions =
+    splitMultilineValue(
+      partsDescription
+    );
+
+
+  const partNumbers =
+    splitMultilineValue(
+      partNo
+    );
+
+
+  const quantities =
+    splitMultilineValue(
+      quantity
+    );
+
+
+  /*
+    Jumlah card mengikuti field dengan
+    jumlah baris terbanyak.
+
+    Contoh:
+
+    Description = 3
+    Part No      = 2
+    Quantity     = 3
+
+    Maka tetap dibuat 3 Part.
+  */
+
+  const totalParts =
+    Math.max(
+      1,
+      descriptions.length,
+      partNumbers.length,
+      quantities.length
+    );
+
+
+  updatePartRequirementList.innerHTML =
+    "";
+
+
+  for (
+    let index = 0;
+    index < totalParts;
+    index++
+  ) {
+
+    const item =
+      createUpdatePartItem(
+
+        descriptions[index] || "",
+
+        partNumbers[index] || "",
+
+        quantities[index] || ""
+
+      );
+
+
+    updatePartRequirementList
+      .appendChild(
+        item
+      );
+  }
+
+
+  renumberUpdateParts();
+
+  syncUpdatePartDatabaseFields();
+}
+
+
+// =====================================================
+// COLLECT REPEATING PART
+// =====================================================
+
+function collectUpdatePartRequirements() {
+
+  const items =
+    getUpdatePartItems();
+
+
+  const validParts =
+    [];
+
+
+  items.forEach(
+    function (item) {
+
+      const partDescription =
+        item
+          .querySelector(
+            ".update-part-description-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      const partNo =
+        item
+          .querySelector(
+            ".update-part-no-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      const quantity =
+        item
+          .querySelector(
+            ".update-part-quantity-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      /*
+        Card yang benar-benar kosong
+        tidak perlu masuk database.
+
+        Card yang hanya terisi salah satu
+        field tetap dipertahankan agar
+        alignment tidak rusak.
+      */
+
+      if (
+        !partDescription &&
+        !partNo &&
+        !quantity
+      ) {
+
+        return;
+      }
+
+
+      validParts.push({
+
+        partDescription:
+          partDescription,
+
+        partNo:
+          partNo,
+
+        quantity:
+          quantity
+
+      });
+
+    }
+  );
+
+
+  return {
+
+    partsDescription:
+      validParts
+        .map(
+          function (part) {
+
+            return part.partDescription;
+
+          }
+        )
+        .join("\n"),
+
+
+    partNo:
+      validParts
+        .map(
+          function (part) {
+
+            return part.partNo;
+
+          }
+        )
+        .join("\n"),
+
+
+    quantity:
+      validParts
+        .map(
+          function (part) {
+
+            return part.quantity;
+
+          }
+        )
+        .join("\n")
+
+  };
+}
+
+
+// =====================================================
+// SYNC REPEATING PART -> HIDDEN DATABASE FIELD
+// =====================================================
+
+function syncUpdatePartDatabaseFields() {
+
+  const parts =
+    collectUpdatePartRequirements();
+
+
+  if (updatePartsDescription) {
+
+    updatePartsDescription.value =
+      parts.partsDescription;
+  }
+
+
+  if (updatePartNo) {
+
+    updatePartNo.value =
+      parts.partNo;
+  }
+
+
+  if (updateQuantity) {
+
+    updateQuantity.value =
+      parts.quantity;
+  }
+
+
+  return parts;
+}
+
+
+// =====================================================
+// DETAIL PART SUMMARY
+// =====================================================
+
+function formatPartSummary(
+  value
+) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  const parts =
+    String(value)
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .split("\n")
+      .map(
+        function (item) {
+
+          return item.trim();
+
+        }
+      )
+      .filter(Boolean);
+
+
+  if (parts.length === 0) {
+    return "-";
+  }
+
+
+  if (parts.length <= 3) {
+
+    return parts.join(
+      ", "
+    );
+  }
+
+
+  return (
+    parts
+      .slice(
+        0,
+        3
+      )
+      .join(", ") +
+    ", ...."
+  );
+}
 
 // =====================================================
 // PARTS STATUS
@@ -2846,7 +3614,7 @@ async function submitOutstandingUpdate(
     return;
   }
 
-  if (!rating) {
+   if (!rating) {
 
     alert(
       "Rating wajib dipilih."
@@ -2854,6 +3622,16 @@ async function submitOutstandingUpdate(
 
     return;
   }
+
+
+  // ===================================================
+  // PART REQUIREMENT
+  // REPEATING FIELD -> MULTILINE DATABASE
+  // ===================================================
+
+  const partRequirement =
+    syncUpdatePartDatabaseFields();
+
 
   const payload = {
 
@@ -2882,16 +3660,16 @@ async function submitOutstandingUpdate(
       rating,
 
     partsDescription:
-      updatePartsDescription.value
-        .trim(),
+      partRequirement
+        .partsDescription,
 
     partNo:
-      updatePartNo.value
-        .trim(),
+      partRequirement
+        .partNo,
 
     quantity:
-      updateQuantity.value
-        .trim(),
+      partRequirement
+        .quantity,
 
     notes:
       updateNotes.value
