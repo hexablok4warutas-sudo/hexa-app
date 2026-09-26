@@ -1,11 +1,378 @@
 <!DOCTYPE html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Unit History | HEXA</title><link rel="stylesheet" href="hexa-header.css"><link rel="stylesheet" href="unit-history.css"></head>
-<body><header id="hexaHeader" data-header-type="standard" data-page="unit-history" data-active-nav="daily-maintenance"></header>
-<main class="history-page"><section class="history-container">
-<div class="history-title-bar"><div class="history-title"><img src="hexa-icon-svg-unithistory.svg" alt="Unit History"><h1>Unit History</h1></div>
-<div class="history-tools">
-<button id="filterButton" class="tool" title="Filter">▼</button><button id="reviewButton" class="tool" title="Review Performance">▥</button><button id="printButton" class="tool" title="Print / Export">▣</button>
-</div></div>
-<section class="table-section"><div id="historyLoading" class="state">Loading Unit History...</div><div id="historyEmpty" class="state" hidden>Belum ada data Unit History.</div><div id="historyError" class="state error" hidden>Data Unit History gagal dimuat.</div>
-<div id="historyTableWrap" class="table-wrap" hidden><table><thead><tr><th>Unit Code</th><th>HM Inspection</th><th>Group Component</th><th>Problem Description</th><th>Photo</th><th>Rating</th><th>Status</th><th>Parts Description</th><th>MOL</th><th>Parts Status</th></tr></thead><tbody id="historyTableBody"></tbody></table></div></section>
-</section></main><script src="hexa-menu.js"></script><script src="hexa-header.js"></script><script src="unit-history.js"></script></body></html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Unit History | HEXA</title>
+
+
+  <!-- ================================================
+       GLOBAL HEXA HEADER
+       ================================================ -->
+
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- ================================================
+       UNIT HISTORY
+       ================================================ -->
+
+  <link
+    rel="stylesheet"
+    href="unit-history.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- ================================================
+       GLOBAL HEADER
+       JANGAN DIUBAH / DISTYLING DARI UNIT-HISTORY.CSS
+       ================================================ -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="unit-history"
+    data-active-nav="daily-maintenance"
+  ></header>
+
+
+
+  <!-- ================================================
+       UNIT HISTORY PAGE
+       ================================================ -->
+
+  <main class="unit-history-page">
+
+
+    <!-- ==============================================
+         PAGE HEADER / TITLE
+         ============================================== -->
+
+    <section class="unit-history-heading">
+
+
+      <!-- TITLE -->
+
+      <div class="unit-history-title">
+
+
+        <img
+          class="unit-history-title-icon"
+          src="hexa-icon-svg-unithistory.svg"
+          alt="Unit History"
+        >
+
+
+        <h1>
+          Unit History
+        </h1>
+
+
+      </div>
+
+
+
+      <!-- ACTION BUTTONS -->
+
+      <div class="unit-history-actions">
+
+
+        <!-- FILTER -->
+
+        <button
+          type="button"
+          id="unitHistoryFilterButton"
+          class="unit-history-action-button"
+          aria-label="Filter"
+          title="Filter"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path
+              d="M4 5h16L14 12v5l-4 2v-7L4 5z"
+            ></path>
+
+          </svg>
+
+        </button>
+
+
+
+        <!-- REVIEW -->
+
+        <button
+          type="button"
+          id="unitHistoryReviewButton"
+          class="unit-history-action-button"
+          aria-label="Review Performance"
+          title="Review Performance"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path
+              d="M5 19V11"
+            ></path>
+
+            <path
+              d="M10 19V5"
+            ></path>
+
+            <path
+              d="M15 19V8"
+            ></path>
+
+            <path
+              d="M20 19V3"
+            ></path>
+
+            <path
+              d="M3 19H21"
+            ></path>
+
+          </svg>
+
+        </button>
+
+
+
+        <!-- PRINT -->
+
+        <button
+          type="button"
+          id="unitHistoryPrintButton"
+          class="unit-history-action-button"
+          aria-label="Print / Export"
+          title="Print / Export"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path
+              d="M7 8V4H17V8"
+            ></path>
+
+            <path
+              d="M6 17H4C2.9 17 2 16.1 2 15V10C2 8.9 2.9 8 4 8H20C21.1 8 22 8.9 22 10V15C22 16.1 21.1 17 20 17H18"
+            ></path>
+
+            <path
+              d="M7 14H17V20H7V14Z"
+            ></path>
+
+          </svg>
+
+        </button>
+
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- ==============================================
+         ORANGE DIVIDER
+         ============================================== -->
+
+    <div class="unit-history-divider"></div>
+
+
+
+    <!-- ==============================================
+         CONTENT
+         ============================================== -->
+
+    <section class="unit-history-content">
+
+
+      <!-- ============================================
+           LOADING
+           ============================================ -->
+
+      <div
+        id="unitHistoryLoading"
+        class="unit-history-state"
+      >
+
+        Loading Unit History...
+
+      </div>
+
+
+
+      <!-- ============================================
+           EMPTY
+           ============================================ -->
+
+      <div
+        id="unitHistoryEmpty"
+        class="unit-history-state"
+        hidden
+      >
+
+        Belum ada data Unit History.
+
+      </div>
+
+
+
+      <!-- ============================================
+           ERROR
+           ============================================ -->
+
+      <div
+        id="unitHistoryError"
+        class="unit-history-state unit-history-state-error"
+        hidden
+      >
+
+        Data Unit History gagal dimuat.
+
+      </div>
+
+
+
+      <!-- ============================================
+           TABLE CARD
+           ============================================ -->
+
+      <div
+        id="unitHistoryTableCard"
+        class="unit-history-table-card"
+        hidden
+      >
+
+
+        <!-- ==========================================
+             TABLE SCROLL AREA
+             ========================================== -->
+
+        <div
+          id="unitHistoryTableScroll"
+          class="unit-history-table-scroll"
+        >
+
+
+          <table class="unit-history-table">
+
+
+            <!-- ======================================
+                 TABLE HEADER
+                 ====================================== -->
+
+            <thead>
+
+              <tr>
+
+                <th class="unit-history-sticky-column">
+                  Unit Code
+                </th>
+
+                <th>
+                  HM Inspection
+                </th>
+
+                <th>
+                  Group Component
+                </th>
+
+                <th>
+                  Problem Description
+                </th>
+
+                <th>
+                  Photo
+                </th>
+
+                <th>
+                  Rating
+                </th>
+
+                <th>
+                  Status
+                </th>
+
+                <th>
+                  Parts Description
+                </th>
+
+                <th>
+                  MOL
+                </th>
+
+                <th>
+                  Parts Status
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+
+            <!-- ======================================
+                 TABLE DATA
+                 ====================================== -->
+
+            <tbody id="unitHistoryTableBody">
+
+            </tbody>
+
+
+          </table>
+
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </main>
+
+
+
+  <!-- ================================================
+       JAVASCRIPT
+       ================================================ -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
+
+  <script src="unit-history.js"></script>
+
+
+</body>
+
+</html>
