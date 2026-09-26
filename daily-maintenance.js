@@ -33,6 +33,7 @@ if (
 
 let currentUser = null;
 
+
 try {
 
   currentUser =
@@ -97,12 +98,22 @@ const dailyMenuItems =
 
 const navMenuItems =
   document.querySelectorAll(
-    ".nav-menu-item"
+    ".nav-menu-item[data-page]"
   );
 
 const inspectionShortcut =
   document.getElementById(
     "inspectionShortcut"
+  );
+
+
+// ========================================
+// LOGOUT BUTTON
+// ========================================
+
+const logoutButton =
+  document.getElementById(
+    "logoutButton"
   );
 
 
@@ -279,6 +290,44 @@ navMenuItems.forEach(
 
   }
 );
+
+
+// ========================================
+// LOGOUT
+// ========================================
+
+if (logoutButton) {
+
+  logoutButton.addEventListener(
+    "click",
+    function () {
+
+      // Tutup dropdown terlebih dahulu
+
+      closeHexaNavigation();
+
+
+      // Hapus session login
+
+      sessionStorage.removeItem(
+        "hexaLoggedIn"
+      );
+
+      sessionStorage.removeItem(
+        "hexaUser"
+      );
+
+
+      // Kembali ke halaman login
+
+      window.location.replace(
+        "index.html"
+      );
+
+    }
+  );
+
+}
 
 
 // ========================================
