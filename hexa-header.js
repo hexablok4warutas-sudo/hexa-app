@@ -31,6 +31,7 @@ function initializeHexaHeader() {
       "hexaHeader"
     );
 
+
   if (!header) {
 
     console.warn(
@@ -62,6 +63,23 @@ function initializeHexaHeader() {
 
 
   // ======================================
+  // ACTIVE NAVIGATION
+  //
+  // Jika halaman merupakan sub-page,
+  // data-active-nav menentukan menu induk
+  // yang tetap ditampilkan ACTIVE.
+  //
+  // Contoh:
+  // Start Inspection
+  // -> active nav = Daily Maintenance
+  // ======================================
+
+  const activeNav =
+    header.dataset.activeNav ||
+    currentPage;
+
+
+  // ======================================
   // BUILD HEADER
   // ======================================
 
@@ -69,10 +87,12 @@ function initializeHexaHeader() {
     "main-header"
   );
 
+
   header.innerHTML =
     createHexaHeaderHTML(
       headerType,
-      currentPage
+      currentPage,
+      activeNav
     );
 
 
@@ -89,7 +109,8 @@ function initializeHexaHeader() {
     "HEXA Global Header Ready:",
     {
       type: headerType,
-      page: currentPage
+      page: currentPage,
+      activeNav: activeNav
     }
   );
 
@@ -102,7 +123,8 @@ function initializeHexaHeader() {
 
 function createHexaHeaderHTML(
   headerType,
-  currentPage
+  currentPage,
+  activeNav
 ) {
 
   return `
@@ -132,7 +154,8 @@ function createHexaHeaderHTML(
 
         ${createHexaNavigation(
           headerType,
-          currentPage
+          currentPage,
+          activeNav
         )}
 
       </nav>
@@ -220,8 +243,10 @@ function createHexaHeaderHTML(
 
 function createHexaNavigation(
   headerType,
-  currentPage
+  currentPage,
+  activeNav
 ) {
+
 
   // ======================================
   // MAIN PAGE
@@ -258,7 +283,7 @@ function createHexaNavigation(
     <button
       type="button"
       class="nav-menu-item
-      ${currentPage === "main"
+      ${activeNav === "main"
         ? "active"
         : ""}"
       data-page="main"
@@ -292,9 +317,11 @@ function createHexaNavigation(
         return;
       }
 
+
       if (!menu.id) {
         return;
       }
+
 
       if (!menu.name) {
         return;
@@ -302,7 +329,7 @@ function createHexaNavigation(
 
 
       const activeClass =
-        currentPage === menu.id
+        activeNav === menu.id
           ? "active"
           : "";
 
@@ -395,20 +422,24 @@ function initializeHexaHeaderEvents(
       "headerLogoButton"
     );
 
+
   const hexaNavMenu =
     document.getElementById(
       "hexaNavMenu"
     );
+
 
   const logoutButton =
     document.getElementById(
       "logoutButton"
     );
 
+
   const refreshButton =
     document.getElementById(
       "refreshButton"
     );
+
 
   const navMenuItems =
     document.querySelectorAll(
@@ -432,12 +463,14 @@ function initializeHexaHeaderEvents(
 
         event.stopPropagation();
 
+
         const isOpen =
           hexaNavMenu
             .classList
             .toggle(
               "open"
             );
+
 
         headerLogoButton.setAttribute(
           "aria-expanded",
@@ -466,8 +499,10 @@ function initializeHexaHeaderEvents(
           const page =
             item.dataset.page;
 
+
           const url =
             item.dataset.url;
+
 
           const enabled =
             item.dataset.enabled;
@@ -498,6 +533,7 @@ function initializeHexaHeaderEvents(
             document.getElementById(
               "hexaHeader"
             );
+
 
           const currentPage =
             header
@@ -571,6 +607,7 @@ function initializeHexaHeaderEvents(
         sessionStorage.removeItem(
           "hexaLoggedIn"
         );
+
 
         sessionStorage.removeItem(
           "hexaUser"
@@ -690,6 +727,7 @@ function closeHexaNavigation() {
     document.getElementById(
       "hexaNavMenu"
     );
+
 
   const headerLogoButton =
     document.getElementById(
