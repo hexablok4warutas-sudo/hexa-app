@@ -26,21 +26,132 @@
 
   <header class="main-header">
 
-    <!-- HEXA LOGO -->
-    <div class="header-logo">
 
-      <img
-        src="hexa-logo-header.png"
-        alt="HEXA"
+    <!-- ===================================
+         HEXA LOGO + DROPDOWN
+         =================================== -->
+
+    <div class="header-logo header-logo-menu">
+
+      <button
+        type="button"
+        id="headerLogoButton"
+        class="header-logo-button"
+        aria-label="Open HEXA Menu"
+        aria-expanded="false"
       >
+
+        <img
+          src="hexa-logo-header.png"
+          alt="HEXA"
+        >
+
+      </button>
+
+
+      <!-- HEXA NAVIGATION DROPDOWN -->
+
+      <div
+        id="hexaNavMenu"
+        class="hexa-nav-menu"
+      >
+
+        <button
+          type="button"
+          class="nav-menu-item active"
+          data-page="main"
+        >
+          Main Page
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="daily-maintenance"
+        >
+          Daily Maintenance
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="backlog-monitoring"
+        >
+          Backlog Monitoring
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="fui"
+        >
+          FUI
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="rotable"
+        >
+          Rotable
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="news"
+        >
+          News
+        </button>
+
+
+        <button
+          type="button"
+          class="nav-menu-item"
+          data-page="settings"
+        >
+          Settings
+        </button>
+
+
+        <!-- DIVIDER -->
+
+        <div
+          class="nav-menu-divider"
+          aria-hidden="true"
+        ></div>
+
+
+        <!-- LOGOUT -->
+
+        <button
+          type="button"
+          id="logoutButton"
+          class="nav-menu-item logout-menu-item"
+        >
+          Logout
+        </button>
+
+      </div>
 
     </div>
 
 
-    <!-- HEADER ACTIONS -->
+
+    <!-- ===================================
+         HEADER ACTIONS
+         =================================== -->
+
     <div class="header-actions">
 
+
       <!-- SEARCH -->
+
       <div class="search-box">
 
         <input
@@ -50,6 +161,7 @@
           autocomplete="off"
           aria-label="Search menu"
         >
+
 
         <button
           type="button"
@@ -83,7 +195,9 @@
       </div>
 
 
+
       <!-- REFRESH -->
+
       <button
         type="button"
         id="refreshButton"
@@ -134,6 +248,7 @@
 
 
         <!-- BANNER 01 -->
+
         <div class="banner-slide active">
 
           <img
@@ -145,6 +260,7 @@
 
 
         <!-- BANNER 02 -->
+
         <div class="banner-slide">
 
           <img
@@ -156,6 +272,7 @@
 
 
         <!-- PREVIOUS -->
+
         <button
           type="button"
           class="slider-button slider-prev"
@@ -167,6 +284,7 @@
 
 
         <!-- NEXT -->
+
         <button
           type="button"
           class="slider-button slider-next"
