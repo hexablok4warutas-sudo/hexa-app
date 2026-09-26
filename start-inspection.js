@@ -2,6 +2,14 @@
 
 
 /* =====================================================
+   HEXA API
+===================================================== */
+
+const HEXA_API_URL =
+  "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
+
+
+/* =====================================================
    SESSION PROTECTION
 ===================================================== */
 
@@ -21,13 +29,24 @@ let currentUser = null;
 
 
 try {
-  currentUser = JSON.parse(storedUser);
+
+  currentUser =
+    JSON.parse(storedUser);
+
 } catch (error) {
 
-  sessionStorage.removeItem("hexaLoggedIn");
-  sessionStorage.removeItem("hexaUser");
+  sessionStorage.removeItem(
+    "hexaLoggedIn"
+  );
 
-  window.location.replace("index.html");
+  sessionStorage.removeItem(
+    "hexaUser"
+  );
+
+  window.location.replace(
+    "index.html"
+  );
+
 }
 
 
@@ -77,13 +96,15 @@ const HEXA_PAGES = {
 
 function openHexaPage(pageName) {
 
-  const page = HEXA_PAGES[pageName];
+  const page =
+    HEXA_PAGES[pageName];
 
   if (!page) {
     return;
   }
 
   if (!page.enabled) {
+
     console.log(
       `${pageName} belum diaktifkan.`
     );
@@ -91,7 +112,8 @@ function openHexaPage(pageName) {
     return;
   }
 
-  window.location.href = page.url;
+  window.location.href =
+    page.url;
 }
 
 
@@ -100,47 +122,72 @@ function openHexaPage(pageName) {
 ===================================================== */
 
 const headerLogoButton =
-  document.getElementById("headerLogoButton");
+  document.getElementById(
+    "headerLogoButton"
+  );
 
 const hexaNavMenu =
-  document.getElementById("hexaNavMenu");
+  document.getElementById(
+    "hexaNavMenu"
+  );
 
 
 function closeHexaNavigation() {
 
-  hexaNavMenu.classList.remove("open");
+  if (!hexaNavMenu) {
+    return;
+  }
 
-  headerLogoButton.setAttribute(
-    "aria-expanded",
-    "false"
+  hexaNavMenu.classList.remove(
+    "open"
   );
-}
 
-
-headerLogoButton.addEventListener(
-  "click",
-  function (event) {
-
-    event.stopPropagation();
-
-    const isOpen =
-      hexaNavMenu.classList.toggle("open");
+  if (headerLogoButton) {
 
     headerLogoButton.setAttribute(
       "aria-expanded",
-      String(isOpen)
+      "false"
     );
+
   }
-);
+}
 
 
-hexaNavMenu.addEventListener(
-  "click",
-  function (event) {
+if (
+  headerLogoButton &&
+  hexaNavMenu
+) {
 
-    event.stopPropagation();
-  }
-);
+  headerLogoButton.addEventListener(
+    "click",
+    function (event) {
+
+      event.stopPropagation();
+
+      const isOpen =
+        hexaNavMenu.classList.toggle(
+          "open"
+        );
+
+      headerLogoButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
+
+    }
+  );
+
+
+  hexaNavMenu.addEventListener(
+    "click",
+    function (event) {
+
+      event.stopPropagation();
+
+    }
+  );
+
+}
 
 
 document.addEventListener(
@@ -154,8 +201,11 @@ document.addEventListener(
   function (event) {
 
     if (event.key === "Escape") {
+
       closeHexaNavigation();
+
     }
+
   }
 );
 
@@ -165,22 +215,28 @@ document.addEventListener(
 ===================================================== */
 
 document
-  .querySelectorAll(".nav-menu-item")
-  .forEach(function (button) {
+  .querySelectorAll(
+    ".nav-menu-item"
+  )
+  .forEach(
+    function (button) {
 
-    button.addEventListener(
-      "click",
-      function () {
+      button.addEventListener(
+        "click",
+        function () {
 
-        const page =
-          button.dataset.page;
+          const page =
+            button.dataset.page;
 
-        closeHexaNavigation();
+          closeHexaNavigation();
 
-        openHexaPage(page);
-      }
-    );
-  });
+          openHexaPage(page);
+
+        }
+      );
+
+    }
+  );
 
 
 /* =====================================================
@@ -188,16 +244,23 @@ document
 ===================================================== */
 
 const refreshButton =
-  document.getElementById("refreshButton");
+  document.getElementById(
+    "refreshButton"
+  );
 
 
-refreshButton.addEventListener(
-  "click",
-  function () {
+if (refreshButton) {
 
-    window.location.reload();
-  }
-);
+  refreshButton.addEventListener(
+    "click",
+    function () {
+
+      window.location.reload();
+
+    }
+  );
+
+}
 
 
 /* =====================================================
@@ -205,10 +268,14 @@ refreshButton.addEventListener(
 ===================================================== */
 
 const searchInput =
-  document.getElementById("searchInput");
+  document.getElementById(
+    "searchInput"
+  );
 
 const searchButton =
-  document.getElementById("searchButton");
+  document.getElementById(
+    "searchButton"
+  );
 
 
 function searchFormField() {
@@ -219,80 +286,120 @@ function searchFormField() {
       .toLowerCase();
 
   if (!query) {
+
     searchInput.focus();
 
     return;
+
   }
 
+
   const groups =
-    document.querySelectorAll(".form-group");
+    document.querySelectorAll(
+      ".form-group"
+    );
+
 
   for (const group of groups) {
 
     const label =
-      group.querySelector("label");
+      group.querySelector(
+        "label"
+      );
 
     if (!label) {
       continue;
     }
 
+
     const labelText =
       label.textContent
         .toLowerCase();
 
-    if (labelText.includes(query)) {
 
-      const headerOffset = 180;
+    if (
+      labelText.includes(query)
+    ) {
+
+      const headerOffset =
+        180;
 
       const elementPosition =
-        group.getBoundingClientRect().top;
+        group
+          .getBoundingClientRect()
+          .top;
 
       const offsetPosition =
         elementPosition +
         window.pageYOffset -
         headerOffset;
 
+
       window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
+
+        top:
+          offsetPosition,
+
+        behavior:
+          "smooth"
+
       });
+
 
       const input =
         group.querySelector(
           "input, select, textarea, button"
         );
 
+
       if (input) {
+
         setTimeout(
           () => input.focus(),
           450
         );
+
       }
 
       return;
+
     }
+
   }
+
 }
 
 
-searchButton.addEventListener(
-  "click",
-  searchFormField
-);
+if (searchButton) {
+
+  searchButton.addEventListener(
+    "click",
+    searchFormField
+  );
+
+}
 
 
-searchInput.addEventListener(
-  "keydown",
-  function (event) {
+if (searchInput) {
 
-    if (event.key === "Enter") {
+  searchInput.addEventListener(
+    "keydown",
+    function (event) {
 
-      event.preventDefault();
+      if (
+        event.key === "Enter"
+      ) {
 
-      searchFormField();
+        event.preventDefault();
+
+        searchFormField();
+
+      }
+
     }
-  }
-);
+  );
+
+}
 
 
 /* =====================================================
@@ -300,39 +407,68 @@ searchInput.addEventListener(
 ===================================================== */
 
 const hmInspection =
-  document.getElementById("hmInspection");
+  document.getElementById(
+    "hmInspection"
+  );
 
 const hmMinus =
-  document.getElementById("hmMinus");
+  document.getElementById(
+    "hmMinus"
+  );
 
 const hmPlus =
-  document.getElementById("hmPlus");
+  document.getElementById(
+    "hmPlus"
+  );
 
 
-hmMinus.addEventListener(
-  "click",
-  function () {
+if (
+  hmMinus &&
+  hmInspection
+) {
 
-    const currentValue =
-      Number(hmInspection.value) || 0;
+  hmMinus.addEventListener(
+    "click",
+    function () {
 
-    hmInspection.value =
-      Math.max(0, currentValue - 1);
-  }
-);
+      const currentValue =
+        Number(
+          hmInspection.value
+        ) || 0;
+
+      hmInspection.value =
+        Math.max(
+          0,
+          currentValue - 1
+        );
+
+    }
+  );
+
+}
 
 
-hmPlus.addEventListener(
-  "click",
-  function () {
+if (
+  hmPlus &&
+  hmInspection
+) {
 
-    const currentValue =
-      Number(hmInspection.value) || 0;
+  hmPlus.addEventListener(
+    "click",
+    function () {
 
-    hmInspection.value =
-      currentValue + 1;
-  }
-);
+      const currentValue =
+        Number(
+          hmInspection.value
+        ) || 0;
+
+      hmInspection.value =
+        currentValue + 1;
+
+    }
+  );
+
+}
 
 
 /* =====================================================
@@ -340,14 +476,23 @@ hmPlus.addEventListener(
 ===================================================== */
 
 const dateInspection =
-  document.getElementById("dateInspection");
+  document.getElementById(
+    "dateInspection"
+  );
 
 
 function setTodayAsDefaultDate() {
 
-  if (dateInspection.value) {
+  if (!dateInspection) {
     return;
   }
+
+  if (
+    dateInspection.value
+  ) {
+    return;
+  }
+
 
   const today =
     new Date();
@@ -358,15 +503,23 @@ function setTodayAsDefaultDate() {
   const month =
     String(
       today.getMonth() + 1
-    ).padStart(2, "0");
+    ).padStart(
+      2,
+      "0"
+    );
 
   const day =
     String(
       today.getDate()
-    ).padStart(2, "0");
+    ).padStart(
+      2,
+      "0"
+    );
+
 
   dateInspection.value =
     `${year}-${month}-${day}`;
+
 }
 
 
@@ -378,10 +531,14 @@ setTodayAsDefaultDate();
 ===================================================== */
 
 const inspectionPhoto =
-  document.getElementById("inspectionPhoto");
+  document.getElementById(
+    "inspectionPhoto"
+  );
 
 const photoText =
-  document.getElementById("photoText");
+  document.getElementById(
+    "photoText"
+  );
 
 const photoPreviewContainer =
   document.getElementById(
@@ -389,42 +546,237 @@ const photoPreviewContainer =
   );
 
 const photoPreview =
-  document.getElementById("photoPreview");
+  document.getElementById(
+    "photoPreview"
+  );
 
 
-inspectionPhoto.addEventListener(
-  "change",
-  function () {
+if (inspectionPhoto) {
 
-    const file =
-      inspectionPhoto.files[0];
+  inspectionPhoto.addEventListener(
+    "change",
+    function () {
 
-    if (!file) {
+      const file =
+        inspectionPhoto.files[0];
+
+
+      if (!file) {
+
+        photoText.textContent =
+          "Add Inspection Photo";
+
+        photoPreviewContainer.hidden =
+          true;
+
+        photoPreview.removeAttribute(
+          "src"
+        );
+
+        return;
+
+      }
+
+
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
+
+        alert(
+          "File harus berupa gambar."
+        );
+
+        inspectionPhoto.value =
+          "";
+
+        return;
+
+      }
+
 
       photoText.textContent =
-        "Add Inspection Photo";
+        file.name;
+
+
+      const imageUrl =
+        URL.createObjectURL(
+          file
+        );
+
+
+      photoPreview.src =
+        imageUrl;
 
       photoPreviewContainer.hidden =
-        true;
+        false;
 
-      photoPreview.removeAttribute("src");
-
-      return;
     }
+  );
 
-    photoText.textContent =
-      file.name;
+}
 
-    const imageUrl =
-      URL.createObjectURL(file);
 
-    photoPreview.src =
-      imageUrl;
+/* =====================================================
+   COMPRESS PHOTO
+===================================================== */
 
-    photoPreviewContainer.hidden =
-      false;
-  }
-);
+function compressPhoto(file) {
+
+  return new Promise(
+    function (
+      resolve,
+      reject
+    ) {
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        function (event) {
+
+          const image =
+            new Image();
+
+
+          image.onload =
+            function () {
+
+              const maxDimension =
+                1600;
+
+
+              let width =
+                image.width;
+
+              let height =
+                image.height;
+
+
+              if (
+                width >
+                maxDimension ||
+                height >
+                maxDimension
+              ) {
+
+                const scale =
+                  Math.min(
+
+                    maxDimension /
+                    width,
+
+                    maxDimension /
+                    height
+
+                  );
+
+
+                width =
+                  Math.round(
+                    width * scale
+                  );
+
+                height =
+                  Math.round(
+                    height * scale
+                  );
+
+              }
+
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+
+              canvas.width =
+                width;
+
+              canvas.height =
+                height;
+
+
+              const context =
+                canvas.getContext(
+                  "2d"
+                );
+
+
+              context.drawImage(
+
+                image,
+
+                0,
+                0,
+
+                width,
+                height
+
+              );
+
+
+              const compressedData =
+                canvas.toDataURL(
+                  "image/jpeg",
+                  0.75
+                );
+
+
+              resolve({
+
+                base64:
+                  compressedData,
+
+                mimeType:
+                  "image/jpeg"
+
+              });
+
+            };
+
+
+          image.onerror =
+            function () {
+
+              reject(
+                new Error(
+                  "Foto tidak dapat diproses."
+                )
+              );
+
+            };
+
+
+          image.src =
+            event.target.result;
+
+        };
+
+
+      reader.onerror =
+        function () {
+
+          reject(
+            new Error(
+              "Foto tidak dapat dibaca."
+            )
+          );
+
+        };
+
+
+      reader.readAsDataURL(
+        file
+      );
+
+    }
+  );
+
+}
 
 
 /* =====================================================
@@ -432,7 +784,9 @@ inspectionPhoto.addEventListener(
 ===================================================== */
 
 const ratingInput =
-  document.getElementById("rating");
+  document.getElementById(
+    "rating"
+  );
 
 const ratingButtons =
   document.querySelectorAll(
@@ -453,17 +807,22 @@ ratingButtons.forEach(
             item.classList.remove(
               "selected"
             );
+
           }
         );
+
 
         button.classList.add(
           "selected"
         );
 
+
         ratingInput.value =
           button.dataset.rating;
+
       }
     );
+
   }
 );
 
@@ -473,21 +832,25 @@ ratingButtons.forEach(
 ===================================================== */
 
 const inspectors =
-  document.getElementById("inspectors");
+  document.getElementById(
+    "inspectors"
+  );
 
 
 if (
   currentUser &&
-  currentUser.nama
+  currentUser.nama &&
+  inspectors
 ) {
 
   inspectors.value =
     currentUser.nama;
+
 }
 
 
 /* =====================================================
-   TEST SUBMIT
+   FORM
 ===================================================== */
 
 const inspectionForm =
@@ -496,89 +859,400 @@ const inspectionForm =
   );
 
 
-inspectionForm.addEventListener(
-  "submit",
-  function (event) {
+/* =====================================================
+   SUBMIT BUTTON
+===================================================== */
 
-    event.preventDefault();
+const submitButton =
+  inspectionForm
+    ? inspectionForm.querySelector(
+        'button[type="submit"], input[type="submit"]'
+      )
+    : null;
 
 
-    if (!ratingInput.value) {
+/* =====================================================
+   SET SUBMIT LOADING
+===================================================== */
 
-      alert(
-        "Silakan pilih Rating terlebih dahulu."
+function setSubmitLoading(
+  loading
+) {
+
+  if (!submitButton) {
+    return;
+  }
+
+
+  if (loading) {
+
+    submitButton.disabled =
+      true;
+
+    submitButton.dataset.originalText =
+      submitButton.textContent;
+
+    submitButton.textContent =
+      "Submitting...";
+
+  } else {
+
+    submitButton.disabled =
+      false;
+
+    submitButton.textContent =
+      submitButton.dataset.originalText ||
+      "Submit";
+
+  }
+
+}
+
+
+/* =====================================================
+   RESET FORM SETELAH BERHASIL
+===================================================== */
+
+function resetInspectionForm() {
+
+  inspectionForm.reset();
+
+
+  // Inspector tetap dari user login
+
+  if (
+    currentUser &&
+    currentUser.nama
+  ) {
+
+    inspectors.value =
+      currentUser.nama;
+
+  }
+
+
+  // Reset Rating
+
+  ratingInput.value =
+    "";
+
+  ratingButtons.forEach(
+    function (button) {
+
+      button.classList.remove(
+        "selected"
       );
 
-      return;
     }
+  );
 
 
-    const testData = {
+  // Reset Photo
 
-      unitCode:
-        document.getElementById(
-          "unitCode"
-        ).value,
+  photoText.textContent =
+    "Add Inspection Photo";
 
-      hmInspection:
-        hmInspection.value,
+  photoPreviewContainer.hidden =
+    true;
 
-      dateInspection:
-        dateInspection.value,
-
-      photo:
-        inspectionPhoto.files[0]
-          ? inspectionPhoto.files[0].name
-          : "",
-
-      groupComponent:
-        document.getElementById(
-          "groupComponent"
-        ).value,
-
-      problemDescription:
-        document.getElementById(
-          "problemDescription"
-        ).value,
-
-      rating:
-        ratingInput.value,
-
-      partsDescription:
-        document.getElementById(
-          "partsDescription"
-        ).value,
-
-      partNo:
-        document.getElementById(
-          "partNo"
-        ).value,
-
-      quantity:
-        document.getElementById(
-          "quantity"
-        ).value,
-
-      inspectors:
-        inspectors.value,
-
-      notes:
-        document.getElementById(
-          "notes"
-        ).value
-
-    };
+  photoPreview.removeAttribute(
+    "src"
+  );
 
 
-    console.log(
-      "HEXA START INSPECTION TEST:",
-      testData
-    );
+  // Tanggal kembali hari ini
+
+  setTodayAsDefaultDate();
+
+}
 
 
-    alert(
-      "Form Start Inspection sudah bekerja.\n\n" +
-      "Ini masih mode testing dan data belum dikirim ke database."
-    );
-  }
+/* =====================================================
+   SUBMIT START INSPECTION
+===================================================== */
+
+if (inspectionForm) {
+
+  inspectionForm.addEventListener(
+    "submit",
+    async function (event) {
+
+      event.preventDefault();
+
+
+      /* ===============================================
+         VALIDASI RATING
+      =============================================== */
+
+      if (
+        !ratingInput.value
+      ) {
+
+        alert(
+          "Silakan pilih Rating terlebih dahulu."
+        );
+
+        return;
+
+      }
+
+
+      /* ===============================================
+         VALIDASI PHOTO
+      =============================================== */
+
+      const photoFile =
+        inspectionPhoto.files[0];
+
+
+      if (!photoFile) {
+
+        alert(
+          "Silakan tambahkan Photo Inspection."
+        );
+
+        return;
+
+      }
+
+
+      /* ===============================================
+         VALIDASI REQUIRED HTML
+      =============================================== */
+
+      if (
+        !inspectionForm.checkValidity()
+      ) {
+
+        inspectionForm.reportValidity();
+
+        return;
+
+      }
+
+
+      setSubmitLoading(
+        true
+      );
+
+
+      try {
+
+        /* =============================================
+           COMPRESS PHOTO
+        ============================================= */
+
+        const photo =
+          await compressPhoto(
+            photoFile
+          );
+
+
+        /* =============================================
+           DATA START INSPECTION
+        ============================================= */
+
+        const inspectionData = {
+
+          action:
+            "submitInspection",
+
+          unitCode:
+            document.getElementById(
+              "unitCode"
+            ).value.trim(),
+
+          hmInspection:
+            hmInspection.value.trim(),
+
+          dateInspection:
+            dateInspection.value,
+
+          photoBase64:
+            photo.base64,
+
+          photoMimeType:
+            photo.mimeType,
+
+          groupComponent:
+            document.getElementById(
+              "groupComponent"
+            ).value.trim(),
+
+          problemDescription:
+            document.getElementById(
+              "problemDescription"
+            ).value.trim(),
+
+          rating:
+            ratingInput.value,
+
+          partsDescription:
+            document.getElementById(
+              "partsDescription"
+            ).value.trim(),
+
+          partNo:
+            document.getElementById(
+              "partNo"
+            ).value.trim(),
+
+          quantity:
+            document.getElementById(
+              "quantity"
+            ).value.trim(),
+
+          inspectors:
+            inspectors.value.trim(),
+
+          notes:
+            document.getElementById(
+              "notes"
+            ).value.trim()
+
+        };
+
+
+        console.log(
+          "HEXA SUBMIT:",
+          inspectionData
+        );
+
+
+        /* =============================================
+           SEND TO HEXA API
+        ============================================= */
+
+        const response =
+          await fetch(
+            HEXA_API_URL,
+            {
+
+              method:
+                "POST",
+
+              headers: {
+
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+
+              },
+
+              body:
+                JSON.stringify(
+                  inspectionData
+                )
+
+            }
+          );
+
+
+        /* =============================================
+           RESPONSE
+        ============================================= */
+
+        if (!response.ok) {
+
+          throw new Error(
+            "Server tidak merespons dengan benar."
+          );
+
+        }
+
+
+        const result =
+          await response.json();
+
+
+        console.log(
+          "HEXA RESPONSE:",
+          result
+        );
+
+
+        /* =============================================
+           API ERROR
+        ============================================= */
+
+        if (
+          !result.success
+        ) {
+
+          throw new Error(
+            result.message ||
+            "Inspection gagal disimpan."
+          );
+
+        }
+
+
+        /* =============================================
+           SUCCESS
+        ============================================= */
+
+        alert(
+
+          "Inspection berhasil disimpan.\n\n" +
+
+          "ID Inspection:\n" +
+          result.inspectionId +
+
+          "\n\nStatus: " +
+          result.status +
+
+          "\nMOL: " +
+          result.mol
+
+        );
+
+
+        resetInspectionForm();
+
+
+        window.scrollTo({
+
+          top: 0,
+
+          behavior:
+            "smooth"
+
+        });
+
+
+      } catch (error) {
+
+        console.error(
+          "HEXA SUBMIT ERROR:",
+          error
+        );
+
+
+        alert(
+
+          "Inspection gagal disimpan.\n\n" +
+
+          error.message
+
+        );
+
+      } finally {
+
+        setSubmitLoading(
+          false
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   READY
+===================================================== */
+
+console.log(
+  "HEXA Start Inspection Ready"
 );
