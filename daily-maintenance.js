@@ -224,7 +224,10 @@ dailyMenuItems.forEach(
         return;
 
         }
-
+        if (menu === "unit-history") {
+        openUnitHistory();
+        return;
+        }
 
         // =================================
         // UNIT HISTORY
@@ -271,7 +274,9 @@ function openDailyOutstanding() {
     "/daily-outstanding";
 
 }
-
+function openUnitHistory() {
+  window.location.href = "/unit-history";
+}
 // ========================================
 // FLOATING BUTTON
 // ========================================
