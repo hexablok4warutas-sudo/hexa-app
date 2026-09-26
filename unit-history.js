@@ -1,22 +1,35 @@
 "use strict";
 
-// ========================================
-// HEXA APP - UNIT HISTORY
-// ========================================
+
+// =====================================================
+// HEXA APP
+// UNIT HISTORY
+// =====================================================
+
+
+// =====================================================
+// API
+// =====================================================
 
 const HEXA_API_URL =
   "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
 
 
-// ========================================
+
+// =====================================================
 // SESSION PROTECTION
-// ========================================
+// =====================================================
 
 const hexaLoggedIn =
-  sessionStorage.getItem("hexaLoggedIn");
+  sessionStorage.getItem(
+    "hexaLoggedIn"
+  );
+
 
 const hexaUserData =
-  sessionStorage.getItem("hexaUser");
+  sessionStorage.getItem(
+    "hexaUser"
+  );
 
 
 if (
@@ -30,6 +43,11 @@ if (
 
 }
 
+
+
+// =====================================================
+// CURRENT USER
+// =====================================================
 
 let currentUser = null;
 
@@ -58,714 +76,997 @@ try {
 }
 
 
-// ========================================
+
+// =====================================================
 // DATA
-// ========================================
+// =====================================================
 
 let unitHistoryData = [];
 
 
-// ========================================
-// ELEMENTS
-// ========================================
 
-const historyLoading =
-  document.getElementById(
-    "historyLoading"
-  );
+// =====================================================
+// DOM READY
+// =====================================================
 
-const historyEmpty =
-  document.getElementById(
-    "historyEmpty"
-  );
-
-const historyError =
-  document.getElementById(
-    "historyError"
-  );
-
-const historyTableWrap =
-  document.getElementById(
-    "historyTableWrap"
-  );
-
-const historyTableBody =
-  document.getElementById(
-    "historyTableBody"
-  );
-
-const filterButton =
-  document.getElementById(
-    "filterButton"
-  );
-
-const reviewButton =
-  document.getElementById(
-    "reviewButton"
-  );
-
-const printButton =
-  document.getElementById(
-    "printButton"
-  );
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
 
 
-// ========================================
-// PAGE STATE
-// ========================================
+    // =================================================
+    // ELEMENTS
+    // =================================================
 
-function setState(state) {
-
-  historyLoading.hidden =
-    state !== "loading";
-
-  historyEmpty.hidden =
-    state !== "empty";
-
-  historyError.hidden =
-    state !== "error";
-
-  historyTableWrap.hidden =
-    state !== "table";
-
-}
-
-
-// ========================================
-// API REQUEST
-// ========================================
-
-async function apiRequest(
-  payload
-) {
-
-  const response =
-    await fetch(
-      HEXA_API_URL,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body:
-          JSON.stringify(
-            payload
-          )
-      }
-    );
-
-
-  if (!response.ok) {
-
-    throw new Error(
-      "HTTP " +
-      response.status
-    );
-
-  }
-
-
-  return response.json();
-
-}
-
-
-// ========================================
-// LOAD UNIT HISTORY
-// ========================================
-
-async function loadUnitHistory() {
-
-  setState(
-    "loading"
-  );
-
-
-  try {
-
-    const result =
-      await apiRequest({
-        action:
-          "getUnitHistory"
-      });
-
-
-    console.log(
-      "Unit History API:",
-      result
-    );
-
-
-    if (!result.success) {
-
-      throw new Error(
-        result.message ||
-        "Gagal mengambil Unit History."
+    const loading =
+      document.getElementById(
+        "unitHistoryLoading"
       );
 
-    }
+
+    const empty =
+      document.getElementById(
+        "unitHistoryEmpty"
+      );
 
 
-    unitHistoryData =
-      Array.isArray(
-        result.data
-      )
-        ? result.data
-        : [];
+    const errorBox =
+      document.getElementById(
+        "unitHistoryError"
+      );
 
 
-    if (
-      unitHistoryData.length === 0
+    const tableCard =
+      document.getElementById(
+        "unitHistoryTableCard"
+      );
+
+
+    const tableBody =
+      document.getElementById(
+        "unitHistoryTableBody"
+      );
+
+
+    const filterButton =
+      document.getElementById(
+        "unitHistoryFilterButton"
+      );
+
+
+    const reviewButton =
+      document.getElementById(
+        "unitHistoryReviewButton"
+      );
+
+
+    const printButton =
+      document.getElementById(
+        "unitHistoryPrintButton"
+      );
+
+
+
+    // =================================================
+    // PAGE STATE
+    // =================================================
+
+    function showState(
+      state
     ) {
 
-      setState(
-        "empty"
-      );
 
-      return;
+      if (loading) {
+
+        loading.hidden =
+          state !==
+          "loading";
+
+      }
+
+
+      if (empty) {
+
+        empty.hidden =
+          state !==
+          "empty";
+
+      }
+
+
+      if (errorBox) {
+
+        errorBox.hidden =
+          state !==
+          "error";
+
+      }
+
+
+      if (tableCard) {
+
+        tableCard.hidden =
+          state !==
+          "table";
+
+      }
 
     }
 
 
-    renderUnitHistory(
-      unitHistoryData
-    );
+
+    // =================================================
+    // API REQUEST
+    // =================================================
+
+    async function apiRequest(
+      payload
+    ) {
 
 
-    setState(
-      "table"
-    );
+      const response =
+        await fetch(
+          HEXA_API_URL,
+          {
 
-  } catch (error) {
-
-    console.error(
-      "Unit History error:",
-      error
-    );
+            method:
+              "POST",
 
 
-    setState(
-      "error"
-    );
+            headers: {
 
-  }
+              "Content-Type":
+                "text/plain;charset=utf-8"
 
-}
-
-
-// ========================================
-// RENDER TABLE
-// ========================================
-
-function renderUnitHistory(
-  records
-) {
-
-  historyTableBody.innerHTML =
-    "";
+            },
 
 
-  records.forEach(
-    function (record) {
+            body:
+              JSON.stringify(
+                payload
+              )
 
-      const row =
-        document.createElement(
-          "tr"
+          }
         );
 
 
-      // ID tidak ditampilkan,
-      // tetapi tetap dibawa oleh row.
-      row.dataset.inspectionId =
-        record.id || "";
+      if (!response.ok) {
+
+        throw new Error(
+          "HTTP " +
+          response.status
+        );
+
+      }
 
 
-      // UNIT CODE
-      row.appendChild(
-        createTextCell(
-          record.unitCode
-        )
+      return response.json();
+
+    }
+
+
+
+    // =================================================
+    // LOAD UNIT HISTORY
+    // =================================================
+
+    async function loadUnitHistory() {
+
+
+      showState(
+        "loading"
       );
 
 
-      // HM INSPECTION
-      row.appendChild(
-        createTextCell(
-          record.hmInspection
-        )
+      try {
+
+
+        const result =
+          await apiRequest({
+
+            action:
+              "getUnitHistory"
+
+          });
+
+
+        console.log(
+          "Unit History API:",
+          result
+        );
+
+
+        if (
+          !result ||
+          !result.success
+        ) {
+
+          throw new Error(
+
+            result &&
+            result.message
+
+              ? result.message
+
+              : "Gagal mengambil Unit History."
+
+          );
+
+        }
+
+
+
+        unitHistoryData =
+          Array.isArray(
+            result.data
+          )
+
+            ? result.data
+
+            : [];
+
+
+
+        if (
+          unitHistoryData.length ===
+          0
+        ) {
+
+          showState(
+            "empty"
+          );
+
+          return;
+
+        }
+
+
+
+        renderUnitHistory(
+          unitHistoryData
+        );
+
+
+        showState(
+          "table"
+        );
+
+
+      } catch (error) {
+
+
+        console.error(
+          "Unit History Error:",
+          error
+        );
+
+
+        showState(
+          "error"
+        );
+
+      }
+
+    }
+
+
+
+    // =================================================
+    // RENDER UNIT HISTORY
+    // =================================================
+
+    function renderUnitHistory(
+      records
+    ) {
+
+
+      if (!tableBody) {
+
+        return;
+
+      }
+
+
+      tableBody.innerHTML =
+        "";
+
+
+
+      records.forEach(
+        function (record) {
+
+
+          const row =
+            document.createElement(
+              "tr"
+            );
+
+
+          // -------------------------------------------
+          // INTERNAL ID
+          // -------------------------------------------
+
+          row.dataset.inspectionId =
+            cleanValue(
+              record.id
+            );
+
+
+
+          // -------------------------------------------
+          // UNIT CODE
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createTextCell(
+              record.unitCode
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // HM INSPECTION
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createTextCell(
+              record.hmInspection
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // GROUP COMPONENT
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createTextCell(
+              record.groupComponent
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // PROBLEM DESCRIPTION
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createTextCell(
+              record.problemDescription
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // PHOTO
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createPhotoCell(
+              record.photo
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // RATING
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createTextCell(
+              record.rating
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // STATUS
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createStatusCell(
+              record.status
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // PARTS DESCRIPTION
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createTextCell(
+              record.partsDescription
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // MOL
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createMolCell(
+              record.mol
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // PARTS STATUS
+          // -------------------------------------------
+
+          row.appendChild(
+
+            createTextCell(
+              record.partsStatus
+            )
+
+          );
+
+
+
+          // -------------------------------------------
+          // ROW CLICK
+          // DETAIL AKAN DIBUAT TAHAP BERIKUTNYA
+          // -------------------------------------------
+
+          row.addEventListener(
+            "click",
+            function () {
+
+
+              console.log(
+                "Selected Unit History:",
+                row.dataset.inspectionId
+              );
+
+
+            }
+          );
+
+
+
+          tableBody.appendChild(
+            row
+          );
+
+
+        }
+      );
+
+    }
+
+
+
+    // =================================================
+    // CLEAN VALUE
+    // =================================================
+
+    function cleanValue(
+      value
+    ) {
+
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+
+        return "";
+
+      }
+
+
+      return String(
+        value
+      ).trim();
+
+    }
+
+
+
+    // =================================================
+    // TEXT CELL
+    // =================================================
+
+    function createTextCell(
+      value
+    ) {
+
+
+      const cell =
+        document.createElement(
+          "td"
+        );
+
+
+      const text =
+        cleanValue(
+          value
+        );
+
+
+      if (text) {
+
+        cell.textContent =
+          text;
+
+      } else {
+
+        cell.textContent =
+          "-";
+
+        cell.classList.add(
+          "unit-history-empty-value"
+        );
+
+      }
+
+
+      return cell;
+
+    }
+
+
+
+    // =================================================
+    // PHOTO CELL
+    // =================================================
+
+    function createPhotoCell(
+      photoUrl
+    ) {
+
+
+      const cell =
+        document.createElement(
+          "td"
+        );
+
+
+      const url =
+        cleanValue(
+          photoUrl
+        );
+
+
+      if (!url) {
+
+
+        const noPhoto =
+          document.createElement(
+            "span"
+          );
+
+
+        noPhoto.className =
+          "unit-history-no-photo";
+
+
+        noPhoto.textContent =
+          "No Photo";
+
+
+        cell.appendChild(
+          noPhoto
+        );
+
+
+        return cell;
+
+      }
+
+
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+
+      image.className =
+        "unit-history-photo";
+
+
+      image.alt =
+        "Inspection Photo";
+
+
+      image.loading =
+        "lazy";
+
+
+      image.src =
+        getDriveImageUrl(
+          url
+        );
+
+
+
+      image.addEventListener(
+        "error",
+        function () {
+
+
+          image.remove();
+
+
+          const noPhoto =
+            document.createElement(
+              "span"
+            );
+
+
+          noPhoto.className =
+            "unit-history-no-photo";
+
+
+          noPhoto.textContent =
+            "No Photo";
+
+
+          cell.appendChild(
+            noPhoto
+          );
+
+
+        },
+        {
+          once: true
+        }
       );
 
 
-      // GROUP COMPONENT
-      row.appendChild(
-        createTextCell(
-          record.groupComponent
-        )
+
+      cell.appendChild(
+        image
       );
 
 
-      // PROBLEM DESCRIPTION
-      row.appendChild(
-        createTextCell(
-          record.problemDescription
-        )
+      return cell;
+
+    }
+
+
+
+    // =================================================
+    // GOOGLE DRIVE IMAGE URL
+    // =================================================
+
+    function getDriveImageUrl(
+      url
+    ) {
+
+
+      const fileId =
+        getDriveFileId(
+          url
+        );
+
+
+      if (!fileId) {
+
+        return url;
+
+      }
+
+
+      return (
+
+        "https://drive.google.com/thumbnail?id=" +
+
+        encodeURIComponent(
+          fileId
+        ) +
+
+        "&sz=w400"
+
+      );
+
+    }
+
+
+
+    // =================================================
+    // GOOGLE DRIVE FILE ID
+    // =================================================
+
+    function getDriveFileId(
+      url
+    ) {
+
+
+      const text =
+        cleanValue(
+          url
+        );
+
+
+      let match =
+        text.match(
+          /\/d\/([a-zA-Z0-9_-]+)/
+        );
+
+
+      if (
+        match &&
+        match[1]
+      ) {
+
+        return match[1];
+
+      }
+
+
+
+      match =
+        text.match(
+          /[?&]id=([a-zA-Z0-9_-]+)/
+        );
+
+
+      if (
+        match &&
+        match[1]
+      ) {
+
+        return match[1];
+
+      }
+
+
+      return "";
+
+    }
+
+
+
+    // =================================================
+    // STATUS
+    // =================================================
+
+    function createStatusCell(
+      value
+    ) {
+
+
+      const cell =
+        document.createElement(
+          "td"
+        );
+
+
+      const badge =
+        document.createElement(
+          "span"
+        );
+
+
+      const status =
+        cleanValue(
+          value
+        );
+
+
+      badge.className =
+        "unit-history-badge";
+
+
+      if (
+        status.toUpperCase() ===
+        "CLOSE"
+      ) {
+
+        badge.classList.add(
+          "unit-history-badge-close"
+        );
+
+      } else {
+
+        badge.classList.add(
+          "unit-history-badge-open"
+        );
+
+      }
+
+
+      badge.textContent =
+        status || "-";
+
+
+      cell.appendChild(
+        badge
       );
 
 
-      // PHOTO
-      row.appendChild(
-        createPhotoCell(
-          record.photo
-        )
+      return cell;
+
+    }
+
+
+
+    // =================================================
+    // MOL
+    // =================================================
+
+    function createMolCell(
+      value
+    ) {
+
+
+      const cell =
+        document.createElement(
+          "td"
+        );
+
+
+      const badge =
+        document.createElement(
+          "span"
+        );
+
+
+      const mol =
+        cleanValue(
+          value
+        );
+
+
+      badge.className =
+        "unit-history-badge";
+
+
+      if (
+        mol.toLowerCase() ===
+        "submitted"
+      ) {
+
+        badge.classList.add(
+          "unit-history-badge-submitted"
+        );
+
+      } else {
+
+        badge.classList.add(
+          "unit-history-badge-belum"
+        );
+
+      }
+
+
+      badge.textContent =
+        mol || "-";
+
+
+      cell.appendChild(
+        badge
       );
 
 
-      // RATING
-      row.appendChild(
-        createTextCell(
-          record.rating
-        )
-      );
+      return cell;
+
+    }
 
 
-      // STATUS
-      row.appendChild(
-        createStatusCell(
-          record.status
-        )
-      );
+
+    // =================================================
+    // FILTER
+    // FUNGSI AKAN DIBUAT TAHAP BERIKUTNYA
+    // =================================================
+
+    if (filterButton) {
 
 
-      // PARTS DESCRIPTION
-      row.appendChild(
-        createTextCell(
-          record.partsDescription
-        )
-      );
-
-
-      // MOL
-      row.appendChild(
-        createMolCell(
-          record.mol
-        )
-      );
-
-
-      // PARTS STATUS
-      row.appendChild(
-        createTextCell(
-          record.partsStatus
-        )
-      );
-
-
-      // Detail modal akan kita
-      // aktifkan pada tahap berikutnya.
-      row.addEventListener(
+      filterButton.addEventListener(
         "click",
         function () {
 
+
           console.log(
-            "Unit History selected:",
-            row.dataset.inspectionId
+            "Unit History Filter"
           );
+
 
         }
       );
 
 
-      historyTableBody.appendChild(
-        row
+    }
+
+
+
+    // =================================================
+    // REVIEW
+    // FUNGSI AKAN DIBUAT TAHAP BERIKUTNYA
+    // =================================================
+
+    if (reviewButton) {
+
+
+      reviewButton.addEventListener(
+        "click",
+        function () {
+
+
+          console.log(
+            "Unit History Review Performance"
+          );
+
+
+        }
       );
 
+
     }
-  );
-
-}
 
 
-// ========================================
-// TEXT CELL
-// ========================================
 
-function createTextCell(
-  value
-) {
+    // =================================================
+    // PRINT / EXPORT
+    // FUNGSI AKAN DIBUAT TAHAP BERIKUTNYA
+    // =================================================
 
-  const cell =
-    document.createElement(
-      "td"
-    );
+    if (printButton) {
 
 
-  const text =
-    String(
-      value || ""
-    ).trim();
+      printButton.addEventListener(
+        "click",
+        function () {
 
 
-  cell.textContent =
-    text || "-";
+          console.log(
+            "Unit History Print / Export"
+          );
 
 
-  if (!text) {
-
-    cell.classList.add(
-      "muted"
-    );
-
-  }
-
-
-  return cell;
-
-}
-
-
-// ========================================
-// PHOTO CELL
-// ========================================
-
-function createPhotoCell(
-  photoUrl
-) {
-
-  const cell =
-    document.createElement(
-      "td"
-    );
-
-
-  const url =
-    String(
-      photoUrl || ""
-    ).trim();
-
-
-  if (!url) {
-
-    cell.textContent =
-      "No Photo";
-
-    cell.classList.add(
-      "muted"
-    );
-
-    return cell;
-
-  }
-
-
-  const image =
-    document.createElement(
-      "img"
-    );
-
-
-  image.className =
-    "photo";
-
-  image.alt =
-    "Inspection Photo";
-
-  image.loading =
-    "lazy";
-
-
-  image.src =
-    getDriveImageUrl(
-      url
-    );
-
-
-  image.addEventListener(
-    "error",
-    function () {
-
-      image.remove();
-
-      cell.textContent =
-        "No Photo";
-
-      cell.classList.add(
-        "muted"
+        }
       );
 
-    },
-    {
-      once: true
+
     }
-  );
 
 
-  cell.appendChild(
-    image
-  );
+
+    // =================================================
+    // START
+    // =================================================
+
+    loadUnitHistory();
 
 
-  return cell;
-
-}
-
-
-// ========================================
-// GOOGLE DRIVE IMAGE URL
-// ========================================
-
-function getDriveImageUrl(
-  url
-) {
-
-  const fileId =
-    getDriveFileId(
-      url
+    console.log(
+      "HEXA Unit History Ready",
+      currentUser
     );
 
-
-  if (!fileId) {
-
-    return url;
 
   }
-
-
-  return (
-    "https://drive.google.com/thumbnail?id=" +
-    encodeURIComponent(
-      fileId
-    ) +
-    "&sz=w400"
-  );
-
-}
-
-
-// ========================================
-// GET GOOGLE DRIVE FILE ID
-// ========================================
-
-function getDriveFileId(
-  url
-) {
-
-  const text =
-    String(
-      url || ""
-    );
-
-
-  let match =
-    text.match(
-      /\/d\/([a-zA-Z0-9_-]+)/
-    );
-
-
-  if (
-    match &&
-    match[1]
-  ) {
-
-    return match[1];
-
-  }
-
-
-  match =
-    text.match(
-      /[?&]id=([a-zA-Z0-9_-]+)/
-    );
-
-
-  if (
-    match &&
-    match[1]
-  ) {
-
-    return match[1];
-
-  }
-
-
-  return "";
-
-}
-
-
-// ========================================
-// STATUS CELL
-// ========================================
-
-function createStatusCell(
-  value
-) {
-
-  const cell =
-    document.createElement(
-      "td"
-    );
-
-
-  const badge =
-    document.createElement(
-      "span"
-    );
-
-
-  const status =
-    String(
-      value || ""
-    ).trim();
-
-
-  badge.className =
-    "badge " +
-    (
-      status.toUpperCase() ===
-      "CLOSE"
-        ? "close"
-        : "open"
-    );
-
-
-  badge.textContent =
-    status || "-";
-
-
-  cell.appendChild(
-    badge
-  );
-
-
-  return cell;
-
-}
-
-
-// ========================================
-// MOL CELL
-// ========================================
-
-function createMolCell(
-  value
-) {
-
-  const cell =
-    document.createElement(
-      "td"
-    );
-
-
-  const badge =
-    document.createElement(
-      "span"
-    );
-
-
-  const mol =
-    String(
-      value || ""
-    ).trim();
-
-
-  badge.className =
-    "badge " +
-    (
-      mol.toLowerCase() ===
-      "submitted"
-        ? "submitted"
-        : "belum"
-    );
-
-
-  badge.textContent =
-    mol || "-";
-
-
-  cell.appendChild(
-    badge
-  );
-
-
-  return cell;
-
-}
-
-
-// ========================================
-// FILTER
-// Tahap berikutnya
-// ========================================
-
-if (filterButton) {
-
-  filterButton.addEventListener(
-    "click",
-    function () {
-
-      console.log(
-        "Unit History Filter"
-      );
-
-    }
-  );
-
-}
-
-
-// ========================================
-// REVIEW
-// Tahap berikutnya
-// ========================================
-
-if (reviewButton) {
-
-  reviewButton.addEventListener(
-    "click",
-    function () {
-
-      console.log(
-        "Unit History Review Performance"
-      );
-
-    }
-  );
-
-}
-
-
-// ========================================
-// PRINT / EXPORT
-// Tahap berikutnya
-// ========================================
-
-if (printButton) {
-
-  printButton.addEventListener(
-    "click",
-    function () {
-
-      console.log(
-        "Unit History Print / Export"
-      );
-
-    }
-  );
-
-}
-
-
-// ========================================
-// START
-// ========================================
-
-loadUnitHistory();
-
-
-console.log(
-  "HEXA Unit History Ready",
-  currentUser
 );
