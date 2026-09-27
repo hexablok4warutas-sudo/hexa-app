@@ -113,6 +113,35 @@
 
           </button>
 
+          <!-- COLUMNS -->
+
+          <button
+            type="button"
+            id="unitHistoryColumnsButton"
+            class="unit-history-action-button"
+            aria-label="Custom Columns"
+            aria-expanded="false"
+            title="Columns"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+            <rect
+              x="3"
+              y="5"
+              width="18"
+              height="14"
+              rx="1"
+            ></rect>
+
+              <path d="M9 5v14"></path>
+
+              <path d="M15 5v14"></path>
+
+           </svg>
+
+          </button>
+
 
 
           <!-- PRINT -->
@@ -312,7 +341,72 @@
 
       </div>
 
+      <!-- ==============================================
+     CUSTOM COLUMNS PANEL
+     ============================================== -->
 
+<div
+  id="unitHistoryColumnsPanel"
+  class="unit-history-columns-panel"
+  hidden
+>
+
+  <div class="unit-history-columns-header">
+
+    <h2>
+      Columns
+    </h2>
+
+    <button
+      type="button"
+      id="unitHistoryCloseColumnsButton"
+      class="unit-history-columns-close"
+      aria-label="Close Columns"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <div
+    id="unitHistoryColumnsList"
+    class="unit-history-columns-list"
+  >
+
+    <!-- COLUMN OPTIONS DIBUAT OLEH JS -->
+
+  </div>
+
+
+  <div class="unit-history-columns-actions">
+
+    <button
+      type="button"
+      id="unitHistoryDefaultColumnsButton"
+      class="unit-history-columns-secondary-button"
+    >
+      Default
+    </button>
+
+    <button
+      type="button"
+      id="unitHistorySelectAllColumnsButton"
+      class="unit-history-columns-secondary-button"
+    >
+      Select All
+    </button>
+
+    <button
+      type="button"
+      id="unitHistoryApplyColumnsButton"
+      class="unit-history-columns-apply-button"
+    >
+      Apply
+    </button>
+
+  </div>
+</div>
 
       <!-- ==============================================
            ACTIVE FILTERS
