@@ -5865,19 +5865,31 @@ async function shareCurrentHistoryPdf() {
     !filteredUnitHistoryData ||
     filteredUnitHistoryData.length === 0
   ) {
-
-    alert(
-      "Tidak ada data untuk dibagikan."
-    );
-
+    alert("Tidak ada data untuk dibagikan.");
     return;
   }
 
+  if (
+    !window.jspdf ||
+    !window.jspdf.jsPDF
+  ) {
+    alert("jsPDF belum dimuat.");
+    return;
+  }
+
+  const jsPDF = window.jspdf.jsPDF;
+
+  const doc = new jsPDF({
+    orientation: "landscape",
+    unit: "mm",
+    format: "a4"
+  });
 
   console.log(
-    "Share PDF ready:",
-    filteredUnitHistoryData.length,
-    "records"
+    "jsPDF OK:",
+    doc
   );
+
+  alert("PDF Engine OK");
 
 }
