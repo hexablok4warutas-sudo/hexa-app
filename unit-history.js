@@ -4095,10 +4095,10 @@ function printCurrentHistory() {
   =================================================== */
 
   const hrsLogoUrl =
-    new URL(
-      "hexa-logo-hrs.png",
-      window.location.href
-    ).href;
+  new URL(
+    "hexa-icon-logo-hrsheaderprint.png",
+    window.location.href
+  ).href;
 
 
   const hexaLogoUrl =
