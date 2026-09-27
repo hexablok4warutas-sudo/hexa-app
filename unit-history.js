@@ -4456,14 +4456,16 @@ function printCurrentHistory() {
 
 
         .print-logo-hrs {
-           width: 180px;
+           width: 110px;
            height: auto;
            object-fit: contain;
       }
 
 
         .print-logo-hexa {
-          height: 31px;
+           width: 75px;
+           height: auto;
+           object-fit: contain;
         }
 
 
