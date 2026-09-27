@@ -801,15 +801,35 @@ body {
 
 .unit-history-table th:nth-child(9),
 .unit-history-table td:nth-child(9) {
-  width: 210px;
-  min-width: 210px;
+  width: 220px;
+  min-width: 220px;
+}
+
+
+/* PART NO */
+
+.unit-history-table th:nth-child(10),
+.unit-history-table td:nth-child(10) {
+  width: 170px;
+  min-width: 170px;
+}
+
+
+/* QUANTITY */
+
+.unit-history-table th:nth-child(11),
+.unit-history-table td:nth-child(11) {
+  width: 80px;
+  min-width: 80px;
+
+  text-align: center;
 }
 
 
 /* MOL */
 
-.unit-history-table th:nth-child(10),
-.unit-history-table td:nth-child(10) {
+.unit-history-table th:nth-child(12),
+.unit-history-table td:nth-child(12) {
   width: 110px;
   min-width: 110px;
 }
@@ -817,12 +837,100 @@ body {
 
 /* PARTS STATUS */
 
-.unit-history-table th:nth-child(11),
-.unit-history-table td:nth-child(11) {
+.unit-history-table th:nth-child(13),
+.unit-history-table td:nth-child(13) {
   width: 140px;
   min-width: 140px;
 }
 
+/* =====================================================
+   MULTI PART REQUIREMENT
+   Unit History menampilkan SEMUA part.
+===================================================== */
+
+.unit-history-parts-cell {
+  vertical-align: top !important;
+}
+
+
+/* WRAPPER SEMUA PART */
+
+.unit-history-part-list {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  gap: 0;
+}
+
+
+/* SATU BARIS PART */
+
+.unit-history-part-line {
+  min-height: 26px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 4px 0;
+
+  border-bottom:
+    1px solid rgba(0, 0, 0, 0.06);
+
+  line-height: 18px;
+
+  white-space: normal;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* BARIS PART TERAKHIR */
+
+.unit-history-part-line:last-child {
+  border-bottom: 0;
+}
+
+
+/* PART DESCRIPTION */
+
+.unit-history-part-description {
+  text-align: left;
+}
+
+
+/* PART NO */
+
+.unit-history-part-number {
+  text-align: left;
+}
+
+
+/* QUANTITY */
+
+.unit-history-part-quantity {
+  justify-content: center;
+
+  text-align: center;
+}
+
+
+/* NILAI PART YANG KOSONG */
+
+.unit-history-part-empty {
+  color: #aaa;
+}
+
+
+/*
+  Tidak ada max-height.
+  Tidak ada overflow hidden.
+  Tidak ada line-clamp.
+
+  Row akan terus bertambah tinggi
+  mengikuti jumlah Part Requirement.
+*/
 
 /* =====================================================
    DELETE COLUMN
