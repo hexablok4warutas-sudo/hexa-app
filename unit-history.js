@@ -6422,9 +6422,22 @@ async function shareCurrentHistoryPdf() {
   }
 
 
-  if (
-    typeof window.jspdf.jsPDF.prototype.autoTable !== "function"
-  ) {
+  const autoTableFunction =
+    (
+      window.jspdfAutoTable &&
+      typeof window.jspdfAutoTable.autoTable === "function"
+    )
+      ? window.jspdfAutoTable.autoTable
+      : (
+          typeof window.jspdf.jsPDF.prototype.autoTable === "function"
+            ? function (doc, options) {
+                doc.autoTable(options);
+              }
+            : null
+        );
+
+
+  if (!autoTableFunction) {
     alert("jsPDF AutoTable belum dimuat.");
     return;
   }
@@ -6713,7 +6726,7 @@ async function shareCurrentHistoryPdf() {
   );
 
 
-  doc.autoTable({
+  autoTableFunction(doc, {
 
     head:
       head,
