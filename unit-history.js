@@ -855,6 +855,22 @@ if (closeColumnsButton) {
     closeColumnsPanel
   );
 }
+   if (defaultColumnsButton) {
+
+  defaultColumnsButton.addEventListener(
+    "click",
+    resetColumnsToDefault
+  );
+}
+
+
+if (selectAllColumnsButton) {
+
+  selectAllColumnsButton.addEventListener(
+    "click",
+    selectAllColumns
+  );
+}
 
   if (closeFilterButton) {
 
@@ -2111,6 +2127,63 @@ function renderColumnOptions() {
   );
 }
 
+/* =====================================================
+   RESET COLUMNS TO DEFAULT
+===================================================== */
+
+function resetColumnsToDefault() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  UNIT_HISTORY_COLUMN_FIELDS.forEach(
+    function (field) {
+
+      const checkbox =
+        columnsList.querySelector(
+          `input[data-column-key="${field.key}"]`
+        );
+
+
+      if (checkbox) {
+
+        checkbox.checked =
+          field.default === true;
+
+      }
+
+    }
+  );
+}
+
+
+/* =====================================================
+   SELECT ALL COLUMNS
+===================================================== */
+
+function selectAllColumns() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  const checkboxes =
+    columnsList.querySelectorAll(
+      'input[data-column-key]'
+    );
+
+
+  checkboxes.forEach(
+    function (checkbox) {
+
+      checkbox.checked = true;
+
+    }
+  );
+}
 function toggleColumnsPanel() {
 
   if (!columnsPanel) {
