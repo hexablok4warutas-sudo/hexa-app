@@ -91,6 +91,10 @@ let activeFilters = [];
 
 let filterCounter = 0;
 
+/* COLUMNS */
+
+let activeColumnKeys = [];
+
 
 /* SHORTCUT DRAG */
 
@@ -872,6 +876,14 @@ if (selectAllColumnsButton) {
   );
 }
 
+   if (applyColumnsButton) {
+
+  applyColumnsButton.addEventListener(
+    "click",
+    applyColumns
+  );
+}
+   
   if (closeFilterButton) {
 
     closeFilterButton.addEventListener(
@@ -1389,6 +1401,7 @@ function createHistoryRow(record) {
       "td"
     );
 
+
   deleteCell.className =
     "unit-history-delete-column";
 
@@ -1400,6 +1413,7 @@ function createHistoryRow(record) {
     document.createElement(
       "input"
     );
+
 
   checkbox.type =
     "checkbox";
@@ -1457,42 +1471,252 @@ function createHistoryRow(record) {
 
 
   /* ===================================================
-     UNIT CODE
+     CUSTOM DATA COLUMNS
   =================================================== */
 
-  appendTextCell(
-    row,
-    record.unitCode
-  );
+  const partDescriptions =
+    splitPartMultiline(
+      record.partsDescription
+    );
+
+  const partNumbers =
+    splitPartMultiline(
+      record.partNo
+    );
+
+  const partQuantities =
+    splitPartMultiline(
+      record.quantity
+    );
 
 
-  /* HM */
-
-  appendTextCell(
-    row,
-    record.hmInspection
-  );
-
-
-  /* GROUP COMPONENT */
-
-  appendTextCell(
-    row,
-    record.groupComponent
-  );
+  const totalParts =
+    Math.max(
+      1,
+      partDescriptions.length,
+      partNumbers.length,
+      partQuantities.length
+    );
 
 
-  /* PROBLEM DESCRIPTION */
+  UNIT_HISTORY_COLUMN_FIELDS
+    .filter(
+      function (field) {
 
-  appendTextCell(
-    row,
-    record.problemDescription
-  );
+        return activeColumnKeys.includes(
+          field.key
+        );
+      }
+    )
+    .forEach(
+      function (field) {
+
+        appendHistoryColumnCell(
+          row,
+          record,
+          field.key,
+          {
+            descriptions:
+              partDescriptions,
+
+            partNumbers:
+              partNumbers,
+
+            quantities:
+              partQuantities,
+
+            totalParts:
+              totalParts
+          }
+        );
+      }
+    );
 
 
   /* ===================================================
-     PHOTO
+     ROW CLICK
   =================================================== */
+
+  row.addEventListener(
+    "click",
+    function () {
+
+      if (deleteMode) {
+
+        checkbox.checked =
+          !checkbox.checked;
+
+
+        toggleDeleteSelection(
+          record.id,
+          checkbox.checked
+        );
+
+
+        return;
+      }
+
+
+      openDetail(
+        record.id
+      );
+    }
+  );
+
+
+  return row;
+}
+
+/* =====================================================
+   APPEND CUSTOM HISTORY COLUMN
+===================================================== */
+
+function appendHistoryColumnCell(
+  row,
+  record,
+  columnKey,
+  partData
+) {
+
+  /* PHOTO */
+
+  if (columnKey === "photo") {
+
+    appendHistoryPhotoCell(
+      row,
+      record
+    );
+
+    return;
+  }
+
+
+  /* STATUS */
+
+  if (columnKey === "status") {
+
+    const cell =
+      document.createElement(
+        "td"
+      );
+
+
+    cell.appendChild(
+      createBadge(
+        record.status ||
+        "OPEN",
+        "status"
+      )
+    );
+
+
+    row.appendChild(
+      cell
+    );
+
+
+    return;
+  }
+
+
+  /* MOL */
+
+  if (columnKey === "mol") {
+
+    const cell =
+      document.createElement(
+        "td"
+      );
+
+
+    cell.appendChild(
+      createBadge(
+        getMolDisplay(record),
+        "mol"
+      )
+    );
+
+
+    row.appendChild(
+      cell
+    );
+
+
+    return;
+  }
+
+
+  /* PARTS DESCRIPTION */
+
+  if (
+    columnKey ===
+    "partsDescription"
+  ) {
+
+    row.appendChild(
+      createPartRequirementCell(
+        partData.descriptions,
+        partData.totalParts,
+        "description"
+      )
+    );
+
+
+    return;
+  }
+
+
+  /* PART NO */
+
+  if (columnKey === "partNo") {
+
+    row.appendChild(
+      createPartRequirementCell(
+        partData.partNumbers,
+        partData.totalParts,
+        "number"
+      )
+    );
+
+
+    return;
+  }
+
+
+  /* QUANTITY */
+
+  if (columnKey === "quantity") {
+
+    row.appendChild(
+      createPartRequirementCell(
+        partData.quantities,
+        partData.totalParts,
+        "quantity"
+      )
+    );
+
+
+    return;
+  }
+
+
+  /* NORMAL TEXT FIELD */
+
+  appendTextCell(
+    row,
+    record[columnKey]
+  );
+}
+
+
+/* =====================================================
+   PHOTO CELL
+===================================================== */
+
+function appendHistoryPhotoCell(
+  row,
+  record
+) {
 
   const photoCell =
     document.createElement(
@@ -1507,17 +1731,20 @@ function createHistoryRow(record) {
         "img"
       );
 
+
     image.className =
       "unit-history-row-photo";
 
     image.loading =
       "lazy";
 
+
     image.alt =
       record.unitCode
         ? "Photo " +
           record.unitCode
         : "Inspection Photo";
+
 
     image.src =
       getDriveImageUrl(
@@ -1547,11 +1774,13 @@ function createHistoryRow(record) {
         "span"
       );
 
+
     empty.className =
       "unit-history-row-no-photo";
 
     empty.textContent =
       "No Photo";
+
 
     photoCell.appendChild(
       empty
@@ -1562,113 +1791,7 @@ function createHistoryRow(record) {
   row.appendChild(
     photoCell
   );
-
-
-  /* RATING */
-
-  appendTextCell(
-    row,
-    record.rating
-  );
-
-
-  /* STATUS */
-
-  const statusCell =
-    document.createElement(
-      "td"
-    );
-
-  statusCell.appendChild(
-    createBadge(
-      record.status ||
-      "OPEN",
-      "status"
-    )
-  );
-
-  row.appendChild(
-    statusCell
-  );
-
-
-/* ===================================================
-   PART REQUIREMENT
-   Semua part ditampilkan lengkap dan sejajar.
-=================================================== */
-
-appendPartRequirementCells(
-  row,
-  record.partsDescription,
-  record.partNo,
-  record.quantity
-);
-
-
-/* MOL */
-
-  const molCell =
-    document.createElement(
-      "td"
-    );
-
-  molCell.appendChild(
-    createBadge(
-      getMolDisplay(record),
-      "mol"
-    )
-  );
-
-  row.appendChild(
-    molCell
-  );
-
-
-  /* PARTS STATUS */
-
-  appendTextCell(
-    row,
-    record.partsStatus
-  );
-
-
-  /* ===================================================
-     ROW CLICK
-  =================================================== */
-
-  row.addEventListener(
-    "click",
-    function () {
-
-      /*
-        Saat Delete Mode aktif,
-        klik row tidak membuka detail.
-      */
-
-      if (deleteMode) {
-
-        checkbox.checked =
-          !checkbox.checked;
-
-        toggleDeleteSelection(
-          record.id,
-          checkbox.checked
-        );
-
-        return;
-      }
-
-
-      openDetail(
-        record.id
-      );
-    }
-  );
-
-
-  return row;
 }
-
 
 /* =====================================================
    CELL HELPER
@@ -2127,6 +2250,19 @@ function renderColumnOptions() {
   );
 }
 
+activeColumnKeys =
+  UNIT_HISTORY_COLUMN_FIELDS
+    .filter(
+      function (field) {
+        return field.default === true;
+      }
+    )
+    .map(
+      function (field) {
+        return field.key;
+      }
+    );
+
 /* =====================================================
    RESET COLUMNS TO DEFAULT
 ===================================================== */
@@ -2184,6 +2320,66 @@ function selectAllColumns() {
     }
   );
 }
+
+/* =====================================================
+   APPLY CUSTOM COLUMNS
+===================================================== */
+
+function applyColumns() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  const selectedKeys =
+    UNIT_HISTORY_COLUMN_FIELDS
+      .filter(
+        function (field) {
+
+          const checkbox =
+            columnsList.querySelector(
+              `input[data-column-key="${field.key}"]`
+            );
+
+          return Boolean(
+            checkbox?.checked
+          );
+        }
+      )
+      .map(
+        function (field) {
+          return field.key;
+        }
+      );
+
+
+  if (selectedKeys.length === 0) {
+
+    alert(
+      "Pilih minimal satu column."
+    );
+
+    return;
+  }
+
+
+  activeColumnKeys =
+    selectedKeys;
+
+
+  renderUnitHistoryTableHeader();
+
+
+  renderUnitHistory(
+    filteredUnitHistoryData
+  );
+
+
+  closeColumnsPanel();
+}
+
+
 function toggleColumnsPanel() {
 
   if (!columnsPanel) {
@@ -2242,6 +2438,122 @@ function closeColumnsPanel() {
     "aria-expanded",
     "false"
   );
+}
+
+/* =====================================================
+   RENDER CUSTOM TABLE HEADER
+===================================================== */
+
+function renderUnitHistoryTableHeader() {
+
+  const table =
+    historyTableBody?.closest(
+      "table"
+    );
+
+
+  const headerRow =
+    table?.querySelector(
+      "thead tr"
+    );
+
+
+  if (!headerRow) {
+    return;
+  }
+
+
+  headerRow.innerHTML = "";
+
+
+  /* DELETE COLUMN */
+
+  const deleteTh =
+    document.createElement(
+      "th"
+    );
+
+
+  deleteTh.id =
+    "unitHistoryDeleteHeader";
+
+  deleteTh.className =
+    "unit-history-delete-column";
+
+  deleteTh.hidden =
+    !deleteMode;
+
+
+  const selectAll =
+    document.createElement(
+      "input"
+    );
+
+
+  selectAll.type =
+    "checkbox";
+
+  selectAll.id =
+    "unitHistorySelectAll";
+
+
+  selectAll.addEventListener(
+    "change",
+    handleSelectAll
+  );
+
+
+  deleteTh.appendChild(
+    selectAll
+  );
+
+
+  headerRow.appendChild(
+    deleteTh
+  );
+
+
+  /*
+    Karena header dibuat ulang,
+    update DOM references delete.
+  */
+
+  deleteHeader =
+    deleteTh;
+
+  selectAllCheckbox =
+    selectAll;
+
+
+  /* ACTIVE DATA COLUMNS */
+
+  UNIT_HISTORY_COLUMN_FIELDS
+    .filter(
+      function (field) {
+
+        return activeColumnKeys.includes(
+          field.key
+        );
+      }
+    )
+    .forEach(
+      function (field) {
+
+        const th =
+          document.createElement(
+            "th"
+          );
+
+
+        th.textContent =
+          field.label;
+
+
+        headerRow.appendChild(
+          th
+        );
+      }
+    );
 }
 
 /* =====================================================
