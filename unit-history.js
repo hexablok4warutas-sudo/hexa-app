@@ -236,12 +236,22 @@ const UNIT_HISTORY_FILTER_FIELDS = [
 ===================================================== */
 
 let filterButton;
+let columnsButton;
 let printButton;
 let sharePdfButton;
 let deleteButton;
 
 let filterPanel;
 let closeFilterButton;
+
+/* COLUMNS */
+
+let columnsPanel;
+let closeColumnsButton;
+let columnsList;
+let defaultColumnsButton;
+let selectAllColumnsButton;
+let applyColumnsButton;
 
 let filterConditions;
 let addFilterButton;
@@ -360,6 +370,11 @@ function cacheElements() {
       "unitHistoryFilterButton"
     );
 
+   columnsButton =
+     document.getElementById(
+    "unitHistoryColumnsButton"
+     );
+
   printButton =
     document.getElementById(
       "unitHistoryPrintButton"
@@ -405,6 +420,38 @@ function cacheElements() {
     document.getElementById(
       "unitHistoryApplyFilterButton"
     );
+
+   /* COLUMNS */
+
+columnsPanel =
+  document.getElementById(
+    "unitHistoryColumnsPanel"
+  );
+
+closeColumnsButton =
+  document.getElementById(
+    "unitHistoryCloseColumnsButton"
+  );
+
+columnsList =
+  document.getElementById(
+    "unitHistoryColumnsList"
+  );
+
+defaultColumnsButton =
+  document.getElementById(
+    "unitHistoryDefaultColumnsButton"
+  );
+
+selectAllColumnsButton =
+  document.getElementById(
+    "unitHistorySelectAllColumnsButton"
+  );
+
+applyColumnsButton =
+  document.getElementById(
+    "unitHistoryApplyColumnsButton"
+  );
 
   activeFiltersContainer =
     document.getElementById(
@@ -663,6 +710,22 @@ function bindEvents() {
     );
   }
 
+   if (columnsButton) {
+
+  columnsButton.addEventListener(
+    "click",
+    toggleColumnsPanel
+  );
+}
+
+
+if (closeColumnsButton) {
+
+  closeColumnsButton.addEventListener(
+    "click",
+    closeColumnsPanel
+  );
+}
 
   if (closeFilterButton) {
 
@@ -1848,6 +1911,60 @@ function initializeSearch() {
   );
 }
 
+/* =====================================================
+   COLUMNS PANEL
+===================================================== */
+
+function toggleColumnsPanel() {
+
+  if (!columnsPanel) {
+    return;
+  }
+
+
+  const willOpen =
+    columnsPanel.hidden;
+
+
+  columnsPanel.hidden =
+    !willOpen;
+
+
+  columnsButton?.setAttribute(
+    "aria-expanded",
+    willOpen
+      ? "true"
+      : "false"
+  );
+
+
+  /*
+    Agar Filter dan Columns tidak terbuka
+    bersamaan.
+  */
+
+  if (willOpen) {
+    closeFilterPanel();
+  }
+}
+
+
+function closeColumnsPanel() {
+
+  if (!columnsPanel) {
+    return;
+  }
+
+
+  columnsPanel.hidden =
+    true;
+
+
+  columnsButton?.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+}
 
 /* =====================================================
    FILTER PANEL
