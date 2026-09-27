@@ -5855,3 +5855,29 @@ function escapeHtml(
       "&#039;"
     );
 }
+/* =====================================================
+   SHARE CURRENT UNIT HISTORY PDF
+===================================================== */
+
+async function shareCurrentHistoryPdf() {
+
+  if (
+    !filteredUnitHistoryData ||
+    filteredUnitHistoryData.length === 0
+  ) {
+
+    alert(
+      "Tidak ada data untuk dibagikan."
+    );
+
+    return;
+  }
+
+
+  console.log(
+    "Share PDF ready:",
+    filteredUnitHistoryData.length,
+    "records"
+  );
+
+}
