@@ -1711,19 +1711,21 @@ body.modal-open {
 
   /* ACTIONS */
 
-  .unit-history-actions {
-    gap: 5px;
-  }
+.unit-history-actions {
+  gap: 4px;
+}
 
-  .unit-history-action-button {
-    width: 40px;
-    height: 40px;
-  }
+.unit-history-action-button {
+  width: 36px;
+  height: 36px;
 
-  .unit-history-action-button svg {
-    width: 21px;
-    height: 21px;
-  }
+  border-width: 1.5px;
+}
+
+.unit-history-action-button svg {
+  width: 18px;
+  height: 18px;
+}
 
 
   /* FILTER */
