@@ -1954,43 +1954,30 @@ body.modal-open {
    SMALL MOBILE
 ===================================================== */
 
-@media (max-width: 380px) {
+.unit-history-title {
+  gap: 5px;
+}
 
-  .unit-history-container {
-    width:
-      calc(
-        100% - 10px
-      );
-  }
+.unit-history-title img {
+  width: 46px;
+  height: 46px;
+}
 
-  .unit-history-title img {
-    width: 52px;
-    height: 52px;
-  }
+.unit-history-title h1 {
+  font-size: 19px;
+  letter-spacing: -0.6px;
+}
 
-  .unit-history-title h1 {
-    font-size: 21px;
-  }
+.unit-history-actions {
+  gap: 3px;
+}
 
-  .unit-history-actions {
-    gap: 3px;
-  }
+.unit-history-action-button {
+  width: 34px;
+  height: 34px;
+}
 
-  .unit-history-action-button {
-    width: 37px;
-    height: 37px;
-  }
-
-  .unit-history-action-button svg {
-    width: 19px;
-    height: 19px;
-  }
-
-  .unit-history-detail-row {
-    grid-template-columns:
-      112px 7px minmax(0, 1fr);
-
-    font-size: 11px;
-  }
-
+.unit-history-action-button svg {
+  width: 17px;
+  height: 17px;
 }
