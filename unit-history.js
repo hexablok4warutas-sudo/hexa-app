@@ -230,6 +230,135 @@ const UNIT_HISTORY_FILTER_FIELDS = [
 
 ];
 
+/* =====================================================
+   CUSTOM COLUMN DEFINITIONS
+
+   Semua field DM DATABASE kecuali ID.
+===================================================== */
+
+const UNIT_HISTORY_COLUMN_FIELDS = [
+
+  {
+    key: "unitCode",
+    label: "Unit Code",
+    default: true
+  },
+
+  {
+    key: "hmInspection",
+    label: "HM Inspection",
+    default: true
+  },
+
+  {
+    key: "dateInspection",
+    label: "Date Inspection",
+    default: false
+  },
+
+  {
+    key: "photo",
+    label: "Photo",
+    default: true
+  },
+
+  {
+    key: "groupComponent",
+    label: "Group Component",
+    default: true
+  },
+
+  {
+    key: "problemDescription",
+    label: "Problem Description",
+    default: true
+  },
+
+  {
+    key: "rating",
+    label: "Rating",
+    default: true
+  },
+
+  {
+    key: "partsDescription",
+    label: "Parts Description",
+    default: true
+  },
+
+  {
+    key: "partNo",
+    label: "Part No",
+    default: true
+  },
+
+  {
+    key: "quantity",
+    label: "Quantity",
+    default: true
+  },
+
+  {
+    key: "inspectors",
+    label: "Inspectors",
+    default: false
+  },
+
+  {
+    key: "notes",
+    label: "Notes",
+    default: false
+  },
+
+  {
+    key: "mol",
+    label: "MOL",
+    default: true
+  },
+
+  {
+    key: "evidence",
+    label: "Evidence",
+    default: false
+  },
+
+  {
+    key: "partsStatus",
+    label: "Parts Status",
+    default: true
+  },
+
+  {
+    key: "actionProblems",
+    label: "Action Problems",
+    default: false
+  },
+
+  {
+    key: "hmAction",
+    label: "HM Action",
+    default: false
+  },
+
+  {
+    key: "dateAction",
+    label: "Date Action",
+    default: false
+  },
+
+  {
+    key: "status",
+    label: "Status",
+    default: true
+  },
+
+  {
+    key: "manPower",
+    label: "Man Power",
+    default: false
+  }
+
+];
 
 /* =====================================================
    DOM REFERENCES
@@ -1915,6 +2044,73 @@ function initializeSearch() {
    COLUMNS PANEL
 ===================================================== */
 
+/* =====================================================
+   RENDER COLUMN OPTIONS
+===================================================== */
+
+function renderColumnOptions() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  columnsList.innerHTML = "";
+
+
+  UNIT_HISTORY_COLUMN_FIELDS.forEach(
+    function (field) {
+
+      const option =
+        document.createElement("label");
+
+
+      option.className =
+        "unit-history-column-option";
+
+
+      const checkbox =
+        document.createElement("input");
+
+
+      checkbox.type =
+        "checkbox";
+
+      checkbox.value =
+        field.key;
+
+      checkbox.dataset.columnKey =
+        field.key;
+
+      checkbox.checked =
+        field.default === true;
+
+
+      const label =
+        document.createElement("span");
+
+
+      label.textContent =
+        field.label;
+
+
+      option.appendChild(
+        checkbox
+      );
+
+      option.appendChild(
+        label
+      );
+
+
+      columnsList.appendChild(
+        option
+      );
+
+    }
+  );
+}
+
 function toggleColumnsPanel() {
 
   if (!columnsPanel) {
@@ -1924,6 +2120,15 @@ function toggleColumnsPanel() {
 
   const willOpen =
     columnsPanel.hidden;
+
+   if (
+  willOpen &&
+  columnsList &&
+  columnsList.children.length === 0
+) {
+
+  renderColumnOptions();
+}
 
 
   columnsPanel.hidden =
