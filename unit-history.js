@@ -4060,22 +4060,223 @@ function printCurrentHistory() {
   }
 
 
+  /* ===================================================
+     CURRENT USER
+  =================================================== */
+
+  let printUserId = "-";
+
+  try {
+
+    const storedUser =
+      JSON.parse(
+        sessionStorage.getItem(
+          "hexaUser"
+        ) || "{}"
+      );
+
+    printUserId =
+      storedUser.userId ||
+      storedUser.userID ||
+      storedUser.userid ||
+      storedUser["USER ID"] ||
+      storedUser.id ||
+      "-";
+
+  } catch (error) {
+
+    printUserId = "-";
+  }
+
+
+  /* ===================================================
+     ASSET URL
+     Dibuat absolute supaya tetap terbaca di print window.
+  =================================================== */
+
+  const hrsLogoUrl =
+    new URL(
+      "hexa-logo-hrs.png",
+      window.location.href
+    ).href;
+
+
+  const hexaLogoUrl =
+    new URL(
+      "hexa-logo-header.png",
+      window.location.href
+    ).href;
+
+
+  /* ===================================================
+     PRINT PART CELL
+     Semua multiline dipertahankan berdasarkan index.
+  =================================================== */
+
+  function splitPrintPartValue(value) {
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === ""
+    ) {
+      return [];
+    }
+
+    return String(value)
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .split("\n");
+  }
+
+
+  function buildPrintPartCell(
+    values,
+    totalParts,
+    type
+  ) {
+
+    let html =
+      `<div class="print-part-list ${type}">`;
+
+
+    for (
+      let index = 0;
+      index < totalParts;
+      index++
+    ) {
+
+      const value =
+        values[index] !== undefined
+          ? String(values[index]).trim()
+          : "";
+
+
+      html += `
+        <div class="print-part-line">
+          ${
+            value
+              ? escapeHtml(value)
+              : '<span class="print-empty">-</span>'
+          }
+        </div>
+      `;
+    }
+
+
+    html += "</div>";
+
+    return html;
+  }
+
+
+  /* ===================================================
+     TABLE ROWS
+  =================================================== */
+
   const rows =
     filteredUnitHistoryData
       .map(
         function (record) {
 
+          const descriptions =
+            splitPrintPartValue(
+              record.partsDescription
+            );
+
+          const partNumbers =
+            splitPrintPartValue(
+              record.partNo
+            );
+
+          const quantities =
+            splitPrintPartValue(
+              record.quantity
+            );
+
+
+          const totalParts =
+            Math.max(
+              1,
+              descriptions.length,
+              partNumbers.length,
+              quantities.length
+            );
+
+
+          const descriptionHtml =
+            buildPrintPartCell(
+              descriptions,
+              totalParts,
+              "description"
+            );
+
+
+          const partNoHtml =
+            buildPrintPartCell(
+              partNumbers,
+              totalParts,
+              "part-number"
+            );
+
+
+          const quantityHtml =
+            buildPrintPartCell(
+              quantities,
+              totalParts,
+              "quantity"
+            );
+
+
           return `
-            <tr>
-              <td>${escapeHtml(record.unitCode)}</td>
-              <td>${escapeHtml(record.hmInspection)}</td>
-              <td>${escapeHtml(record.groupComponent)}</td>
-              <td>${escapeHtml(record.problemDescription)}</td>
-              <td>${escapeHtml(record.rating)}</td>
-              <td>${escapeHtml(record.status)}</td>
-              <td>${escapeHtml(record.partsDescription)}</td>
-              <td>${escapeHtml(getMolDisplay(record))}</td>
-              <td>${escapeHtml(record.partsStatus)}</td>
+            <tr class="history-record">
+
+              <td>
+                ${escapeHtml(record.unitCode)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.hmInspection)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.groupComponent)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.problemDescription)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.rating)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.status)}
+              </td>
+
+              <td class="part-cell">
+                ${descriptionHtml}
+              </td>
+
+              <td class="part-cell">
+                ${partNoHtml}
+              </td>
+
+              <td class="part-cell qty-cell">
+                ${quantityHtml}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  getMolDisplay(record)
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(record.partsStatus)}
+              </td>
+
             </tr>
           `;
         }
@@ -4090,8 +4291,13 @@ function printCurrentHistory() {
       );
 
 
+  /* ===================================================
+     PRINT DOCUMENT
+  =================================================== */
+
   printWindow.document.write(`
     <!DOCTYPE html>
+
     <html lang="id">
 
     <head>
@@ -4104,71 +4310,451 @@ function printCurrentHistory() {
 
         @page {
           size: A4 landscape;
-          margin: 10mm;
+
+          margin:
+            10mm
+            9mm
+            14mm
+            9mm;
         }
+
 
         * {
           box-sizing: border-box;
         }
 
+
+        html,
         body {
           margin: 0;
-          font-family: Arial, Helvetica, sans-serif;
+          padding: 0;
+
+          font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
           color: #222;
+
+          background: #fff;
         }
 
-        h1 {
-          margin: 0;
-          font-size: 22px;
+
+        body {
+          position: relative;
+
+          padding-bottom: 18px;
         }
 
-        .meta {
-          margin: 5px 0 16px;
-          font-size: 10px;
-          color: #666;
-        }
+
+        /* =============================================
+           MAIN TABLE
+        ============================================= */
 
         table {
           width: 100%;
+
           border-collapse: collapse;
+
           table-layout: fixed;
-          font-size: 8px;
+
+          font-size: 7.5px;
         }
 
-        th,
-        td {
-          padding: 5px;
-          border: 1px solid #bbb;
-          vertical-align: top;
-          word-break: break-word;
+
+        thead {
+          display: table-header-group;
         }
 
-        th {
-          background: #111;
-          color: #fff;
+
+        tbody {
+          display: table-row-group;
+        }
+
+
+        /* =============================================
+           REPEATING PRINT HEADER
+        ============================================= */
+
+        .print-header-row th {
+          padding: 0 0 8px 0;
+
+          border: 0;
+
+          background: #fff;
+
+          color: #222;
+        }
+
+
+        .print-header {
+          width: 100%;
+
+          display: flex;
+
+          align-items: center;
+          justify-content: space-between;
+
+          gap: 20px;
+
+          padding-bottom: 7px;
+
+          border-bottom:
+            2px solid #111;
+        }
+
+
+        .print-header-left {
+          min-width: 0;
+
           text-align: left;
+        }
+
+
+        .print-title {
+          margin: 0;
+
+          font-size: 20px;
+          line-height: 1.15;
+
+          font-weight: 800;
+
+          color: #111;
+        }
+
+
+        .print-meta {
+          margin-top: 4px;
+
+          font-size: 8px;
+          line-height: 1.3;
+
+          font-weight: 400;
+
+          color: #666;
+        }
+
+
+        .print-header-logos {
+          flex-shrink: 0;
+
+          display: flex;
+
+          align-items: center;
+
+          gap: 12px;
+        }
+
+
+        .print-header-logos img {
+          display: block;
+
+          width: auto;
+
+          object-fit: contain;
+        }
+
+
+        .print-logo-hrs {
+          height: 31px;
+        }
+
+
+        .print-logo-hexa {
+          height: 31px;
+        }
+
+
+        /* =============================================
+           COLUMN HEADER
+        ============================================= */
+
+        .column-header th {
+          padding: 5px 4px;
+
+          border:
+            1px solid #777;
+
+          background: #111;
+
+          color: #fff;
+
+          font-size: 7px;
+          line-height: 1.15;
+
+          font-weight: 700;
+
+          text-align: left;
+
+          vertical-align: middle;
+        }
+
+
+        /* =============================================
+           BODY
+        ============================================= */
+
+        tbody td {
+          padding: 5px 4px;
+
+          border:
+            1px solid #aaa;
+
+          background: #fff;
+
+          color: #222;
+
+          vertical-align: top;
+
+          line-height: 1.25;
+
+          text-align: left;
+
+          word-break: break-word;
+
+          overflow-wrap: anywhere;
+        }
+
+
+        /*
+          Semua informasi record dimulai dari atas,
+          bukan vertical center.
+        */
+
+        tbody tr.history-record > td {
+          vertical-align: top !important;
+        }
+
+
+        /*
+          Sebisa mungkin satu inspection tidak
+          dipotong antar halaman.
+        */
+
+        tbody tr.history-record {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+
+        /* =============================================
+           COLUMN WIDTH
+        ============================================= */
+
+        .column-header th:nth-child(1) {
+          width: 8%;
+        }
+
+        .column-header th:nth-child(2) {
+          width: 8%;
+        }
+
+        .column-header th:nth-child(3) {
+          width: 11%;
+        }
+
+        .column-header th:nth-child(4) {
+          width: 17%;
+        }
+
+        .column-header th:nth-child(5) {
+          width: 7%;
+        }
+
+        .column-header th:nth-child(6) {
+          width: 7%;
+        }
+
+        .column-header th:nth-child(7) {
+          width: 15%;
+        }
+
+        .column-header th:nth-child(8) {
+          width: 11%;
+        }
+
+        .column-header th:nth-child(9) {
+          width: 5%;
+        }
+
+        .column-header th:nth-child(10) {
+          width: 5%;
+        }
+
+        .column-header th:nth-child(11) {
+          width: 6%;
+        }
+
+
+        /* =============================================
+           PART REQUIREMENT
+        ============================================= */
+
+        td.part-cell {
+          padding-top: 3px;
+          padding-bottom: 3px;
+        }
+
+
+        .print-part-list {
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+
+          gap: 0;
+        }
+
+
+        .print-part-line {
+          min-height: 19px;
+
+          display: flex;
+          align-items: flex-start;
+
+          padding:
+            3px
+            0;
+
+          border-bottom:
+            1px solid #e1e1e1;
+
+          line-height: 13px;
+
+          text-align: left;
+        }
+
+
+        .print-part-line:last-child {
+          border-bottom: 0;
+        }
+
+
+        .print-part-list.quantity
+        .print-part-line {
+          justify-content: center;
+
+          text-align: center;
+        }
+
+
+        td.qty-cell {
+          text-align: center;
+        }
+
+
+        .print-empty {
+          color: #999;
+        }
+
+
+        /* =============================================
+           USER FOOTER
+        ============================================= */
+
+        .print-user-footer {
+          position: fixed;
+
+          left: 0;
+          bottom: -8mm;
+
+          font-size: 7px;
+          line-height: 1;
+
+          color: #555;
+        }
+
+
+        /* =============================================
+           PRINT
+        ============================================= */
+
+        @media print {
+
+          .print-header-row {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+
+          .column-header {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+
         }
 
       </style>
 
     </head>
 
+
     <body>
 
-      <h1>
-        HEXA - Unit History
-      </h1>
-
-      <div class="meta">
-        ${filteredUnitHistoryData.length} records
-        • Printed ${escapeHtml(generatedDate)}
-      </div>
 
       <table>
 
         <thead>
 
-          <tr>
+
+          <!-- ========================================
+               HEADER INI DIULANG SETIAP HALAMAN
+          ========================================= -->
+
+          <tr class="print-header-row">
+
+            <th colspan="11">
+
+              <div class="print-header">
+
+                <div class="print-header-left">
+
+                  <div class="print-title">
+                    HEXA - Unit History
+                  </div>
+
+                  <div class="print-meta">
+
+                    ${filteredUnitHistoryData.length}
+                    records
+
+                    &nbsp;•&nbsp;
+
+                    Printed
+                    ${escapeHtml(generatedDate)}
+
+                  </div>
+
+                </div>
+
+
+                <div class="print-header-logos">
+
+                  <img
+                    class="print-logo-hrs"
+                    src="${escapeHtml(hrsLogoUrl)}"
+                    alt="HRS"
+                  >
+
+                  <img
+                    class="print-logo-hexa"
+                    src="${escapeHtml(hexaLogoUrl)}"
+                    alt="HEXA"
+                  >
+
+                </div>
+
+              </div>
+
+            </th>
+
+          </tr>
+
+
+          <!-- ========================================
+               COLUMN HEADER
+          ========================================= -->
+
+          <tr class="column-header">
 
             <th>Unit Code</th>
 
@@ -4184,13 +4770,19 @@ function printCurrentHistory() {
 
             <th>Parts Description</th>
 
+            <th>Part No</th>
+
+            <th>Qty</th>
+
             <th>MOL</th>
 
             <th>Parts Status</th>
 
           </tr>
 
+
         </thead>
+
 
         <tbody>
 
@@ -4198,17 +4790,42 @@ function printCurrentHistory() {
 
         </tbody>
 
+
       </table>
+
+
+      <!-- USER ID FOOTER -->
+
+      <div class="print-user-footer">
+
+        USER ID :
+        ${escapeHtml(printUserId)}
+
+      </div>
+
 
       <script>
 
         window.onload = function () {
 
-          window.print();
+          /*
+            Tunggu sebentar agar kedua logo selesai
+            dirender sebelum dialog print dibuka.
+          */
+
+          setTimeout(
+            function () {
+
+              window.print();
+
+            },
+            300
+          );
 
         };
 
       <\/script>
+
 
     </body>
 
@@ -4218,7 +4835,6 @@ function printCurrentHistory() {
 
   printWindow.document.close();
 }
-
 
 /* =====================================================
    SHORTCUT INITIALIZE
