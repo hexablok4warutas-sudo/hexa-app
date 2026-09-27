@@ -4825,31 +4825,34 @@ function printCurrentHistory() {
     !filteredUnitHistoryData ||
     filteredUnitHistoryData.length === 0
   ) {
-
-    alert(
-      "Tidak ada data untuk dicetak."
-    );
-
+    alert("Tidak ada data untuk dicetak.");
     return;
   }
 
-
-  const printWindow =
-    window.open(
-      "",
-      "_blank"
-    );
-
+  const printWindow = window.open("", "_blank");
 
   if (!printWindow) {
-
-    alert(
-      "Browser memblokir jendela Print."
-    );
-
+    alert("Browser memblokir jendela Print.");
     return;
   }
 
+  /* ===================================================
+     ACTIVE COLUMNS
+     Print mengikuti Custom Columns yang sedang aktif.
+  =================================================== */
+
+  const activePrintColumns =
+    UNIT_HISTORY_COLUMN_FIELDS.filter(
+      function (field) {
+        return activeColumnKeys.includes(field.key);
+      }
+    );
+
+  if (activePrintColumns.length === 0) {
+    printWindow.close();
+    alert("Tidak ada column aktif untuk dicetak.");
+    return;
+  }
 
   /* ===================================================
      CURRENT USER
@@ -4858,13 +4861,9 @@ function printCurrentHistory() {
   let printUserId = "-";
 
   try {
-
-    const storedUser =
-      JSON.parse(
-        sessionStorage.getItem(
-          "hexaUser"
-        ) || "{}"
-      );
+    const storedUser = JSON.parse(
+      sessionStorage.getItem("hexaUser") || "{}"
+    );
 
     printUserId =
       storedUser.userId ||
@@ -4873,39 +4872,29 @@ function printCurrentHistory() {
       storedUser["USER ID"] ||
       storedUser.id ||
       "-";
-
   } catch (error) {
-
     printUserId = "-";
   }
 
-
   /* ===================================================
      ASSET URL
-     Dibuat absolute supaya tetap terbaca di print window.
   =================================================== */
 
-  const hrsLogoUrl =
-  new URL(
+  const hrsLogoUrl = new URL(
     "hexa-icon-logo-hrsheaderprint.png",
     window.location.href
   ).href;
 
-
-  const hexaLogoUrl =
-    new URL(
-      "hexa-logo-header.png",
-      window.location.href
-    ).href;
-
+  const hexaLogoUrl = new URL(
+    "hexa-logo-header.png",
+    window.location.href
+  ).href;
 
   /* ===================================================
-     PRINT PART CELL
-     Semua multiline dipertahankan berdasarkan index.
+     PRINT HELPERS
   =================================================== */
 
   function splitPrintPartValue(value) {
-
     if (
       value === null ||
       value === undefined ||
@@ -4920,28 +4909,14 @@ function printCurrentHistory() {
       .split("\n");
   }
 
+  function buildPrintPartCell(values, totalParts, type) {
+    let html = `<div class="print-part-list ${type}">`;
 
-  function buildPrintPartCell(
-    values,
-    totalParts,
-    type
-  ) {
-
-    let html =
-      `<div class="print-part-list ${type}">`;
-
-
-    for (
-      let index = 0;
-      index < totalParts;
-      index++
-    ) {
-
+    for (let index = 0; index < totalParts; index++) {
       const value =
         values[index] !== undefined
           ? String(values[index]).trim()
           : "";
-
 
       html += `
         <div class="print-part-line">
@@ -4954,15 +4929,101 @@ function printCurrentHistory() {
       `;
     }
 
-
     html += "</div>";
-
     return html;
   }
 
+  function buildPrintCell(record, columnKey, partData) {
+
+    if (columnKey === "photo") {
+      if (!record.photo) {
+        return '<td class="photo-cell"><span class="print-empty">-</span></td>';
+      }
+
+      const photoUrl = getDriveImageUrl(record.photo);
+
+      return `
+        <td class="photo-cell">
+          <img
+            class="print-photo"
+            src="${escapeHtml(photoUrl)}"
+            alt="Inspection Photo"
+          >
+        </td>
+      `;
+    }
+
+    if (columnKey === "partsDescription") {
+      return `
+        <td class="part-cell">
+          ${buildPrintPartCell(
+            partData.descriptions,
+            partData.totalParts,
+            "description"
+          )}
+        </td>
+      `;
+    }
+
+    if (columnKey === "partNo") {
+      return `
+        <td class="part-cell">
+          ${buildPrintPartCell(
+            partData.partNumbers,
+            partData.totalParts,
+            "part-number"
+          )}
+        </td>
+      `;
+    }
+
+    if (columnKey === "quantity") {
+      return `
+        <td class="part-cell qty-cell">
+          ${buildPrintPartCell(
+            partData.quantities,
+            partData.totalParts,
+            "quantity"
+          )}
+        </td>
+      `;
+    }
+
+    let value = record[columnKey];
+
+    if (columnKey === "mol") {
+      value = getMolDisplay(record);
+    }
+
+    if (columnKey === "evidence") {
+      value = record.evidence ? "Available" : "-";
+    }
+
+    const safeValue =
+      value === null ||
+      value === undefined ||
+      String(value).trim() === ""
+        ? '<span class="print-empty">-</span>'
+        : escapeHtml(value);
+
+    return `<td>${safeValue}</td>`;
+  }
 
   /* ===================================================
-     TABLE ROWS
+     DYNAMIC COLUMN HEADER
+  =================================================== */
+
+  const columnHeaders =
+    activePrintColumns
+      .map(
+        function (field) {
+          return `<th>${escapeHtml(field.label)}</th>`;
+        }
+      )
+      .join("");
+
+  /* ===================================================
+     DYNAMIC TABLE ROWS
   =================================================== */
 
   const rows =
@@ -4970,117 +5031,76 @@ function printCurrentHistory() {
       .map(
         function (record) {
 
-          const descriptions =
-            splitPrintPartValue(
-              record.partsDescription
-            );
+          const descriptions = splitPrintPartValue(
+            record.partsDescription
+          );
 
-          const partNumbers =
-            splitPrintPartValue(
-              record.partNo
-            );
+          const partNumbers = splitPrintPartValue(
+            record.partNo
+          );
 
-          const quantities =
-            splitPrintPartValue(
-              record.quantity
-            );
+          const quantities = splitPrintPartValue(
+            record.quantity
+          );
 
+          const totalParts = Math.max(
+            1,
+            descriptions.length,
+            partNumbers.length,
+            quantities.length
+          );
 
-          const totalParts =
-            Math.max(
-              1,
-              descriptions.length,
-              partNumbers.length,
-              quantities.length
-            );
+          const partData = {
+            descriptions: descriptions,
+            partNumbers: partNumbers,
+            quantities: quantities,
+            totalParts: totalParts
+          };
 
-
-          const descriptionHtml =
-            buildPrintPartCell(
-              descriptions,
-              totalParts,
-              "description"
-            );
-
-
-          const partNoHtml =
-            buildPrintPartCell(
-              partNumbers,
-              totalParts,
-              "part-number"
-            );
-
-
-          const quantityHtml =
-            buildPrintPartCell(
-              quantities,
-              totalParts,
-              "quantity"
-            );
-
+          const cells =
+            activePrintColumns
+              .map(
+                function (field) {
+                  return buildPrintCell(
+                    record,
+                    field.key,
+                    partData
+                  );
+                }
+              )
+              .join("");
 
           return `
             <tr class="history-record">
-
-              <td>
-                ${escapeHtml(record.unitCode)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.hmInspection)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.groupComponent)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.problemDescription)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.rating)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.status)}
-              </td>
-
-              <td class="part-cell">
-                ${descriptionHtml}
-              </td>
-
-              <td class="part-cell">
-                ${partNoHtml}
-              </td>
-
-              <td class="part-cell qty-cell">
-                ${quantityHtml}
-              </td>
-
-              <td>
-                ${escapeHtml(
-                  getMolDisplay(record)
-                )}
-              </td>
-
-              <td>
-                ${escapeHtml(record.partsStatus)}
-              </td>
-
+              ${cells}
             </tr>
           `;
         }
       )
       .join("");
 
+  const generatedDate = new Date().toLocaleString("id-ID");
+  const activeColumnCount = activePrintColumns.length;
 
-  const generatedDate =
-    new Date()
-      .toLocaleString(
-        "id-ID"
-      );
+  /*
+    Font menyesuaikan jumlah kolom agar layout lama tetap
+    nyaman saat user memilih banyak field.
+  */
+  const tableFontSize =
+    activeColumnCount <= 8
+      ? 8
+      : activeColumnCount <= 12
+        ? 7.5
+        : activeColumnCount <= 16
+          ? 6.5
+          : 5.7;
 
+  const headerFontSize =
+    activeColumnCount <= 12
+      ? 7
+      : activeColumnCount <= 16
+        ? 6.2
+        : 5.5;
 
   /* ===================================================
      PRINT DOCUMENT
@@ -5088,442 +5108,234 @@ function printCurrentHistory() {
 
   printWindow.document.write(`
     <!DOCTYPE html>
-
     <html lang="id">
-
     <head>
-
       <meta charset="UTF-8">
-
       <title>HEXA - Unit History</title>
 
       <style>
-
         @page {
           size: A4 landscape;
-
-          margin:
-            10mm
-            9mm
-            14mm
-            9mm;
+          margin: 10mm 9mm 14mm 9mm;
         }
-
 
         * {
           box-sizing: border-box;
         }
 
-
         html,
         body {
           margin: 0;
           padding: 0;
-
-          font-family:
-            Arial,
-            Helvetica,
-            sans-serif;
-
+          font-family: Arial, Helvetica, sans-serif;
           color: #222;
-
           background: #fff;
         }
 
-
         body {
           position: relative;
-
           padding-bottom: 18px;
         }
 
-
-        /* =============================================
-           MAIN TABLE
-        ============================================= */
-
         table {
           width: 100%;
-
           border-collapse: collapse;
-
           table-layout: fixed;
-
-          font-size: 7.5px;
+          font-size: ${tableFontSize}px;
         }
-
 
         thead {
           display: table-header-group;
         }
 
-
         tbody {
           display: table-row-group;
         }
 
-
-        /* =============================================
-           REPEATING PRINT HEADER
-        ============================================= */
-
         .print-header-row th {
           padding: 0 0 8px 0;
-
           border: 0;
-
           background: #fff;
-
           color: #222;
         }
-
 
         .print-header {
           width: 100%;
-
           display: flex;
-
           align-items: center;
           justify-content: space-between;
-
           gap: 20px;
-
           padding-bottom: 7px;
-
-          border-bottom:
-            2px solid #111;
+          border-bottom: 2px solid #111;
         }
-
 
         .print-header-left {
           min-width: 0;
-
           text-align: left;
         }
-
 
         .print-title {
           margin: 0;
-
           font-size: 20px;
           line-height: 1.15;
-
           font-weight: 800;
-
           color: #111;
         }
 
-
         .print-meta {
           margin-top: 4px;
-
           font-size: 8px;
           line-height: 1.3;
-
           font-weight: 400;
-
           color: #666;
         }
 
-
         .print-header-logos {
           flex-shrink: 0;
-
           display: flex;
-
           align-items: center;
-
           gap: 12px;
         }
 
-
         .print-header-logos img {
           display: block;
-
           width: auto;
-
           object-fit: contain;
         }
 
-
-        .print-logo-hrs {
-           width: auto;
-           height: 31px;
-           object-fit: contain;
-      }
-
-
+        .print-logo-hrs,
         .print-logo-hexa {
-           width: auto;
-           height: 31px;
-           object-fit: contain;
+          width: auto;
+          height: 31px;
+          object-fit: contain;
         }
-
-
-        /* =============================================
-           COLUMN HEADER
-        ============================================= */
 
         .column-header th {
-          padding: 5px 4px;
-
-          border:
-            1px solid #777;
-
+          padding: 5px 3px;
+          border: 1px solid #777;
           background: #111;
-
           color: #fff;
-
-          font-size: 7px;
+          font-size: ${headerFontSize}px;
           line-height: 1.15;
-
           font-weight: 700;
-
           text-align: left;
-
           vertical-align: middle;
-        }
-
-
-        /* =============================================
-           BODY
-        ============================================= */
-
-        tbody td {
-          padding: 5px 4px;
-
-          border:
-            1px solid #aaa;
-
-          background: #fff;
-
-          color: #222;
-
-          vertical-align: top;
-
-          line-height: 1.25;
-
-          text-align: left;
-
-          word-break: break-word;
-
           overflow-wrap: anywhere;
         }
 
-
-        /*
-          Semua informasi record dimulai dari atas,
-          bukan vertical center.
-        */
+        tbody td {
+          padding: 5px 4px;
+          border: 1px solid #aaa;
+          background: #fff;
+          color: #222;
+          vertical-align: top;
+          line-height: 1.25;
+          text-align: left;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+        }
 
         tbody tr.history-record > td {
           vertical-align: top !important;
         }
-
-
-        /*
-          Sebisa mungkin satu inspection tidak
-          dipotong antar halaman.
-        */
 
         tbody tr.history-record {
           break-inside: avoid;
           page-break-inside: avoid;
         }
 
-
-        /* =============================================
-           COLUMN WIDTH
-        ============================================= */
-
-        .column-header th:nth-child(1) {
-          width: 8%;
-        }
-
-        .column-header th:nth-child(2) {
-          width: 8%;
-        }
-
-        .column-header th:nth-child(3) {
-          width: 11%;
-        }
-
-        .column-header th:nth-child(4) {
-          width: 17%;
-        }
-
-        .column-header th:nth-child(5) {
-          width: 7%;
-        }
-
-        .column-header th:nth-child(6) {
-          width: 7%;
-        }
-
-        .column-header th:nth-child(7) {
-          width: 15%;
-        }
-
-        .column-header th:nth-child(8) {
-          width: 11%;
-        }
-
-        .column-header th:nth-child(9) {
-          width: 5%;
-        }
-
-        .column-header th:nth-child(10) {
-          width: 5%;
-        }
-
-        .column-header th:nth-child(11) {
-          width: 6%;
-        }
-
-
-        /* =============================================
-           PART REQUIREMENT
-        ============================================= */
-
         td.part-cell {
           padding-top: 3px;
           padding-bottom: 3px;
         }
 
-
         .print-part-list {
           width: 100%;
-
           display: flex;
           flex-direction: column;
-
           gap: 0;
         }
 
-
         .print-part-line {
           min-height: 19px;
-
           display: flex;
           align-items: flex-start;
-
-          padding:
-            3px
-            0;
-
-          border-bottom:
-            1px solid #e1e1e1;
-
+          padding: 3px 0;
+          border-bottom: 1px solid #e1e1e1;
           line-height: 13px;
-
           text-align: left;
         }
-
 
         .print-part-line:last-child {
           border-bottom: 0;
         }
 
-
-        .print-part-list.quantity
-        .print-part-line {
+        .print-part-list.quantity .print-part-line {
           justify-content: center;
-
           text-align: center;
         }
-
 
         td.qty-cell {
           text-align: center;
         }
 
-
         .print-empty {
           color: #999;
         }
 
+        .photo-cell {
+          text-align: center;
+        }
 
-        /* =============================================
-           USER FOOTER
-        ============================================= */
+        .print-photo {
+          display: block;
+          width: 100%;
+          max-width: 22mm;
+          max-height: 18mm;
+          margin: 0 auto;
+          object-fit: contain;
+        }
 
         .print-user-footer {
           position: fixed;
-
           left: 0;
           bottom: -8mm;
-
           font-size: 7px;
           line-height: 1;
-
           color: #555;
         }
 
-
-        /* =============================================
-           PRINT
-        ============================================= */
-
         @media print {
-
-          .print-header-row {
-            break-inside: avoid;
-            page-break-inside: avoid;
-          }
-
+          .print-header-row,
           .column-header {
             break-inside: avoid;
             page-break-inside: avoid;
           }
-
         }
-
       </style>
-
     </head>
 
-
     <body>
-
-
       <table>
-
         <thead>
-
-
-          <!-- ========================================
-               HEADER INI DIULANG SETIAP HALAMAN
-          ========================================= -->
-
           <tr class="print-header-row">
-
-            <th colspan="11">
-
+            <th colspan="${activeColumnCount}">
               <div class="print-header">
-
                 <div class="print-header-left">
-
                   <div class="print-title">
                     HEXA - Unit History
                   </div>
 
                   <div class="print-meta">
-
-                    ${filteredUnitHistoryData.length}
-                    records
-
+                    ${filteredUnitHistoryData.length} records
                     &nbsp;•&nbsp;
-
-                    Printed
-                    ${escapeHtml(generatedDate)}
-
+                    ${activeColumnCount} columns
+                    &nbsp;•&nbsp;
+                    Printed ${escapeHtml(generatedDate)}
                   </div>
-
                 </div>
 
-
                 <div class="print-header-logos">
-
                   <img
                     class="print-logo-hrs"
                     src="${escapeHtml(hrsLogoUrl)}"
@@ -5535,98 +5347,38 @@ function printCurrentHistory() {
                     src="${escapeHtml(hexaLogoUrl)}"
                     alt="HEXA"
                   >
-
                 </div>
-
               </div>
-
             </th>
-
           </tr>
-
-
-          <!-- ========================================
-               COLUMN HEADER
-          ========================================= -->
 
           <tr class="column-header">
-
-            <th>Unit Code</th>
-
-            <th>HM Inspection</th>
-
-            <th>Group Component</th>
-
-            <th>Problem Description</th>
-
-            <th>Rating</th>
-
-            <th>Status</th>
-
-            <th>Parts Description</th>
-
-            <th>Part No</th>
-
-            <th>Qty</th>
-
-            <th>MOL</th>
-
-            <th>Parts Status</th>
-
+            ${columnHeaders}
           </tr>
-
-
         </thead>
 
-
         <tbody>
-
           ${rows}
-
         </tbody>
-
-
       </table>
 
-
-      <!-- USER ID FOOTER -->
-
       <div class="print-user-footer">
-
-        USER ID :
-        ${escapeHtml(printUserId)}
-
+        USER ID : ${escapeHtml(printUserId)}
       </div>
 
-
       <script>
-
         window.onload = function () {
-
-          /*
-            Tunggu sebentar agar kedua logo selesai
-            dirender sebelum dialog print dibuka.
-          */
-
           setTimeout(
             function () {
-
               window.print();
-
             },
             300
           );
-
         };
-
       <\/script>
-
-
     </body>
-
     </html>
   `);
-
 
   printWindow.document.close();
 }
