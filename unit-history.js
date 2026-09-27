@@ -5885,11 +5885,37 @@ async function shareCurrentHistoryPdf() {
     format: "a4"
   });
 
-  console.log(
-    "jsPDF OK:",
-    doc
+  doc.setFontSize(18);
+
+  doc.text(
+    "HEXA - Unit History",
+    15,
+    20
   );
 
-  alert("PDF Engine OK");
+  doc.setFontSize(11);
+
+  doc.text(
+    "PDF Test - A4 Landscape",
+    15,
+    30
+  );
+
+  doc.text(
+    "Total Record: " +
+      filteredUnitHistoryData.length,
+    15,
+    38
+  );
+
+  const pdfBlob = doc.output("blob");
+
+  const pdfUrl =
+    URL.createObjectURL(pdfBlob);
+
+  window.open(
+    pdfUrl,
+    "_blank"
+  );
 
 }
