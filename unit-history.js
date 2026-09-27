@@ -237,6 +237,7 @@ const UNIT_HISTORY_FILTER_FIELDS = [
 
 let filterButton;
 let printButton;
+let sharePdfButton;
 let deleteButton;
 
 let filterPanel;
@@ -363,6 +364,11 @@ function cacheElements() {
     document.getElementById(
       "unitHistoryPrintButton"
     );
+
+   sharePdfButton =
+  document.getElementById(
+    "unitHistorySharePdfButton"
+  );
 
   deleteButton =
     document.getElementById(
@@ -704,6 +710,14 @@ function bindEvents() {
       printCurrentHistory
     );
   }
+
+   if (sharePdfButton) {
+
+     sharePdfButton.addEventListener(
+       "click",
+       shareCurrentHistoryPdf
+     );
+   }
 
 
   if (deleteButton) {
