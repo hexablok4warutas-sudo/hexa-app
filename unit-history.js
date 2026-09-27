@@ -492,6 +492,8 @@ document.addEventListener(
 
     initializeShortcut();
 
+    renderUnitHistoryTableHeader();
+
     loadUnitHistory();
 
   }
@@ -1505,15 +1507,17 @@ function createHistoryRow(record) {
     );
 
 
-  UNIT_HISTORY_COLUMN_FIELDS
-    .filter(
-      function (field) {
-
-        return activeColumnKeys.includes(
-          field.key
+  activeColumnKeys
+    .map(
+      function (key) {
+        return UNIT_HISTORY_COLUMN_FIELDS.find(
+          function (field) {
+            return field.key === key;
+          }
         );
       }
     )
+    .filter(Boolean)
     .forEach(
       function (field) {
 
@@ -1581,18 +1585,20 @@ function createHistoryRow(record) {
 
 function getInitialColumnKeys() {
 
-  const defaultKeys =
-    UNIT_HISTORY_COLUMN_FIELDS
-      .filter(
-        function (field) {
-          return field.default === true;
-        }
-      )
-      .map(
-        function (field) {
-          return field.key;
-        }
-      );
+  const defaultKeys = [
+    "unitCode",
+    "hmInspection",
+    "groupComponent",
+    "problemDescription",
+    "photo",
+    "rating",
+    "status",
+    "partsDescription",
+    "partNo",
+    "quantity",
+    "mol",
+    "partsStatus"
+  ];
 
 
   try {
@@ -1610,20 +1616,21 @@ function getInitialColumnKeys() {
     }
 
 
-    const validKeys =
-      UNIT_HISTORY_COLUMN_FIELDS
-        .filter(
-          function (field) {
-            return saved.includes(
-              field.key
-            );
-          }
-        )
-        .map(
+    const validFieldKeys =
+      new Set(
+        UNIT_HISTORY_COLUMN_FIELDS.map(
           function (field) {
             return field.key;
           }
-        );
+        )
+      );
+
+    const validKeys =
+      saved.filter(
+        function (key) {
+          return validFieldKeys.has(key);
+        }
+      );
 
 
     return validKeys.length
@@ -2596,15 +2603,17 @@ function renderUnitHistoryTableHeader() {
 
   /* ACTIVE DATA COLUMNS */
 
-  UNIT_HISTORY_COLUMN_FIELDS
-    .filter(
-      function (field) {
-
-        return activeColumnKeys.includes(
-          field.key
+  activeColumnKeys
+    .map(
+      function (key) {
+        return UNIT_HISTORY_COLUMN_FIELDS.find(
+          function (field) {
+            return field.key === key;
+          }
         );
       }
     )
+    .filter(Boolean)
     .forEach(
       function (field) {
 
@@ -4842,11 +4851,17 @@ function printCurrentHistory() {
   =================================================== */
 
   const activePrintColumns =
-    UNIT_HISTORY_COLUMN_FIELDS.filter(
-      function (field) {
-        return activeColumnKeys.includes(field.key);
-      }
-    );
+    activeColumnKeys
+      .map(
+        function (key) {
+          return UNIT_HISTORY_COLUMN_FIELDS.find(
+            function (field) {
+              return field.key === key;
+            }
+          );
+        }
+      )
+      .filter(Boolean);
 
   if (activePrintColumns.length === 0) {
     printWindow.close();
