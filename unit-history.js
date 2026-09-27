@@ -6412,6 +6412,7 @@ async function shareCurrentHistoryPdf() {
     return;
   }
 
+
   if (
     !window.jspdf ||
     !window.jspdf.jsPDF
@@ -6420,45 +6421,429 @@ async function shareCurrentHistoryPdf() {
     return;
   }
 
-  const jsPDF = window.jspdf.jsPDF;
 
-  const doc = new jsPDF({
-    orientation: "landscape",
-    unit: "mm",
-    format: "a4"
-  });
+  if (
+    typeof window.jspdf.jsPDF.prototype.autoTable !== "function"
+  ) {
+    alert("jsPDF AutoTable belum dimuat.");
+    return;
+  }
 
-  doc.setFontSize(18);
+
+  if (
+    !window.HexaPDF ||
+    typeof window.HexaPDF.shareOrDownload !== "function"
+  ) {
+    alert("HEXA PDF Engine belum dimuat.");
+    return;
+  }
+
+
+  const jsPDF =
+    window.jspdf.jsPDF;
+
+
+  const activePdfColumns =
+    activeColumnKeys
+      .map(
+        function (key) {
+          return UNIT_HISTORY_COLUMN_FIELDS.find(
+            function (field) {
+              return field.key === key;
+            }
+          );
+        }
+      )
+      .filter(Boolean);
+
+
+  if (activePdfColumns.length === 0) {
+    alert("Tidak ada kolom aktif untuk dibagikan.");
+    return;
+  }
+
+
+  function pdfCellValue(
+    record,
+    key,
+    partData
+  ) {
+
+    if (key === "mol") {
+      return String(
+        getMolDisplay(record) ?? "-"
+      );
+    }
+
+
+    if (
+      key === "dateInspection" ||
+      key === "dateAction"
+    ) {
+      return formatDisplayDate(
+        record[key]
+      );
+    }
+
+
+    if (key === "photo") {
+      return record.photo
+        ? "Available"
+        : "-";
+    }
+
+
+    if (key === "evidence") {
+      return record.evidence
+        ? "Available"
+        : "-";
+    }
+
+
+    if (key === "partsDescription") {
+      return partData.descriptions
+        .map(function (value) {
+          return String(value || "").trim() || "-";
+        })
+        .join("\n");
+    }
+
+
+    if (key === "partNo") {
+      return partData.partNumbers
+        .map(function (value) {
+          return String(value || "").trim() || "-";
+        })
+        .join("\n");
+    }
+
+
+    if (key === "quantity") {
+      return partData.quantities
+        .map(function (value) {
+          return String(value || "").trim() || "-";
+        })
+        .join("\n");
+    }
+
+
+    const value =
+      record[key];
+
+    if (
+      value === null ||
+      value === undefined ||
+      String(value).trim() === ""
+    ) {
+      return "-";
+    }
+
+    return String(value);
+  }
+
+
+  const head = [
+    activePdfColumns.map(
+      function (field) {
+        return field.label;
+      }
+    )
+  ];
+
+
+  const body =
+    filteredUnitHistoryData.map(
+      function (record) {
+
+        const descriptions =
+          splitPartMultiline(
+            record.partsDescription
+          );
+
+        const partNumbers =
+          splitPartMultiline(
+            record.partNo
+          );
+
+        const quantities =
+          splitPartMultiline(
+            record.quantity
+          );
+
+
+        const totalParts =
+          Math.max(
+            1,
+            descriptions.length,
+            partNumbers.length,
+            quantities.length
+          );
+
+
+        while (
+          descriptions.length <
+          totalParts
+        ) {
+          descriptions.push("");
+        }
+
+        while (
+          partNumbers.length <
+          totalParts
+        ) {
+          partNumbers.push("");
+        }
+
+        while (
+          quantities.length <
+          totalParts
+        ) {
+          quantities.push("");
+        }
+
+
+        const partData = {
+          descriptions:
+            descriptions,
+          partNumbers:
+            partNumbers,
+          quantities:
+            quantities
+        };
+
+
+        return activePdfColumns.map(
+          function (field) {
+            return pdfCellValue(
+              record,
+              field.key,
+              partData
+            );
+          }
+        );
+      }
+    );
+
+
+  const columnCount =
+    activePdfColumns.length;
+
+
+  let tableFontSize = 7;
+
+  if (columnCount >= 14) {
+    tableFontSize = 4.8;
+  } else if (columnCount >= 11) {
+    tableFontSize = 5.4;
+  } else if (columnCount >= 8) {
+    tableFontSize = 6;
+  }
+
+
+  const doc =
+    new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4"
+    });
+
+
+  const pageWidth =
+    doc.internal.pageSize.getWidth();
+
+
+  let printUserId = "-";
+
+  try {
+
+    const storedUser =
+      JSON.parse(
+        sessionStorage.getItem(
+          "hexaUser"
+        ) || "{}"
+      );
+
+    printUserId =
+      storedUser.userId ||
+      storedUser.userID ||
+      storedUser.userid ||
+      storedUser["USER ID"] ||
+      storedUser.id ||
+      "-";
+
+  } catch (error) {
+
+    printUserId = "-";
+  }
+
+
+  const generatedDate =
+    new Date().toLocaleString(
+      "id-ID"
+    );
+
+
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
+
+  doc.setFontSize(17);
 
   doc.text(
     "HEXA - Unit History",
-    15,
-    20
+    10,
+    12
   );
 
-  doc.setFontSize(11);
+
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
+
+  doc.setFontSize(7.5);
 
   doc.text(
-    "PDF Test - A4 Landscape",
-    15,
-    30
+    filteredUnitHistoryData.length +
+      " records  |  Generated " +
+      generatedDate,
+    10,
+    17
   );
 
-  doc.text(
-    "Total Record: " +
-      filteredUnitHistoryData.length,
-    15,
-    38
-  );
 
-  const pdfBlob = doc.output("blob");
+  doc.autoTable({
 
-  const pdfUrl =
-    URL.createObjectURL(pdfBlob);
+    head:
+      head,
 
-  window.open(
-    pdfUrl,
-    "_blank"
-  );
+    body:
+      body,
 
+    startY:
+      22,
+
+    margin: {
+      top: 22,
+      right: 8,
+      bottom: 14,
+      left: 8
+    },
+
+    theme:
+      "grid",
+
+    styles: {
+      font:
+        "helvetica",
+      fontSize:
+        tableFontSize,
+      cellPadding:
+        1.6,
+      valign:
+        "top",
+      overflow:
+        "linebreak",
+      lineWidth:
+        0.15
+    },
+
+    headStyles: {
+      fontStyle:
+        "bold",
+      halign:
+        "left",
+      valign:
+        "middle"
+    },
+
+    didDrawPage:
+      function () {
+
+        const pageHeight =
+          doc.internal.pageSize.getHeight();
+
+        doc.setFont(
+          "helvetica",
+          "normal"
+        );
+
+        doc.setFontSize(
+          6.5
+        );
+
+        doc.text(
+          "USER ID : " +
+            printUserId,
+          8,
+          pageHeight - 5
+        );
+
+        const pageNumber =
+          doc.internal.getNumberOfPages();
+
+        doc.text(
+          "Page " +
+            pageNumber,
+          pageWidth - 8,
+          pageHeight - 5,
+          {
+            align:
+              "right"
+          }
+        );
+      }
+
+  });
+
+
+  const pdfBlob =
+    doc.output(
+      "blob"
+    );
+
+
+  try {
+
+    await window.HexaPDF
+      .shareOrDownload(
+        pdfBlob,
+        {
+          documentName:
+            "Unit_History",
+
+          title:
+            "HEXA - Unit History",
+
+          text:
+            "HEXA Unit History"
+        }
+      );
+
+  } catch (error) {
+
+    /*
+      Jika user menutup/cancel Share Sheet,
+      jangan tampilkan error.
+    */
+
+    if (
+      error &&
+      error.name === "AbortError"
+    ) {
+      return;
+    }
+
+
+    console.error(
+      "Share Unit History PDF:",
+      error
+    );
+
+
+    alert(
+      "PDF gagal dibagikan."
+    );
+  }
 }
