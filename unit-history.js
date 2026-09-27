@@ -1370,15 +1370,20 @@ function createHistoryRow(record) {
   );
 
 
-  /* PARTS DESCRIPTION */
+/* ===================================================
+   PART REQUIREMENT
+   Semua part ditampilkan lengkap dan sejajar.
+=================================================== */
 
-  appendTextCell(
-    row,
-    record.partsDescription
-  );
+appendPartRequirementCells(
+  row,
+  record.partsDescription,
+  record.partNo,
+  record.quantity
+);
 
 
-  /* MOL */
+/* MOL */
 
   const molCell =
     document.createElement(
@@ -1491,6 +1496,225 @@ function appendTextCell(
   );
 }
 
+/* =====================================================
+   PART REQUIREMENT TABLE HELPER
+
+   Parts Description, Part No dan Quantity disimpan
+   sebagai multiline string di database.
+
+   Alignment selalu berdasarkan index yang sama.
+===================================================== */
+
+function splitPartMultiline(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return [];
+  }
+
+  return String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .split("\n");
+}
+
+
+/* =====================================================
+   APPEND 3 PART REQUIREMENT CELLS
+===================================================== */
+
+function appendPartRequirementCells(
+  row,
+  partsDescription,
+  partNo,
+  quantity
+) {
+
+  const descriptions =
+    splitPartMultiline(
+      partsDescription
+    );
+
+  const partNumbers =
+    splitPartMultiline(
+      partNo
+    );
+
+  const quantities =
+    splitPartMultiline(
+      quantity
+    );
+
+
+  /*
+    Jumlah baris mengikuti data terpanjang.
+
+    Jangan filter array karena posisi kosong harus
+    tetap dipertahankan agar alignment tidak bergeser.
+  */
+
+  const totalParts =
+    Math.max(
+      1,
+      descriptions.length,
+      partNumbers.length,
+      quantities.length
+    );
+
+
+  const descriptionCell =
+    createPartRequirementCell(
+      descriptions,
+      totalParts,
+      "description"
+    );
+
+
+  const partNoCell =
+    createPartRequirementCell(
+      partNumbers,
+      totalParts,
+      "number"
+    );
+
+
+  const quantityCell =
+    createPartRequirementCell(
+      quantities,
+      totalParts,
+      "quantity"
+    );
+
+
+  row.appendChild(
+    descriptionCell
+  );
+
+  row.appendChild(
+    partNoCell
+  );
+
+  row.appendChild(
+    quantityCell
+  );
+}
+
+
+/* =====================================================
+   CREATE ONE PART REQUIREMENT CELL
+===================================================== */
+
+function createPartRequirementCell(
+  values,
+  totalParts,
+  type
+) {
+
+  const cell =
+    document.createElement(
+      "td"
+    );
+
+
+  cell.classList.add(
+    "unit-history-parts-cell"
+  );
+
+
+  const list =
+    document.createElement(
+      "div"
+    );
+
+
+  list.className =
+    "unit-history-part-list";
+
+
+  for (
+    let index = 0;
+    index < totalParts;
+    index++
+  ) {
+
+    const line =
+      document.createElement(
+        "div"
+      );
+
+
+    line.className =
+      "unit-history-part-line";
+
+
+    if (type === "description") {
+
+      line.classList.add(
+        "unit-history-part-description"
+      );
+
+    } else if (type === "number") {
+
+      line.classList.add(
+        "unit-history-part-number"
+      );
+
+    } else if (type === "quantity") {
+
+      line.classList.add(
+        "unit-history-part-quantity"
+      );
+    }
+
+
+    /*
+      Jangan menghapus posisi kosong.
+
+      Contoh:
+      Hose   | 611-5996 | 1
+      Plug   |          | 4
+
+      Baris Part No kedua tetap dibuat.
+    */
+
+    const rawValue =
+      values[index] !== undefined
+        ? String(values[index]).trim()
+        : "";
+
+
+    if (rawValue) {
+
+      line.textContent =
+        rawValue;
+
+    } else {
+
+      line.textContent =
+        "-";
+
+      line.classList.add(
+        "unit-history-part-empty"
+      );
+    }
+
+
+    list.appendChild(
+      line
+    );
+  }
+
+
+  cell.appendChild(
+    list
+  );
+
+
+  return cell;
+}
 
 /* =====================================================
    BADGE
