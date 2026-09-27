@@ -367,6 +367,9 @@ const UNIT_HISTORY_COLUMN_FIELDS = [
 
 ];
 
+activeColumnKeys =
+  getInitialColumnKeys();
+
 /* =====================================================
    DOM REFERENCES
 ===================================================== */
@@ -2313,8 +2316,7 @@ function renderColumnOptions() {
   );
 }
 
-activeColumnKeys =
-  getInitialColumnKeys();
+
 
 /* =====================================================
    RESET COLUMNS TO DEFAULT
