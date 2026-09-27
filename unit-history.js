@@ -6422,25 +6422,9 @@ async function shareCurrentHistoryPdf() {
   }
 
 
-  const autoTableFunction =
-    (
-      window.jspdfAutoTable &&
-      typeof window.jspdfAutoTable.autoTable === "function"
-    )
-      ? window.jspdfAutoTable.autoTable
-      : (
-          typeof window.jspdf.jsPDF.prototype.autoTable === "function"
-            ? function (doc, options) {
-                doc.autoTable(options);
-              }
-            : null
-        );
-
-
-  if (!autoTableFunction) {
-    alert("jsPDF AutoTable belum dimuat.");
-    return;
-  }
+  /*
+    AutoTable v5 divalidasi pada instance jsPDF.
+  */
 
 
   if (
@@ -6661,6 +6645,14 @@ async function shareCurrentHistoryPdf() {
     });
 
 
+  if (
+    typeof doc.autoTable !== "function"
+  ) {
+    alert("jsPDF AutoTable belum dimuat.");
+    return;
+  }
+
+
   const pageWidth =
     doc.internal.pageSize.getWidth();
 
@@ -6726,7 +6718,7 @@ async function shareCurrentHistoryPdf() {
   );
 
 
-  autoTableFunction(doc, {
+  doc.autoTable({
 
     head:
       head,
