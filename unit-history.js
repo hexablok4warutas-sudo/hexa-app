@@ -1538,7 +1538,8 @@ function createHistoryRow(record) {
       }
     );
 
-   
+
+
 
   /* ===================================================
      ROW CLICK
@@ -1573,6 +1574,69 @@ function createHistoryRow(record) {
 
   return row;
 }
+
+/* =====================================================
+   INITIAL CUSTOM COLUMNS
+===================================================== */
+
+function getInitialColumnKeys() {
+
+  const defaultKeys =
+    UNIT_HISTORY_COLUMN_FIELDS
+      .filter(
+        function (field) {
+          return field.default === true;
+        }
+      )
+      .map(
+        function (field) {
+          return field.key;
+        }
+      );
+
+
+  try {
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem(
+          UNIT_HISTORY_COLUMNS_STORAGE_KEY
+        ) || "null"
+      );
+
+
+    if (!Array.isArray(saved)) {
+      return defaultKeys;
+    }
+
+
+    const validKeys =
+      UNIT_HISTORY_COLUMN_FIELDS
+        .filter(
+          function (field) {
+            return saved.includes(
+              field.key
+            );
+          }
+        )
+        .map(
+          function (field) {
+            return field.key;
+          }
+        );
+
+
+    return validKeys.length
+      ? validKeys
+      : defaultKeys;
+
+
+  } catch (error) {
+
+    return defaultKeys;
+  }
+}
+
 
 /* =====================================================
    APPEND CUSTOM HISTORY COLUMN
