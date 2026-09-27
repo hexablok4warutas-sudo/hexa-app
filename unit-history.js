@@ -4037,41 +4037,7 @@ async function confirmDelete() {
   }
 }
 
-/* =====================================================
-   SHARE CURRENT UNIT HISTORY PDF
-===================================================== */
 
-async function shareCurrentHistoryPdf() {
-
-  if (
-    !filteredUnitHistoryData ||
-    filteredUnitHistoryData.length === 0
-  ) {
-
-    alert(
-      "Tidak ada data untuk dibagikan."
-    );
-
-    return;
-  }
-
-
-  /*
-    Generator PDF Unit History akan kita
-    pasang pada step berikutnya.
-
-    Untuk sementara fungsi ini dibuat agar
-    event Share PDF sudah valid dan tidak
-    menyebabkan error saat halaman dimuat.
-  */
-
-  console.log(
-    "Share PDF ready:",
-    filteredUnitHistoryData.length,
-    "records"
-  );
-
-}
 
 /* =====================================================
    PRINT CURRENT FILTERED RESULT
