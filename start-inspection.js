@@ -1607,22 +1607,12 @@ if (inspectionForm) {
 
 
       /* ===============================================
-         VALIDASI PHOTO
+         PHOTO OPTIONAL
       =============================================== */
 
       const photoFile =
-        inspectionPhoto.files[0];
-
-
-      if (!photoFile) {
-
-        alert(
-          "Silakan tambahkan Photo Inspection."
-        );
-
-        return;
-
-      }
+        inspectionPhoto?.files?.[0] ||
+        null;
 
 
       /* ===============================================
@@ -1673,12 +1663,20 @@ if (inspectionForm) {
 
         /* =============================================
            COMPRESS PHOTO
+
+           Photo bersifat optional. Jika user tidak memilih
+           foto, payload dikirim dengan nilai kosong.
         ============================================= */
 
         const photo =
-          await compressPhoto(
-            photoFile
-          );
+          photoFile
+            ? await compressPhoto(
+                photoFile
+              )
+            : {
+                base64: "",
+                mimeType: ""
+              };
 
 
         /* =============================================
