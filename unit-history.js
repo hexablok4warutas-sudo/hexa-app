@@ -6422,14 +6422,11 @@ async function shareCurrentHistoryPdf() {
   }
 
 
-  /*
-    AutoTable v5 divalidasi pada instance jsPDF.
-  */
-
-
   if (
     !window.HexaPDF ||
-    typeof window.HexaPDF.shareOrDownload !== "function"
+    typeof window.HexaPDF.createPdfFile !== "function" ||
+    typeof window.HexaPDF.downloadFile !== "function" ||
+    typeof window.HexaPDF.shareFile !== "function"
   ) {
     alert("HEXA PDF Engine belum dimuat.");
     return;
@@ -6460,145 +6457,6 @@ async function shareCurrentHistoryPdf() {
   }
 
 
-  /* ===================================================
-     STAGE 1 - LOAD PHOTO VIA HEXA API BASE64
-
-     Hanya menambahkan sumber image untuk kolom Photo.
-     Layout AutoTable existing TIDAK diubah.
-  =================================================== */
-
-  const pdfPhotoMap =
-    new Map();
-
-
-  async function loadPdfInspectionPhotos() {
-
-    if (
-      !activeColumnKeys.includes(
-        "photo"
-      )
-    ) {
-      return;
-    }
-
-
-    for (
-      const record of
-      filteredUnitHistoryData
-    ) {
-
-      if (
-        !record ||
-        !record.id ||
-        !record.photo
-      ) {
-        continue;
-      }
-
-
-      const inspectionId =
-        String(
-          record.id
-        );
-
-
-      if (
-        pdfPhotoMap.has(
-          inspectionId
-        )
-      ) {
-        continue;
-      }
-
-
-      try {
-
-        const response =
-          await fetch(
-            API_URL,
-            {
-              method:
-                "POST",
-
-              headers: {
-                "Content-Type":
-                  "text/plain;charset=utf-8"
-              },
-
-              body:
-                JSON.stringify({
-                  action:
-                    "getInspectionPhotoBase64",
-
-                  inspectionId:
-                    inspectionId
-                })
-            }
-          );
-
-
-        const result =
-          await response.json();
-
-
-        if (
-          result &&
-          result.success === true &&
-          result.dataUrl
-        ) {
-
-          pdfPhotoMap.set(
-            inspectionId,
-            {
-              dataUrl:
-                result.dataUrl,
-
-              format:
-                String(
-                  result.mimeType || ""
-                )
-                  .toLowerCase()
-                  .includes("png")
-                    ? "PNG"
-                    : "JPEG"
-            }
-          );
-
-        } else {
-
-          pdfPhotoMap.set(
-            inspectionId,
-            null
-          );
-
-          console.warn(
-            "Photo PDF tidak tersedia:",
-            inspectionId,
-            result
-          );
-        }
-
-
-      } catch (error) {
-
-        pdfPhotoMap.set(
-          inspectionId,
-          null
-        );
-
-        console.warn(
-          "Gagal mengambil Photo PDF:",
-          inspectionId,
-          error
-        );
-      }
-    }
-  }
-
-
-  await loadPdfInspectionPhotos();
-
-
   function pdfCellValue(
     record,
     key,
@@ -6622,17 +6480,13 @@ async function shareCurrentHistoryPdf() {
     }
 
 
+    /*
+      STAGE 1:
+      Photo belum diubah.
+      Tetap memakai fallback existing agar workflow
+      Save / Share dapat diuji lebih dulu.
+    */
     if (key === "photo") {
-
-      if (
-        record.id &&
-        pdfPhotoMap.get(
-          String(record.id)
-        )
-      ) {
-        return "";
-      }
-
       return record.photo
         ? "Available"
         : "-";
@@ -6912,129 +6766,6 @@ async function shareCurrentHistoryPdf() {
         "middle"
     },
 
-    didDrawCell:
-      function (data) {
-
-        if (
-          data.section !== "body"
-        ) {
-          return;
-        }
-
-
-        const field =
-          activePdfColumns[
-            data.column.index
-          ];
-
-
-        if (
-          !field ||
-          field.key !== "photo"
-        ) {
-          return;
-        }
-
-
-        const record =
-          filteredUnitHistoryData[
-            data.row.index
-          ];
-
-
-        if (
-          !record ||
-          !record.id
-        ) {
-          return;
-        }
-
-
-        const photo =
-          pdfPhotoMap.get(
-            String(
-              record.id
-            )
-          );
-
-
-        if (!photo) {
-          return;
-        }
-
-
-        const padding =
-          1;
-
-
-        const maxWidth =
-          Math.max(
-            1,
-            data.cell.width -
-              padding * 2
-          );
-
-
-        const maxHeight =
-          Math.max(
-            1,
-            data.cell.height -
-              padding * 2
-          );
-
-
-        const imageSize =
-          Math.min(
-            maxWidth,
-            maxHeight
-          );
-
-
-        if (
-          imageSize <= 1
-        ) {
-          return;
-        }
-
-
-        const x =
-          data.cell.x +
-          (
-            data.cell.width -
-            imageSize
-          ) / 2;
-
-
-        const y =
-          data.cell.y +
-          (
-            data.cell.height -
-            imageSize
-          ) / 2;
-
-
-        try {
-
-          doc.addImage(
-            photo.dataUrl,
-            photo.format,
-            x,
-            y,
-            imageSize,
-            imageSize
-          );
-
-        } catch (error) {
-
-          console.warn(
-            "Gagal menggambar Photo ke PDF:",
-            record.id,
-            error
-          );
-        }
-      },
-
-
     didDrawPage:
       function () {
 
@@ -7081,46 +6812,343 @@ async function shareCurrentHistoryPdf() {
     );
 
 
-  try {
-
-    await window.HexaPDF
-      .shareOrDownload(
-        pdfBlob,
-        {
-          documentName:
-            "Unit_History",
-
-          title:
-            "HEXA - Unit History",
-
-          text:
-            "HEXA Unit History"
-        }
-      );
-
-  } catch (error) {
-
-    /*
-      Jika user menutup/cancel Share Sheet,
-      jangan tampilkan error.
-    */
-
-    if (
-      error &&
-      error.name === "AbortError"
-    ) {
-      return;
-    }
+  const fileName =
+    typeof window.HexaPDF.createFileName === "function"
+      ? window.HexaPDF.createFileName(
+          "Unit_History"
+        )
+      : "HEXA_Unit_History.pdf";
 
 
-    console.error(
-      "Share Unit History PDF:",
-      error
+  const pdfFile =
+    window.HexaPDF.createPdfFile(
+      pdfBlob,
+      fileName
     );
 
 
-    alert(
-      "PDF gagal dibagikan."
+  showUnitHistoryPdfReadyDialog(
+    pdfFile
+  );
+}
+
+
+/* =====================================================
+   PDF READY DIALOG
+   STAGE 1 - SAVE TO DEVICE / SHARE PDF
+===================================================== */
+
+function showUnitHistoryPdfReadyDialog(
+  pdfFile
+) {
+
+  const existing =
+    document.getElementById(
+      "unitHistoryPdfReadyOverlay"
     );
+
+
+  if (existing) {
+    existing.remove();
   }
+
+
+  const overlay =
+    document.createElement(
+      "div"
+    );
+
+
+  overlay.id =
+    "unitHistoryPdfReadyOverlay";
+
+
+  overlay.style.cssText = [
+    "position:fixed",
+    "inset:0",
+    "z-index:99999",
+    "display:flex",
+    "align-items:center",
+    "justify-content:center",
+    "padding:20px",
+    "background:rgba(0,0,0,.55)"
+  ].join(";");
+
+
+  const card =
+    document.createElement(
+      "div"
+    );
+
+
+  card.style.cssText = [
+    "width:min(420px,100%)",
+    "background:#fff",
+    "border-radius:18px",
+    "padding:24px",
+    "box-shadow:0 18px 50px rgba(0,0,0,.28)",
+    "font-family:Arial,sans-serif",
+    "text-align:center"
+  ].join(";");
+
+
+  const title =
+    document.createElement(
+      "div"
+    );
+
+
+  title.textContent =
+    "PDF Ready";
+
+
+  title.style.cssText = [
+    "font-size:20px",
+    "font-weight:700",
+    "margin-bottom:8px"
+  ].join(";");
+
+
+  const message =
+    document.createElement(
+      "div"
+    );
+
+
+  message.textContent =
+    "HEXA Unit History berhasil dibuat. Pilih tindakan berikut.";
+
+
+  message.style.cssText = [
+    "font-size:14px",
+    "line-height:1.5",
+    "color:#555",
+    "margin-bottom:20px"
+  ].join(";");
+
+
+  const actions =
+    document.createElement(
+      "div"
+    );
+
+
+  actions.style.cssText = [
+    "display:grid",
+    "grid-template-columns:1fr 1fr",
+    "gap:10px"
+  ].join(";");
+
+
+  const saveButton =
+    document.createElement(
+      "button"
+    );
+
+
+  saveButton.type =
+    "button";
+
+  saveButton.textContent =
+    "Save to Device";
+
+  saveButton.style.cssText = [
+    "border:1px solid #d7d7d7",
+    "background:#fff",
+    "border-radius:12px",
+    "padding:12px 10px",
+    "font-weight:700",
+    "cursor:pointer"
+  ].join(";");
+
+
+  const shareButton =
+    document.createElement(
+      "button"
+    );
+
+
+  shareButton.type =
+    "button";
+
+  shareButton.textContent =
+    "Share PDF";
+
+  shareButton.style.cssText = [
+    "border:0",
+    "background:#111",
+    "color:#fff",
+    "border-radius:12px",
+    "padding:12px 10px",
+    "font-weight:700",
+    "cursor:pointer"
+  ].join(";");
+
+
+  const closeButton =
+    document.createElement(
+      "button"
+    );
+
+
+  closeButton.type =
+    "button";
+
+  closeButton.textContent =
+    "Cancel";
+
+  closeButton.style.cssText = [
+    "margin-top:14px",
+    "border:0",
+    "background:transparent",
+    "color:#777",
+    "padding:8px 14px",
+    "cursor:pointer"
+  ].join(";");
+
+
+  function closeDialog() {
+    overlay.remove();
+  }
+
+
+  saveButton.addEventListener(
+    "click",
+    function () {
+
+      try {
+
+        window.HexaPDF.downloadFile(
+          pdfFile
+        );
+
+        closeDialog();
+
+      } catch (error) {
+
+        console.error(
+          "Save Unit History PDF:",
+          error
+        );
+
+        alert(
+          "PDF gagal disimpan."
+        );
+      }
+    }
+  );
+
+
+  shareButton.addEventListener(
+    "click",
+    async function () {
+
+      try {
+
+        if (
+          typeof window.HexaPDF.canShareFile === "function" &&
+          !window.HexaPDF.canShareFile(
+            pdfFile
+          )
+        ) {
+
+          alert(
+            "Browser ini belum mendukung berbagi file PDF. Gunakan Save to Device."
+          );
+
+          return;
+        }
+
+
+        await window.HexaPDF.shareFile(
+          pdfFile,
+          {
+            title:
+              "HEXA - Unit History",
+
+            text:
+              "HEXA Unit History"
+          }
+        );
+
+
+        closeDialog();
+
+      } catch (error) {
+
+        if (
+          error &&
+          error.name === "AbortError"
+        ) {
+          return;
+        }
+
+
+        console.error(
+          "Share Unit History PDF:",
+          error
+        );
+
+
+        alert(
+          "PDF gagal dibagikan."
+        );
+      }
+    }
+  );
+
+
+  closeButton.addEventListener(
+    "click",
+    closeDialog
+  );
+
+
+  overlay.addEventListener(
+    "click",
+    function (event) {
+
+      if (
+        event.target === overlay
+      ) {
+        closeDialog();
+      }
+    }
+  );
+
+
+  actions.appendChild(
+    saveButton
+  );
+
+  actions.appendChild(
+    shareButton
+  );
+
+
+  card.appendChild(
+    title
+  );
+
+  card.appendChild(
+    message
+  );
+
+  card.appendChild(
+    actions
+  );
+
+  card.appendChild(
+    closeButton
+  );
+
+
+  overlay.appendChild(
+    card
+  );
+
+
+  document.body.appendChild(
+    overlay
+  );
 }
