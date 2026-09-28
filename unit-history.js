@@ -6433,15 +6433,13 @@ async function shareCurrentHistoryPdf() {
 
   const activePdfColumns =
     activeColumnKeys
-      .map(
-        function (key) {
-          return UNIT_HISTORY_COLUMN_FIELDS.find(
-            function (field) {
-              return field.key === key;
-            }
-          );
-        }
-      )
+      .map(function (key) {
+        return UNIT_HISTORY_COLUMN_FIELDS.find(
+          function (field) {
+            return field.key === key;
+          }
+        );
+      })
       .filter(Boolean);
 
   if (activePdfColumns.length === 0) {
@@ -6463,16 +6461,20 @@ async function shareCurrentHistoryPdf() {
     return;
   }
 
+
   /* ===================================================
-     USER / DATE
+     CURRENT USER
   =================================================== */
 
   let printUserId = "-";
 
   try {
+
     const storedUser =
       JSON.parse(
-        sessionStorage.getItem("hexaUser") || "{}"
+        sessionStorage.getItem(
+          "hexaUser"
+        ) || "{}"
       );
 
     printUserId =
@@ -6484,83 +6486,101 @@ async function shareCurrentHistoryPdf() {
       "-";
 
   } catch (error) {
+
     printUserId = "-";
   }
 
-  const generatedDate =
-    new Date().toLocaleString("id-ID");
 
   /* ===================================================
      IMAGE HELPERS
-     Dipakai untuk logo dan Photo agar PDF Share
-     mendekati template Print yang sudah disetujui.
   =================================================== */
 
-  function getImageFormat(dataUrl) {
-    if (/^data:image\/png/i.test(dataUrl)) {
+  function getPdfImageFormat(
+    dataUrl,
+    mimeType
+  ) {
+
+    const mime =
+      String(
+        mimeType || ""
+      ).toLowerCase();
+
+    if (
+      mime.includes("png") ||
+      /^data:image\/png/i.test(
+        dataUrl || ""
+      )
+    ) {
       return "PNG";
     }
 
-    if (/^data:image\/webp/i.test(dataUrl)) {
+    if (
+      mime.includes("webp") ||
+      /^data:image\/webp/i.test(
+        dataUrl || ""
+      )
+    ) {
       return "WEBP";
     }
 
     return "JPEG";
   }
 
-  async function urlToDataUrl(url) {
 
-    if (!url) {
-      return null;
-    }
+  async function loadSameOriginImage(
+    fileName
+  ) {
 
     try {
+
+      const url =
+        new URL(
+          fileName,
+          window.location.href
+        ).href;
 
       const response =
         await fetch(
           url,
           {
-            cache: "force-cache"
+            cache:
+              "force-cache"
           }
         );
 
       if (!response.ok) {
-        throw new Error(
-          "HTTP " + response.status
-        );
+        return null;
       }
 
       const blob =
         await response.blob();
 
-      if (
-        !blob.type ||
-        !blob.type.startsWith("image/")
-      ) {
-        throw new Error(
-          "Response bukan image."
-        );
-      }
-
       return await new Promise(
-        function (resolve, reject) {
+        function (
+          resolve,
+          reject
+        ) {
 
           const reader =
             new FileReader();
 
           reader.onload =
             function () {
-              resolve(reader.result);
+
+              resolve({
+                dataUrl:
+                  reader.result,
+
+                format:
+                  getPdfImageFormat(
+                    reader.result,
+                    blob.type
+                  )
+              });
             };
 
           reader.onerror =
-            function () {
-              reject(
-                new Error(
-                  "Gagal membaca image."
-                )
-              );
-            };
+            reject;
 
           reader.readAsDataURL(
             blob
@@ -6571,8 +6591,8 @@ async function shareCurrentHistoryPdf() {
     } catch (error) {
 
       console.warn(
-        "PDF image tidak dapat dimuat:",
-        url,
+        "PDF asset gagal dimuat:",
+        fileName,
         error
       );
 
@@ -6580,104 +6600,146 @@ async function shareCurrentHistoryPdf() {
     }
   }
 
-  async function loadPdfImage(url) {
-
-    const dataUrl =
-      await urlToDataUrl(url);
-
-    if (!dataUrl) {
-      return null;
-    }
-
-    return {
-      dataUrl: dataUrl,
-      format: getImageFormat(dataUrl)
-    };
-  }
 
   /* ===================================================
-     PRELOAD LOGO
+     LOAD HEADER LOGOS
   =================================================== */
 
-  const hrsLogoUrl =
-    new URL(
-      "hexa-icon-logo-hrsheaderprint.png",
-      window.location.href
-    ).href;
-
-  const hexaLogoUrl =
-    new URL(
-      "hexa-logo-header.png",
-      window.location.href
-    ).href;
-
-  const logoResults =
+  const logoResult =
     await Promise.all([
-      loadPdfImage(hrsLogoUrl),
-      loadPdfImage(hexaLogoUrl)
+      loadSameOriginImage(
+        "hexa-icon-logo-hrsheaderprint.png"
+      ),
+      loadSameOriginImage(
+        "hexa-logo-header.png"
+      )
     ]);
 
   const hrsLogo =
-    logoResults[0];
+    logoResult[0];
 
   const hexaLogo =
-    logoResults[1];
+    logoResult[1];
+
 
   /* ===================================================
-     PRELOAD PHOTO YANG DIPERLUKAN SAJA
+     LOAD INSPECTION PHOTO VIA HEXA API
+     Drive -> Apps Script -> Base64 -> jsPDF
   =================================================== */
 
   const photoMap =
     new Map();
 
   if (
-    activeColumnKeys.includes("photo")
+    activeColumnKeys.includes(
+      "photo"
+    )
   ) {
 
-    const photoJobs =
-      filteredUnitHistoryData.map(
-        async function (record) {
+    const recordsWithPhoto =
+      filteredUnitHistoryData.filter(
+        function (record) {
 
-          if (!record.photo) {
-            return;
-          }
-
-          const key =
-            String(
-              record.id ||
-              record.photo
-            );
-
-          if (
-            photoMap.has(key)
-          ) {
-            return;
-          }
-
-          const image =
-            await loadPdfImage(
-              getDriveImageUrl(
-                record.photo
-              )
-            );
-
-          photoMap.set(
-            key,
-            image
+          return (
+            record &&
+            record.id &&
+            record.photo
           );
         }
       );
 
-    await Promise.all(
-      photoJobs
-    );
+    /*
+      Dibuat sequential agar Apps Script tidak
+      dihantam banyak request bersamaan.
+    */
+
+    for (
+      const record of
+      recordsWithPhoto
+    ) {
+
+      const key =
+        String(
+          record.id
+        );
+
+      if (
+        photoMap.has(key)
+      ) {
+        continue;
+      }
+
+      try {
+
+        const result =
+          await apiRequest({
+
+            action:
+              "getInspectionPhotoBase64",
+
+            inspectionId:
+              record.id
+
+          });
+
+        if (
+          result &&
+          result.success === true &&
+          result.dataUrl
+        ) {
+
+          photoMap.set(
+            key,
+            {
+              dataUrl:
+                result.dataUrl,
+
+              format:
+                getPdfImageFormat(
+                  result.dataUrl,
+                  result.mimeType
+                )
+            }
+          );
+
+        } else {
+
+          photoMap.set(
+            key,
+            null
+          );
+
+          console.warn(
+            "Photo PDF tidak tersedia:",
+            record.id,
+            result
+          );
+        }
+
+      } catch (error) {
+
+        photoMap.set(
+          key,
+          null
+        );
+
+        console.warn(
+          "Photo PDF gagal diambil:",
+          record.id,
+          error
+        );
+      }
+    }
   }
+
 
   /* ===================================================
      PART HELPERS
   =================================================== */
 
-  function buildPdfPartData(record) {
+  function buildPdfPartData(
+    record
+  ) {
 
     const descriptions =
       splitPartMultiline(
@@ -6724,14 +6786,22 @@ async function shareCurrentHistoryPdf() {
     }
 
     return {
-      descriptions: descriptions,
-      partNumbers: partNumbers,
-      quantities: quantities,
-      totalParts: totalParts
+      descriptions:
+        descriptions,
+
+      partNumbers:
+        partNumbers,
+
+      quantities:
+        quantities,
+
+      totalParts:
+        totalParts
     };
   }
 
-  function multilinePdfValue(
+
+  function buildPdfPartText(
     values,
     totalParts
   ) {
@@ -6744,7 +6814,7 @@ async function shareCurrentHistoryPdf() {
       index++
     ) {
 
-      const value =
+      const rawValue =
         values[index] !== undefined
           ? String(
               values[index]
@@ -6752,69 +6822,90 @@ async function shareCurrentHistoryPdf() {
           : "";
 
       output.push(
-        value || "-"
+        rawValue || "-"
       );
     }
 
-    return output.join("\n");
+    return output.join(
+      "\n"
+    );
   }
 
-  function pdfCellValue(
+
+  function getPdfCellValue(
     record,
-    key,
+    fieldKey,
     partData
   ) {
 
-    if (key === "photo") {
+    if (
+      fieldKey === "photo"
+    ) {
       return "";
     }
 
-    if (key === "mol") {
+    if (
+      fieldKey === "mol"
+    ) {
       return String(
-        getMolDisplay(record) ?? "-"
+        getMolDisplay(
+          record
+        ) ?? "-"
       );
     }
 
     if (
-      key === "dateInspection" ||
-      key === "dateAction"
+      fieldKey ===
+        "dateInspection" ||
+      fieldKey ===
+        "dateAction"
     ) {
       return formatDisplayDate(
-        record[key]
+        record[fieldKey]
       );
     }
 
-    if (key === "evidence") {
+    if (
+      fieldKey ===
+        "evidence"
+    ) {
       return record.evidence
         ? "Available"
         : "-";
     }
 
     if (
-      key === "partsDescription"
+      fieldKey ===
+        "partsDescription"
     ) {
-      return multilinePdfValue(
+      return buildPdfPartText(
         partData.descriptions,
         partData.totalParts
       );
     }
 
-    if (key === "partNo") {
-      return multilinePdfValue(
+    if (
+      fieldKey ===
+        "partNo"
+    ) {
+      return buildPdfPartText(
         partData.partNumbers,
         partData.totalParts
       );
     }
 
-    if (key === "quantity") {
-      return multilinePdfValue(
+    if (
+      fieldKey ===
+        "quantity"
+    ) {
+      return buildPdfPartText(
         partData.quantities,
         partData.totalParts
       );
     }
 
     const value =
-      record[key];
+      record[fieldKey];
 
     if (
       value === null ||
@@ -6824,8 +6915,11 @@ async function shareCurrentHistoryPdf() {
       return "-";
     }
 
-    return String(value);
+    return String(
+      value
+    );
   }
+
 
   /* ===================================================
      TABLE DATA
@@ -6852,12 +6946,18 @@ async function shareCurrentHistoryPdf() {
           function (field) {
 
             return {
+
               content:
-                pdfCellValue(
+                getPdfCellValue(
                   record,
                   field.key,
                   partData
                 ),
+
+              styles: {
+                valign:
+                  "top"
+              },
 
               rawRecord:
                 record,
@@ -6867,15 +6967,16 @@ async function shareCurrentHistoryPdf() {
 
               totalParts:
                 partData.totalParts
+
             };
           }
         );
       }
     );
 
+
   /* ===================================================
-     FONT / SIZE
-     Mengikuti logika Print dinamis.
+     TABLE SIZE
   =================================================== */
 
   const columnCount =
@@ -6883,28 +6984,33 @@ async function shareCurrentHistoryPdf() {
 
   const tableFontSize =
     columnCount <= 8
-      ? 8
+      ? 7.2
       : columnCount <= 12
-        ? 7.5
+        ? 6.3
         : columnCount <= 16
-          ? 6.5
-          : 5.7;
+          ? 5.5
+          : 4.8;
 
   const headerFontSize =
-    columnCount <= 12
-      ? 7
-      : columnCount <= 16
-        ? 6.2
-        : 5.5;
+    columnCount <= 8
+      ? 6.8
+      : columnCount <= 12
+        ? 6.0
+        : columnCount <= 16
+          ? 5.2
+          : 4.6;
 
   const pageWidth =
-    doc.internal.pageSize.getWidth();
+    doc.internal.pageSize
+      .getWidth();
 
   const pageHeight =
-    doc.internal.pageSize.getHeight();
+    doc.internal.pageSize
+      .getHeight();
+
 
   /* ===================================================
-     HEADER PDF
+     HEADER
   =================================================== */
 
   function drawPdfHeader() {
@@ -6921,28 +7027,29 @@ async function shareCurrentHistoryPdf() {
     );
 
     doc.setFontSize(
-      20
+      16
     );
 
     doc.text(
       "HEXA - Unit History",
-      9,
-      10
+      7,
+      8
     );
+
 
     doc.setFont(
       "helvetica",
       "normal"
     );
 
-    doc.setTextColor(
-      90,
-      90,
-      90
+    doc.setFontSize(
+      5.8
     );
 
-    doc.setFontSize(
-      7
+    doc.setTextColor(
+      80,
+      80,
+      80
     );
 
     doc.text(
@@ -6950,74 +7057,80 @@ async function shareCurrentHistoryPdf() {
         " records  •  " +
         activePdfColumns.length +
         " columns  •  Printed " +
-        generatedDate,
-      9,
-      15
+        new Date().toLocaleString(
+          "id-ID"
+        ),
+      7,
+      12.5
     );
 
-    /*
-      Logo kanan atas.
-      Jika image gagal dimuat, PDF tetap dibuat.
-    */
 
     let rightX =
-      pageWidth - 9;
+      pageWidth - 7;
 
     if (hexaLogo) {
 
-      const hexaWidth =
-        24;
+      const width =
+        19;
 
-      const hexaHeight =
-        8;
+      const height =
+        6.5;
 
       rightX -=
-        hexaWidth;
+        width;
 
       try {
+
         doc.addImage(
           hexaLogo.dataUrl,
           hexaLogo.format,
           rightX,
-          4.5,
-          hexaWidth,
-          hexaHeight
+          3.2,
+          width,
+          height
         );
+
       } catch (error) {
+
         console.warn(
-          "Logo HEXA gagal digambar:",
+          "Logo HEXA PDF:",
           error
         );
       }
     }
 
+
     if (hrsLogo) {
 
-      const hrsWidth =
-        30;
+      const width =
+        27;
 
-      const hrsHeight =
-        8;
+      const height =
+        7;
 
       rightX -=
-        hrsWidth + 4;
+        width + 3;
 
       try {
+
         doc.addImage(
           hrsLogo.dataUrl,
           hrsLogo.format,
           rightX,
-          4.5,
-          hrsWidth,
-          hrsHeight
+          3,
+          width,
+          height
         );
+
       } catch (error) {
+
         console.warn(
-          "Logo HRS gagal digambar:",
+          "Logo HRS PDF:",
           error
         );
       }
     }
+
 
     doc.setDrawColor(
       17,
@@ -7026,15 +7139,16 @@ async function shareCurrentHistoryPdf() {
     );
 
     doc.setLineWidth(
-      0.55
+      0.45
     );
 
     doc.line(
-      9,
-      18.5,
-      pageWidth - 9,
-      18.5
+      7,
+      16,
+      pageWidth - 7,
+      16
     );
+
 
     doc.setTextColor(
       34,
@@ -7043,8 +7157,9 @@ async function shareCurrentHistoryPdf() {
     );
   }
 
+
   /* ===================================================
-     FOOTER PDF
+     FOOTER
   =================================================== */
 
   function drawPdfFooter() {
@@ -7054,21 +7169,21 @@ async function shareCurrentHistoryPdf() {
       "normal"
     );
 
+    doc.setFontSize(
+      5.5
+    );
+
     doc.setTextColor(
       70,
       70,
       70
     );
 
-    doc.setFontSize(
-      6.5
-    );
-
     doc.text(
       "USER ID : " +
         printUserId,
-      9,
-      pageHeight - 5
+      7,
+      pageHeight - 4
     );
 
     doc.setTextColor(
@@ -7078,15 +7193,13 @@ async function shareCurrentHistoryPdf() {
     );
   }
 
+
   /* ===================================================
-     AUTOTABLE
-     Visual dibuat mengikuti Print:
-     - header hitam
-     - body putih
-     - top alignment
-     - multipart multiline
-     - foto asli
-     - header + logo setiap halaman
+     TABLE
+     Penting:
+     - Tidak ada manipulasi data.row.height di willDrawCell.
+     - Tinggi row ditentukan sebelum layout lewat didParseCell.
+     - Ini mencegah gap besar antar record.
   =================================================== */
 
   doc.autoTable({
@@ -7098,79 +7211,114 @@ async function shareCurrentHistoryPdf() {
       body,
 
     startY:
-      22,
+      19,
 
     margin: {
-      top: 22,
-      right: 9,
-      bottom: 14,
-      left: 9
+      top:
+        19,
+      right:
+        7,
+      bottom:
+        10,
+      left:
+        7
     },
 
     theme:
       "grid",
 
     styles: {
+
       font:
         "helvetica",
+
       fontSize:
         tableFontSize,
+
       textColor:
-        [34, 34, 34],
+        [25, 25, 25],
+
       fillColor:
         [255, 255, 255],
+
       cellPadding:
         {
-          top: 1.7,
-          right: 1.3,
-          bottom: 1.7,
-          left: 1.3
+          top:
+            1.1,
+          right:
+            1.0,
+          bottom:
+            1.1,
+          left:
+            1.0
         },
+
       valign:
         "top",
+
       halign:
         "left",
+
       overflow:
         "linebreak",
+
       lineColor:
-        [170, 170, 170],
+        [165, 165, 165],
+
       lineWidth:
-        0.15,
+        0.12,
+
       minCellHeight:
-        8
+        6
     },
 
     headStyles: {
+
       fillColor:
         [17, 17, 17],
+
       textColor:
         [255, 255, 255],
+
       fontStyle:
         "bold",
+
       fontSize:
         headerFontSize,
-      halign:
-        "left",
+
       valign:
         "middle",
+
+      halign:
+        "left",
+
       lineColor:
-        [119, 119, 119],
+        [115, 115, 115],
+
       lineWidth:
-        0.15,
+        0.12,
+
       cellPadding:
         {
-          top: 1.7,
-          right: 1.1,
-          bottom: 1.7,
-          left: 1.1
+          top:
+            1.3,
+          right:
+            0.9,
+          bottom:
+            1.3,
+          left:
+            0.9
         }
     },
 
     bodyStyles: {
+
       fillColor:
         [255, 255, 255],
+
       textColor:
-        [34, 34, 34],
+        [25, 25, 25],
+
       valign:
         "top"
     },
@@ -7181,13 +7329,21 @@ async function shareCurrentHistoryPdf() {
     showHead:
       "everyPage",
 
-    willDrawCell:
+
+    /*
+      Set min height SEBELUM AutoTable menghitung posisi row.
+      Tidak mengubah data.row.height setelah layout dibuat.
+    */
+
+    didParseCell:
       function (data) {
 
         if (
-          data.section !== "body" ||
+          data.section !==
+            "body" ||
           !data.cell.raw ||
-          typeof data.cell.raw !== "object"
+          typeof data.cell.raw !==
+            "object"
         ) {
           return;
         }
@@ -7195,63 +7351,61 @@ async function shareCurrentHistoryPdf() {
         const raw =
           data.cell.raw;
 
-        /*
-          Tinggi baris multipart dibuat cukup untuk
-          semua Part Description / Part No / Quantity.
-        */
+        let requiredHeight =
+          6;
 
         if (
           raw.totalParts &&
           raw.totalParts > 1
         ) {
 
-          const requiredHeight =
+          requiredHeight =
             Math.max(
-              8,
+              requiredHeight,
               raw.totalParts *
                 (
                   tableFontSize *
-                  0.48 +
-                  1.4
-                )
+                    0.38 +
+                  1.05
+                ) +
+                1.2
             );
-
-          if (
-            data.row.height <
-            requiredHeight
-          ) {
-            data.row.height =
-              requiredHeight;
-          }
         }
 
-        /*
-          Jika kolom Photo aktif dan ada foto,
-          sediakan tinggi seperti versi Print.
-        */
-
         if (
-          raw.columnKey === "photo" &&
+          activeColumnKeys.includes(
+            "photo"
+          ) &&
           raw.rawRecord &&
           raw.rawRecord.photo
         ) {
 
-          if (
-            data.row.height < 22
-          ) {
-            data.row.height =
-              22;
-          }
+          requiredHeight =
+            Math.max(
+              requiredHeight,
+              18
+            );
         }
+
+        data.cell.styles
+          .minCellHeight =
+            requiredHeight;
       },
+
+
+    /*
+      Foto baru digambar setelah cell selesai.
+    */
 
     didDrawCell:
       function (data) {
 
         if (
-          data.section !== "body" ||
+          data.section !==
+            "body" ||
           !data.cell.raw ||
-          typeof data.cell.raw !== "object"
+          typeof data.cell.raw !==
+            "object"
         ) {
           return;
         }
@@ -7260,25 +7414,19 @@ async function shareCurrentHistoryPdf() {
           data.cell.raw;
 
         if (
-          raw.columnKey !== "photo" ||
+          raw.columnKey !==
+            "photo" ||
           !raw.rawRecord ||
-          !raw.rawRecord.photo
+          !raw.rawRecord.id
         ) {
           return;
         }
 
-        const record =
-          raw.rawRecord;
-
-        const key =
-          String(
-            record.id ||
-            record.photo
-          );
-
         const image =
           photoMap.get(
-            key
+            String(
+              raw.rawRecord.id
+            )
           );
 
         if (!image) {
@@ -7286,44 +7434,42 @@ async function shareCurrentHistoryPdf() {
         }
 
         const padding =
-          1.5;
+          1.2;
 
-        const availableWidth =
+        const maxWidth =
           Math.max(
             1,
             data.cell.width -
               padding * 2
           );
 
-        const availableHeight =
+        const maxHeight =
           Math.max(
             1,
             data.cell.height -
               padding * 2
           );
 
-        const imageWidth =
+        const imageSize =
           Math.min(
-            18,
-            availableWidth
-          );
-
-        const imageHeight =
-          Math.min(
-            18,
-            availableHeight
+            15.5,
+            maxWidth,
+            maxHeight
           );
 
         const x =
           data.cell.x +
           (
             data.cell.width -
-            imageWidth
+            imageSize
           ) / 2;
 
         const y =
           data.cell.y +
-          padding;
+          (
+            data.cell.height -
+            imageSize
+          ) / 2;
 
         try {
 
@@ -7332,18 +7478,20 @@ async function shareCurrentHistoryPdf() {
             image.format,
             x,
             y,
-            imageWidth,
-            imageHeight
+            imageSize,
+            imageSize
           );
 
         } catch (error) {
 
           console.warn(
-            "Photo PDF gagal digambar:",
+            "Photo gagal digambar ke PDF:",
+            raw.rawRecord.id,
             error
           );
         }
       },
+
 
     didDrawPage:
       function () {
@@ -7353,6 +7501,7 @@ async function shareCurrentHistoryPdf() {
       }
 
   });
+
 
   /* ===================================================
      SHARE / DOWNLOAD
@@ -7369,6 +7518,7 @@ async function shareCurrentHistoryPdf() {
       .shareOrDownload(
         pdfBlob,
         {
+
           documentName:
             "Unit_History",
 
@@ -7377,6 +7527,7 @@ async function shareCurrentHistoryPdf() {
 
           text:
             "HEXA Unit History"
+
         }
       );
 
@@ -7384,7 +7535,8 @@ async function shareCurrentHistoryPdf() {
 
     if (
       error &&
-      error.name === "AbortError"
+      error.name ===
+        "AbortError"
     ) {
       return;
     }
@@ -7399,4 +7551,3 @@ async function shareCurrentHistoryPdf() {
     );
   }
 }
-
