@@ -1,29 +1,24 @@
-// =====================================================
-// HEXA - SETTINGS
-// =====================================================
-
 "use strict";
 
+// =====================================================
+// HEXA - SETTINGS
+// API V4 USER SYNC
+// =====================================================
+
 
 // =====================================================
-// ROLE MASTER
+// API
+//
+// Menggunakan Web App URL yang sama dengan app.js
+// pada sistem login HEXA.
 // =====================================================
 
-const HEXA_ROLES = {
-  1: "Master",
-  2: "Section Head",
-  3: "Group Leader",
-  4: "Admin",
-  5: "Mechanic",
-  6: "Visitor"
-};
+const SETTINGS_API_URL =
+  "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
 
 
 // =====================================================
 // SETTINGS PAGE ROUTES
-//
-// Nanti file tujuan dapat kita ubah tanpa
-// mengubah event listener.
 // =====================================================
 
 const SETTINGS_ROUTES = {
@@ -44,330 +39,405 @@ const SETTINGS_ROUTES = {
 
 
 // =====================================================
+// SESSION
+// =====================================================
+
+let currentSettingsUser = null;
+
+
+// =====================================================
 // INITIALIZE
 // =====================================================
 
 document.addEventListener(
   "DOMContentLoaded",
-  function () {
-
-    initializeSettings();
-
-  }
+  initializeSettings
 );
 
 
-// =====================================================
-// INITIALIZE SETTINGS
-// =====================================================
+async function initializeSettings() {
 
-function initializeSettings() {
+  // Session resmi HEXA.
+  const sessionUser =
+    getHexaSessionUser();
 
-  const currentUser =
-    getCurrentHexaUser();
+  if (!sessionUser) {
+    return;
+  }
 
+  currentSettingsUser =
+    sessionUser;
 
-  // -----------------------------------------------
-  // APPLY ROLE THEME
-  // -----------------------------------------------
-
+  // Tampilkan session lebih dulu supaya UI tidak kosong.
   applyRoleTheme(
-    currentUser.level
+    sessionUser.kode
   );
-
-
-  // -----------------------------------------------
-  // PROFILE CARD
-  // -----------------------------------------------
 
   renderSettingsProfile(
-    currentUser
+    sessionUser
   );
-
-
-  // -----------------------------------------------
-  // SETTINGS MENU
-  // -----------------------------------------------
 
   initializeSettingsNavigation();
-
-
-  // -----------------------------------------------
-  // LOGOUT
-  // -----------------------------------------------
-
   initializeSettingsLogout();
 
-
-  console.log(
-    "HEXA Settings Ready:",
-    currentUser
-  );
+  // Kemudian ambil data paling baru dari Spreadsheet.
+  await syncSettingsProfile();
 
 }
 
 
 // =====================================================
-// GET CURRENT HEXA USER
-//
-// V1:
-// Kita mencoba membaca user dari localStorage.
-//
-// Saya buat beberapa kemungkinan key agar halaman
-// tetap aman sambil menunggu kita cocokkan dengan
-// sistem login HEXA yang sebenarnya.
+// GET SESSION USER
 // =====================================================
 
-function getCurrentHexaUser() {
+function getHexaSessionUser() {
 
-  const possibleKeys = [
+  const loggedIn =
+    sessionStorage.getItem(
+      "hexaLoggedIn"
+    );
 
-    "hexaUser",
+  const rawUser =
+    sessionStorage.getItem(
+      "hexaUser"
+    );
 
-    "currentUser",
-
-    "userData",
-
-    "loggedInUser"
-
-  ];
-
-
-  let storedUser = null;
-
-
-  for (
-    const key of possibleKeys
+  if (
+    loggedIn !== "true" ||
+    !rawUser
   ) {
 
-    try {
+    redirectToLogin();
+    return null;
 
-      const raw =
-        localStorage.getItem(
-          key
-        );
+  }
 
+  try {
 
-      if (!raw) {
-        continue;
-      }
+    const user =
+      JSON.parse(
+        rawUser
+      );
 
+    if (
+      !user ||
+      !user.uniqId ||
+      !user.userId
+    ) {
 
-      const parsed =
-        JSON.parse(
-          raw
-        );
-
-
-      if (
-        parsed &&
-        typeof parsed === "object"
-      ) {
-
-        storedUser =
-          parsed;
-
-        break;
-
-      }
+      clearHexaSession();
+      redirectToLogin();
+      return null;
 
     }
 
-    catch (error) {
+    return normalizeUser(
+      user
+    );
 
-      console.warn(
-        "HEXA Settings: gagal membaca",
-        key,
-        error
+  } catch (error) {
+
+    console.error(
+      "HEXA Settings: session user tidak valid.",
+      error
+    );
+
+    clearHexaSession();
+    redirectToLogin();
+
+    return null;
+
+  }
+
+}
+
+
+// =====================================================
+// NORMALIZE USER
+//
+// LEVEL adalah nama role dari database.
+// KODE adalah kode level aktual.
+// Tidak memakai mapping role hard-coded.
+// =====================================================
+
+function normalizeUser(
+  user
+) {
+
+  return {
+
+    uniqId:
+      cleanValue(
+        user.uniqId
+      ),
+
+    userId:
+      cleanValue(
+        user.userId
+      ),
+
+    nama:
+      cleanValue(
+        user.nama
+      ) || "User",
+
+    level:
+      cleanValue(
+        user.level
+      ) || "User",
+
+    kode:
+      cleanValue(
+        user.kode
+      ),
+
+    noHp:
+      cleanValue(
+        user.noHp
+      ),
+
+    photo:
+      cleanValue(
+        user.photo
+      ),
+
+    email:
+      cleanValue(
+        user.email
+      ),
+
+    status:
+      cleanValue(
+        user.status
+      ),
+
+    kutipan:
+      cleanValue(
+        user.kutipan
+      )
+
+  };
+
+}
+
+
+function cleanValue(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+  return String(
+    value
+  ).trim();
+
+}
+
+
+// =====================================================
+// SYNC PROFILE DARI DATABASE
+//
+// Dipanggil setiap Settings dibuka.
+// Jadi perubahan data di Spreadsheet akan terbaca
+// tanpa perlu mengubah source code HEXA.
+// =====================================================
+
+async function syncSettingsProfile() {
+
+  if (
+    !currentSettingsUser ||
+    !currentSettingsUser.uniqId
+  ) {
+    return;
+  }
+
+  if (
+    !SETTINGS_API_URL ||
+    SETTINGS_API_URL === "__API_URL__"
+  ) {
+
+    console.error(
+      "HEXA Settings: SETTINGS_API_URL belum tersedia."
+    );
+
+    return;
+
+  }
+
+  setProfileSyncState(
+    true
+  );
+
+  try {
+
+    const response =
+      await fetch(
+        SETTINGS_API_URL,
+        {
+          method:
+            "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                "getUserProfile",
+
+              uniqId:
+                currentSettingsUser.uniqId
+
+            })
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP " +
+        response.status
       );
 
     }
 
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      // Akun sudah dinonaktifkan dari database.
+      if (
+        result &&
+        result.inactive === true
+      ) {
+
+        handleInactiveAccount(
+          result.message
+        );
+
+        return;
+
+      }
+
+
+      throw new Error(
+        result?.message ||
+        "Gagal mengambil User Profile."
+      );
+
+    }
+
+
+    const freshUser =
+      normalizeUser(
+        result.user || {}
+      );
+
+
+    if (
+      !freshUser.uniqId ||
+      !freshUser.userId
+    ) {
+
+      throw new Error(
+        "Response User Profile tidak lengkap."
+      );
+
+    }
+
+
+    currentSettingsUser =
+      freshUser;
+
+
+    // Perbarui session agar halaman berikutnya juga
+    // membawa data USER terbaru.
+    sessionStorage.setItem(
+      "hexaUser",
+      JSON.stringify(
+        freshUser
+      )
+    );
+
+
+    // Theme ikut berubah jika KODE di database berubah.
+    applyRoleTheme(
+      freshUser.kode
+    );
+
+
+    renderSettingsProfile(
+      freshUser
+    );
+
+
+    console.log(
+      "HEXA Settings profile synced:",
+      freshUser
+    );
+
+
+  } catch (error) {
+
+    // UI tetap memakai data session jika jaringan/API gagal.
+    console.error(
+      "HEXA Settings: gagal sync profile.",
+      error
+    );
+
+  } finally {
+
+    setProfileSyncState(
+      false
+    );
+
   }
 
+}
 
-  // -----------------------------------------------
-  // FALLBACK
-  //
-  // Untuk tahap UI development.
-  // Default Master agar blue theme dapat langsung
-  // terlihat sebelum session login kita sambungkan.
-  // -----------------------------------------------
 
-  if (!storedUser) {
+// =====================================================
+// PROFILE SYNC STATE
+// =====================================================
 
-    return {
+function setProfileSyncState(
+  isLoading
+) {
 
-      id:
-        "-",
+  const card =
+    document.getElementById(
+      "settingsProfileCard"
+    );
 
-      name:
-        "User Name",
-
-      level:
-        1,
-
-      role:
-        "Master",
-
-      photo:
-        ""
-
-    };
-
+  if (!card) {
+    return;
   }
 
-
-  return normalizeHexaUser(
-    storedUser
+  card.classList.toggle(
+    "is-syncing",
+    Boolean(isLoading)
   );
 
-}
-
-
-// =====================================================
-// NORMALIZE USER DATA
-//
-// Mendukung beberapa kemungkinan nama field.
-// Nanti setelah struktur login final sudah kita
-// pastikan, bagian ini bisa kita sederhanakan.
-// =====================================================
-
-function normalizeHexaUser(
-  user
-) {
-
-  const level =
-    normalizeLevel(
-      user.level ??
-      user.LEVEL ??
-      user.Level ??
-      user.levelCode ??
-      user.level_code
-    );
-
-
-  const role =
-    HEXA_ROLES[level] ||
-    user.role ||
-    user.ROLE ||
-    "User";
-
-
-  return {
-
-    id:
-      user.id ??
-      user.ID ??
-      user.userId ??
-      user.USER_ID ??
-      user["USER ID"] ??
-      user.uniqId ??
-      user["UNIQ ID"] ??
-      "-",
-
-
-    name:
-      user.name ??
-      user.NAME ??
-      user.nama ??
-      user.NAMA ??
-      "User Name",
-
-
-    level:
-      level,
-
-
-    role:
-      role,
-
-
-    photo:
-      user.photo ??
-      user.PHOTO ??
-      user.photoUrl ??
-      user.photoURL ??
-      ""
-
-  };
-
-}
-
-
-// =====================================================
-// NORMALIZE LEVEL
-// =====================================================
-
-function normalizeLevel(
-  value
-) {
-
-  const number =
-    Number(
-      value
-    );
-
-
-  if (
-    Number.isInteger(number) &&
-    number >= 1 &&
-    number <= 6
-  ) {
-
-    return number;
-
-  }
-
-
-  // -----------------------------------------------
-  // Jika database sementara menyimpan nama role
-  // bukan angka.
-  // -----------------------------------------------
-
-  const text =
-    String(
-      value || ""
-    )
-      .trim()
-      .toLowerCase();
-
-
-  const roleMap = {
-
-    "master":
-      1,
-
-    "section head":
-      2,
-
-    "sectionhead":
-      2,
-
-    "group leader":
-      3,
-
-    "groupleader":
-      3,
-
-    "gl":
-      3,
-
-    "admin":
-      4,
-
-    "mechanic":
-      5,
-
-    "visitor":
-      6
-
-  };
-
-
-  return (
-    roleMap[text] ||
-    6
+  card.setAttribute(
+    "aria-busy",
+    isLoading
+      ? "true"
+      : "false"
   );
 
 }
@@ -376,25 +446,21 @@ function normalizeLevel(
 // =====================================================
 // APPLY ROLE THEME
 //
-// LEVEL 1 - 3
-// Master
-// Section Head
-// Group Leader
-// = BLUE DOODLE
-//
-// LEVEL 4 - 6
-// Admin
-// Mechanic
-// Visitor
-// = ORANGE DOODLE
+// KODE 1 - 3 = BLUE
+// KODE 4 - 6 = ORANGE
 // =====================================================
 
 function applyRoleTheme(
-  level
+  kode
 ) {
 
   const body =
     document.body;
+
+  const numericKode =
+    Number(
+      kode
+    );
 
 
   body.classList.remove(
@@ -403,20 +469,19 @@ function applyRoleTheme(
   );
 
 
-  const isGLUp =
-    level >= 1 &&
-    level <= 3;
-
-
-  if (isGLUp) {
+  if (
+    Number.isFinite(
+      numericKode
+    ) &&
+    numericKode >= 1 &&
+    numericKode <= 3
+  ) {
 
     body.classList.add(
       "theme-blue"
     );
 
-  }
-
-  else {
+  } else {
 
     body.classList.add(
       "theme-orange"
@@ -440,167 +505,211 @@ function renderSettingsProfile(
       "settingsProfileName"
     );
 
-
-  const roleBadge =
-    document.getElementById(
-      "settingsRoleBadge"
-    );
-
-
   const idElement =
     document.getElementById(
       "settingsProfileId"
     );
-
 
   const levelElement =
     document.getElementById(
       "settingsProfileLevel"
     );
 
+  const roleBadge =
+    document.getElementById(
+      "settingsRoleBadge"
+    );
+
+  const mottoElement =
+    document.getElementById(
+      "settingsProfileMotto"
+    );
 
   const photoElement =
     document.getElementById(
       "settingsProfilePhoto"
     );
 
+  const initialElement =
+    document.getElementById(
+      "settingsProfileInitial"
+    );
 
-  // -----------------------------------------------
-  // NAME
-  // -----------------------------------------------
 
   if (nameElement) {
 
     nameElement.textContent =
-      user.name;
+      user.nama || "User";
 
   }
 
-
-  // -----------------------------------------------
-  // ROLE
-  // -----------------------------------------------
-
-  if (roleBadge) {
-
-    roleBadge.textContent =
-      user.role.toUpperCase();
-
-  }
-
-
-  // -----------------------------------------------
-  // USER ID
-  // -----------------------------------------------
 
   if (idElement) {
 
     idElement.textContent =
-      `ID • ${user.id}`;
+      user.userId || "-";
 
   }
 
-
-  // -----------------------------------------------
-  // LEVEL
-  // -----------------------------------------------
 
   if (levelElement) {
 
     levelElement.textContent =
-      `Level ${user.level}`;
+      user.kode
+        ? `Level ${user.kode}`
+        : "";
 
   }
 
 
-  // -----------------------------------------------
-  // PHOTO
-  // -----------------------------------------------
+  if (roleBadge) {
 
-  if (photoElement) {
+    roleBadge.textContent =
+      (
+        user.level ||
+        "User"
+      ).toUpperCase();
 
-    if (user.photo) {
+  }
 
-      photoElement.src =
-        user.photo;
+
+  if (mottoElement) {
+
+    const motto =
+      cleanValue(
+        user.kutipan
+      );
+
+    if (motto) {
+
+      mottoElement.textContent =
+        `“${motto}”`;
+
+      mottoElement.hidden =
+        false;
+
+    } else {
+
+      mottoElement.textContent =
+        "";
+
+      mottoElement.hidden =
+        true;
 
     }
 
-
-    photoElement.addEventListener(
-      "error",
-      function () {
-
-        showProfileInitial(
-          photoElement,
-          user.name
-        );
-
-      },
-      {
-        once: true
-      }
-    );
-
   }
+
+
+  renderProfilePhoto(
+    photoElement,
+    initialElement,
+    user.nama,
+    user.photo
+  );
 
 }
 
 
 // =====================================================
-// PROFILE PHOTO FALLBACK
-//
-// Jika hexa-default-user.png atau PHOTO user
-// tidak tersedia, tampilkan initial.
+// PROFILE PHOTO + INITIAL FALLBACK
 // =====================================================
 
-function showProfileInitial(
-  imageElement,
-  name
+function renderProfilePhoto(
+  photoElement,
+  initialElement,
+  name,
+  photoUrl
 ) {
 
-  const parent =
-    imageElement.parentElement;
+  const initials =
+    getUserInitials(
+      name
+    );
 
 
-  if (!parent) {
+  if (initialElement) {
+
+    initialElement.textContent =
+      initials;
+
+    initialElement.style.display =
+      "";
+
+  }
+
+
+  if (!photoElement) {
     return;
   }
 
 
-  imageElement.style.display =
+  photoElement.onload =
+    null;
+
+  photoElement.onerror =
+    null;
+
+  photoElement.style.display =
     "none";
 
+  photoElement.removeAttribute(
+    "src"
+  );
 
-  let initialElement =
-    parent.querySelector(
-      ".settings-profile-initial"
+
+  const url =
+    cleanValue(
+      photoUrl
     );
 
 
-  if (!initialElement) {
-
-    initialElement =
-      document.createElement(
-        "span"
-      );
-
-
-    initialElement.className =
-      "settings-profile-initial";
-
-
-    parent.appendChild(
-      initialElement
-    );
-
+  if (!url) {
+    return;
   }
 
 
-  initialElement.textContent =
-    getUserInitials(
-      name
-    );
+  photoElement.onload =
+    function () {
+
+      photoElement.style.display =
+        "block";
+
+      if (initialElement) {
+
+        initialElement.style.display =
+          "none";
+
+      }
+
+    };
+
+
+  photoElement.onerror =
+    function () {
+
+      photoElement.style.display =
+        "none";
+
+      photoElement.removeAttribute(
+        "src"
+      );
+
+      if (initialElement) {
+
+        initialElement.style.display =
+          "";
+
+      }
+
+    };
+
+
+  photoElement.alt =
+    `Foto profil ${name || "User"}`;
+
+  photoElement.src =
+    url;
 
 }
 
@@ -623,7 +732,7 @@ function getUserInitials(
 
 
   if (!words.length) {
-    return "U";
+    return "US";
   }
 
 
@@ -641,7 +750,9 @@ function getUserInitials(
 
   return (
     words[0][0] +
-    words[words.length - 1][0]
+    words[
+      words.length - 1
+    ][0]
   ).toUpperCase();
 
 }
@@ -653,49 +764,15 @@ function getUserInitials(
 
 function initializeSettingsNavigation() {
 
-  const menuCards =
-    document.querySelectorAll(
-      "[data-settings-page]"
-    );
-
-
-  menuCards.forEach(
-    function (
-      card
-    ) {
-
-      card.addEventListener(
-        "click",
-        function () {
-
-          const page =
-            card.dataset.settingsPage;
-
-
-          navigateToSettingsPage(
-            page
-          );
-
-        }
-      );
-
-    }
-  );
-
-
-  // -----------------------------------------------
-  // PROFILE CARD ARROW
-  // -----------------------------------------------
-
-  const profileShortcut =
+  const profileCard =
     document.getElementById(
-      "profileShortcutButton"
+      "settingsProfileCard"
     );
 
 
-  if (profileShortcut) {
+  if (profileCard) {
 
-    profileShortcut.addEventListener(
+    profileCard.addEventListener(
       "click",
       function () {
 
@@ -707,6 +784,30 @@ function initializeSettingsNavigation() {
     );
 
   }
+
+
+  const menuCards =
+    document.querySelectorAll(
+      "[data-settings-page]"
+    );
+
+
+  menuCards.forEach(
+    function(card) {
+
+      card.addEventListener(
+        "click",
+        function () {
+
+          navigateToSettingsPage(
+            card.dataset.settingsPage
+          );
+
+        }
+      );
+
+    }
+  );
 
 }
 
@@ -766,49 +867,54 @@ function initializeSettingsLogout() {
 }
 
 
-// =====================================================
-// HANDLE LOGOUT
-// =====================================================
-
 function handleSettingsLogout() {
 
-  /*
-    Untuk sementara kita hanya membersihkan
-    kemungkinan session user.
+  clearHexaSession();
 
-    Setelah kita cocokkan dengan login.js HEXA,
-    fungsi ini akan kita sesuaikan supaya
-    menggunakan session key yang benar.
-  */
-
-
-  const sessionKeys = [
-
-    "hexaUser",
-
-    "currentUser",
-
-    "userData",
-
-    "loggedInUser"
-
-  ];
-
-
-  sessionKeys.forEach(
-    function (
-      key
-    ) {
-
-      localStorage.removeItem(
-        key
-      );
-
-    }
+  window.location.replace(
+    "index.html"
   );
 
+}
 
-  window.location.href =
-    "index.html";
+
+function clearHexaSession() {
+
+  sessionStorage.removeItem(
+    "hexaLoggedIn"
+  );
+
+  sessionStorage.removeItem(
+    "hexaUser"
+  );
+
+}
+
+
+function redirectToLogin() {
+
+  window.location.replace(
+    "index.html"
+  );
+
+}
+
+
+// =====================================================
+// INACTIVE ACCOUNT
+// =====================================================
+
+function handleInactiveAccount(
+  message
+) {
+
+  clearHexaSession();
+
+  alert(
+    message ||
+    "Akun Anda sedang tidak aktif."
+  );
+
+  redirectToLogin();
 
 }
