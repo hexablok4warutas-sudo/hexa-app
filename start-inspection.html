@@ -207,18 +207,11 @@
           </label>
 
 
-          <label
+          <button
+            type="button"
             class="photo-input"
-            for="inspectionPhoto"
+            id="photoSourceButton"
           >
-
-
-            <input
-              type="file"
-              id="inspectionPhoto"
-              name="inspectionPhoto"
-              accept="image/jpeg,image/png,image/webp"
-            >
 
 
             <div class="camera-icon">
@@ -245,7 +238,87 @@
             </span>
 
 
-          </label>
+          </button>
+
+
+          <input
+            type="file"
+            id="inspectionPhotoCamera"
+            class="photo-hidden-input"
+            accept="image/jpeg,image/png,image/webp"
+            capture="environment"
+          >
+
+
+          <input
+            type="file"
+            id="inspectionPhotoGallery"
+            class="photo-hidden-input"
+            accept="image/jpeg,image/png,image/webp"
+          >
+
+
+          <div
+            class="photo-source-sheet"
+            id="photoSourceSheet"
+            hidden
+          >
+
+            <button
+              type="button"
+              class="photo-source-backdrop"
+              id="photoSourceBackdrop"
+              aria-label="Close photo options"
+            ></button>
+
+            <div
+              class="photo-source-panel"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="photoSourceTitle"
+            >
+
+              <div
+                class="photo-source-handle"
+                aria-hidden="true"
+              ></div>
+
+              <div
+                class="photo-source-title"
+                id="photoSourceTitle"
+              >
+                Add Inspection Photo
+              </div>
+
+              <button
+                type="button"
+                class="photo-source-option"
+                id="takePhotoButton"
+              >
+                <span class="photo-source-option-icon">📷</span>
+                <span>Take Photo</span>
+              </button>
+
+              <button
+                type="button"
+                class="photo-source-option"
+                id="chooseGalleryButton"
+              >
+                <span class="photo-source-option-icon">🖼️</span>
+                <span>Choose from Gallery</span>
+              </button>
+
+              <button
+                type="button"
+                class="photo-source-cancel"
+                id="cancelPhotoSourceButton"
+              >
+                Cancel
+              </button>
+
+            </div>
+
+          </div>
 
 
           <div
