@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Settings | HEXA</title>
+
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER
+       ===================================== -->
+
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- =====================================
+       SETTINGS STYLE
+       ===================================== -->
+
+  <link
+    rel="stylesheet"
+    href="settings.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER
+       ===================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="settings"
+  ></header>
+
+
+
+  <!-- =====================================
+       SETTINGS PAGE
+       ===================================== -->
+
+  <main
+    id="settingsPage"
+    class="settings-page"
+  >
+
+    <section class="settings-container">
+
+
+      <!-- =================================
+           PAGE TITLE
+           ================================= -->
+
+      <div class="settings-title-bar">
+
+        <div class="settings-title">
+
+
+          <!-- SETTINGS ICON -->
+
+          <div
+            class="settings-title-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              ></circle>
+
+              <path
+                d="
+                  M19.4 15
+                  a1.7 1.7 0 0 0 .34 1.88
+                  l.06.06
+                  a2 2 0 1 1-2.83 2.83
+                  l-.06-.06
+                  A1.7 1.7 0 0 0 15 19.4
+                  a1.7 1.7 0 0 0-1 .6
+                  1.7 1.7 0 0 0-.4 1.1
+                  V21
+                  a2 2 0 1 1-4 0
+                  v-.09
+                  A1.7 1.7 0 0 0 8.6 19.4
+                  a1.7 1.7 0 0 0-1.88.34
+                  l-.06.06
+                  a2 2 0 1 1-2.83-2.83
+                  l.06-.06
+                  A1.7 1.7 0 0 0 4.6 15
+                  a1.7 1.7 0 0 0-.6-1
+                  1.7 1.7 0 0 0-1.1-.4
+                  H3
+                  a2 2 0 1 1 0-4
+                  h.09
+                  A1.7 1.7 0 0 0 4.6 8.6
+                  a1.7 1.7 0 0 0-.34-1.88
+                  l-.06-.06
+                  a2 2 0 1 1 2.83-2.83
+                  l.06.06
+                  A1.7 1.7 0 0 0 9 4.6
+                  a1.7 1.7 0 0 0 1-.6
+                  1.7 1.7 0 0 0 .4-1.1
+                  V3
+                  a2 2 0 1 1 4 0
+                  v.09
+                  A1.7 1.7 0 0 0 15.4 4.6
+                  a1.7 1.7 0 0 0 1.88-.34
+                  l.06-.06
+                  a2 2 0 1 1 2.83 2.83
+                  l-.06.06
+                  A1.7 1.7 0 0 0 19.4 9
+                  a1.7 1.7 0 0 0 .6 1
+                  1.7 1.7 0 0 0 1.1.4
+                  H21
+                  a2 2 0 1 1 0 4
+                  h-.09
+                  A1.7 1.7 0 0 0 19.4 15
+                  Z
+                "
+              ></path>
+
+            </svg>
+
+          </div>
+
+
+          <div>
+
+            <h1>
+              Settings
+            </h1>
+
+            <p>
+              Account & Application Management
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           PROFILE CARD
+           ================================= -->
+
+      <section class="settings-profile-card">
+
+
+        <!-- PHOTO -->
+
+        <div class="settings-profile-photo">
+
+          <img
+            id="settingsProfilePhoto"
+            src="hexa-default-user.png"
+            alt="User Profile"
+          >
+
+        </div>
+
+
+
+        <!-- USER INFORMATION -->
+
+        <div class="settings-profile-info">
+
+          <div class="settings-profile-heading">
+
+            <h2 id="settingsProfileName">
+              User Name
+            </h2>
+
+            <span
+              id="settingsRoleBadge"
+              class="settings-role-badge"
+            >
+              MASTER
+            </span>
+
+          </div>
+
+
+          <div class="settings-profile-meta">
+
+            <span id="settingsProfileId">
+              ID • -
+            </span>
+
+            <span class="settings-profile-dot">
+              •
+            </span>
+
+            <span id="settingsProfileLevel">
+              Level 1
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- PROFILE SHORTCUT -->
+
+        <button
+          type="button"
+          id="profileShortcutButton"
+          class="settings-profile-shortcut"
+          aria-label="Open My Profile"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path
+              d="M9 18l6-6-6-6"
+            ></path>
+
+          </svg>
+
+        </button>
+
+
+      </section>
+
+
+
+      <!-- =================================
+           ACCOUNT
+           ================================= -->
+
+      <section class="settings-section">
+
+        <h3 class="settings-section-label">
+          ACCOUNT
+        </h3>
+
+
+        <!-- MY PROFILE -->
+
+        <button
+          type="button"
+          class="settings-menu-card"
+          data-settings-page="profile"
+        >
+
+          <span class="settings-menu-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="12"
+                cy="8"
+                r="4"
+              ></circle>
+
+              <path
+                d="M4 21a8 8 0 0 1 16 0"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              My Profile
+            </strong>
+
+            <small>
+              Personal information & account settings
+            </small>
+
+          </span>
+
+
+          <span class="settings-menu-arrow">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M9 18l6-6-6-6"
+              ></path>
+
+            </svg>
+
+          </span>
+
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================
+           ADMINISTRATION
+           ================================= -->
+
+      <section
+        id="settingsAdministrationSection"
+        class="settings-section"
+      >
+
+        <h3 class="settings-section-label">
+          ADMINISTRATION
+        </h3>
+
+
+        <!-- USER MANAGEMENT -->
+
+        <button
+          type="button"
+          class="settings-menu-card"
+          data-settings-page="user-management"
+        >
+
+          <span class="settings-menu-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="9"
+                cy="8"
+                r="3"
+              ></circle>
+
+              <circle
+                cx="17"
+                cy="9"
+                r="2.5"
+              ></circle>
+
+              <path
+                d="M3 20a6 6 0 0 1 12 0"
+              ></path>
+
+              <path
+                d="M14 15a5 5 0 0 1 7 5"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              User Management
+            </strong>
+
+            <small>
+              Manage users, accounts & user levels
+            </small>
+
+          </span>
+
+
+          <span class="settings-menu-arrow">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M9 18l6-6-6-6"
+              ></path>
+
+            </svg>
+
+          </span>
+
+        </button>
+
+
+
+        <!-- ACCESS SETTINGS -->
+
+        <button
+          type="button"
+          class="settings-menu-card"
+          data-settings-page="access-settings"
+        >
+
+          <span class="settings-menu-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="
+                  M12 3
+                  19 6
+                  v5
+                  c0 5-3 8-7 10
+                  -4-2-7-5-7-10
+                  V6
+                  l7-3
+                  Z
+                "
+              ></path>
+
+              <path
+                d="M9 12l2 2 4-4"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              Access Settings
+            </strong>
+
+            <small>
+              Manage application access & permissions
+            </small>
+
+          </span>
+
+
+          <span class="settings-menu-arrow">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M9 18l6-6-6-6"
+              ></path>
+
+            </svg>
+
+          </span>
+
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================
+           SYSTEM
+           ================================= -->
+
+      <section
+        id="settingsSystemSection"
+        class="settings-section"
+      >
+
+        <h3 class="settings-section-label">
+          SYSTEM
+        </h3>
+
+
+        <!-- SYSTEM SETTINGS -->
+
+        <button
+          type="button"
+          class="settings-menu-card"
+          data-settings-page="system-settings"
+        >
+
+          <span class="settings-menu-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              ></circle>
+
+              <path
+                d="
+                  M19 13
+                  a7 7 0 0 0 0-2
+                  l2-1.5
+                  -2-3.5
+                  -2.4 1
+                  a7 7 0 0 0-1.7-1
+                  L14.5 3
+                  h-5
+                  L9 6
+                  a7 7 0 0 0-1.7 1
+                  L5 6
+                  3 3.5
+                  2 1.5
+                  a7 7 0 0 0 0 2
+                  l-2 1.5
+                  L5 18
+                  l2.3-1
+                  a7 7 0 0 0 1.7 1
+                  l.5 3
+                  h5
+                  l.5-3
+                  a7 7 0 0 0 1.7-1
+                  l2.3 1
+                  2-3.5
+                  L19 13
+                  Z
+                "
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              System Settings
+            </strong>
+
+            <small>
+              Master data & application configuration
+            </small>
+
+          </span>
+
+
+          <span class="settings-menu-arrow">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M9 18l6-6-6-6"
+              ></path>
+
+            </svg>
+
+          </span>
+
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================
+           LOGOUT
+           ================================= -->
+
+      <section class="settings-logout-section">
+
+        <button
+          type="button"
+          id="settingsLogoutButton"
+          class="settings-logout-button"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path
+              d="M10 17l5-5-5-5"
+            ></path>
+
+            <path
+              d="M15 12H3"
+            ></path>
+
+            <path
+              d="
+                M14 3
+                h5
+                a2 2 0 0 1 2 2
+                v14
+                a2 2 0 0 1-2 2
+                h-5
+              "
+            ></path>
+
+          </svg>
+
+          <span>
+            Logout
+          </span>
+
+        </button>
+
+      </section>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================
+       JAVASCRIPT
+       ===================================== -->
+
+
+  <!-- GLOBAL MENU DATA -->
+
+  <script src="hexa-menu.js"></script>
+
+
+  <!-- GLOBAL HEADER -->
+
+  <script src="hexa-header.js"></script>
+
+
+  <!-- SETTINGS -->
+
+  <script src="settings.js"></script>
+
+
+</body>
+
+</html>
