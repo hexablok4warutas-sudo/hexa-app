@@ -6513,14 +6513,32 @@ async function shareCurrentHistoryPdf() {
 
       try {
 
-        const result =
-          await apiRequest({
-            action:
-              "getInspectionPhotoBase64",
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method:
+                "POST",
 
-            inspectionId:
-              inspectionId
-          });
+              headers: {
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+              },
+
+              body:
+                JSON.stringify({
+                  action:
+                    "getInspectionPhotoBase64",
+
+                  inspectionId:
+                    inspectionId
+                })
+            }
+          );
+
+
+        const result =
+          await response.json();
 
 
         if (
