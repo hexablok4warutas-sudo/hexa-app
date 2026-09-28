@@ -358,9 +358,51 @@ setTodayAsDefaultDate();
    PHOTO
 ===================================================== */
 
-const inspectionPhoto =
+const photoSourceButton =
   document.getElementById(
-    "inspectionPhoto"
+    "photoSourceButton"
+  );
+
+
+const inspectionPhotoCamera =
+  document.getElementById(
+    "inspectionPhotoCamera"
+  );
+
+
+const inspectionPhotoGallery =
+  document.getElementById(
+    "inspectionPhotoGallery"
+  );
+
+
+const photoSourceSheet =
+  document.getElementById(
+    "photoSourceSheet"
+  );
+
+
+const photoSourceBackdrop =
+  document.getElementById(
+    "photoSourceBackdrop"
+  );
+
+
+const takePhotoButton =
+  document.getElementById(
+    "takePhotoButton"
+  );
+
+
+const chooseGalleryButton =
+  document.getElementById(
+    "chooseGalleryButton"
+  );
+
+
+const cancelPhotoSourceButton =
+  document.getElementById(
+    "cancelPhotoSourceButton"
   );
 
 
@@ -382,76 +424,225 @@ const photoPreview =
   );
 
 
-if (inspectionPhoto) {
+let selectedInspectionPhoto =
+  null;
 
-  inspectionPhoto.addEventListener(
+
+let photoPreviewObjectUrl =
+  "";
+
+
+/* =====================================================
+   PHOTO SOURCE SHEET
+===================================================== */
+
+function openPhotoSourceSheet() {
+
+  if (!photoSourceSheet) {
+    return;
+  }
+
+
+  photoSourceSheet.hidden =
+    false;
+
+
+  document.body.classList.add(
+    "photo-source-open"
+  );
+}
+
+
+function closePhotoSourceSheet() {
+
+  if (!photoSourceSheet) {
+    return;
+  }
+
+
+  photoSourceSheet.hidden =
+    true;
+
+
+  document.body.classList.remove(
+    "photo-source-open"
+  );
+}
+
+
+function clearPhotoInputValues() {
+
+  if (inspectionPhotoCamera) {
+    inspectionPhotoCamera.value = "";
+  }
+
+
+  if (inspectionPhotoGallery) {
+    inspectionPhotoGallery.value = "";
+  }
+}
+
+
+function setSelectedInspectionPhoto(
+  file
+) {
+
+  if (!file) {
+    return;
+  }
+
+
+  if (
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
+
+    alert(
+      "File harus berupa gambar."
+    );
+
+    clearPhotoInputValues();
+
+    return;
+  }
+
+
+  selectedInspectionPhoto =
+    file;
+
+
+  if (photoText) {
+    photoText.textContent =
+      file.name ||
+      "Inspection Photo";
+  }
+
+
+  if (photoPreviewObjectUrl) {
+
+    URL.revokeObjectURL(
+      photoPreviewObjectUrl
+    );
+  }
+
+
+  photoPreviewObjectUrl =
+    URL.createObjectURL(
+      file
+    );
+
+
+  if (photoPreview) {
+    photoPreview.src =
+      photoPreviewObjectUrl;
+  }
+
+
+  if (photoPreviewContainer) {
+    photoPreviewContainer.hidden =
+      false;
+  }
+}
+
+
+if (photoSourceButton) {
+
+  photoSourceButton.addEventListener(
+    "click",
+    openPhotoSourceSheet
+  );
+}
+
+
+if (takePhotoButton) {
+
+  takePhotoButton.addEventListener(
+    "click",
+    function () {
+
+      closePhotoSourceSheet();
+
+      if (inspectionPhotoCamera) {
+
+        /*
+          Kosongkan value agar foto yang sama tetap
+          dapat dipilih/diambil kembali.
+        */
+
+        inspectionPhotoCamera.value =
+          "";
+
+        inspectionPhotoCamera.click();
+      }
+    }
+  );
+}
+
+
+if (chooseGalleryButton) {
+
+  chooseGalleryButton.addEventListener(
+    "click",
+    function () {
+
+      closePhotoSourceSheet();
+
+      if (inspectionPhotoGallery) {
+
+        inspectionPhotoGallery.value =
+          "";
+
+        inspectionPhotoGallery.click();
+      }
+    }
+  );
+}
+
+
+if (cancelPhotoSourceButton) {
+
+  cancelPhotoSourceButton.addEventListener(
+    "click",
+    closePhotoSourceSheet
+  );
+}
+
+
+if (photoSourceBackdrop) {
+
+  photoSourceBackdrop.addEventListener(
+    "click",
+    closePhotoSourceSheet
+  );
+}
+
+
+if (inspectionPhotoCamera) {
+
+  inspectionPhotoCamera.addEventListener(
     "change",
     function () {
 
-      const file =
-        inspectionPhoto.files[0];
-
-
-      if (!file) {
-
-        photoText.textContent =
-          "Add Inspection Photo";
-
-
-        photoPreviewContainer.hidden =
-          true;
-
-
-        photoPreview.removeAttribute(
-          "src"
-        );
-
-
-        return;
-
-      }
-
-
-      if (
-        !file.type.startsWith(
-          "image/"
-        )
-      ) {
-
-        alert(
-          "File harus berupa gambar."
-        );
-
-
-        inspectionPhoto.value =
-          "";
-
-
-        return;
-
-      }
-
-
-      photoText.textContent =
-        file.name;
-
-
-      const imageUrl =
-        URL.createObjectURL(
-          file
-        );
-
-
-      photoPreview.src =
-        imageUrl;
-
-
-      photoPreviewContainer.hidden =
-        false;
-
+      setSelectedInspectionPhoto(
+        inspectionPhotoCamera.files[0]
+      );
     }
   );
+}
 
+
+if (inspectionPhotoGallery) {
+
+  inspectionPhotoGallery.addEventListener(
+    "change",
+    function () {
+
+      setSelectedInspectionPhoto(
+        inspectionPhotoGallery.files[0]
+      );
+    }
+  );
 }
 
 
@@ -1559,6 +1750,27 @@ function resetInspectionForm() {
   );
 
 
+  if (photoPreviewObjectUrl) {
+
+    URL.revokeObjectURL(
+      photoPreviewObjectUrl
+    );
+
+    photoPreviewObjectUrl =
+      "";
+  }
+
+
+  selectedInspectionPhoto =
+    null;
+
+
+  clearPhotoInputValues();
+
+
+  closePhotoSourceSheet();
+
+
   /*
     Reset Part Requirement menjadi
     hanya Part 1 kosong.
@@ -1611,7 +1823,7 @@ if (inspectionForm) {
       =============================================== */
 
       const photoFile =
-        inspectionPhoto?.files?.[0] ||
+        selectedInspectionPhoto ||
         null;
 
 
