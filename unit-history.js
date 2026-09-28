@@ -5382,6 +5382,50 @@ function printCurrentHistory() {
 }
 
 /* =====================================================
+   SHORTCUT SAFE AREA
+
+   Tombol shortcut tidak boleh masuk ke belakang
+   global header. Batas atas dihitung otomatis dari
+   posisi bawah header + margin.
+===================================================== */
+
+function getShortcutSafeTop() {
+
+  const margin = 8;
+
+  const header =
+    document.getElementById(
+      "hexaHeader"
+    );
+
+
+  if (!header) {
+    return margin;
+  }
+
+
+  const headerRect =
+    header.getBoundingClientRect();
+
+
+  const headerBottom =
+    Number.isFinite(
+      headerRect.bottom
+    )
+      ? headerRect.bottom
+      : 0;
+
+
+  return Math.max(
+    margin,
+    Math.ceil(
+      headerBottom + margin
+    )
+  );
+}
+
+
+/* =====================================================
    SHORTCUT INITIALIZE
 ===================================================== */
 
@@ -5393,6 +5437,31 @@ function initializeShortcut() {
 
 
   restoreShortcutPosition();
+
+
+  /*
+    Header global dapat selesai dirender sesaat setelah
+    DOMContentLoaded. Cek ulang supaya posisi lama yang
+    tersembunyi di belakang header langsung dipindahkan.
+  */
+
+  requestAnimationFrame(
+    function () {
+
+      keepShortcutInsideViewport();
+
+    }
+  );
+
+
+  setTimeout(
+    function () {
+
+      keepShortcutInsideViewport();
+
+    },
+    150
+  );
 
 
   startInspectionShortcut.addEventListener(
@@ -5530,6 +5599,10 @@ function handleShortcutPointerMove(
     8;
 
 
+  const minTop =
+    getShortcutSafeTop();
+
+
   const maxLeft =
     Math.max(
       margin,
@@ -5541,7 +5614,7 @@ function handleShortcutPointerMove(
 
   const maxTop =
     Math.max(
-      margin,
+      minTop,
       window.innerHeight -
       buttonHeight -
       margin
@@ -5561,7 +5634,7 @@ function handleShortcutPointerMove(
     clamp(
       shortcutDragState.startTop +
       deltaY,
-      margin,
+      minTop,
       maxTop
     );
 
@@ -5759,6 +5832,10 @@ function restoreShortcutPosition() {
     8;
 
 
+  const minTop =
+    getShortcutSafeTop();
+
+
   const left =
     clamp(
       Number(
@@ -5779,9 +5856,9 @@ function restoreShortcutPosition() {
       Number(
         savedPosition.top
       ),
-      margin,
+      minTop,
       Math.max(
-        margin,
+        minTop,
         window.innerHeight -
         height -
         margin
@@ -5800,6 +5877,15 @@ function restoreShortcutPosition() {
 
   startInspectionShortcut.style.bottom =
     "auto";
+
+
+  /*
+    Simpan kembali posisi yang sudah dikoreksi.
+    Ini memperbaiki posisi lama yang sebelumnya
+    tersimpan di belakang header.
+  */
+
+  saveShortcutPosition();
 }
 
 
@@ -5842,6 +5928,10 @@ function keepShortcutInsideViewport() {
     8;
 
 
+  const minTop =
+    getShortcutSafeTop();
+
+
   const left =
     clamp(
       rect.left,
@@ -5858,9 +5948,9 @@ function keepShortcutInsideViewport() {
   const top =
     clamp(
       rect.top,
-      margin,
+      minTop,
       Math.max(
-        margin,
+        minTop,
         window.innerHeight -
         rect.height -
         margin
@@ -5873,6 +5963,12 @@ function keepShortcutInsideViewport() {
 
   startInspectionShortcut.style.top =
     top + "px";
+
+  startInspectionShortcut.style.right =
+    "auto";
+
+  startInspectionShortcut.style.bottom =
+    "auto";
 
 
   saveShortcutPosition();
