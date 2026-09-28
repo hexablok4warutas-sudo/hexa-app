@@ -6412,6 +6412,7 @@ async function shareCurrentHistoryPdf() {
     return;
   }
 
+
   if (
     !window.jspdf ||
     !window.jspdf.jsPDF
@@ -6419,6 +6420,12 @@ async function shareCurrentHistoryPdf() {
     alert("jsPDF belum dimuat.");
     return;
   }
+
+
+  /*
+    AutoTable v5 divalidasi pada instance jsPDF.
+  */
+
 
   if (
     !window.HexaPDF ||
@@ -6428,24 +6435,356 @@ async function shareCurrentHistoryPdf() {
     return;
   }
 
+
   const jsPDF =
     window.jspdf.jsPDF;
 
+
   const activePdfColumns =
     activeColumnKeys
-      .map(function (key) {
-        return UNIT_HISTORY_COLUMN_FIELDS.find(
-          function (field) {
-            return field.key === key;
-          }
-        );
-      })
+      .map(
+        function (key) {
+          return UNIT_HISTORY_COLUMN_FIELDS.find(
+            function (field) {
+              return field.key === key;
+            }
+          );
+        }
+      )
       .filter(Boolean);
+
 
   if (activePdfColumns.length === 0) {
     alert("Tidak ada kolom aktif untuk dibagikan.");
     return;
   }
+
+
+  /* ===================================================
+     STAGE 1 - LOAD PHOTO VIA HEXA API BASE64
+
+     Hanya menambahkan sumber image untuk kolom Photo.
+     Layout AutoTable existing TIDAK diubah.
+  =================================================== */
+
+  const pdfPhotoMap =
+    new Map();
+
+
+  async function loadPdfInspectionPhotos() {
+
+    if (
+      !activeColumnKeys.includes(
+        "photo"
+      )
+    ) {
+      return;
+    }
+
+
+    for (
+      const record of
+      filteredUnitHistoryData
+    ) {
+
+      if (
+        !record ||
+        !record.id ||
+        !record.photo
+      ) {
+        continue;
+      }
+
+
+      const inspectionId =
+        String(
+          record.id
+        );
+
+
+      if (
+        pdfPhotoMap.has(
+          inspectionId
+        )
+      ) {
+        continue;
+      }
+
+
+      try {
+
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method:
+                "POST",
+
+              headers: {
+                "Content-Type":
+                  "text/plain;charset=utf-8"
+              },
+
+              body:
+                JSON.stringify({
+                  action:
+                    "getInspectionPhotoBase64",
+
+                  inspectionId:
+                    inspectionId
+                })
+            }
+          );
+
+
+        const result =
+          await response.json();
+
+
+        if (
+          result &&
+          result.success === true &&
+          result.dataUrl
+        ) {
+
+          pdfPhotoMap.set(
+            inspectionId,
+            {
+              dataUrl:
+                result.dataUrl,
+
+              format:
+                String(
+                  result.mimeType || ""
+                )
+                  .toLowerCase()
+                  .includes("png")
+                    ? "PNG"
+                    : "JPEG"
+            }
+          );
+
+        } else {
+
+          pdfPhotoMap.set(
+            inspectionId,
+            null
+          );
+
+          console.warn(
+            "Photo PDF tidak tersedia:",
+            inspectionId,
+            result
+          );
+        }
+
+
+      } catch (error) {
+
+        pdfPhotoMap.set(
+          inspectionId,
+          null
+        );
+
+        console.warn(
+          "Gagal mengambil Photo PDF:",
+          inspectionId,
+          error
+        );
+      }
+    }
+  }
+
+
+  await loadPdfInspectionPhotos();
+
+
+  function pdfCellValue(
+    record,
+    key,
+    partData
+  ) {
+
+    if (key === "mol") {
+      return String(
+        getMolDisplay(record) ?? "-"
+      );
+    }
+
+
+    if (
+      key === "dateInspection" ||
+      key === "dateAction"
+    ) {
+      return formatDisplayDate(
+        record[key]
+      );
+    }
+
+
+    if (key === "photo") {
+
+      if (
+        record.id &&
+        pdfPhotoMap.get(
+          String(record.id)
+        )
+      ) {
+        return "";
+      }
+
+      return record.photo
+        ? "Available"
+        : "-";
+    }
+
+
+    if (key === "evidence") {
+      return record.evidence
+        ? "Available"
+        : "-";
+    }
+
+
+    if (key === "partsDescription") {
+      return partData.descriptions
+        .map(function (value) {
+          return String(value || "").trim() || "-";
+        })
+        .join("\n");
+    }
+
+
+    if (key === "partNo") {
+      return partData.partNumbers
+        .map(function (value) {
+          return String(value || "").trim() || "-";
+        })
+        .join("\n");
+    }
+
+
+    if (key === "quantity") {
+      return partData.quantities
+        .map(function (value) {
+          return String(value || "").trim() || "-";
+        })
+        .join("\n");
+    }
+
+
+    const value =
+      record[key];
+
+    if (
+      value === null ||
+      value === undefined ||
+      String(value).trim() === ""
+    ) {
+      return "-";
+    }
+
+    return String(value);
+  }
+
+
+  const head = [
+    activePdfColumns.map(
+      function (field) {
+        return field.label;
+      }
+    )
+  ];
+
+
+  const body =
+    filteredUnitHistoryData.map(
+      function (record) {
+
+        const descriptions =
+          splitPartMultiline(
+            record.partsDescription
+          );
+
+        const partNumbers =
+          splitPartMultiline(
+            record.partNo
+          );
+
+        const quantities =
+          splitPartMultiline(
+            record.quantity
+          );
+
+
+        const totalParts =
+          Math.max(
+            1,
+            descriptions.length,
+            partNumbers.length,
+            quantities.length
+          );
+
+
+        while (
+          descriptions.length <
+          totalParts
+        ) {
+          descriptions.push("");
+        }
+
+        while (
+          partNumbers.length <
+          totalParts
+        ) {
+          partNumbers.push("");
+        }
+
+        while (
+          quantities.length <
+          totalParts
+        ) {
+          quantities.push("");
+        }
+
+
+        const partData = {
+          descriptions:
+            descriptions,
+          partNumbers:
+            partNumbers,
+          quantities:
+            quantities
+        };
+
+
+        return activePdfColumns.map(
+          function (field) {
+            return pdfCellValue(
+              record,
+              field.key,
+              partData
+            );
+          }
+        );
+      }
+    );
+
+
+  const columnCount =
+    activePdfColumns.length;
+
+
+  let tableFontSize = 7;
+
+  if (columnCount >= 14) {
+    tableFontSize = 4.8;
+  } else if (columnCount >= 11) {
+    tableFontSize = 5.4;
+  } else if (columnCount >= 8) {
+    tableFontSize = 6;
+  }
+
 
   const doc =
     new jsPDF({
@@ -6453,6 +6792,7 @@ async function shareCurrentHistoryPdf() {
       unit: "mm",
       format: "a4"
     });
+
 
   if (
     typeof doc.autoTable !== "function"
@@ -6462,9 +6802,9 @@ async function shareCurrentHistoryPdf() {
   }
 
 
-  /* ===================================================
-     CURRENT USER
-  =================================================== */
+  const pageWidth =
+    doc.internal.pageSize.getWidth();
+
 
   let printUserId = "-";
 
@@ -6491,716 +6831,41 @@ async function shareCurrentHistoryPdf() {
   }
 
 
-  /* ===================================================
-     IMAGE HELPERS
-  =================================================== */
-
-  function getPdfImageFormat(
-    dataUrl,
-    mimeType
-  ) {
-
-    const mime =
-      String(
-        mimeType || ""
-      ).toLowerCase();
-
-    if (
-      mime.includes("png") ||
-      /^data:image\/png/i.test(
-        dataUrl || ""
-      )
-    ) {
-      return "PNG";
-    }
-
-    if (
-      mime.includes("webp") ||
-      /^data:image\/webp/i.test(
-        dataUrl || ""
-      )
-    ) {
-      return "WEBP";
-    }
-
-    return "JPEG";
-  }
-
-
-  async function loadSameOriginImage(
-    fileName
-  ) {
-
-    try {
-
-      const url =
-        new URL(
-          fileName,
-          window.location.href
-        ).href;
-
-      const response =
-        await fetch(
-          url,
-          {
-            cache:
-              "force-cache"
-          }
-        );
-
-      if (!response.ok) {
-        return null;
-      }
-
-      const blob =
-        await response.blob();
-
-      return await new Promise(
-        function (
-          resolve,
-          reject
-        ) {
-
-          const reader =
-            new FileReader();
-
-          reader.onload =
-            function () {
-
-              resolve({
-                dataUrl:
-                  reader.result,
-
-                format:
-                  getPdfImageFormat(
-                    reader.result,
-                    blob.type
-                  )
-              });
-            };
-
-          reader.onerror =
-            reject;
-
-          reader.readAsDataURL(
-            blob
-          );
-        }
-      );
-
-    } catch (error) {
-
-      console.warn(
-        "PDF asset gagal dimuat:",
-        fileName,
-        error
-      );
-
-      return null;
-    }
-  }
-
-
-  /* ===================================================
-     LOAD HEADER LOGOS
-  =================================================== */
-
-  const logoResult =
-    await Promise.all([
-      loadSameOriginImage(
-        "hexa-icon-logo-hrsheaderprint.png"
-      ),
-      loadSameOriginImage(
-        "hexa-logo-header.png"
-      )
-    ]);
-
-  const hrsLogo =
-    logoResult[0];
-
-  const hexaLogo =
-    logoResult[1];
-
-
-  /* ===================================================
-     LOAD INSPECTION PHOTO VIA HEXA API
-     Drive -> Apps Script -> Base64 -> jsPDF
-  =================================================== */
-
-  const photoMap =
-    new Map();
-
-  if (
-    activeColumnKeys.includes(
-      "photo"
-    )
-  ) {
-
-    const recordsWithPhoto =
-      filteredUnitHistoryData.filter(
-        function (record) {
-
-          return (
-            record &&
-            record.id &&
-            record.photo
-          );
-        }
-      );
-
-    /*
-      Dibuat sequential agar Apps Script tidak
-      dihantam banyak request bersamaan.
-    */
-
-    for (
-      const record of
-      recordsWithPhoto
-    ) {
-
-      const key =
-        String(
-          record.id
-        );
-
-      if (
-        photoMap.has(key)
-      ) {
-        continue;
-      }
-
-      try {
-
-        const result =
-          await apiRequest({
-
-            action:
-              "getInspectionPhotoBase64",
-
-            inspectionId:
-              record.id
-
-          });
-
-        if (
-          result &&
-          result.success === true &&
-          result.dataUrl
-        ) {
-
-          photoMap.set(
-            key,
-            {
-              dataUrl:
-                result.dataUrl,
-
-              format:
-                getPdfImageFormat(
-                  result.dataUrl,
-                  result.mimeType
-                )
-            }
-          );
-
-        } else {
-
-          photoMap.set(
-            key,
-            null
-          );
-
-          console.warn(
-            "Photo PDF tidak tersedia:",
-            record.id,
-            result
-          );
-        }
-
-      } catch (error) {
-
-        photoMap.set(
-          key,
-          null
-        );
-
-        console.warn(
-          "Photo PDF gagal diambil:",
-          record.id,
-          error
-        );
-      }
-    }
-  }
-
-
-  /* ===================================================
-     PART HELPERS
-  =================================================== */
-
-  function buildPdfPartData(
-    record
-  ) {
-
-    const descriptions =
-      splitPartMultiline(
-        record.partsDescription
-      );
-
-    const partNumbers =
-      splitPartMultiline(
-        record.partNo
-      );
-
-    const quantities =
-      splitPartMultiline(
-        record.quantity
-      );
-
-    const totalParts =
-      Math.max(
-        1,
-        descriptions.length,
-        partNumbers.length,
-        quantities.length
-      );
-
-    while (
-      descriptions.length <
-      totalParts
-    ) {
-      descriptions.push("");
-    }
-
-    while (
-      partNumbers.length <
-      totalParts
-    ) {
-      partNumbers.push("");
-    }
-
-    while (
-      quantities.length <
-      totalParts
-    ) {
-      quantities.push("");
-    }
-
-    return {
-      descriptions:
-        descriptions,
-
-      partNumbers:
-        partNumbers,
-
-      quantities:
-        quantities,
-
-      totalParts:
-        totalParts
-    };
-  }
-
-
-  function buildPdfPartText(
-    values,
-    totalParts
-  ) {
-
-    const output = [];
-
-    for (
-      let index = 0;
-      index < totalParts;
-      index++
-    ) {
-
-      const rawValue =
-        values[index] !== undefined
-          ? String(
-              values[index]
-            ).trim()
-          : "";
-
-      output.push(
-        rawValue || "-"
-      );
-    }
-
-    return output.join(
-      "\n"
-    );
-  }
-
-
-  function getPdfCellValue(
-    record,
-    fieldKey,
-    partData
-  ) {
-
-    if (
-      fieldKey === "photo"
-    ) {
-      return "";
-    }
-
-    if (
-      fieldKey === "mol"
-    ) {
-      return String(
-        getMolDisplay(
-          record
-        ) ?? "-"
-      );
-    }
-
-    if (
-      fieldKey ===
-        "dateInspection" ||
-      fieldKey ===
-        "dateAction"
-    ) {
-      return formatDisplayDate(
-        record[fieldKey]
-      );
-    }
-
-    if (
-      fieldKey ===
-        "evidence"
-    ) {
-      return record.evidence
-        ? "Available"
-        : "-";
-    }
-
-    if (
-      fieldKey ===
-        "partsDescription"
-    ) {
-      return buildPdfPartText(
-        partData.descriptions,
-        partData.totalParts
-      );
-    }
-
-    if (
-      fieldKey ===
-        "partNo"
-    ) {
-      return buildPdfPartText(
-        partData.partNumbers,
-        partData.totalParts
-      );
-    }
-
-    if (
-      fieldKey ===
-        "quantity"
-    ) {
-      return buildPdfPartText(
-        partData.quantities,
-        partData.totalParts
-      );
-    }
-
-    const value =
-      record[fieldKey];
-
-    if (
-      value === null ||
-      value === undefined ||
-      String(value).trim() === ""
-    ) {
-      return "-";
-    }
-
-    return String(
-      value
-    );
-  }
-
-
-  /* ===================================================
-     TABLE DATA
-  =================================================== */
-
-  const head = [
-    activePdfColumns.map(
-      function (field) {
-        return field.label;
-      }
-    )
-  ];
-
-  const body =
-    filteredUnitHistoryData.map(
-      function (record) {
-
-        const partData =
-          buildPdfPartData(
-            record
-          );
-
-        return activePdfColumns.map(
-          function (field) {
-
-            return {
-
-              content:
-                getPdfCellValue(
-                  record,
-                  field.key,
-                  partData
-                ),
-
-              styles: {
-                valign:
-                  "top"
-              },
-
-              rawRecord:
-                record,
-
-              columnKey:
-                field.key,
-
-              totalParts:
-                partData.totalParts
-
-            };
-          }
-        );
-      }
+  const generatedDate =
+    new Date().toLocaleString(
+      "id-ID"
     );
 
 
-  /* ===================================================
-     TABLE SIZE
-  =================================================== */
+  doc.setFont(
+    "helvetica",
+    "bold"
+  );
 
-  const columnCount =
-    activePdfColumns.length;
+  doc.setFontSize(17);
 
-  const tableFontSize =
-    columnCount <= 8
-      ? 7.2
-      : columnCount <= 12
-        ? 6.3
-        : columnCount <= 16
-          ? 5.5
-          : 4.8;
-
-  const headerFontSize =
-    columnCount <= 8
-      ? 6.8
-      : columnCount <= 12
-        ? 6.0
-        : columnCount <= 16
-          ? 5.2
-          : 4.6;
-
-  const pageWidth =
-    doc.internal.pageSize
-      .getWidth();
-
-  const pageHeight =
-    doc.internal.pageSize
-      .getHeight();
+  doc.text(
+    "HEXA - Unit History",
+    10,
+    12
+  );
 
 
-  /* ===================================================
-     HEADER
-  =================================================== */
+  doc.setFont(
+    "helvetica",
+    "normal"
+  );
 
-  function drawPdfHeader() {
+  doc.setFontSize(7.5);
 
-    doc.setFont(
-      "helvetica",
-      "bold"
-    );
+  doc.text(
+    filteredUnitHistoryData.length +
+      " records  |  Generated " +
+      generatedDate,
+    10,
+    17
+  );
 
-    doc.setTextColor(
-      17,
-      17,
-      17
-    );
-
-    doc.setFontSize(
-      16
-    );
-
-    doc.text(
-      "HEXA - Unit History",
-      7,
-      8
-    );
-
-
-    doc.setFont(
-      "helvetica",
-      "normal"
-    );
-
-    doc.setFontSize(
-      5.8
-    );
-
-    doc.setTextColor(
-      80,
-      80,
-      80
-    );
-
-    doc.text(
-      filteredUnitHistoryData.length +
-        " records  •  " +
-        activePdfColumns.length +
-        " columns  •  Printed " +
-        new Date().toLocaleString(
-          "id-ID"
-        ),
-      7,
-      12.5
-    );
-
-
-    let rightX =
-      pageWidth - 7;
-
-    if (hexaLogo) {
-
-      const width =
-        19;
-
-      const height =
-        6.5;
-
-      rightX -=
-        width;
-
-      try {
-
-        doc.addImage(
-          hexaLogo.dataUrl,
-          hexaLogo.format,
-          rightX,
-          3.2,
-          width,
-          height
-        );
-
-      } catch (error) {
-
-        console.warn(
-          "Logo HEXA PDF:",
-          error
-        );
-      }
-    }
-
-
-    if (hrsLogo) {
-
-      const width =
-        27;
-
-      const height =
-        7;
-
-      rightX -=
-        width + 3;
-
-      try {
-
-        doc.addImage(
-          hrsLogo.dataUrl,
-          hrsLogo.format,
-          rightX,
-          3,
-          width,
-          height
-        );
-
-      } catch (error) {
-
-        console.warn(
-          "Logo HRS PDF:",
-          error
-        );
-      }
-    }
-
-
-    doc.setDrawColor(
-      17,
-      17,
-      17
-    );
-
-    doc.setLineWidth(
-      0.45
-    );
-
-    doc.line(
-      7,
-      16,
-      pageWidth - 7,
-      16
-    );
-
-
-    doc.setTextColor(
-      34,
-      34,
-      34
-    );
-  }
-
-
-  /* ===================================================
-     FOOTER
-  =================================================== */
-
-  function drawPdfFooter() {
-
-    doc.setFont(
-      "helvetica",
-      "normal"
-    );
-
-    doc.setFontSize(
-      5.5
-    );
-
-    doc.setTextColor(
-      70,
-      70,
-      70
-    );
-
-    doc.text(
-      "USER ID : " +
-        printUserId,
-      7,
-      pageHeight - 4
-    );
-
-    doc.setTextColor(
-      34,
-      34,
-      34
-    );
-  }
-
-
-  /* ===================================================
-     TABLE
-     Penting:
-     - Tidak ada manipulasi data.row.height di willDrawCell.
-     - Tinggi row ditentukan sebelum layout lewat didParseCell.
-     - Ini mencegah gap besar antar record.
-  =================================================== */
 
   doc.autoTable({
 
@@ -7211,230 +6876,96 @@ async function shareCurrentHistoryPdf() {
       body,
 
     startY:
-      19,
+      22,
 
     margin: {
-      top:
-        19,
-      right:
-        7,
-      bottom:
-        10,
-      left:
-        7
+      top: 22,
+      right: 8,
+      bottom: 14,
+      left: 8
     },
 
     theme:
       "grid",
 
     styles: {
-
       font:
         "helvetica",
-
       fontSize:
         tableFontSize,
-
-      textColor:
-        [25, 25, 25],
-
-      fillColor:
-        [255, 255, 255],
-
       cellPadding:
-        {
-          top:
-            1.1,
-          right:
-            1.0,
-          bottom:
-            1.1,
-          left:
-            1.0
-        },
-
+        1.6,
       valign:
         "top",
-
-      halign:
-        "left",
-
       overflow:
         "linebreak",
-
-      lineColor:
-        [165, 165, 165],
-
       lineWidth:
-        0.12,
-
-      minCellHeight:
-        6
+        0.15
     },
 
     headStyles: {
-
-      fillColor:
-        [17, 17, 17],
-
-      textColor:
-        [255, 255, 255],
-
       fontStyle:
         "bold",
-
-      fontSize:
-        headerFontSize,
-
-      valign:
-        "middle",
-
       halign:
         "left",
-
-      lineColor:
-        [115, 115, 115],
-
-      lineWidth:
-        0.12,
-
-      cellPadding:
-        {
-          top:
-            1.3,
-          right:
-            0.9,
-          bottom:
-            1.3,
-          left:
-            0.9
-        }
-    },
-
-    bodyStyles: {
-
-      fillColor:
-        [255, 255, 255],
-
-      textColor:
-        [25, 25, 25],
-
       valign:
-        "top"
+        "middle"
     },
-
-    rowPageBreak:
-      "avoid",
-
-    showHead:
-      "everyPage",
-
-
-    /*
-      Set min height SEBELUM AutoTable menghitung posisi row.
-      Tidak mengubah data.row.height setelah layout dibuat.
-    */
-
-    didParseCell:
-      function (data) {
-
-        if (
-          data.section !==
-            "body" ||
-          !data.cell.raw ||
-          typeof data.cell.raw !==
-            "object"
-        ) {
-          return;
-        }
-
-        const raw =
-          data.cell.raw;
-
-        let requiredHeight =
-          6;
-
-        if (
-          raw.totalParts &&
-          raw.totalParts > 1
-        ) {
-
-          requiredHeight =
-            Math.max(
-              requiredHeight,
-              raw.totalParts *
-                (
-                  tableFontSize *
-                    0.38 +
-                  1.05
-                ) +
-                1.2
-            );
-        }
-
-        if (
-          activeColumnKeys.includes(
-            "photo"
-          ) &&
-          raw.rawRecord &&
-          raw.rawRecord.photo
-        ) {
-
-          requiredHeight =
-            Math.max(
-              requiredHeight,
-              18
-            );
-        }
-
-        data.cell.styles
-          .minCellHeight =
-            requiredHeight;
-      },
-
-
-    /*
-      Foto baru digambar setelah cell selesai.
-    */
 
     didDrawCell:
       function (data) {
 
         if (
-          data.section !==
-            "body" ||
-          !data.cell.raw ||
-          typeof data.cell.raw !==
-            "object"
+          data.section !== "body"
         ) {
           return;
         }
 
-        const raw =
-          data.cell.raw;
+
+        const field =
+          activePdfColumns[
+            data.column.index
+          ];
+
 
         if (
-          raw.columnKey !==
-            "photo" ||
-          !raw.rawRecord ||
-          !raw.rawRecord.id
+          !field ||
+          field.key !== "photo"
         ) {
           return;
         }
 
-        const image =
-          photoMap.get(
+
+        const record =
+          filteredUnitHistoryData[
+            data.row.index
+          ];
+
+
+        if (
+          !record ||
+          !record.id
+        ) {
+          return;
+        }
+
+
+        const photo =
+          pdfPhotoMap.get(
             String(
-              raw.rawRecord.id
+              record.id
             )
           );
 
-        if (!image) {
+
+        if (!photo) {
           return;
         }
 
+
         const padding =
-          1.2;
+          1;
+
 
         const maxWidth =
           Math.max(
@@ -7443,6 +6974,7 @@ async function shareCurrentHistoryPdf() {
               padding * 2
           );
 
+
         const maxHeight =
           Math.max(
             1,
@@ -7450,12 +6982,20 @@ async function shareCurrentHistoryPdf() {
               padding * 2
           );
 
+
         const imageSize =
           Math.min(
-            15.5,
             maxWidth,
             maxHeight
           );
+
+
+        if (
+          imageSize <= 1
+        ) {
+          return;
+        }
+
 
         const x =
           data.cell.x +
@@ -7464,6 +7004,7 @@ async function shareCurrentHistoryPdf() {
             imageSize
           ) / 2;
 
+
         const y =
           data.cell.y +
           (
@@ -7471,11 +7012,12 @@ async function shareCurrentHistoryPdf() {
             imageSize
           ) / 2;
 
+
         try {
 
           doc.addImage(
-            image.dataUrl,
-            image.format,
+            photo.dataUrl,
+            photo.format,
             x,
             y,
             imageSize,
@@ -7485,8 +7027,8 @@ async function shareCurrentHistoryPdf() {
         } catch (error) {
 
           console.warn(
-            "Photo gagal digambar ke PDF:",
-            raw.rawRecord.id,
+            "Gagal menggambar Photo ke PDF:",
+            record.id,
             error
           );
         }
@@ -7496,21 +7038,48 @@ async function shareCurrentHistoryPdf() {
     didDrawPage:
       function () {
 
-        drawPdfHeader();
-        drawPdfFooter();
+        const pageHeight =
+          doc.internal.pageSize.getHeight();
+
+        doc.setFont(
+          "helvetica",
+          "normal"
+        );
+
+        doc.setFontSize(
+          6.5
+        );
+
+        doc.text(
+          "USER ID : " +
+            printUserId,
+          8,
+          pageHeight - 5
+        );
+
+        const pageNumber =
+          doc.internal.getNumberOfPages();
+
+        doc.text(
+          "Page " +
+            pageNumber,
+          pageWidth - 8,
+          pageHeight - 5,
+          {
+            align:
+              "right"
+          }
+        );
       }
 
   });
 
 
-  /* ===================================================
-     SHARE / DOWNLOAD
-  =================================================== */
-
   const pdfBlob =
     doc.output(
       "blob"
     );
+
 
   try {
 
@@ -7518,7 +7087,6 @@ async function shareCurrentHistoryPdf() {
       .shareOrDownload(
         pdfBlob,
         {
-
           documentName:
             "Unit_History",
 
@@ -7527,24 +7095,29 @@ async function shareCurrentHistoryPdf() {
 
           text:
             "HEXA Unit History"
-
         }
       );
 
   } catch (error) {
 
+    /*
+      Jika user menutup/cancel Share Sheet,
+      jangan tampilkan error.
+    */
+
     if (
       error &&
-      error.name ===
-        "AbortError"
+      error.name === "AbortError"
     ) {
       return;
     }
+
 
     console.error(
       "Share Unit History PDF:",
       error
     );
+
 
     alert(
       "PDF gagal dibagikan."
