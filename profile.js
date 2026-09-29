@@ -152,22 +152,53 @@ function renderProfilePhoto(name, photoUrl) {
   photo.style.display = "none";
   photo.removeAttribute("src");
 
-  const url = cleanProfileValue(photoUrl);
+  const url = getProfilePhotoDisplayUrl(photoUrl);
+
   if (!url) return;
 
   photo.onload = function () {
     photo.style.display = "block";
-    if (initial) initial.style.display = "none";
+
+    if (initial) {
+      initial.style.display = "none";
+    }
   };
 
   photo.onerror = function () {
     photo.style.display = "none";
     photo.removeAttribute("src");
-    if (initial) initial.style.display = "";
+
+    if (initial) {
+      initial.style.display = "";
+    }
   };
 
   photo.alt = `Foto profil ${name || "User"}`;
   photo.src = url;
+}
+
+function getProfilePhotoDisplayUrl(photoUrl) {
+  const url = cleanProfileValue(photoUrl);
+
+  if (!url) return "";
+
+  // Google Drive URL:
+  // https://drive.google.com/file/d/FILE_ID/view
+  const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+
+  if (fileMatch && fileMatch[1]) {
+    return `https://drive.google.com/thumbnail?id=${fileMatch[1]}&sz=w1000`;
+  }
+
+  // Google Drive open?id=FILE_ID
+  const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+
+  if (idMatch && idMatch[1]) {
+    return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
+  }
+
+  // Kalau bukan Google Drive, gunakan URL asli.
+  return url;
 }
 
 function getProfileInitials(name) {
