@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | HEXA</title>
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+  <header id="hexaHeader" data-header-type="standard" data-page="settings"></header>
+
+  <main id="profilePage" class="profile-page">
+    <section class="profile-heading-shell">
+      <div class="profile-heading">
+        <button type="button" id="profileBackButton" class="profile-back-button" aria-label="Back to Settings">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
+        </button>
+        <div class="profile-heading-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>
+        </div>
+        <div class="profile-heading-text">
+          <h1>My Profile</h1>
+          <p>Personal &amp; Account Information</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="profile-container">
+      <section class="profile-hero">
+        <div class="profile-photo-wrap">
+          <div class="profile-photo">
+            <img id="profilePhoto" src="" alt="">
+            <span id="profileInitial" class="profile-initial" aria-hidden="true">US</span>
+          </div>
+          <button type="button" class="profile-photo-action" id="profilePhotoAction" aria-label="Change profile photo">
+            <svg viewBox="0 0 24 24"><path d="M9 5l1.3-2h3.4L15 5h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4z"></path><circle cx="12" cy="12" r="4"></circle></svg>
+          </button>
+        </div>
+
+        <div class="profile-hero-info">
+          <div class="profile-name-row">
+            <h2 id="profileHeroName">User Name</h2>
+            <span id="profileActiveMark" class="profile-active-mark" title="Active Account">
+              <svg viewBox="0 0 24 24"><path d="M12 2.5 14.1 4l2.6-.2.9 2.4L20 7.3l-.4 2.6 1.9 2.1-1.9 2.1.4 2.6-2.4 1.1-.9 2.4-2.6-.2-2.1 1.5L9.9 20l-2.6.2-.9-2.4L4 16.7l.4-2.6L2.5 12l1.9-2.1L4 7.3l2.4-1.1.9-2.4 2.6.2z"></path><path class="profile-active-check" d="M8.3 12.1l2.3 2.3 5.2-5.2"></path></svg>
+            </span>
+          </div>
+          <div class="profile-hero-meta">
+            <span id="profileHeroUserId">User ID</span><span>•</span><span id="profileHeroLevel">Level 1</span>
+          </div>
+          <span id="profileRoleBadge" class="profile-role-badge">MASTER</span>
+          <p id="profileMotto" class="profile-motto" hidden></p>
+        </div>
+      </section>
+
+      <section class="profile-section">
+        <div class="profile-section-heading">
+          <span class="profile-section-accent"></span>
+          <div><h2>Personal Information</h2><p>Information you can update from your profile</p></div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-field"><label>Name</label><div id="profileName" class="profile-field-value">-</div></div>
+          <div class="profile-field"><label>Phone Number</label><div id="profilePhone" class="profile-field-value">-</div></div>
+          <div class="profile-field"><label>Email</label><div id="profileEmail" class="profile-field-value">-</div></div>
+          <button type="button" id="profileEditButton" class="profile-primary-button">
+            <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z"></path><path d="M13.5 6.5l4 4"></path></svg>
+            <span>Edit Profile</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="profile-section">
+        <div class="profile-section-heading">
+          <span class="profile-section-accent"></span>
+          <div><h2>Account Information</h2><p>Managed by HEXA Master Administrator</p></div>
+        </div>
+        <div class="profile-card">
+          <div class="profile-field profile-locked-field"><label>User ID <span class="profile-lock">🔒</span></label><div id="profileUserId" class="profile-field-value">-</div></div>
+          <div class="profile-field profile-locked-field"><label>Level <span class="profile-lock">🔒</span></label><div id="profileLevel" class="profile-field-value">-</div></div>
+          <div class="profile-field profile-locked-field"><label>Kode <span class="profile-lock">🔒</span></label><div id="profileKode" class="profile-field-value">-</div></div>
+          <div class="profile-field profile-locked-field"><label>Status <span class="profile-lock">🔒</span></label><div class="profile-status-row"><span id="profileStatus" class="profile-status-badge">-</span></div></div>
+        </div>
+      </section>
+
+      <section class="profile-section">
+        <div class="profile-section-heading">
+          <span class="profile-section-accent"></span>
+          <div><h2>Security</h2><p>Password &amp; account security</p></div>
+        </div>
+        <button type="button" id="profilePasswordButton" class="profile-security-card">
+          <span class="profile-security-icon">🔐</span>
+          <span class="profile-security-content"><strong>Change Password</strong><small>Password ••••••••</small></span>
+          <span class="profile-arrow">›</span>
+        </button>
+      </section>
+    </section>
+  </main>
+
+  <script src="hexa-menu.js"></script>
+  <script src="hexa-header.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>
