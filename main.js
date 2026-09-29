@@ -664,6 +664,30 @@ function keepSettingsLast() {
 
 }
 
+// ======================================================
+// SETTINGS ACCESS - MASTER ONLY
+// ======================================================
+
+function applySettingsAccess() {
+
+  if (!settingsMenu) {
+    return;
+  }
+
+  const userKode =
+    Number(currentUser?.kode);
+
+  if (userKode === 1) {
+
+    settingsMenu.style.display = "";
+
+  } else {
+
+    settingsMenu.style.display = "none";
+
+  }
+
+}
 
 // ======================================================
 // 11. NAVIGASI MENU UTAMA
@@ -1259,6 +1283,9 @@ function initializeHexaMain() {
   // Settings tetap terakhir
 
   keepSettingsLast();
+
+  // Master access Authorized
+  applySettingsAccess();
 
 
   // Load posisi floating button
