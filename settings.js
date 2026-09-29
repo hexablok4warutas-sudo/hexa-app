@@ -619,6 +619,67 @@ function renderSettingsProfile(
 
 }
 
+// =====================================================
+// GOOGLE DRIVE PROFILE PHOTO DISPLAY URL
+// =====================================================
+
+function getSettingsProfilePhotoDisplayUrl(
+  photoUrl
+) {
+
+  const url =
+    cleanValue(
+      photoUrl
+    );
+
+  if (!url) {
+    return "";
+  }
+
+  // Format:
+  // https://drive.google.com/file/d/FILE_ID/view
+  const fileMatch =
+    url.match(
+      /\/file\/d\/([a-zA-Z0-9_-]+)/
+    );
+
+  if (
+    fileMatch &&
+    fileMatch[1]
+  ) {
+
+    return (
+      "https://drive.google.com/thumbnail?id=" +
+      fileMatch[1] +
+      "&sz=w1000"
+    );
+
+  }
+
+  // Format:
+  // https://drive.google.com/open?id=FILE_ID
+  const idMatch =
+    url.match(
+      /[?&]id=([a-zA-Z0-9_-]+)/
+    );
+
+  if (
+    idMatch &&
+    idMatch[1]
+  ) {
+
+    return (
+      "https://drive.google.com/thumbnail?id=" +
+      idMatch[1] +
+      "&sz=w1000"
+    );
+
+  }
+
+  // Bukan URL Google Drive,
+  // gunakan URL aslinya.
+  return url;
+}
 
 // =====================================================
 // PROFILE PHOTO + INITIAL FALLBACK
@@ -668,10 +729,9 @@ function renderProfilePhoto(
 
 
   const url =
-    cleanValue(
-      photoUrl
-    );
-
+  getSettingsProfilePhotoDisplayUrl(
+    photoUrl
+  );
 
   if (!url) {
     return;
