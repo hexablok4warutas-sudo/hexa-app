@@ -23,7 +23,7 @@
   Jika ada menu baru, cukup tambahkan di sini.
 
   Tahap berikutnya data ini dapat dipindahkan
-  ke Google Sheets / Settings Master tanpa
+  ke Google Sheets /  Master tanpa
   mengubah struktur halaman.
 */
 
@@ -152,7 +152,7 @@ window.HEXA_MENU = [
 
     order: 6,
 
-    enabled: false
+    enabled: true
   }
 
 ];
