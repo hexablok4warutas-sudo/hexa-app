@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>User Management | HEXA</title>
+
+
+  <!-- GLOBAL HEXA HEADER -->
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- USER MANAGEMENT -->
+  <link
+    rel="stylesheet"
+    href="user-management.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- ==================================================
+       GLOBAL HEXA HEADER
+       ================================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="settings"
+  ></header>
+
+
+
+  <!-- ==================================================
+       USER MANAGEMENT PAGE
+       ================================================== -->
+
+  <main
+    id="userManagementPage"
+    class="user-management-page"
+  >
+
+
+    <!-- =================================================
+         STICKY HEADING
+         ================================================= -->
+
+    <section class="user-management-heading-shell">
+
+      <div class="user-management-heading">
+
+
+        <!-- BACK -->
+
+        <button
+          type="button"
+          id="userManagementBackButton"
+          class="user-management-back-button"
+          aria-label="Back to Settings"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M15 18l-6-6 6-6"></path>
+          </svg>
+
+        </button>
+
+
+        <!-- ICON -->
+
+        <div
+          class="user-management-heading-icon"
+          aria-hidden="true"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <circle
+              cx="9"
+              cy="8"
+              r="3"
+            ></circle>
+
+            <circle
+              cx="17"
+              cy="9"
+              r="2.5"
+            ></circle>
+
+            <path
+              d="M3 20a6 6 0 0 1 12 0"
+            ></path>
+
+            <path
+              d="M14 15a5 5 0 0 1 7 5"
+            ></path>
+
+          </svg>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="user-management-heading-text">
+
+          <h1>
+            User Management
+          </h1>
+
+          <p>
+            Manage Users &amp; Account Access
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         PAGE CONTENT
+         ================================================= -->
+
+    <section class="user-management-container">
+
+
+      <!-- =================================================
+           SUMMARY
+           ================================================= -->
+
+      <section
+        class="user-summary-grid"
+        aria-label="User Summary"
+      >
+
+
+        <!-- TOTAL USER -->
+
+        <article class="user-summary-card">
+
+          <span
+            class="user-summary-icon total"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="9"
+                cy="8"
+                r="3"
+              ></circle>
+
+              <circle
+                cx="17"
+                cy="9"
+                r="2.5"
+              ></circle>
+
+              <path
+                d="M3 20a6 6 0 0 1 12 0"
+              ></path>
+
+              <path
+                d="M14 15a5 5 0 0 1 7 5"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <span class="user-summary-content">
+
+            <strong id="userTotalCount">
+              0
+            </strong>
+
+            <small>
+              Total Users
+            </small>
+
+          </span>
+
+        </article>
+
+
+
+        <!-- ACTIVE USER -->
+
+        <article class="user-summary-card">
+
+          <span
+            class="user-summary-icon active"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              ></circle>
+
+              <path
+                d="M8 12l2.5 2.5L16 9"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <span class="user-summary-content">
+
+            <strong id="userActiveCount">
+              0
+            </strong>
+
+            <small>
+              Active
+            </small>
+
+          </span>
+
+        </article>
+
+
+
+        <!-- INACTIVE USER -->
+
+        <article class="user-summary-card">
+
+          <span
+            class="user-summary-icon inactive"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+              ></circle>
+
+              <path
+                d="M8.5 8.5l7 7"
+              ></path>
+
+              <path
+                d="M15.5 8.5l-7 7"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <span class="user-summary-content">
+
+            <strong id="userInactiveCount">
+              0
+            </strong>
+
+            <small>
+              Inactive
+            </small>
+
+          </span>
+
+        </article>
+
+      </section>
+
+
+
+      <!-- =================================================
+           SEARCH & FILTER
+           ================================================= -->
+
+      <section class="user-tools-card">
+
+
+        <!-- SEARCH -->
+
+        <div class="user-search-box">
+
+          <span
+            class="user-search-icon"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="11"
+                cy="11"
+                r="6"
+              ></circle>
+
+              <path
+                d="M16 16l4 4"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+          <input
+            type="search"
+            id="userSearchInput"
+            placeholder="Search user..."
+            autocomplete="off"
+            aria-label="Search user"
+          >
+
+        </div>
+
+
+
+        <!-- LEVEL FILTER -->
+
+        <select
+          id="userLevelFilter"
+          class="user-filter-select"
+          aria-label="Filter user level"
+        >
+
+          <option value="">
+            All Levels
+          </option>
+
+        </select>
+
+
+
+        <!-- STATUS FILTER -->
+
+        <select
+          id="userStatusFilter"
+          class="user-filter-select"
+          aria-label="Filter user status"
+        >
+
+          <option value="">
+            All Status
+          </option>
+
+          <option value="ACTIVE">
+            Active
+          </option>
+
+          <option value="INACTIVE">
+            Inactive
+          </option>
+
+        </select>
+
+      </section>
+
+
+
+      <!-- =================================================
+           USER LIST HEADER
+           ================================================= -->
+
+      <section class="user-list-heading">
+
+        <div>
+
+          <h2>
+            Users
+          </h2>
+
+          <p id="userListResultText">
+            Loading user database...
+          </p>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================================
+           LOADING
+           ================================================= -->
+
+      <section
+        id="userManagementLoading"
+        class="user-management-state"
+      >
+
+        <span class="user-loading-spinner"></span>
+
+        <strong>
+          Loading Users
+        </strong>
+
+        <p>
+          Mengambil User Database terbaru...
+        </p>
+
+      </section>
+
+
+
+      <!-- =================================================
+           ERROR
+           ================================================= -->
+
+      <section
+        id="userManagementError"
+        class="user-management-state user-management-error"
+        hidden
+      >
+
+        <span
+          class="user-state-icon"
+          aria-hidden="true"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+            ></circle>
+
+            <path d="M12 7v6"></path>
+
+            <path d="M12 17h.01"></path>
+
+          </svg>
+
+        </span>
+
+
+        <strong>
+          Unable to Load Users
+        </strong>
+
+        <p id="userManagementErrorMessage">
+          User Database tidak dapat dimuat.
+        </p>
+
+
+        <button
+          type="button"
+          id="userManagementRetryButton"
+          class="user-retry-button"
+        >
+          Try Again
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           EMPTY
+           ================================================= -->
+
+      <section
+        id="userManagementEmpty"
+        class="user-management-state"
+        hidden
+      >
+
+        <span
+          class="user-state-icon"
+          aria-hidden="true"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <circle
+              cx="9"
+              cy="8"
+              r="3"
+            ></circle>
+
+            <circle
+              cx="17"
+              cy="9"
+              r="2.5"
+            ></circle>
+
+            <path
+              d="M3 20a6 6 0 0 1 12 0"
+            ></path>
+
+            <path
+              d="M14 15a5 5 0 0 1 7 5"
+            ></path>
+
+          </svg>
+
+        </span>
+
+
+        <strong>
+          No Users Found
+        </strong>
+
+        <p>
+          Tidak ada user yang sesuai dengan pencarian atau filter.
+        </p>
+
+      </section>
+
+
+
+      <!-- =================================================
+           USER LIST
+
+           Card user akan dibuat oleh JavaScript
+           berdasarkan response getUsers dari HEXA API.
+           ================================================= -->
+
+      <section
+        id="userManagementList"
+        class="user-management-list"
+        aria-live="polite"
+      ></section>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- ==================================================
+       JAVASCRIPT
+       ================================================== -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
+
+  <script src="user-management.js"></script>
+
+
+</body>
+
+</html>
