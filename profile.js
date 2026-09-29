@@ -208,14 +208,17 @@ function initializeProfileNavigation() {
     saveButton.addEventListener("click", previewProfileChanges);
   }
 
-  // Photo dan password kita aktifkan pada tahap berikutnya.
-  [photoButton, passwordButton].forEach(function (button) {
-    if (button) {
-      button.addEventListener("click", function () {
-        alert("Fitur ini akan diaktifkan pada tahap berikutnya.");
-      });
-    }
-  });
+  if (photoButton) {
+    photoButton.addEventListener("click", openProfilePhotoSheet);
+  }
+
+  if (passwordButton) {
+    passwordButton.addEventListener("click", function () {
+      alert("Fitur Change Password akan diaktifkan pada tahap berikutnya.");
+    });
+  }
+
+  initializeProfilePhotoControls();
 }
 
 function enterProfileEditMode() {
@@ -382,4 +385,227 @@ function clearProfileSession() {
 
 function redirectProfileToLogin() {
   window.location.replace("index.html");
+}
+
+
+// =====================================================
+// CHANGE PROFILE PHOTO
+// =====================================================
+
+function initializeProfilePhotoControls() {
+  const cameraInput = document.getElementById("profileCameraInput");
+  const galleryInput = document.getElementById("profileGalleryInput");
+  const takePhotoButton = document.getElementById("profileTakePhotoButton");
+  const chooseGalleryButton = document.getElementById("profileChooseGalleryButton");
+  const cancelButton = document.getElementById("profilePhotoSheetCancel");
+  const backdrop = document.getElementById("profilePhotoSheetBackdrop");
+
+  if (takePhotoButton && cameraInput) {
+    takePhotoButton.addEventListener("click", function () {
+      closeProfilePhotoSheet();
+      cameraInput.value = "";
+      cameraInput.click();
+    });
+  }
+
+  if (chooseGalleryButton && galleryInput) {
+    chooseGalleryButton.addEventListener("click", function () {
+      closeProfilePhotoSheet();
+      galleryInput.value = "";
+      galleryInput.click();
+    });
+  }
+
+  if (cancelButton) {
+    cancelButton.addEventListener("click", closeProfilePhotoSheet);
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener("click", closeProfilePhotoSheet);
+  }
+
+  if (cameraInput) {
+    cameraInput.addEventListener("change", handleProfilePhotoSelection);
+  }
+
+  if (galleryInput) {
+    galleryInput.addEventListener("change", handleProfilePhotoSelection);
+  }
+}
+
+function openProfilePhotoSheet() {
+  const sheet = document.getElementById("profilePhotoSheet");
+  const backdrop = document.getElementById("profilePhotoSheetBackdrop");
+
+  if (!sheet || !backdrop) return;
+
+  backdrop.hidden = false;
+  sheet.setAttribute("aria-hidden", "false");
+  document.body.classList.add("profile-photo-sheet-open");
+
+  requestAnimationFrame(function () {
+    sheet.classList.add("is-open");
+  });
+}
+
+function closeProfilePhotoSheet() {
+  const sheet = document.getElementById("profilePhotoSheet");
+  const backdrop = document.getElementById("profilePhotoSheetBackdrop");
+
+  if (!sheet || !backdrop) return;
+
+  sheet.classList.remove("is-open");
+  sheet.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("profile-photo-sheet-open");
+
+  setTimeout(function () {
+    if (!sheet.classList.contains("is-open")) {
+      backdrop.hidden = true;
+    }
+  }, 240);
+}
+
+async function handleProfilePhotoSelection(event) {
+  const input = event.currentTarget;
+  const file = input.files && input.files[0];
+
+  if (!file) return;
+
+  if (!file.type || !file.type.startsWith("image/")) {
+    alert("File yang dipilih harus berupa gambar.");
+    input.value = "";
+    return;
+  }
+
+  try {
+    setProfilePhotoUploading(true);
+
+    const compressedPhoto = await compressProfilePhoto(file);
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateProfilePhoto",
+        uniqId: currentProfileUser.uniqId,
+        photoBase64: compressedPhoto.base64,
+        photoMimeType: compressedPhoto.mimeType
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result || result.success !== true || !result.user) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Response update Photo Profile tidak valid."
+      );
+    }
+
+    currentProfileUser = normalizeProfileUser(result.user);
+
+    sessionStorage.setItem(
+      "hexaUser",
+      JSON.stringify(currentProfileUser)
+    );
+
+    renderProfile(currentProfileUser);
+
+    alert("Photo Profile berhasil diperbarui.");
+
+  } catch (error) {
+    console.error("HEXA Profile: gagal update Photo Profile.", error);
+
+    alert(
+      "Photo Profile gagal diperbarui.\\n\\n" +
+      (error.message || "Terjadi kesalahan saat menghubungi HEXA API.")
+    );
+
+  } finally {
+    setProfilePhotoUploading(false);
+    input.value = "";
+  }
+}
+
+function compressProfilePhoto(file) {
+  return new Promise(function (resolve, reject) {
+    const reader = new FileReader();
+
+    reader.onerror = function () {
+      reject(new Error("Gagal membaca file gambar."));
+    };
+
+    reader.onload = function () {
+      const image = new Image();
+
+      image.onerror = function () {
+        reject(new Error("Gambar tidak dapat diproses."));
+      };
+
+      image.onload = function () {
+        const maxSize = 1200;
+
+        let width = image.naturalWidth || image.width;
+        let height = image.naturalHeight || image.height;
+
+        if (!width || !height) {
+          reject(new Error("Ukuran gambar tidak valid."));
+          return;
+        }
+
+        if (width > maxSize || height > maxSize) {
+          const ratio = Math.min(maxSize / width, maxSize / height);
+
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        const canvas = document.createElement("canvas");
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const context = canvas.getContext("2d");
+
+        if (!context) {
+          reject(new Error("Browser tidak dapat memproses gambar."));
+          return;
+        }
+
+        context.drawImage(image, 0, 0, width, height);
+
+        const mimeType = "image/jpeg";
+        const dataUrl = canvas.toDataURL(mimeType, 0.82);
+
+        resolve({
+          base64: dataUrl.split(",")[1],
+          mimeType: mimeType
+        });
+      };
+
+      image.src = reader.result;
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+function setProfilePhotoUploading(isUploading) {
+  const overlay = document.getElementById("profilePhotoUploading");
+  const photoButton = document.getElementById("profilePhotoAction");
+
+  if (overlay) {
+    overlay.hidden = !isUploading;
+  }
+
+  if (photoButton) {
+    photoButton.disabled = isUploading;
+  }
 }
