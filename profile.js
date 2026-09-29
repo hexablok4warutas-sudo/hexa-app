@@ -2,9 +2,14 @@
 
 document.addEventListener("DOMContentLoaded", initializeProfile);
 
+let currentProfileUser = null;
+
 function initializeProfile() {
   const user = getProfileSessionUser();
   if (!user) return;
+
+  currentProfileUser = { ...user };
+
   applyProfileTheme(user.kode);
   renderProfile(user);
   initializeProfileNavigation();
@@ -78,6 +83,7 @@ function renderProfile(user) {
   setProfileText("profileName", user.nama || "-");
   setProfileText("profilePhone", user.noHp || "-");
   setProfileText("profileEmail", user.email || "-");
+  setProfileText("profileQuote", user.kutipan || "-");
   setProfileText("profileUserId", user.userId || "-");
   setProfileText("profileLevel", user.level || "-");
   setProfileText("profileKode", user.kode || "-");
@@ -176,6 +182,8 @@ function getProfileInitials(name) {
 function initializeProfileNavigation() {
   const backButton = document.getElementById("profileBackButton");
   const editButton = document.getElementById("profileEditButton");
+  const cancelButton = document.getElementById("profileCancelButton");
+  const saveButton = document.getElementById("profileSaveButton");
   const photoButton = document.getElementById("profilePhotoAction");
   const passwordButton = document.getElementById("profilePasswordButton");
 
@@ -185,14 +193,122 @@ function initializeProfileNavigation() {
     });
   }
 
-  // Tahap pertama: UI saja, belum menulis ke database.
-  [editButton, photoButton, passwordButton].forEach(function (button) {
+  if (editButton) {
+    editButton.addEventListener("click", enterProfileEditMode);
+  }
+
+  if (cancelButton) {
+    cancelButton.addEventListener("click", cancelProfileEdit);
+  }
+
+  if (saveButton) {
+    saveButton.addEventListener("click", previewProfileChanges);
+  }
+
+  // Photo dan password kita aktifkan pada tahap berikutnya.
+  [photoButton, passwordButton].forEach(function (button) {
     if (button) {
       button.addEventListener("click", function () {
         alert("Fitur ini akan diaktifkan pada tahap berikutnya.");
       });
     }
   });
+}
+
+function enterProfileEditMode() {
+  if (!currentProfileUser) return;
+
+  createProfileEditor("profileName", "text", currentProfileUser.nama);
+  createProfileEditor("profilePhone", "tel", currentProfileUser.noHp);
+  createProfileEditor("profileEmail", "email", currentProfileUser.email);
+  createProfileEditor("profileQuote", "textarea", currentProfileUser.kutipan);
+
+  const viewActions = document.getElementById("profileViewActions");
+  const editActions = document.getElementById("profileEditActions");
+
+  if (viewActions) viewActions.hidden = true;
+  if (editActions) editActions.hidden = false;
+}
+
+function createProfileEditor(id, type, value) {
+  const container = document.getElementById(id);
+  if (!container) return;
+
+  const field = container.closest(".profile-field");
+  if (field) field.classList.add("is-editing");
+
+  let input;
+
+  if (type === "textarea") {
+    input = document.createElement("textarea");
+  } else {
+    input = document.createElement("input");
+    input.type = type;
+  }
+
+  input.className = "profile-edit-input";
+  input.value = value || "";
+  input.dataset.profileEditor = id;
+
+  if (id === "profilePhone") {
+    input.inputMode = "tel";
+  }
+
+  container.replaceChildren(input);
+}
+
+function cancelProfileEdit() {
+  if (!currentProfileUser) return;
+
+  renderProfile(currentProfileUser);
+  exitProfileEditMode();
+}
+
+function previewProfileChanges() {
+  if (!currentProfileUser) return;
+
+  const nama = getProfileEditorValue("profileName");
+  const noHp = getProfileEditorValue("profilePhone");
+  const email = getProfileEditorValue("profileEmail");
+  const kutipan = getProfileEditorValue("profileQuote");
+
+  if (!nama) {
+    alert("Name tidak boleh kosong.");
+    return;
+  }
+
+  currentProfileUser = {
+    ...currentProfileUser,
+    nama,
+    noHp,
+    email,
+    kutipan
+  };
+
+  renderProfile(currentProfileUser);
+  exitProfileEditMode();
+
+  alert(
+    "Perubahan sudah tampil di halaman. Penyimpanan ke database akan kita aktifkan pada tahap berikutnya."
+  );
+}
+
+function getProfileEditorValue(id) {
+  const container = document.getElementById(id);
+  const input = container?.querySelector("[data-profile-editor]");
+  return cleanProfileValue(input?.value);
+}
+
+function exitProfileEditMode() {
+  document.querySelectorAll(".profile-field.is-editing").forEach(function (field) {
+    field.classList.remove("is-editing");
+  });
+
+  const viewActions = document.getElementById("profileViewActions");
+  const editActions = document.getElementById("profileEditActions");
+
+  if (viewActions) viewActions.hidden = false;
+  if (editActions) editActions.hidden = true;
 }
 
 function clearProfileSession() {
