@@ -1,5 +1,8 @@
 "use strict";
 
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
+
 document.addEventListener("DOMContentLoaded", initializeProfile);
 
 let currentProfileUser = null;
@@ -264,7 +267,7 @@ function cancelProfileEdit() {
   exitProfileEditMode();
 }
 
-function previewProfileChanges() {
+async function previewProfileChanges() {
   if (!currentProfileUser) return;
 
   const nama = getProfileEditorValue("profileName");
@@ -277,20 +280,81 @@ function previewProfileChanges() {
     return;
   }
 
-  currentProfileUser = {
-    ...currentProfileUser,
-    nama,
-    noHp,
-    email,
-    kutipan
-  };
+  const saveButton = document.getElementById("profileSaveButton");
+  const cancelButton = document.getElementById("profileCancelButton");
 
-  renderProfile(currentProfileUser);
-  exitProfileEditMode();
+  const originalSaveText = saveButton ? saveButton.textContent : "Save Changes";
 
-  alert(
-    "Perubahan sudah tampil di halaman. Penyimpanan ke database akan kita aktifkan pada tahap berikutnya."
-  );
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+  }
+
+  if (cancelButton) {
+    cancelButton.disabled = true;
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateMyProfile",
+        uniqId: currentProfileUser.uniqId,
+        nama: nama,
+        noHp: noHp,
+        photo: currentProfileUser.photo || "",
+        email: email,
+        kutipan: kutipan
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result || result.success !== true || !result.user) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Response update profile tidak valid."
+      );
+    }
+
+    currentProfileUser = normalizeProfileUser(result.user);
+
+    sessionStorage.setItem(
+      "hexaUser",
+      JSON.stringify(currentProfileUser)
+    );
+
+    renderProfile(currentProfileUser);
+    exitProfileEditMode();
+
+    alert("Profile berhasil diperbarui.");
+
+  } catch (error) {
+    console.error("HEXA Profile: gagal menyimpan profile.", error);
+
+    alert(
+      "Profile gagal diperbarui.\n\n" +
+      (error.message || "Terjadi kesalahan saat menghubungi HEXA API.")
+    );
+
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalSaveText;
+    }
+
+    if (cancelButton) {
+      cancelButton.disabled = false;
+    }
+  }
 }
 
 function getProfileEditorValue(id) {
