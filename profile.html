@@ -62,10 +62,26 @@
           <div class="profile-field"><label>Name</label><div id="profileName" class="profile-field-value">-</div></div>
           <div class="profile-field"><label>Phone Number</label><div id="profilePhone" class="profile-field-value">-</div></div>
           <div class="profile-field"><label>Email</label><div id="profileEmail" class="profile-field-value">-</div></div>
-          <button type="button" id="profileEditButton" class="profile-primary-button">
-            <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z"></path><path d="M13.5 6.5l4 4"></path></svg>
-            <span>Edit Profile</span>
-          </button>
+          <div class="profile-field profile-quote-field">
+            <label>Kutipan</label>
+            <div id="profileQuote" class="profile-field-value profile-quote-value">-</div>
+          </div>
+
+          <div id="profileViewActions" class="profile-actions">
+            <button type="button" id="profileEditButton" class="profile-primary-button">
+              <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z"></path><path d="M13.5 6.5l4 4"></path></svg>
+              <span>Edit Profile</span>
+            </button>
+          </div>
+
+          <div id="profileEditActions" class="profile-actions profile-edit-actions" hidden>
+            <button type="button" id="profileCancelButton" class="profile-secondary-button">
+              Cancel
+            </button>
+            <button type="button" id="profileSaveButton" class="profile-primary-button">
+              Save Changes
+            </button>
+          </div>
         </div>
       </section>
 
