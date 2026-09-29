@@ -191,6 +191,60 @@
     </div>
   </div>
 
+
+  <!-- CHANGE PASSWORD MODAL -->
+  <div id="profilePasswordBackdrop" class="profile-password-backdrop" hidden></div>
+
+  <section
+    id="profilePasswordModal"
+    class="profile-password-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="profilePasswordTitle"
+    aria-hidden="true"
+  >
+    <div class="profile-password-modal-header">
+      <div>
+        <h2 id="profilePasswordTitle">Change Password</h2>
+        <p>Update your HEXA account password</p>
+      </div>
+      <button type="button" id="profilePasswordClose" class="profile-password-close" aria-label="Close">×</button>
+    </div>
+
+    <form id="profilePasswordForm" class="profile-password-form" novalidate>
+      <label class="profile-password-field">
+        <span>Current Password</span>
+        <div class="profile-password-input-wrap">
+          <input id="profileCurrentPassword" type="password" autocomplete="current-password" placeholder="Enter current password">
+          <button type="button" class="profile-password-toggle" data-password-target="profileCurrentPassword" aria-label="Show password">👁</button>
+        </div>
+      </label>
+
+      <label class="profile-password-field">
+        <span>New Password</span>
+        <div class="profile-password-input-wrap">
+          <input id="profileNewPassword" type="password" autocomplete="new-password" placeholder="Minimum 6 characters">
+          <button type="button" class="profile-password-toggle" data-password-target="profileNewPassword" aria-label="Show password">👁</button>
+        </div>
+      </label>
+
+      <label class="profile-password-field">
+        <span>Confirm New Password</span>
+        <div class="profile-password-input-wrap">
+          <input id="profileConfirmPassword" type="password" autocomplete="new-password" placeholder="Repeat new password">
+          <button type="button" class="profile-password-toggle" data-password-target="profileConfirmPassword" aria-label="Show password">👁</button>
+        </div>
+      </label>
+
+      <p id="profilePasswordMessage" class="profile-password-message" hidden></p>
+
+      <div class="profile-password-actions">
+        <button type="button" id="profilePasswordCancel" class="profile-password-cancel">Cancel</button>
+        <button type="submit" id="profilePasswordSave" class="profile-password-save">Change Password</button>
+      </div>
+    </form>
+  </section>
+
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
   <script src="profile.js"></script>
