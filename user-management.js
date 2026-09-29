@@ -1889,7 +1889,7 @@ async function submitUserAddForm(
   }
 
 
-  if (!["1", "2", "3", "4"].includes(kode)) {
+  if (!["1", "2", "3", "4", "5", "6"].includes(kode)) {
     setUserAddMessage(
       "Role tidak valid.",
       "error"
