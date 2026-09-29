@@ -400,6 +400,15 @@
 
         </div>
 
+        <button
+          type="button"
+          id="userAddButton"
+          class="user-add-button"
+        >
+          <span aria-hidden="true">+</span>
+          Add User
+        </button>
+
       </section>
 
 
@@ -552,6 +561,166 @@
 
   </main>
 
+
+
+
+  <!-- ==================================================
+       ADD USER MODAL
+       Desktop = modal, Mobile = bottom sheet
+       ================================================== -->
+
+  <div
+    id="userAddBackdrop"
+    class="user-add-backdrop"
+    hidden
+  ></div>
+
+  <section
+    id="userAddModal"
+    class="user-add-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="userAddModalTitle"
+    hidden
+  >
+    <div class="user-add-modal-header">
+      <div>
+        <h2 id="userAddModalTitle">Add New User</h2>
+        <p>Create a new HEXA account</p>
+      </div>
+
+      <button
+        type="button"
+        id="userAddClose"
+        class="user-add-close"
+        aria-label="Close Add User"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"></path>
+          <path d="M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+
+    <form id="userAddForm" class="user-add-form" novalidate>
+
+      <div class="user-add-grid">
+
+        <label class="user-add-field user-add-field-wide">
+          <span>Nama <b>*</b></span>
+          <input
+            type="text"
+            id="userAddName"
+            autocomplete="name"
+            placeholder="Nama lengkap"
+            required
+          >
+        </label>
+
+        <label class="user-add-field">
+          <span>User ID <b>*</b></span>
+          <input
+            type="text"
+            id="userAddUserId"
+            autocomplete="off"
+            placeholder="Contoh: hendri"
+            required
+          >
+        </label>
+
+        <label class="user-add-field">
+          <span>Password <b>*</b></span>
+          <div class="user-add-password-wrap">
+            <input
+              type="password"
+              id="userAddPassword"
+              autocomplete="new-password"
+              placeholder="Minimal 6 karakter"
+              required
+            >
+            <button
+              type="button"
+              id="userAddPasswordToggle"
+              class="user-add-password-toggle"
+              aria-label="Show password"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"></path>
+                <circle cx="12" cy="12" r="2.7"></circle>
+              </svg>
+            </button>
+          </div>
+        </label>
+
+        <label class="user-add-field">
+          <span>Role <b>*</b></span>
+          <select id="userAddRole" required>
+            <option value="">Select Role</option>
+            <option value="1">MASTER — Level 1</option>
+            <option value="2">GL — Level 2</option>
+            <option value="3">ADMIN — Level 3</option>
+            <option value="4">MECHANIC — Level 4</option>
+          </select>
+        </label>
+
+        <label class="user-add-field">
+          <span>Status <b>*</b></span>
+          <select id="userAddStatus" required>
+            <option value="ACTIVE" selected>ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </label>
+
+        <label class="user-add-field">
+          <span>No. HP</span>
+          <input
+            type="tel"
+            id="userAddPhone"
+            inputmode="tel"
+            autocomplete="tel"
+            placeholder="Contoh: 0821099090"
+          >
+        </label>
+
+        <label class="user-add-field">
+          <span>Email</span>
+          <input
+            type="email"
+            id="userAddEmail"
+            autocomplete="email"
+            placeholder="nama@email.com"
+          >
+        </label>
+
+      </div>
+
+      <p
+        id="userAddMessage"
+        class="user-add-message"
+        aria-live="polite"
+        hidden
+      ></p>
+
+      <div class="user-add-actions">
+        <button
+          type="button"
+          id="userAddCancel"
+          class="user-add-secondary"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          id="userAddSave"
+          class="user-add-primary"
+        >
+          Create User
+        </button>
+      </div>
+
+    </form>
+  </section>
 
 
   <!-- ==================================================
