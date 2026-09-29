@@ -80,6 +80,8 @@ async function initializeUserManagement() {
 
   initializeUserManagementRetry();
 
+  initializeUserManagementAdd();
+
 
   await loadUserManagementData();
 
@@ -1595,5 +1597,489 @@ function redirectUserManagementLogin() {
   window.location.replace(
     "index.html"
   );
+
+}
+
+
+// =====================================================
+// ADD USER
+// =====================================================
+
+function initializeUserManagementAdd() {
+
+  const openButton =
+    document.getElementById("userAddButton");
+
+  const closeButton =
+    document.getElementById("userAddClose");
+
+  const cancelButton =
+    document.getElementById("userAddCancel");
+
+  const backdrop =
+    document.getElementById("userAddBackdrop");
+
+  const form =
+    document.getElementById("userAddForm");
+
+  const passwordToggle =
+    document.getElementById("userAddPasswordToggle");
+
+
+  if (openButton) {
+    openButton.addEventListener(
+      "click",
+      openUserAddModal
+    );
+  }
+
+
+  if (closeButton) {
+    closeButton.addEventListener(
+      "click",
+      closeUserAddModal
+    );
+  }
+
+
+  if (cancelButton) {
+    cancelButton.addEventListener(
+      "click",
+      closeUserAddModal
+    );
+  }
+
+
+  if (backdrop) {
+    backdrop.addEventListener(
+      "click",
+      closeUserAddModal
+    );
+  }
+
+
+  if (form) {
+    form.addEventListener(
+      "submit",
+      submitUserAddForm
+    );
+  }
+
+
+  if (passwordToggle) {
+    passwordToggle.addEventListener(
+      "click",
+      toggleUserAddPassword
+    );
+  }
+
+
+  document.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Escape" &&
+        !document.getElementById("userAddModal")?.hidden
+      ) {
+        closeUserAddModal();
+      }
+
+    }
+  );
+
+}
+
+
+function openUserAddModal() {
+
+  const backdrop =
+    document.getElementById("userAddBackdrop");
+
+  const modal =
+    document.getElementById("userAddModal");
+
+  const form =
+    document.getElementById("userAddForm");
+
+  if (!backdrop || !modal) {
+    return;
+  }
+
+  if (form) {
+    form.reset();
+  }
+
+  const status =
+    document.getElementById("userAddStatus");
+
+  if (status) {
+    status.value = "ACTIVE";
+  }
+
+  setUserAddMessage("", "");
+
+  backdrop.hidden = false;
+  modal.hidden = false;
+
+  document.body.classList.add(
+    "user-add-open"
+  );
+
+  setTimeout(
+    function () {
+      document
+        .getElementById("userAddName")
+        ?.focus();
+    },
+    50
+  );
+
+}
+
+
+function closeUserAddModal() {
+
+  const backdrop =
+    document.getElementById("userAddBackdrop");
+
+  const modal =
+    document.getElementById("userAddModal");
+
+  const saveButton =
+    document.getElementById("userAddSave");
+
+  if (backdrop) {
+    backdrop.hidden = true;
+  }
+
+  if (modal) {
+    modal.hidden = true;
+  }
+
+  if (saveButton) {
+    saveButton.disabled = false;
+    saveButton.textContent = "Create User";
+  }
+
+  document.body.classList.remove(
+    "user-add-open"
+  );
+
+}
+
+
+function toggleUserAddPassword() {
+
+  const input =
+    document.getElementById("userAddPassword");
+
+  const button =
+    document.getElementById("userAddPasswordToggle");
+
+  if (!input) {
+    return;
+  }
+
+  const show =
+    input.type === "password";
+
+  input.type =
+    show
+      ? "text"
+      : "password";
+
+  if (button) {
+    button.setAttribute(
+      "aria-label",
+      show
+        ? "Hide password"
+        : "Show password"
+    );
+  }
+
+}
+
+
+async function submitUserAddForm(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const nama =
+    cleanManagementValue(
+      document.getElementById("userAddName")?.value
+    );
+
+  const userId =
+    cleanManagementValue(
+      document.getElementById("userAddUserId")?.value
+    );
+
+  const password =
+    cleanManagementValue(
+      document.getElementById("userAddPassword")?.value
+    );
+
+  const kode =
+    cleanManagementValue(
+      document.getElementById("userAddRole")?.value
+    );
+
+  const noHp =
+    cleanManagementValue(
+      document.getElementById("userAddPhone")?.value
+    );
+
+  const email =
+    cleanManagementValue(
+      document.getElementById("userAddEmail")?.value
+    );
+
+  const status =
+    cleanManagementValue(
+      document.getElementById("userAddStatus")?.value
+    ).toUpperCase();
+
+
+  if (!nama) {
+    setUserAddMessage(
+      "Nama wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if (!userId) {
+    setUserAddMessage(
+      "User ID wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if (!password) {
+    setUserAddMessage(
+      "Password wajib diisi.",
+      "error"
+    );
+    return;
+  }
+
+
+  if (password.length < 6) {
+    setUserAddMessage(
+      "Password minimal 6 karakter.",
+      "error"
+    );
+    return;
+  }
+
+
+  if (!kode) {
+    setUserAddMessage(
+      "Role wajib dipilih.",
+      "error"
+    );
+    return;
+  }
+
+
+  if (!["1", "2", "3", "4"].includes(kode)) {
+    setUserAddMessage(
+      "Role tidak valid.",
+      "error"
+    );
+    return;
+  }
+
+
+  if (!["ACTIVE", "INACTIVE"].includes(status)) {
+    setUserAddMessage(
+      "Status tidak valid.",
+      "error"
+    );
+    return;
+  }
+
+
+  if (
+    email &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
+    setUserAddMessage(
+      "Format email tidak valid.",
+      "error"
+    );
+    return;
+  }
+
+
+  const saveButton =
+    document.getElementById("userAddSave");
+
+
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Creating...";
+  }
+
+
+  setUserAddMessage(
+    "Creating new user...",
+    ""
+  );
+
+
+  try {
+
+    const response =
+      await fetch(
+        USER_MANAGEMENT_API_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
+
+          body:
+            JSON.stringify({
+              action: "addUser",
+
+              masterUniqId:
+                currentManagementUser?.uniqId || "",
+
+              nama:
+                nama,
+
+              userId:
+                userId,
+
+              password:
+                password,
+
+              kode:
+                kode,
+
+              noHp:
+                noHp,
+
+              email:
+                email,
+
+              status:
+                status
+            })
+        }
+      );
+
+
+    if (!response.ok) {
+      throw new Error(
+        "HTTP " + response.status
+      );
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+      throw new Error(
+        result?.message ||
+        "Gagal membuat user baru."
+      );
+    }
+
+
+    setUserAddMessage(
+      result.message ||
+      "User berhasil dibuat.",
+      "success"
+    );
+
+
+    await loadUserManagementData();
+
+
+    setTimeout(
+      function () {
+        closeUserAddModal();
+      },
+      650
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "HEXA User Management: add user failed.",
+      error
+    );
+
+    setUserAddMessage(
+      error.message ||
+      "Gagal membuat user baru.",
+      "error"
+    );
+
+
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = "Create User";
+    }
+
+  }
+
+}
+
+
+function setUserAddMessage(
+  message,
+  type
+) {
+
+  const element =
+    document.getElementById("userAddMessage");
+
+  if (!element) {
+    return;
+  }
+
+
+  const cleanMessage =
+    cleanManagementValue(message);
+
+
+  if (!cleanMessage) {
+    element.hidden = true;
+    element.textContent = "";
+    element.className =
+      "user-add-message";
+    return;
+  }
+
+
+  element.hidden = false;
+  element.textContent =
+    cleanMessage;
+
+  element.className =
+    "user-add-message" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
 
 }
