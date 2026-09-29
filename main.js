@@ -96,7 +96,7 @@ const HEXA_PAGES = {
 
   "settings": {
     url: "settings.html",
-    enabled: false
+    enabled: true
   }
 
 };
