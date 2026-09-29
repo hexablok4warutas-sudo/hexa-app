@@ -65,17 +65,26 @@ async function initializeSettings() {
     return;
   }
 
+  // =====================================================
+  // SETTINGS HANYA UNTUK MASTER
+  // KODE 1 = MASTER
+  // =====================================================
+
+  if (Number(sessionUser.kode) !== 1) {
+
+    alert(
+      "You are not authorized to access this page."
+    );
+
+    window.location.replace(
+      "main.html"
+    );
+
+    return;
+  }
+
   currentSettingsUser =
     sessionUser;
-
-  // Tampilkan session lebih dulu supaya UI tidak kosong.
-  applyRoleTheme(
-    sessionUser.kode
-  );
-
-  renderSettingsProfile(
-    sessionUser
-  );
 
   initializeSettingsNavigation();
   initializeSettingsLogout();
