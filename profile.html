@@ -62,7 +62,10 @@
           <div class="profile-field"><label>Name</label><div id="profileName" class="profile-field-value">-</div></div>
           <div class="profile-field"><label>Phone Number</label><div id="profilePhone" class="profile-field-value">-</div></div>
           <div class="profile-field"><label>Email</label><div id="profileEmail" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-quote-field"><label>Kutipan</label><div id="profileQuote" class="profile-field-value profile-quote-value">-</div></div>
+          <div class="profile-field profile-quote-field">
+            <label>Kutipan</label>
+            <div id="profileQuote" class="profile-field-value profile-quote-value">-</div>
+          </div>
 
           <div id="profileViewActions" class="profile-actions">
             <button type="button" id="profileEditButton" class="profile-primary-button">
@@ -72,8 +75,12 @@
           </div>
 
           <div id="profileEditActions" class="profile-actions profile-edit-actions" hidden>
-            <button type="button" id="profileCancelButton" class="profile-secondary-button">Cancel</button>
-            <button type="button" id="profileSaveButton" class="profile-primary-button">Save Changes</button>
+            <button type="button" id="profileCancelButton" class="profile-secondary-button">
+              Cancel
+            </button>
+            <button type="button" id="profileSaveButton" class="profile-primary-button">
+              Save Changes
+            </button>
           </div>
         </div>
       </section>
@@ -104,38 +111,6 @@
       </section>
     </section>
   </main>
-
-  <input type="file" id="profileCameraInput" accept="image/*" capture="environment" hidden>
-  <input type="file" id="profileGalleryInput" accept="image/*" hidden>
-
-  <div id="profilePhotoSheetBackdrop" class="profile-photo-sheet-backdrop" hidden></div>
-  <section id="profilePhotoSheet" class="profile-photo-sheet" aria-hidden="true">
-    <div class="profile-photo-sheet-handle"></div>
-    <div class="profile-photo-sheet-heading">
-      <h2>Change Profile Photo</h2>
-      <p>Select photo source</p>
-    </div>
-
-    <button type="button" id="profileTakePhotoButton" class="profile-photo-sheet-option">
-      <span class="profile-photo-sheet-icon">📷</span>
-      <span><strong>Take Photo</strong><small>Use device camera</small></span>
-    </button>
-
-    <button type="button" id="profileChooseGalleryButton" class="profile-photo-sheet-option">
-      <span class="profile-photo-sheet-icon">🖼️</span>
-      <span><strong>Choose from Gallery</strong><small>Select an existing photo</small></span>
-    </button>
-
-    <button type="button" id="profilePhotoSheetCancel" class="profile-photo-sheet-cancel">Cancel</button>
-  </section>
-
-  <div id="profilePhotoUploading" class="profile-photo-uploading" hidden>
-    <div class="profile-photo-uploading-card">
-      <div class="profile-photo-spinner"></div>
-      <strong>Updating profile photo...</strong>
-      <span>Please wait</span>
-    </div>
-  </div>
 
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
