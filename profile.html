@@ -112,6 +112,85 @@
     </section>
   </main>
 
+    <!-- CHANGE PROFILE PHOTO -->
+  <input
+    type="file"
+    id="profileCameraInput"
+    accept="image/*"
+    capture="environment"
+    hidden
+  >
+
+  <input
+    type="file"
+    id="profileGalleryInput"
+    accept="image/*"
+    hidden
+  >
+
+  <div
+    id="profilePhotoSheetBackdrop"
+    class="profile-photo-sheet-backdrop"
+    hidden
+  ></div>
+
+  <section
+    id="profilePhotoSheet"
+    class="profile-photo-sheet"
+    aria-hidden="true"
+  >
+    <div class="profile-photo-sheet-handle"></div>
+
+    <h2>Change Profile Photo</h2>
+    <p>Select photo source</p>
+
+    <button
+      type="button"
+      id="profileTakePhotoButton"
+      class="profile-photo-option"
+    >
+      <span class="profile-photo-option-icon">📷</span>
+
+      <span class="profile-photo-option-text">
+        <strong>Take Photo</strong>
+        <small>Use device camera</small>
+      </span>
+    </button>
+
+    <button
+      type="button"
+      id="profileChooseGalleryButton"
+      class="profile-photo-option"
+    >
+      <span class="profile-photo-option-icon">🖼️</span>
+
+      <span class="profile-photo-option-text">
+        <strong>Choose from Gallery</strong>
+        <small>Select an existing photo</small>
+      </span>
+    </button>
+
+    <button
+      type="button"
+      id="profilePhotoSheetCancel"
+      class="profile-photo-cancel"
+    >
+      Cancel
+    </button>
+  </section>
+
+  <div
+    id="profilePhotoUploading"
+    class="profile-photo-uploading"
+    hidden
+  >
+    <div class="profile-photo-uploading-card">
+      <div class="profile-photo-spinner"></div>
+      <strong>Updating profile photo...</strong>
+      <small>Please wait</small>
+    </div>
+  </div>
+
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
   <script src="profile.js"></script>
