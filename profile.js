@@ -244,12 +244,11 @@ function initializeProfileNavigation() {
   }
 
   if (passwordButton) {
-    passwordButton.addEventListener("click", function () {
-      alert("Fitur Change Password akan diaktifkan pada tahap berikutnya.");
-    });
+    passwordButton.addEventListener("click", openProfilePasswordModal);
   }
 
   initializeProfilePhotoControls();
+  initializeProfilePasswordControls();
 }
 
 function enterProfileEditMode() {
@@ -640,3 +639,213 @@ function setProfilePhotoUploading(isUploading) {
     photoButton.disabled = isUploading;
   }
 }
+
+// =====================================================
+// CHANGE PASSWORD
+// =====================================================
+
+function initializeProfilePasswordControls() {
+  const form = document.getElementById("profilePasswordForm");
+  const closeButton = document.getElementById("profilePasswordClose");
+  const cancelButton = document.getElementById("profilePasswordCancel");
+  const backdrop = document.getElementById("profilePasswordBackdrop");
+  const toggles = document.querySelectorAll(".profile-password-toggle");
+
+  if (form) {
+    form.addEventListener("submit", submitProfilePasswordChange);
+  }
+
+  if (closeButton) closeButton.addEventListener("click", closeProfilePasswordModal);
+  if (cancelButton) cancelButton.addEventListener("click", closeProfilePasswordModal);
+  if (backdrop) backdrop.addEventListener("click", closeProfilePasswordModal);
+
+  toggles.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const targetId = button.dataset.passwordTarget;
+      const input = document.getElementById(targetId);
+      if (!input) return;
+
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      button.textContent = show ? "🙈" : "👁";
+      button.setAttribute("aria-label", show ? "Hide password" : "Show password");
+    });
+  });
+}
+
+function openProfilePasswordModal() {
+  const modal = document.getElementById("profilePasswordModal");
+  const backdrop = document.getElementById("profilePasswordBackdrop");
+  const currentInput = document.getElementById("profileCurrentPassword");
+
+  resetProfilePasswordForm();
+
+  if (backdrop) backdrop.hidden = false;
+
+  if (modal) {
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+  }
+
+  document.body.classList.add("profile-password-open");
+
+  window.setTimeout(function () {
+    if (currentInput) currentInput.focus();
+  }, 80);
+}
+
+function closeProfilePasswordModal() {
+  const modal = document.getElementById("profilePasswordModal");
+  const backdrop = document.getElementById("profilePasswordBackdrop");
+
+  if (modal) {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  if (backdrop) backdrop.hidden = true;
+
+  document.body.classList.remove("profile-password-open");
+  resetProfilePasswordForm();
+}
+
+function resetProfilePasswordForm() {
+  const form = document.getElementById("profilePasswordForm");
+  const message = document.getElementById("profilePasswordMessage");
+  const toggles = document.querySelectorAll(".profile-password-toggle");
+
+  if (form) form.reset();
+
+  if (message) {
+    message.hidden = true;
+    message.textContent = "";
+    message.classList.remove("is-error", "is-success");
+  }
+
+  toggles.forEach(function (button) {
+    const targetId = button.dataset.passwordTarget;
+    const input = document.getElementById(targetId);
+    if (input) input.type = "password";
+    button.textContent = "👁";
+    button.setAttribute("aria-label", "Show password");
+  });
+}
+
+function showProfilePasswordMessage(message, type) {
+  const element = document.getElementById("profilePasswordMessage");
+  if (!element) return;
+
+  element.textContent = message || "";
+  element.classList.remove("is-error", "is-success");
+  element.classList.add(type === "success" ? "is-success" : "is-error");
+  element.hidden = false;
+}
+
+async function submitProfilePasswordChange(event) {
+  event.preventDefault();
+
+  if (!currentProfileUser || !currentProfileUser.uniqId) {
+    showProfilePasswordMessage("Session user tidak ditemukan.", "error");
+    return;
+  }
+
+  const currentPassword = cleanProfileValue(
+    document.getElementById("profileCurrentPassword")?.value
+  );
+
+  const newPassword = cleanProfileValue(
+    document.getElementById("profileNewPassword")?.value
+  );
+
+  const confirmPassword = cleanProfileValue(
+    document.getElementById("profileConfirmPassword")?.value
+  );
+
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    showProfilePasswordMessage("Semua field password wajib diisi.", "error");
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    showProfilePasswordMessage("New Password minimal 6 karakter.", "error");
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    showProfilePasswordMessage("Confirm New Password tidak sesuai.", "error");
+    return;
+  }
+
+  if (currentPassword === newPassword) {
+    showProfilePasswordMessage(
+      "New Password harus berbeda dari Current Password.",
+      "error"
+    );
+    return;
+  }
+
+  const saveButton = document.getElementById("profilePasswordSave");
+  const originalText = saveButton ? saveButton.textContent : "";
+
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Updating...";
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "changePassword",
+        uniqId: currentProfileUser.uniqId,
+        currentPassword: currentPassword,
+        newPassword: newPassword
+      })
+    });
+
+    const result = await response.json();
+
+    if (!result || result.success !== true) {
+      showProfilePasswordMessage(
+        result?.message || "Gagal mengubah Password.",
+        "error"
+      );
+      return;
+    }
+
+    showProfilePasswordMessage(
+      result.message || "Password berhasil diubah.",
+      "success"
+    );
+
+    const currentInput = document.getElementById("profileCurrentPassword");
+    const newInput = document.getElementById("profileNewPassword");
+    const confirmInput = document.getElementById("profileConfirmPassword");
+
+    if (currentInput) currentInput.value = "";
+    if (newInput) newInput.value = "";
+    if (confirmInput) confirmInput.value = "";
+
+    window.setTimeout(function () {
+      closeProfilePasswordModal();
+      alert("Password berhasil diubah. Gunakan password baru pada login berikutnya.");
+    }, 700);
+
+  } catch (error) {
+    console.error("HEXA Profile: change password gagal.", error);
+    showProfilePasswordMessage(
+      "Tidak dapat terhubung ke HEXA API.",
+      "error"
+    );
+
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalText || "Change Password";
+    }
+  }
+}
+
