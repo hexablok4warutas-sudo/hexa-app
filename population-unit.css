@@ -401,17 +401,70 @@ body {
    ===================================================== */
 
 .population-result-info {
-  min-height: 34px;
+  min-height: 46px;
 
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 
-  padding: 12px 4px 6px;
+  padding: 8px 4px 6px;
 
   color: #778087;
 
   font-size: 12px;
   font-weight: 700;
+}
+
+
+/* =====================================================
+   SORT
+   Frontend only - tidak mengubah database
+   ===================================================== */
+
+.population-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  flex: 0 0 auto;
+}
+
+.population-sort-label {
+  color: #7b858b;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.population-sort select {
+  min-height: 34px;
+
+  padding: 0 30px 0 11px;
+
+  border:
+    1px solid rgba(55, 116, 145, 0.14);
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  color: #536069;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.population-sort select:focus {
+  border-color: #4d83e8;
+
+  box-shadow:
+    0 0 0 3px rgba(77, 131, 232, 0.08);
 }
 
 
@@ -993,6 +1046,21 @@ body {
 
 
 @media (max-width: 560px) {
+
+  .population-result-info {
+    gap: 8px;
+  }
+
+  .population-sort-label {
+    display: none;
+  }
+
+  .population-sort select {
+    max-width: 150px;
+    padding-left: 9px;
+    font-size: 10.5px;
+  }
+
 
   .population-unit-page {
     background-size:
