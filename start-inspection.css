@@ -717,49 +717,113 @@ body.photo-source-open {
 
 .rating-grid {
   display: grid;
-
   grid-template-columns: repeat(4, 1fr);
-
   gap: 8px;
 }
 
-
 .rating-button {
-  min-height: 48px;
+  min-height: 66px;
 
-  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  border: 1px solid #d1d4d8;
-  border-radius: 5px;
+  gap: 4px;
 
-  background: #f7f8f9;
+  padding: 8px 6px;
 
-  color: #656565;
+  border: 1px solid transparent;
+  border-radius: 7px;
 
-  font-size: 13px;
-  font-weight: 650;
+  font-family: inherit;
 
   cursor: pointer;
 
-  transition: 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
 
+.rating-code {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.rating-description {
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* RATE A — kondisi aman / tidak perlu action */
+.rating-button.rating-a {
+  background: #e9f8ef;
+  border-color: #a8ddbb;
+  color: #187a3d;
+}
+
+/* RATE B — perlu direncanakan dan dimonitor */
+.rating-button.rating-b {
+  background: #fff8dc;
+  border-color: #ead889;
+  color: #8a6a00;
+}
+
+/* RATE C — urgent repair */
+.rating-button.rating-c {
+  background: #fff0df;
+  border-color: #efbd82;
+  color: #b25a00;
+}
+
+/* RATE X — immediate action */
+.rating-button.rating-x {
+  background: #fdeaea;
+  border-color: #e7a3a3;
+  color: #b42323;
+}
 
 .rating-button:hover {
-  border-color: #f5a000;
-
-  color: #d88900;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.09);
 }
 
-
 .rating-button.selected {
-  border-color: #f5a000;
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px currentColor,
+    0 6px 14px rgba(0,0,0,0.13);
+}
 
-  background: #f5a000;
+.rating-button.rating-a.selected {
+  background: #ccefd9;
+}
 
-  color: #111;
+.rating-button.rating-b.selected {
+  background: #f9eaa5;
+}
 
-  box-shadow: 0 5px 12px rgba(245,160,0,0.22);
+.rating-button.rating-c.selected {
+  background: #ffd9ad;
+}
+
+.rating-button.rating-x.selected {
+  background: #f7c1c1;
+}
+
+@media (max-width: 560px) {
+  .rating-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rating-button {
+    min-height: 64px;
+  }
 }
 
 
