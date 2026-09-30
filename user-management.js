@@ -1370,6 +1370,48 @@ function createUserManagementCard(
   );
 
 
+  // ===================================================
+  // RESET PASSWORD BUTTON
+  // ===================================================
+
+  const resetPasswordButton =
+    document.createElement(
+      "button"
+    );
+
+  resetPasswordButton.type =
+    "button";
+
+  resetPasswordButton.className =
+    "user-card-reset-button";
+
+  resetPasswordButton.textContent =
+    "Reset Password";
+
+  resetPasswordButton.setAttribute(
+    "aria-label",
+    `Reset Password ${user.nama || "User"}`
+  );
+
+  resetPasswordButton.addEventListener(
+    "click",
+    function (event) {
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      resetUserPasswordByMaster(
+        user
+      );
+
+    }
+  );
+
+  card.appendChild(
+    resetPasswordButton
+  );
+
+
   return card;
 
 }
@@ -2624,5 +2666,143 @@ function setUserEditMessage(
         ? " " + type
         : ""
     );
+
+}
+
+
+// =====================================================
+// RESET PASSWORD BY MASTER
+// PASSWORD DEFAULT = USER ID
+// =====================================================
+
+async function resetUserPasswordByMaster(
+  user
+) {
+
+  if (
+    !user ||
+    !user.uniqId
+  ) {
+
+    alert(
+      "Data user tidak ditemukan."
+    );
+
+    return;
+  }
+
+
+  const nama =
+    cleanManagementValue(
+      user.nama
+    ) || "User";
+
+  const userId =
+    cleanManagementValue(
+      user.userId
+    ) || "-";
+
+
+  const approved =
+    window.confirm(
+      "Reset password " +
+      nama +
+      "?\n\n" +
+      "Password default akan sama dengan USER ID:\n" +
+      userId
+    );
+
+
+  if (!approved) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(
+        USER_MANAGEMENT_API_URL,
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "text/plain;charset=utf-8"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                "resetUserPassword",
+
+              masterUniqId:
+                currentManagementUser?.uniqId ||
+                "",
+
+              targetUniqId:
+                user.uniqId
+
+            })
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result?.message ||
+        "Gagal me-reset password."
+      );
+
+    }
+
+
+    alert(
+      "Password " +
+      nama +
+      " berhasil di-reset.\n\n" +
+      "Password default = USER ID:\n" +
+      userId
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "HEXA User Management: reset password failed.",
+      error
+    );
+
+
+    alert(
+      error.message ||
+      "Gagal me-reset password."
+    );
+
+  }
 
 }
