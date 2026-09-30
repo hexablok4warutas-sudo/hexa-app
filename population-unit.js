@@ -22,6 +22,7 @@ let populationEGIData = [];
 
 let populationActiveStatus = "all";
 let populationSearchValue = "";
+let populationSortValue = "unit-asc";
 
 let populationModalMode = "add";
 
@@ -66,6 +67,8 @@ async function initializePopulationUnit() {
   initializePopulationSearch();
 
   initializePopulationFilters();
+
+  initializePopulationSort();
 
   initializePopulationAddButton();
 
@@ -407,6 +410,176 @@ function initializePopulationFilters() {
 }
 
 
+
+// =====================================================
+// SORT
+// HANYA MENGURUTKAN DATA DI FRONTEND.
+// TIDAK MENULIS / MENGUBAH URUTAN DATABASE.
+// =====================================================
+
+function initializePopulationSort() {
+
+  const select =
+    document.getElementById(
+      "populationSortSelect"
+    );
+
+  if (!select) {
+    return;
+  }
+
+  select.value =
+    populationSortValue;
+
+  select.addEventListener(
+    "change",
+    function () {
+
+      populationSortValue =
+        select.value ||
+        "unit-asc";
+
+      renderPopulationList();
+
+    }
+  );
+
+}
+
+
+function sortPopulationData(
+  units
+) {
+
+  const sortedUnits =
+    [...units];
+
+  const textCompare =
+    function(a, b) {
+
+      return cleanPopulationValue(a)
+        .localeCompare(
+          cleanPopulationValue(b),
+          undefined,
+          {
+            numeric: true,
+            sensitivity: "base"
+          }
+        );
+
+    };
+
+  const statusOrder = {
+    "running": 1,
+    "stand by": 2,
+    "lay off": 3
+  };
+
+
+  sortedUnits.sort(
+    function(a, b) {
+
+      if (
+        populationSortValue ===
+        "unit-desc"
+      ) {
+
+        return textCompare(
+          b.unitCode,
+          a.unitCode
+        );
+
+      }
+
+
+      if (
+        populationSortValue ===
+        "egi-asc"
+      ) {
+
+        const egiCompare =
+          textCompare(
+            a.egi,
+            b.egi
+          );
+
+        return (
+          egiCompare ||
+          textCompare(
+            a.unitCode,
+            b.unitCode
+          )
+        );
+
+      }
+
+
+      if (
+        populationSortValue ===
+        "egi-desc"
+      ) {
+
+        const egiCompare =
+          textCompare(
+            b.egi,
+            a.egi
+          );
+
+        return (
+          egiCompare ||
+          textCompare(
+            a.unitCode,
+            b.unitCode
+          )
+        );
+
+      }
+
+
+      if (
+        populationSortValue ===
+        "status"
+      ) {
+
+        const statusA =
+          cleanPopulationValue(
+            a.status
+          ).toLowerCase();
+
+        const statusB =
+          cleanPopulationValue(
+            b.status
+          ).toLowerCase();
+
+        const statusCompare =
+          (statusOrder[statusA] || 99) -
+          (statusOrder[statusB] || 99);
+
+        return (
+          statusCompare ||
+          textCompare(
+            a.unitCode,
+            b.unitCode
+          )
+        );
+
+      }
+
+
+      return textCompare(
+        a.unitCode,
+        b.unitCode
+      );
+
+    }
+  );
+
+
+  return sortedUnits;
+
+}
+
+
 // =====================================================
 // FILTERED DATA
 // =====================================================
@@ -511,7 +684,9 @@ function renderPopulationList() {
 
 
   const units =
-    getFilteredPopulationData();
+    sortPopulationData(
+      getFilteredPopulationData()
+    );
 
 
   if (count) {
