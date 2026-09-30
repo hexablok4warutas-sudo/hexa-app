@@ -1017,241 +1017,93 @@ function renderUserManagementList() {
 // CREATE USER CARD
 // =====================================================
 
-function createUserManagementCard(
-  user
-) {
+function createUserManagementCard(user) {
+  const card = document.createElement("article");
+  card.className = "user-card";
+  card.dataset.uniqId = user.uniqId;
 
-  const card =
-    document.createElement(
-      "article"
-    );
+  const avatar = document.createElement("div");
+  avatar.className = "user-card-avatar";
 
-  card.className =
-    "user-card user-card-compact";
+  const initial = document.createElement("span");
+  initial.textContent = getManagementInitials(user.nama);
+  avatar.appendChild(initial);
 
-  card.dataset.uniqId =
-    user.uniqId;
-
-
-  // ===================================================
-  // AVATAR
-  // ===================================================
-
-  const avatar =
-    document.createElement(
-      "div"
-    );
-
-  avatar.className =
-    "user-card-avatar";
-
-  const initial =
-    document.createElement(
-      "span"
-    );
-
-  initial.textContent =
-    getManagementInitials(
-      user.nama
-    );
-
-  avatar.appendChild(
-    initial
-  );
-
-  const photoUrl =
-    getManagementPhotoDisplayUrl(
-      user.photo
-    );
+  const photoUrl = getManagementPhotoDisplayUrl(user.photo);
 
   if (photoUrl) {
-
-    const image =
-      document.createElement(
-        "img"
-      );
-
-    image.alt =
-      `Photo ${user.nama || "User"}`;
-
-    image.onload =
-      function () {
-        image.style.display = "block";
-        initial.style.display = "none";
-      };
-
-    image.onerror =
-      function () {
-        image.style.display = "none";
-        initial.style.display = "";
-      };
-
+    const image = document.createElement("img");
+    image.alt = `Photo ${user.nama || "User"}`;
+    image.onload = function () {
+      image.style.display = "block";
+      initial.style.display = "none";
+    };
+    image.onerror = function () {
+      image.style.display = "none";
+      initial.style.display = "";
+    };
     image.src = photoUrl;
     avatar.appendChild(image);
   }
 
+  const info = document.createElement("div");
+  info.className = "user-card-info";
 
-  // ===================================================
-  // COMPACT INFORMATION
-  // ===================================================
+  const name = document.createElement("h3");
+  name.className = "user-card-name";
+  name.textContent = user.nama || "Unnamed User";
 
-  const info =
-    document.createElement(
-      "div"
-    );
-
-  info.className =
-    "user-card-info";
-
-  const name =
-    document.createElement(
-      "h3"
-    );
-
-  name.className =
-    "user-card-name";
-
-  name.textContent =
-    user.nama ||
-    "Unnamed User";
-
-  const level =
-    document.createElement(
-      "div"
-    );
-
-  level.className =
-    "user-card-compact-level";
-
-  level.textContent =
-    (user.level || "USER").toUpperCase();
+  const role = document.createElement("div");
+  role.className = "user-card-role";
+  role.textContent = user.level || "User";
 
   info.appendChild(name);
-  info.appendChild(level);
+  info.appendChild(role);
 
+  const actions = document.createElement("div");
+  actions.className = "user-card-actions";
 
-  // ===================================================
-  // ACTIONS
-  // STATUS DOT + RESET PASSWORD + EDIT
-  // ===================================================
+  const status = getManagementUserStatus(user);
+  const statusDot = document.createElement("span");
+  statusDot.className = "user-card-status-dot " + (status === "ACTIVE" ? "active" : "inactive");
+  statusDot.title = status === "ACTIVE" ? "Active" : "Inactive";
+  statusDot.setAttribute("aria-label", statusDot.title);
 
-  const actions =
-    document.createElement(
-      "div"
-    );
-
-  actions.className =
-    "user-card-actions";
-
-  const status =
-    getManagementUserStatus(
-      user
-    );
-
-  const statusDot =
-    document.createElement(
-      "span"
-    );
-
-  statusDot.className =
-    "user-card-status-dot " +
-    (
-      status === "ACTIVE"
-        ? "active"
-        : "inactive"
-    );
-
-  statusDot.setAttribute(
-    "role",
-    "img"
-  );
-
-  statusDot.setAttribute(
-    "aria-label",
-    status === "ACTIVE"
-      ? "Active"
-      : "Inactive"
-  );
-
-  statusDot.title =
-    status === "ACTIVE"
-      ? "Active"
-      : "Inactive";
-
-
-  const resetPasswordButton =
-    document.createElement(
-      "button"
-    );
-
-  resetPasswordButton.type =
-    "button";
-
-  resetPasswordButton.className =
-    "user-card-action-button user-card-reset-button";
-
-  resetPasswordButton.setAttribute(
-    "aria-label",
-    `Reset Password ${user.nama || "User"}`
-  );
-
-  resetPasswordButton.title =
-    "Reset Password";
-
-  resetPasswordButton.innerHTML =
+  const resetButton = document.createElement("button");
+  resetButton.type = "button";
+  resetButton.className = "user-card-action-button";
+  resetButton.title = "Reset Password";
+  resetButton.setAttribute("aria-label", `Reset Password ${user.nama || "User"}`);
+  resetButton.innerHTML =
     '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-    '<rect x="5" y="10" width="14" height="10" rx="2"></rect>' +
-    '<path d="M8 10V8a4 4 0 0 1 7.4-2.1"></path>' +
-    '<path d="M16 3v4h-4"></path>' +
-    '<path d="M12 14v2"></path>' +
+    '<rect x="6" y="10" width="12" height="9" rx="2"></rect>' +
+    '<path d="M9 10V7.5a3 3 0 0 1 5.7-1.3"></path>' +
+    '<path d="M15.5 3.5v4h-4"></path>' +
     '</svg>';
+  resetButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    resetUserPasswordByMaster(user);
+  });
 
-  resetPasswordButton.addEventListener(
-    "click",
-    function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      resetUserPasswordByMaster(user);
-    }
-  );
-
-
-  const editButton =
-    document.createElement(
-      "button"
-    );
-
-  editButton.type =
-    "button";
-
-  editButton.className =
-    "user-card-action-button user-card-edit-button";
-
-  editButton.setAttribute(
-    "aria-label",
-    `Edit ${user.nama || "User"}`
-  );
-
-  editButton.title =
-    "Edit User";
-
+  const editButton = document.createElement("button");
+  editButton.type = "button";
+  editButton.className = "user-card-action-button";
+  editButton.title = "Edit User";
+  editButton.setAttribute("aria-label", `Edit ${user.nama || "User"}`);
   editButton.innerHTML =
     '<svg viewBox="0 0 24 24" aria-hidden="true">' +
     '<path d="M4 20h4l11-11-4-4L4 16v4z"></path>' +
     '<path d="M13.5 6.5l4 4"></path>' +
     '</svg>';
-
-  editButton.addEventListener(
-    "click",
-    function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      openUserEditModal(user);
-    }
-  );
+  editButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    openUserEditModal(user);
+  });
 
   actions.appendChild(statusDot);
-  actions.appendChild(resetPasswordButton);
+  actions.appendChild(resetButton);
   actions.appendChild(editButton);
 
   card.appendChild(avatar);
@@ -1259,7 +1111,6 @@ function createUserManagementCard(
   card.appendChild(actions);
 
   return card;
-
 }
 
 
