@@ -564,6 +564,110 @@
 
 
 
+
+  <!-- ==================================================
+       EDIT USER MODAL
+       Desktop = modal, Mobile = bottom sheet
+       ================================================== -->
+
+  <div
+    id="userEditBackdrop"
+    class="user-add-backdrop"
+    hidden
+  ></div>
+
+  <section
+    id="userEditModal"
+    class="user-add-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="userEditModalTitle"
+    hidden
+  >
+    <div class="user-add-modal-header">
+      <div>
+        <h2 id="userEditModalTitle">Edit User</h2>
+        <p>Update HEXA account information</p>
+      </div>
+
+      <button
+        type="button"
+        id="userEditClose"
+        class="user-add-close"
+        aria-label="Close Edit User"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"></path>
+          <path d="M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+
+    <form id="userEditForm" class="user-add-form" novalidate>
+      <input type="hidden" id="userEditUniqId">
+
+      <div class="user-add-grid">
+        <label class="user-add-field user-add-field-wide">
+          <span>Nama <b>*</b></span>
+          <input type="text" id="userEditName" autocomplete="name" required>
+        </label>
+
+        <label class="user-add-field">
+          <span>User ID <b>*</b></span>
+          <input type="text" id="userEditUserId" autocomplete="off" required>
+        </label>
+
+        <label class="user-add-field">
+          <span>Role <b>*</b></span>
+          <select id="userEditRole" required>
+            <option value="1">MASTER — Level 1</option>
+            <option value="2">SECTION HEAD — Level 2</option>
+            <option value="3">GROUP LEADER — Level 3</option>
+            <option value="4">ADMIN — Level 4</option>
+            <option value="5">MECHANIC — Level 5</option>
+            <option value="6">VISITOR — Level 6</option>
+          </select>
+        </label>
+
+        <label class="user-add-field">
+          <span>Status <b>*</b></span>
+          <select id="userEditStatus" required>
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="INACTIVE">INACTIVE</option>
+          </select>
+        </label>
+
+        <label class="user-add-field">
+          <span>No. HP</span>
+          <input type="tel" id="userEditPhone" inputmode="tel" autocomplete="tel">
+        </label>
+
+        <label class="user-add-field">
+          <span>Email</span>
+          <input type="email" id="userEditEmail" autocomplete="email">
+        </label>
+      </div>
+
+      <p
+        id="userEditMessage"
+        class="user-add-message"
+        aria-live="polite"
+        hidden
+      ></p>
+
+      <div class="user-add-actions">
+        <button type="button" id="userEditCancel" class="user-add-secondary">
+          Cancel
+        </button>
+
+        <button type="submit" id="userEditSave" class="user-add-primary">
+          Save Changes
+        </button>
+      </div>
+    </form>
+  </section>
+
+
   <!-- ==================================================
        ADD USER MODAL
        Desktop = modal, Mobile = bottom sheet
