@@ -99,19 +99,11 @@
             UNIT CODE <span>*</span>
           </label>
 
-          <select
-            id="unitCode"
-            name="unitCode"
-            required
-          >
-
-            
-            <option value="">
-              Loading Unit Population...
-            </option>
-
-
-          </select>
+          <div class="unit-combobox" id="unitCombobox">
+            <input type="text" id="unitCodeSearch" class="unit-combobox-input" placeholder="Search / Select Unit" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="unitCodeOptions">
+            <input type="hidden" id="unitCode" name="unitCode" required>
+            <div id="unitCodeOptions" class="unit-combobox-options" role="listbox" hidden></div>
+          </div>
 
         </div>
 
