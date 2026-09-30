@@ -1671,3 +1671,76 @@ body.user-add-open {
     flex: 1;
   }
 }
+
+
+/* =====================================================
+   EDIT USER BUTTON
+   ===================================================== */
+
+.user-card-edit-button {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border:
+    1px solid rgba(55, 116, 145, 0.14);
+
+  border-radius: 10px;
+
+  background: #f5f9fb;
+
+  color: #4f7f97;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.user-card-edit-button:hover {
+  background: #eaf4f9;
+  transform: translateY(-1px);
+}
+
+
+.user-card-edit-button svg {
+  width: 17px;
+  height: 17px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.user-card.has-edit-button .user-card-info {
+  padding-right: 36px;
+}
+
+
+@media (max-width: 560px) {
+
+  .user-card-edit-button {
+    top: 11px;
+    right: 11px;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 9px;
+  }
+
+}
