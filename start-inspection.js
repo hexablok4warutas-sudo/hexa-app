@@ -882,6 +882,235 @@ function compressPhoto(file) {
 
 
 /* =====================================================
+   GROUP COMPONENT MASTER
+
+   Source:
+   - API action getGroupComponentList
+   - Code dipakai untuk urutan
+   - Nama Group Component menjadi value yang disubmit
+   - Tidak mengubah database master
+===================================================== */
+
+const groupComponentSelect =
+  document.getElementById(
+    "groupComponent"
+  );
+
+
+async function loadStartInspectionGroupComponents() {
+
+  if (!groupComponentSelect) {
+    return;
+  }
+
+
+  groupComponentSelect.disabled =
+    true;
+
+
+  groupComponentSelect.innerHTML =
+    '<option value="">Loading Group Component...</option>';
+
+
+  try {
+
+    const response =
+      await fetch(
+        HEXA_API_URL,
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "text/plain;charset=utf-8"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                "getGroupComponentList"
+
+            })
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result?.message ||
+        "Gagal mengambil Group Component."
+      );
+
+    }
+
+
+    const components =
+      Array.isArray(
+        result.groupComponents
+      )
+        ? [...result.groupComponents]
+        : [];
+
+
+    components.sort(
+      function (a, b) {
+
+        const codeA =
+          Number(
+            cleanStartInspectionValue(
+              a?.code
+            )
+          );
+
+        const codeB =
+          Number(
+            cleanStartInspectionValue(
+              b?.code
+            )
+          );
+
+
+        if (
+          Number.isFinite(codeA) &&
+          Number.isFinite(codeB) &&
+          codeA !== codeB
+        ) {
+
+          return codeA - codeB;
+
+        }
+
+
+        return cleanStartInspectionValue(
+          a?.groupComponent
+        ).localeCompare(
+          cleanStartInspectionValue(
+            b?.groupComponent
+          ),
+          "id",
+          {
+            numeric: true,
+            sensitivity: "base"
+          }
+        );
+
+      }
+    );
+
+
+    groupComponentSelect.innerHTML =
+      '<option value="">Search / Select Component</option>';
+
+
+    components.forEach(
+      function (item) {
+
+        const name =
+          cleanStartInspectionValue(
+            item?.groupComponent
+          );
+
+
+        if (!name) {
+          return;
+        }
+
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        /*
+          Value tetap NAMA Group Component agar payload
+          Submit Inspection dan DM DATABASE tetap sama
+          seperti sebelumnya.
+        */
+        option.value =
+          name;
+
+
+        option.textContent =
+          name;
+
+
+        option.dataset.code =
+          cleanStartInspectionValue(
+            item?.code
+          );
+
+
+        groupComponentSelect.appendChild(
+          option
+        );
+
+      }
+    );
+
+
+    if (
+      groupComponentSelect.options.length <= 1
+    ) {
+
+      groupComponentSelect.innerHTML =
+        '<option value="">No Group Component Available</option>';
+
+    }
+
+
+    groupComponentSelect.disabled =
+      false;
+
+
+  } catch (error) {
+
+    console.error(
+      "HEXA Start Inspection: Group Component load failed.",
+      error
+    );
+
+
+    groupComponentSelect.innerHTML =
+      '<option value="">Unable to load Group Component</option>';
+
+
+    groupComponentSelect.disabled =
+      false;
+
+  }
+
+}
+
+
+loadStartInspectionGroupComponents();
+
+
+/* =====================================================
    RATING
 ===================================================== */
 
