@@ -1026,10 +1026,8 @@ function createUserManagementCard(
       "article"
     );
 
-
   card.className =
-    "user-card";
-
+    "user-card user-card-compact";
 
   card.dataset.uniqId =
     user.uniqId;
@@ -1044,33 +1042,27 @@ function createUserManagementCard(
       "div"
     );
 
-
   avatar.className =
     "user-card-avatar";
-
 
   const initial =
     document.createElement(
       "span"
     );
 
-
   initial.textContent =
     getManagementInitials(
       user.nama
     );
 
-
   avatar.appendChild(
     initial
   );
-
 
   const photoUrl =
     getManagementPhotoDisplayUrl(
       user.photo
     );
-
 
   if (photoUrl) {
 
@@ -1079,48 +1071,28 @@ function createUserManagementCard(
         "img"
       );
 
-
     image.alt =
       `Photo ${user.nama || "User"}`;
 
-
     image.onload =
       function () {
-
-        image.style.display =
-          "block";
-
-        initial.style.display =
-          "none";
-
+        image.style.display = "block";
+        initial.style.display = "none";
       };
-
 
     image.onerror =
       function () {
-
-        image.style.display =
-          "none";
-
-        initial.style.display =
-          "";
-
+        image.style.display = "none";
+        initial.style.display = "";
       };
 
-
-    image.src =
-      photoUrl;
-
-
-    avatar.appendChild(
-      image
-    );
-
+    image.src = photoUrl;
+    avatar.appendChild(image);
   }
 
 
   // ===================================================
-  // INFORMATION
+  // COMPACT INFORMATION
   // ===================================================
 
   const info =
@@ -1128,251 +1100,86 @@ function createUserManagementCard(
       "div"
     );
 
-
   info.className =
     "user-card-info";
-
 
   const name =
     document.createElement(
       "h3"
     );
 
-
   name.className =
     "user-card-name";
-
 
   name.textContent =
     user.nama ||
     "Unnamed User";
 
-
-  const userId =
+  const level =
     document.createElement(
       "div"
     );
 
+  level.className =
+    "user-card-compact-level";
 
-  userId.className =
-    "user-card-id";
-
-
-  userId.textContent =
-    user.userId ||
-    "-";
-
-
-  // ===================================================
-  // BADGES
-  // ===================================================
-
-  const meta =
-    document.createElement(
-      "div"
-    );
-
-
-  meta.className =
-    "user-card-meta";
-
-
-  const levelBadge =
-    document.createElement(
-      "span"
-    );
-
-
-  levelBadge.className =
-    "user-level-badge";
-
-
-  levelBadge.textContent =
+  level.textContent =
     user.kode
-      ? `Level ${user.kode} • ${user.level || "User"}`
-      : user.level || "User";
+      ? `LEVEL ${user.kode} • ${user.level || "USER"}`
+      : (user.level || "USER").toUpperCase();
 
+  info.appendChild(name);
+  info.appendChild(level);
+
+
+  // ===================================================
+  // ACTIONS
+  // STATUS DOT + RESET PASSWORD + EDIT
+  // ===================================================
+
+  const actions =
+    document.createElement(
+      "div"
+    );
+
+  actions.className =
+    "user-card-actions";
 
   const status =
     getManagementUserStatus(
       user
     );
 
-
-  const statusBadge =
+  const statusDot =
     document.createElement(
       "span"
     );
 
-
-  statusBadge.className =
-    "user-status-badge " +
+  statusDot.className =
+    "user-card-status-dot " +
     (
       status === "ACTIVE"
         ? "active"
         : "inactive"
     );
 
-
-  statusBadge.textContent =
-    status;
-
-
-  meta.appendChild(
-    levelBadge
+  statusDot.setAttribute(
+    "role",
+    "img"
   );
 
-
-  meta.appendChild(
-    statusBadge
-  );
-
-
-  // ===================================================
-  // SECONDARY
-  // ===================================================
-
-  const secondary =
-    document.createElement(
-      "div"
-    );
-
-
-  secondary.className =
-    "user-card-secondary";
-
-
-  if (user.email) {
-
-    const email =
-      document.createElement(
-        "span"
-      );
-
-
-    email.textContent =
-      user.email;
-
-
-    secondary.appendChild(
-      email
-    );
-
-  }
-
-
-  if (user.noHp) {
-
-    const phone =
-      document.createElement(
-        "span"
-      );
-
-
-    phone.textContent =
-      user.noHp;
-
-
-    secondary.appendChild(
-      phone
-    );
-
-  }
-
-
-  // ===================================================
-  // ASSEMBLE
-  // ===================================================
-
-  info.appendChild(
-    name
-  );
-
-
-  info.appendChild(
-    userId
-  );
-
-
-  info.appendChild(
-    meta
-  );
-
-
-  if (
-    secondary.childElementCount > 0
-  ) {
-
-    info.appendChild(
-      secondary
-    );
-
-  }
-
-
-  card.appendChild(
-    avatar
-  );
-
-
-  card.appendChild(
-    info
-  );
-
-
-  // ===================================================
-  // EDIT USER BUTTON
-  // ===================================================
-
-  const editButton =
-    document.createElement(
-      "button"
-    );
-
-  editButton.type =
-    "button";
-
-  editButton.className =
-    "user-card-edit-button";
-
-  editButton.setAttribute(
+  statusDot.setAttribute(
     "aria-label",
-    `Edit ${user.nama || "User"}`
+    status === "ACTIVE"
+      ? "Active"
+      : "Inactive"
   );
 
-  editButton.innerHTML =
-    '<svg viewBox="0 0 24 24" aria-hidden="true">' +
-    '<path d="M4 20h4l11-11-4-4L4 16v4z"></path>' +
-    '<path d="M13.5 6.5l4 4"></path>' +
-    '</svg>';
+  statusDot.title =
+    status === "ACTIVE"
+      ? "Active"
+      : "Inactive";
 
-  editButton.addEventListener(
-    "click",
-    function (event) {
-
-      event.preventDefault();
-
-      event.stopPropagation();
-
-      openUserEditModal(
-        user
-      );
-
-    }
-  );
-
-  card.classList.add(
-    "has-edit-button"
-  );
-
-  card.appendChild(
-    editButton
-  );
-
-
-  // ===================================================
-  // RESET PASSWORD BUTTON
-  // ===================================================
 
   const resetPasswordButton =
     document.createElement(
@@ -1383,34 +1190,75 @@ function createUserManagementCard(
     "button";
 
   resetPasswordButton.className =
-    "user-card-reset-button";
-
-  resetPasswordButton.textContent =
-    "Reset Password";
+    "user-card-action-button user-card-reset-button";
 
   resetPasswordButton.setAttribute(
     "aria-label",
     `Reset Password ${user.nama || "User"}`
   );
 
+  resetPasswordButton.title =
+    "Reset Password";
+
+  resetPasswordButton.innerHTML =
+    '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+    '<rect x="5" y="10" width="14" height="10" rx="2"></rect>' +
+    '<path d="M8 10V8a4 4 0 0 1 7.4-2.1"></path>' +
+    '<path d="M16 3v4h-4"></path>' +
+    '<path d="M12 14v2"></path>' +
+    '</svg>';
+
   resetPasswordButton.addEventListener(
     "click",
     function (event) {
-
       event.preventDefault();
       event.stopPropagation();
-
-      resetUserPasswordByMaster(
-        user
-      );
-
+      resetUserPasswordByMaster(user);
     }
   );
 
-  card.appendChild(
-    resetPasswordButton
+
+  const editButton =
+    document.createElement(
+      "button"
+    );
+
+  editButton.type =
+    "button";
+
+  editButton.className =
+    "user-card-action-button user-card-edit-button";
+
+  editButton.setAttribute(
+    "aria-label",
+    `Edit ${user.nama || "User"}`
   );
 
+  editButton.title =
+    "Edit User";
+
+  editButton.innerHTML =
+    '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+    '<path d="M4 20h4l11-11-4-4L4 16v4z"></path>' +
+    '<path d="M13.5 6.5l4 4"></path>' +
+    '</svg>';
+
+  editButton.addEventListener(
+    "click",
+    function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      openUserEditModal(user);
+    }
+  );
+
+  actions.appendChild(statusDot);
+  actions.appendChild(resetPasswordButton);
+  actions.appendChild(editButton);
+
+  card.appendChild(avatar);
+  card.appendChild(info);
+  card.appendChild(actions);
 
   return card;
 
