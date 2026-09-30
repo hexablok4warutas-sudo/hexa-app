@@ -26,6 +26,9 @@ let userManagementData = [];
 
 let filteredUserManagementData = [];
 
+let userManagementSortValue =
+  "name-asc";
+
 
 // =====================================================
 // DOM READY
@@ -303,6 +306,11 @@ function initializeUserManagementFilters() {
       "userStatusFilter"
     );
 
+  const sortSelect =
+    document.getElementById(
+      "userSortSelect"
+    );
+
 
   if (searchInput) {
 
@@ -329,6 +337,27 @@ function initializeUserManagementFilters() {
     statusFilter.addEventListener(
       "change",
       applyUserManagementFilters
+    );
+
+  }
+
+
+  if (sortSelect) {
+
+    sortSelect.value =
+      userManagementSortValue;
+
+    sortSelect.addEventListener(
+      "change",
+      function () {
+
+        userManagementSortValue =
+          sortSelect.value ||
+          "name-asc";
+
+        applyUserManagementFilters();
+
+      }
     );
 
   }
@@ -813,6 +842,134 @@ function buildUserManagementLevelFilter() {
 
 
 // =====================================================
+// SORT DISPLAY
+// Frontend only. Tidak mengubah urutan database.
+// =====================================================
+
+function sortFilteredUserManagementData() {
+
+  const compareText =
+    function (a, b) {
+
+      return cleanManagementValue(a)
+        .localeCompare(
+          cleanManagementValue(b),
+          "id",
+          {
+            numeric: true,
+            sensitivity: "base"
+          }
+        );
+
+    };
+
+
+  filteredUserManagementData.sort(
+    function (a, b) {
+
+      if (
+        userManagementSortValue ===
+        "name-desc"
+      ) {
+
+        return compareText(
+          b.nama,
+          a.nama
+        );
+
+      }
+
+
+      if (
+        userManagementSortValue ===
+        "level-asc"
+      ) {
+
+        const levelCompare =
+          (Number(a.kode) || 999) -
+          (Number(b.kode) || 999);
+
+        return (
+          levelCompare ||
+          compareText(
+            a.nama,
+            b.nama
+          )
+        );
+
+      }
+
+
+      if (
+        userManagementSortValue ===
+        "level-desc"
+      ) {
+
+        const levelCompare =
+          (Number(b.kode) || -999) -
+          (Number(a.kode) || -999);
+
+        return (
+          levelCompare ||
+          compareText(
+            a.nama,
+            b.nama
+          )
+        );
+
+      }
+
+
+      if (
+        userManagementSortValue ===
+        "status-active" ||
+        userManagementSortValue ===
+        "status-inactive"
+      ) {
+
+        const statusA =
+          getManagementUserStatus(a);
+
+        const statusB =
+          getManagementUserStatus(b);
+
+        const activeFirst =
+          userManagementSortValue ===
+          "status-active";
+
+        const rankA =
+          statusA === "ACTIVE"
+            ? (activeFirst ? 1 : 2)
+            : (activeFirst ? 2 : 1);
+
+        const rankB =
+          statusB === "ACTIVE"
+            ? (activeFirst ? 1 : 2)
+            : (activeFirst ? 2 : 1);
+
+        return (
+          rankA - rankB ||
+          compareText(
+            a.nama,
+            b.nama
+          )
+        );
+
+      }
+
+
+      return compareText(
+        a.nama,
+        b.nama
+      );
+
+    }
+  );
+
+}
+
+
+// =====================================================
 // APPLY FILTER
 // =====================================================
 
@@ -907,6 +1064,9 @@ function applyUserManagementFilters() {
 
       }
     );
+
+
+  sortFilteredUserManagementData();
 
 
   renderUserManagementList();
