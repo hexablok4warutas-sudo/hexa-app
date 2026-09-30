@@ -84,8 +84,6 @@ async function initializeUserManagement() {
 
   initializeUserManagementEdit();
 
-  initializeUserManagementResetPassword();
-
 
   await loadUserManagementData();
 
@@ -1377,7 +1375,9 @@ function createUserManagementCard(
   // ===================================================
 
   const resetPasswordButton =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
   resetPasswordButton.type =
     "button";
@@ -1385,21 +1385,16 @@ function createUserManagementCard(
   resetPasswordButton.className =
     "user-card-reset-button";
 
-  resetPasswordButton.setAttribute(
-    "aria-label",
-    `Reset Password ${user.nama || "User"}`
-  );
-
-  resetPasswordButton.setAttribute(
-    "title",
-    "Reset Password"
-  );
-
   resetPasswordButton.innerHTML =
     '<svg viewBox="0 0 24 24" aria-hidden="true">' +
     '<path d="M4 12a8 8 0 1 0 2.34-5.66"></path>' +
     '<path d="M4 4v5h5"></path>' +
     '</svg>';
+
+  resetPasswordButton.setAttribute(
+    "aria-label",
+    `Reset Password ${user.nama || "User"}`
+  );
 
   resetPasswordButton.addEventListener(
     "click",
@@ -1408,7 +1403,9 @@ function createUserManagementCard(
       event.preventDefault();
       event.stopPropagation();
 
-      resetUserPasswordByMaster(user);
+      resetUserPasswordByMaster(
+        user
+      );
 
     }
   );
@@ -2678,19 +2675,12 @@ function setUserEditMessage(
 
 // =====================================================
 // RESET PASSWORD BY MASTER
-// FRONTEND STEP 1 - NO CUSTOM MODAL YET
-// DEFAULT PASSWORD = USER ID
+// PASSWORD DEFAULT = USER ID
 // =====================================================
 
-function initializeUserManagementResetPassword() {
-
-  // Tahap pertama tidak membutuhkan modal HTML.
-  // Tombol Reset Password dibuat langsung pada setiap User Card.
-
-}
-
-
-async function resetUserPasswordByMaster(user) {
+async function resetUserPasswordByMaster(
+  user
+) {
 
   if (
     !user ||
@@ -2721,7 +2711,7 @@ async function resetUserPasswordByMaster(user) {
       "Reset password " +
       nama +
       "?\n\n" +
-      "Password akan dikembalikan ke default sesuai USER ID:\n" +
+      "Password default akan sama dengan USER ID:\n" +
       userId
     );
 
@@ -2798,7 +2788,7 @@ async function resetUserPasswordByMaster(user) {
       "Password " +
       nama +
       " berhasil di-reset.\n\n" +
-      "Password default sekarang sama dengan USER ID:\n" +
+      "Password default = USER ID:\n" +
       userId
     );
 
