@@ -1124,9 +1124,7 @@ function createUserManagementCard(
     "user-card-compact-level";
 
   level.textContent =
-    user.kode
-      ? `LEVEL ${user.kode} • ${user.level || "USER"}`
-      : (user.level || "USER").toUpperCase();
+    (user.level || "USER").toUpperCase();
 
   info.appendChild(name);
   info.appendChild(level);
