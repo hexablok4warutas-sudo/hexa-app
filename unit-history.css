@@ -2233,3 +2233,8 @@ body.modal-open {
   }
 
 }
+/* FIX: hidden modal/backdrop must really disappear */
+.user-add-backdrop[hidden],
+.user-reset-password-modal[hidden] {
+  display: none !important;
+}
