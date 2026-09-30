@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Population Unit | HEXA</title>
+
+
+  <!-- GLOBAL HEXA HEADER -->
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- POPULATION UNIT -->
+  <link
+    rel="stylesheet"
+    href="population-unit.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- ==================================================
+       GLOBAL HEXA HEADER
+       ================================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="settings"
+  ></header>
+
+
+
+  <!-- ==================================================
+       POPULATION UNIT PAGE
+       ================================================== -->
+
+  <main
+    id="populationUnitPage"
+    class="population-unit-page"
+  >
+
+
+    <!-- =================================================
+         PAGE HEADING
+         ================================================= -->
+
+    <section class="population-heading-shell">
+
+      <div class="population-heading">
+
+
+        <!-- BACK -->
+
+        <button
+          type="button"
+          id="populationBackButton"
+          class="population-back-button"
+          aria-label="Back to System Settings"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path d="M15 18l-6-6 6-6"></path>
+
+          </svg>
+
+        </button>
+
+
+
+        <!-- ICON -->
+
+        <span
+          class="population-heading-icon"
+          aria-hidden="true"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path
+              d="
+                M4 15
+                V10
+                L7 6
+                H17
+                L20 10
+                V15
+              "
+            ></path>
+
+            <path
+              d="
+                M3 15
+                H21
+                V18
+                H3
+                Z
+              "
+            ></path>
+
+            <circle
+              cx="7"
+              cy="18"
+              r="2"
+            ></circle>
+
+            <circle
+              cx="17"
+              cy="18"
+              r="2"
+            ></circle>
+
+          </svg>
+
+        </span>
+
+
+
+        <!-- TITLE -->
+
+        <div class="population-heading-text">
+
+          <h1>
+            Population Unit
+          </h1>
+
+          <p>
+            Unit Population &amp; Operational Status
+          </p>
+
+        </div>
+
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         CONTENT
+         ================================================= -->
+
+    <section class="population-container">
+
+
+      <!-- =================================================
+           TOOLBAR
+           ================================================= -->
+
+      <section class="population-toolbar">
+
+
+        <!-- SEARCH -->
+
+        <label
+          class="population-search"
+          for="populationSearchInput"
+        >
+
+          <span
+            class="population-search-icon"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="11"
+                cy="11"
+                r="7"
+              ></circle>
+
+              <path d="M20 20l-4-4"></path>
+
+            </svg>
+
+          </span>
+
+
+          <input
+            type="search"
+            id="populationSearchInput"
+            placeholder="Search Unit Code or EGI"
+            autocomplete="off"
+          >
+
+        </label>
+
+
+
+        <!-- ADD UNIT -->
+
+        <button
+          type="button"
+          id="populationAddButton"
+          class="population-add-button"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path d="M12 5v14"></path>
+
+            <path d="M5 12h14"></path>
+
+          </svg>
+
+          <span>
+            Add Unit
+          </span>
+
+        </button>
+
+
+      </section>
+
+
+
+      <!-- =================================================
+           STATUS FILTER
+           ================================================= -->
+
+      <section
+        class="population-filter-bar"
+        aria-label="Population Status Filter"
+      >
+
+        <button
+          type="button"
+          class="population-filter-button active"
+          data-population-status="all"
+        >
+          All
+        </button>
+
+
+        <button
+          type="button"
+          class="population-filter-button"
+          data-population-status="Running"
+        >
+          Running
+        </button>
+
+
+        <button
+          type="button"
+          class="population-filter-button"
+          data-population-status="Stand By"
+        >
+          Stand By
+        </button>
+
+
+        <button
+          type="button"
+          class="population-filter-button"
+          data-population-status="Lay Off"
+        >
+          Lay Off
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           RESULT INFORMATION
+           ================================================= -->
+
+      <div class="population-result-info">
+
+        <span id="populationResultCount">
+          0 Units
+        </span>
+
+      </div>
+
+
+
+      <!-- =================================================
+           LOADING STATE
+           ================================================= -->
+
+      <section
+        id="populationLoadingState"
+        class="population-state"
+        hidden
+      >
+
+        <div class="population-loader"></div>
+
+        <strong>
+          Loading Population
+        </strong>
+
+        <span>
+          Retrieving unit data...
+        </span>
+
+      </section>
+
+
+
+      <!-- =================================================
+           ERROR STATE
+           ================================================= -->
+
+      <section
+        id="populationErrorState"
+        class="population-state population-error-state"
+        hidden
+      >
+
+        <span
+          class="population-state-icon"
+          aria-hidden="true"
+        >
+          !
+        </span>
+
+        <strong>
+          Unable to Load Population
+        </strong>
+
+        <span id="populationErrorMessage">
+          Please try again.
+        </span>
+
+
+        <button
+          type="button"
+          id="populationRetryButton"
+          class="population-retry-button"
+        >
+          Retry
+        </button>
+
+      </section>
+
+
+
+      <!-- =================================================
+           EMPTY STATE
+           ================================================= -->
+
+      <section
+        id="populationEmptyState"
+        class="population-state"
+        hidden
+      >
+
+        <span
+          class="population-empty-icon"
+          aria-hidden="true"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path
+              d="
+                M4 15
+                V10
+                L7 6
+                H17
+                L20 10
+                V15
+              "
+            ></path>
+
+            <path d="M3 15h18v3H3z"></path>
+
+          </svg>
+
+        </span>
+
+
+        <strong>
+          No Units Found
+        </strong>
+
+        <span>
+          No population data matches the current filter.
+        </span>
+
+      </section>
+
+
+
+      <!-- =================================================
+           POPULATION LIST
+           Cards dibuat oleh JavaScript
+           ================================================= -->
+
+      <section
+        id="populationList"
+        class="population-list"
+        aria-live="polite"
+      ></section>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- ==================================================
+       ADD / EDIT UNIT MODAL
+       ================================================== -->
+
+  <div
+    id="populationModal"
+    class="population-modal"
+    hidden
+  >
+
+    <div
+      class="population-modal-backdrop"
+      data-close-population-modal
+    ></div>
+
+
+    <section
+      class="population-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="populationModalTitle"
+    >
+
+
+      <!-- MODAL HEADER -->
+
+      <div class="population-modal-header">
+
+        <div>
+
+          <h2 id="populationModalTitle">
+            Add Unit
+          </h2>
+
+          <p id="populationModalSubtitle">
+            Add a new unit to HEXA population
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          id="populationModalCloseButton"
+          class="population-modal-close"
+          aria-label="Close"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path d="M6 6l12 12"></path>
+
+            <path d="M18 6L6 18"></path>
+
+          </svg>
+
+        </button>
+
+      </div>
+
+
+
+      <!-- FORM -->
+
+      <form
+        id="populationForm"
+        class="population-form"
+        autocomplete="off"
+      >
+
+
+        <!-- INTERNAL KEY -->
+
+        <input
+          type="hidden"
+          id="populationUniqId"
+          name="uniqId"
+        >
+
+
+
+        <!-- UNIT CODE -->
+
+        <div class="population-form-group">
+
+          <label for="populationUnitCode">
+            Unit Code
+          </label>
+
+          <input
+            type="text"
+            id="populationUnitCode"
+            name="unitCode"
+            placeholder="Example: HEX 1210"
+            required
+          >
+
+        </div>
+
+
+
+        <!-- EGI -->
+
+        <div class="population-form-group">
+
+          <label for="populationEGI">
+            EGI
+          </label>
+
+          <input
+            type="text"
+            id="populationEGI"
+            name="egi"
+            list="populationEGIList"
+            placeholder="Select or type new EGI"
+            required
+          >
+
+
+          <!--
+            Diisi dari sheet EGI melalui backend.
+            Input tetap editable sehingga user bisa
+            mengetik EGI baru.
+          -->
+
+          <datalist id="populationEGIList"></datalist>
+
+
+          <small class="population-field-help">
+            Select an existing EGI or type a new EGI.
+          </small>
+
+        </div>
+
+
+
+        <!-- STATUS -->
+
+        <div class="population-form-group">
+
+          <label for="populationStatus">
+            Operational Status
+          </label>
+
+          <select
+            id="populationStatus"
+            name="status"
+            required
+          >
+
+            <option value="">
+              Select Status
+            </option>
+
+            <option value="Running">
+              Running
+            </option>
+
+            <option value="Stand By">
+              Stand By
+            </option>
+
+            <option value="Lay Off">
+              Lay Off
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <!-- FORM MESSAGE -->
+
+        <div
+          id="populationFormMessage"
+          class="population-form-message"
+          hidden
+        ></div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="population-form-actions">
+
+          <button
+            type="button"
+            id="populationCancelButton"
+            class="population-cancel-button"
+          >
+            Cancel
+          </button>
+
+
+          <button
+            type="submit"
+            id="populationSaveButton"
+            class="population-save-button"
+          >
+
+            <span
+              id="populationSaveButtonText"
+            >
+              Save Unit
+            </span>
+
+          </button>
+
+        </div>
+
+
+      </form>
+
+
+    </section>
+
+  </div>
+
+
+
+  <!-- ==================================================
+       JAVASCRIPT
+       ================================================== -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
+
+  <script src="population-unit.js"></script>
+
+
+</body>
+
+</html>
