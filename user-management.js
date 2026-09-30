@@ -82,6 +82,8 @@ async function initializeUserManagement() {
 
   initializeUserManagementAdd();
 
+  initializeUserManagementEdit();
+
 
   await loadUserManagementData();
 
@@ -1318,6 +1320,56 @@ function createUserManagementCard(
   );
 
 
+  // ===================================================
+  // EDIT USER BUTTON
+  // ===================================================
+
+  const editButton =
+    document.createElement(
+      "button"
+    );
+
+  editButton.type =
+    "button";
+
+  editButton.className =
+    "user-card-edit-button";
+
+  editButton.setAttribute(
+    "aria-label",
+    `Edit ${user.nama || "User"}`
+  );
+
+  editButton.innerHTML =
+    '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+    '<path d="M4 20h4l11-11-4-4L4 16v4z"></path>' +
+    '<path d="M13.5 6.5l4 4"></path>' +
+    '</svg>';
+
+  editButton.addEventListener(
+    "click",
+    function (event) {
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+      openUserEditModal(
+        user
+      );
+
+    }
+  );
+
+  card.classList.add(
+    "has-edit-button"
+  );
+
+  card.appendChild(
+    editButton
+  );
+
+
   return card;
 
 }
@@ -2071,6 +2123,497 @@ function setUserAddMessage(
 
 
   element.hidden = false;
+  element.textContent =
+    cleanMessage;
+
+  element.className =
+    "user-add-message" +
+    (
+      type
+        ? " " + type
+        : ""
+    );
+
+}
+
+
+// =====================================================
+// EDIT USER
+// =====================================================
+
+function initializeUserManagementEdit() {
+
+  const closeButton =
+    document.getElementById(
+      "userEditClose"
+    );
+
+  const cancelButton =
+    document.getElementById(
+      "userEditCancel"
+    );
+
+  const backdrop =
+    document.getElementById(
+      "userEditBackdrop"
+    );
+
+  const form =
+    document.getElementById(
+      "userEditForm"
+    );
+
+
+  closeButton?.addEventListener(
+    "click",
+    closeUserEditModal
+  );
+
+  cancelButton?.addEventListener(
+    "click",
+    closeUserEditModal
+  );
+
+  backdrop?.addEventListener(
+    "click",
+    closeUserEditModal
+  );
+
+  form?.addEventListener(
+    "submit",
+    submitUserEditForm
+  );
+
+}
+
+
+function openUserEditModal(
+  user
+) {
+
+  if (!user) {
+    return;
+  }
+
+
+  document.getElementById(
+    "userEditUniqId"
+  ).value =
+    user.uniqId || "";
+
+  document.getElementById(
+    "userEditName"
+  ).value =
+    user.nama || "";
+
+  document.getElementById(
+    "userEditUserId"
+  ).value =
+    user.userId || "";
+
+  document.getElementById(
+    "userEditRole"
+  ).value =
+    String(
+      user.kode || "6"
+    );
+
+  document.getElementById(
+    "userEditStatus"
+  ).value =
+    getManagementUserStatus(
+      user
+    );
+
+  document.getElementById(
+    "userEditPhone"
+  ).value =
+    user.noHp || "";
+
+  document.getElementById(
+    "userEditEmail"
+  ).value =
+    user.email || "";
+
+
+  setUserEditMessage(
+    "",
+    ""
+  );
+
+
+  document.getElementById(
+    "userEditBackdrop"
+  ).hidden =
+    false;
+
+  document.getElementById(
+    "userEditModal"
+  ).hidden =
+    false;
+
+
+  document.body.classList.add(
+    "user-add-open"
+  );
+
+}
+
+
+function closeUserEditModal() {
+
+  const backdrop =
+    document.getElementById(
+      "userEditBackdrop"
+    );
+
+  const modal =
+    document.getElementById(
+      "userEditModal"
+    );
+
+  const saveButton =
+    document.getElementById(
+      "userEditSave"
+    );
+
+
+  if (backdrop) {
+    backdrop.hidden = true;
+  }
+
+  if (modal) {
+    modal.hidden = true;
+  }
+
+  if (saveButton) {
+    saveButton.disabled = false;
+    saveButton.textContent =
+      "Save Changes";
+  }
+
+
+  document.body.classList.remove(
+    "user-add-open"
+  );
+
+}
+
+
+async function submitUserEditForm(
+  event
+) {
+
+  event.preventDefault();
+
+
+  const targetUniqId =
+    cleanManagementValue(
+      document.getElementById(
+        "userEditUniqId"
+      )?.value
+    );
+
+  const nama =
+    cleanManagementValue(
+      document.getElementById(
+        "userEditName"
+      )?.value
+    );
+
+  const userId =
+    cleanManagementValue(
+      document.getElementById(
+        "userEditUserId"
+      )?.value
+    );
+
+  const kode =
+    cleanManagementValue(
+      document.getElementById(
+        "userEditRole"
+      )?.value
+    );
+
+  const status =
+    cleanManagementValue(
+      document.getElementById(
+        "userEditStatus"
+      )?.value
+    ).toUpperCase();
+
+  const noHp =
+    cleanManagementValue(
+      document.getElementById(
+        "userEditPhone"
+      )?.value
+    );
+
+  const email =
+    cleanManagementValue(
+      document.getElementById(
+        "userEditEmail"
+      )?.value
+    );
+
+
+  if (
+    !targetUniqId ||
+    !nama ||
+    !userId
+  ) {
+
+    setUserEditMessage(
+      "Nama dan User ID wajib diisi.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    ![
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6"
+    ].includes(kode)
+  ) {
+
+    setUserEditMessage(
+      "Role tidak valid.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    ![
+      "ACTIVE",
+      "INACTIVE"
+    ].includes(status)
+  ) {
+
+    setUserEditMessage(
+      "Status tidak valid.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  if (
+    email &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+      email
+    )
+  ) {
+
+    setUserEditMessage(
+      "Format email tidak valid.",
+      "error"
+    );
+
+    return;
+  }
+
+
+  const saveButton =
+    document.getElementById(
+      "userEditSave"
+    );
+
+
+  if (saveButton) {
+
+    saveButton.disabled =
+      true;
+
+    saveButton.textContent =
+      "Saving...";
+
+  }
+
+
+  setUserEditMessage(
+    "Saving changes...",
+    ""
+  );
+
+
+  try {
+
+    const response =
+      await fetch(
+        USER_MANAGEMENT_API_URL,
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "text/plain;charset=utf-8"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                "updateUser",
+
+              masterUniqId:
+                currentManagementUser?.uniqId ||
+                "",
+
+              targetUniqId:
+                targetUniqId,
+
+              nama:
+                nama,
+
+              userId:
+                userId,
+
+              kode:
+                kode,
+
+              status:
+                status,
+
+              noHp:
+                noHp,
+
+              email:
+                email
+
+            })
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result?.message ||
+        "Gagal memperbarui user."
+      );
+
+    }
+
+
+    setUserEditMessage(
+      result.message ||
+      "User berhasil diperbarui.",
+      "success"
+    );
+
+
+    await loadUserManagementData();
+
+
+    setTimeout(
+      closeUserEditModal,
+      650
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "HEXA User Management: edit user failed.",
+      error
+    );
+
+
+    setUserEditMessage(
+      error.message ||
+      "Gagal memperbarui user.",
+      "error"
+    );
+
+
+    if (saveButton) {
+
+      saveButton.disabled =
+        false;
+
+      saveButton.textContent =
+        "Save Changes";
+
+    }
+
+  }
+
+}
+
+
+function setUserEditMessage(
+  message,
+  type
+) {
+
+  const element =
+    document.getElementById(
+      "userEditMessage"
+    );
+
+
+  if (!element) {
+    return;
+  }
+
+
+  const cleanMessage =
+    cleanManagementValue(
+      message
+    );
+
+
+  if (!cleanMessage) {
+
+    element.hidden =
+      true;
+
+    element.textContent =
+      "";
+
+    element.className =
+      "user-add-message";
+
+    return;
+  }
+
+
+  element.hidden =
+    false;
+
   element.textContent =
     cleanMessage;
 
