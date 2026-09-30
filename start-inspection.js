@@ -10,6 +10,298 @@ const HEXA_API_URL =
 
 
 /* =====================================================
+   UNIT POPULATION
+
+   Source:
+   - API action getUnitPopulation
+   - hanya Running + Stand By
+   - Lay Off tidak ditampilkan
+   - hanya mengisi pilihan Unit Code di frontend
+===================================================== */
+
+const unitCodeSelect =
+  document.getElementById(
+    "unitCode"
+  );
+
+
+function cleanStartInspectionValue(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+
+  }
+
+
+  return String(
+    value
+  ).trim();
+
+}
+
+
+function getPopulationStatusRank(
+  status
+) {
+
+  const normalizedStatus =
+    cleanStartInspectionValue(
+      status
+    ).toLowerCase();
+
+
+  if (
+    normalizedStatus ===
+    "running"
+  ) {
+
+    return 1;
+
+  }
+
+
+  if (
+    normalizedStatus ===
+    "stand by"
+  ) {
+
+    return 2;
+
+  }
+
+
+  return 99;
+
+}
+
+
+async function loadStartInspectionPopulation() {
+
+  if (!unitCodeSelect) {
+    return;
+  }
+
+
+  unitCodeSelect.disabled =
+    true;
+
+
+  unitCodeSelect.innerHTML =
+    '<option value="">Loading Unit Population...</option>';
+
+
+  try {
+
+    const response =
+      await fetch(
+        HEXA_API_URL,
+        {
+
+          method:
+            "POST",
+
+          headers: {
+
+            "Content-Type":
+              "text/plain;charset=utf-8"
+
+          },
+
+          body:
+            JSON.stringify({
+
+              action:
+                "getUnitPopulation"
+
+            })
+
+        }
+      );
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const result =
+      await response.json();
+
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result?.message ||
+        "Gagal mengambil Population Unit."
+      );
+
+    }
+
+
+    const rawUnits =
+      Array.isArray(
+        result.units
+      )
+        ? result.units
+        : [];
+
+
+    const selectableUnits =
+      rawUnits
+        .filter(
+          function (unit) {
+
+            const status =
+              cleanStartInspectionValue(
+                unit?.status
+              ).toLowerCase();
+
+
+            return (
+              status === "running" ||
+              status === "stand by"
+            );
+
+          }
+        )
+        .sort(
+          function (a, b) {
+
+            const statusCompare =
+              getPopulationStatusRank(
+                a?.status
+              ) -
+              getPopulationStatusRank(
+                b?.status
+              );
+
+
+            if (statusCompare !== 0) {
+              return statusCompare;
+            }
+
+
+            return cleanStartInspectionValue(
+              a?.unitCode
+            ).localeCompare(
+              cleanStartInspectionValue(
+                b?.unitCode
+              ),
+              "id",
+              {
+                numeric: true,
+                sensitivity: "base"
+              }
+            );
+
+          }
+        );
+
+
+    unitCodeSelect.innerHTML =
+      '<option value="">Search / Select Unit</option>';
+
+
+    selectableUnits.forEach(
+      function (unit) {
+
+        const unitCode =
+          cleanStartInspectionValue(
+            unit?.unitCode
+          );
+
+
+        if (!unitCode) {
+          return;
+        }
+
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          unitCode;
+
+
+        option.textContent =
+          unitCode;
+
+
+        option.dataset.status =
+          cleanStartInspectionValue(
+            unit?.status
+          );
+
+
+        option.dataset.egi =
+          cleanStartInspectionValue(
+            unit?.egi
+          );
+
+
+        unitCodeSelect.appendChild(
+          option
+        );
+
+      }
+    );
+
+
+    if (
+      selectableUnits.length === 0
+    ) {
+
+      unitCodeSelect.innerHTML =
+        '<option value="">No Running / Stand By Unit</option>';
+
+    }
+
+
+    unitCodeSelect.disabled =
+      false;
+
+
+  } catch (error) {
+
+    console.error(
+      "HEXA Start Inspection: Population load failed.",
+      error
+    );
+
+
+    unitCodeSelect.innerHTML =
+      '<option value="">Unable to load Unit Population</option>';
+
+
+    unitCodeSelect.disabled =
+      false;
+
+  }
+
+}
+
+
+loadStartInspectionPopulation();
+
+
+/* =====================================================
    SESSION PROTECTION
 ===================================================== */
 
