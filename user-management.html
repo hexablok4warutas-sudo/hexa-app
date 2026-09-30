@@ -1,940 +1,1746 @@
-<!DOCTYPE html>
-<html lang="id">
+/* =====================================================
+   HEXA - USER MANAGEMENT
+   ===================================================== */
 
-<head>
+* {
+  box-sizing: border-box;
+}
 
-  <meta charset="UTF-8">
+html {
+  scroll-behavior: smooth;
+}
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+body {
+  margin: 0;
+  min-height: 100vh;
 
-  <title>User Management | HEXA</title>
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
+  color: #252525;
+  background: #f5f7f8;
+}
 
-  <!-- GLOBAL HEXA HEADER -->
-  <link
-    rel="stylesheet"
-    href="hexa-header.css"
-  >
 
+/* =====================================================
+   PAGE
+   ===================================================== */
 
-  <!-- USER MANAGEMENT -->
-  <link
-    rel="stylesheet"
-    href="user-management.css"
-  >
+.user-management-page {
+  min-height: 100vh;
 
-</head>
+  padding-top: 88px;
 
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0.72)
+    ),
+    url("hexa-doodleblue.png");
 
-<body>
+  background-repeat:
+    repeat,
+    repeat;
 
+  background-size:
+    auto,
+    760px auto;
 
-  <!-- ==================================================
-       GLOBAL HEXA HEADER
-       ================================================== -->
+  background-position:
+    center,
+    top center;
+}
 
-  <header
-    id="hexaHeader"
-    data-header-type="standard"
-    data-page="settings"
-  ></header>
 
+/* =====================================================
+   STICKY HEADING
+   ===================================================== */
 
+.user-management-heading-shell {
+  position: sticky;
 
-  <!-- ==================================================
-       USER MANAGEMENT PAGE
-       ================================================== -->
+  top: 88px;
 
-  <main
-    id="userManagementPage"
-    class="user-management-page"
-  >
+  z-index: 500;
 
+  width: 100%;
 
-    <!-- =================================================
-         STICKY HEADING
-         ================================================= -->
+  background:
+    rgba(248, 251, 252, 0.98);
 
-    <section class="user-management-heading-shell">
+  border-bottom:
+    1px solid rgba(70, 120, 145, 0.16);
 
-      <div class="user-management-heading">
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.035);
 
+  isolation: isolate;
+}
 
-        <!-- BACK -->
 
-        <button
-          type="button"
-          id="userManagementBackButton"
-          class="user-management-back-button"
-          aria-label="Back to Settings"
-        >
+.user-management-heading-shell::before {
+  content: "";
 
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <path d="M15 18l-6-6 6-6"></path>
-          </svg>
+  position: absolute;
+  inset: 0;
 
-        </button>
+  z-index: -1;
 
+  background: #f8fbfc;
+}
 
-        <!-- ICON -->
 
-        <div
-          class="user-management-heading-icon"
-          aria-hidden="true"
-        >
+/* =====================================================
+   HEADING
+   ===================================================== */
 
-          <svg viewBox="0 0 24 24">
+.user-management-heading {
+  width: min(90%, 1200px);
 
-            <circle
-              cx="9"
-              cy="8"
-              r="3"
-            ></circle>
+  min-height: 104px;
 
-            <circle
-              cx="17"
-              cy="9"
-              r="2.5"
-            ></circle>
+  margin: 0 auto;
 
-            <path
-              d="M3 20a6 6 0 0 1 12 0"
-            ></path>
+  display: flex;
+  align-items: center;
 
-            <path
-              d="M14 15a5 5 0 0 1 7 5"
-            ></path>
+  gap: 18px;
 
-          </svg>
+  padding: 10px 0;
+}
 
-        </div>
 
+/* =====================================================
+   BACK BUTTON
+   ===================================================== */
 
-        <!-- TITLE -->
+.user-management-back-button {
+  width: 44px;
+  height: 44px;
 
-        <div class="user-management-heading-text">
+  flex: 0 0 44px;
 
-          <h1>
-            User Management
-          </h1>
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-          <p>
-            Manage Users &amp; Account Access
-          </p>
+  padding: 0;
 
-        </div>
+  border:
+    1px solid rgba(60, 110, 135, 0.14);
 
-      </div>
+  border-radius: 50%;
 
-    </section>
+  background: #ffffff;
 
+  color: #52666f;
 
+  cursor: pointer;
 
-    <!-- =================================================
-         PAGE CONTENT
-         ================================================= -->
+  box-shadow:
+    0 5px 15px rgba(31, 77, 96, 0.08);
 
-    <section class="user-management-container">
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
 
 
-      <!-- =================================================
-           SUMMARY
-           ================================================= -->
+.user-management-back-button:hover {
+  transform: translateX(-2px);
 
-      <section
-        class="user-summary-grid"
-        aria-label="User Summary"
-      >
+  background: #f0f8fb;
 
+  box-shadow:
+    0 7px 18px rgba(31, 77, 96, 0.12);
+}
 
-        <!-- TOTAL USER -->
 
-        <article class="user-summary-card">
+.user-management-back-button svg {
+  width: 22px;
+  height: 22px;
 
-          <span
-            class="user-summary-icon total"
-            aria-hidden="true"
-          >
+  fill: none;
 
-            <svg viewBox="0 0 24 24">
+  stroke: currentColor;
 
-              <circle
-                cx="9"
-                cy="8"
-                r="3"
-              ></circle>
+  stroke-width: 2.2;
 
-              <circle
-                cx="17"
-                cy="9"
-                r="2.5"
-              ></circle>
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-              <path
-                d="M3 20a6 6 0 0 1 12 0"
-              ></path>
 
-              <path
-                d="M14 15a5 5 0 0 1 7 5"
-              ></path>
+/* =====================================================
+   HEADING ICON
+   ===================================================== */
 
-            </svg>
+.user-management-heading-icon {
+  width: 70px;
+  height: 70px;
 
-          </span>
+  flex: 0 0 70px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-          <span class="user-summary-content">
+  border-radius: 20px;
 
-            <strong id="userTotalCount">
-              0
-            </strong>
+  background:
+    linear-gradient(
+      145deg,
+      #2196f3,
+      #596cf3
+    );
 
-            <small>
-              Total Users
-            </small>
+  color: #ffffff;
 
-          </span>
+  box-shadow:
+    0 9px 22px rgba(62, 105, 220, 0.22);
+}
 
-        </article>
 
+.user-management-heading-icon svg {
+  width: 39px;
+  height: 39px;
 
+  fill: none;
 
-        <!-- ACTIVE USER -->
+  stroke: currentColor;
 
-        <article class="user-summary-card">
+  stroke-width: 1.8;
 
-          <span
-            class="user-summary-icon active"
-            aria-hidden="true"
-          >
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-            <svg viewBox="0 0 24 24">
 
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-              ></circle>
+/* =====================================================
+   HEADING TEXT
+   ===================================================== */
 
-              <path
-                d="M8 12l2.5 2.5L16 9"
-              ></path>
+.user-management-heading-text {
+  min-width: 0;
+}
 
-            </svg>
 
-          </span>
+.user-management-heading-text h1 {
+  margin: 0;
 
+  color: #101010;
 
-          <span class="user-summary-content">
+  font-size:
+    clamp(29px, 3vw, 40px);
 
-            <strong id="userActiveCount">
-              0
-            </strong>
+  line-height: 1.05;
 
-            <small>
-              Active
-            </small>
+  font-weight: 800;
 
-          </span>
+  letter-spacing: -0.7px;
+}
 
-        </article>
 
+.user-management-heading-text p {
+  margin: 7px 0 0;
 
+  color: #68727a;
 
-        <!-- INACTIVE USER -->
+  font-size: 14px;
 
-        <article class="user-summary-card">
+  font-weight: 500;
+}
 
-          <span
-            class="user-summary-icon inactive"
-            aria-hidden="true"
-          >
 
-            <svg viewBox="0 0 24 24">
+/* =====================================================
+   CONTAINER
+   ===================================================== */
 
-              <circle
-                cx="12"
-                cy="12"
-                r="9"
-              ></circle>
+.user-management-container {
+  width: min(90%, 1200px);
 
-              <path
-                d="M8.5 8.5l7 7"
-              ></path>
+  margin: 0 auto;
 
-              <path
-                d="M15.5 8.5l-7 7"
-              ></path>
+  padding:
+    22px 0
+    55px;
+}
 
-            </svg>
 
-          </span>
+/* =====================================================
+   SUMMARY
+   ===================================================== */
 
+.user-summary-grid {
+  display: grid;
 
-          <span class="user-summary-content">
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
 
-            <strong id="userInactiveCount">
-              0
-            </strong>
+  gap: 14px;
+}
 
-            <small>
-              Inactive
-            </small>
 
-          </span>
+.user-summary-card {
+  min-height: 100px;
 
-        </article>
+  display: flex;
+  align-items: center;
 
-      </section>
+  gap: 16px;
 
+  padding: 17px;
 
+  border:
+    1px solid rgba(55, 116, 145, 0.13);
 
-      <!-- =================================================
-           SEARCH & FILTER
-           ================================================= -->
+  border-radius: 21px;
 
-      <section class="user-tools-card">
+  background:
+    rgba(255, 255, 255, 0.97);
 
+  box-shadow:
+    0 7px 20px
+    rgba(31, 77, 96, 0.07);
+}
 
-        <!-- SEARCH -->
 
-        <div class="user-search-box">
+/* =====================================================
+   SUMMARY ICON
+   ===================================================== */
 
-          <span
-            class="user-search-icon"
-            aria-hidden="true"
-          >
+.user-summary-icon {
+  width: 58px;
+  height: 58px;
 
-            <svg viewBox="0 0 24 24">
+  flex: 0 0 58px;
 
-              <circle
-                cx="11"
-                cy="11"
-                r="6"
-              ></circle>
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-              <path
-                d="M16 16l4 4"
-              ></path>
+  border-radius: 17px;
+}
 
-            </svg>
 
-          </span>
+.user-summary-icon svg {
+  width: 30px;
+  height: 30px;
 
+  fill: none;
 
-          <input
-            type="search"
-            id="userSearchInput"
-            placeholder="Search user..."
-            autocomplete="off"
-            aria-label="Search user"
-          >
+  stroke: currentColor;
 
-        </div>
+  stroke-width: 1.8;
 
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 
-        <!-- LEVEL FILTER -->
+.user-summary-icon.total {
+  color: #2679e8;
 
-        <select
-          id="userLevelFilter"
-          class="user-filter-select"
-          aria-label="Filter user level"
-        >
+  background: #eaf3ff;
+}
 
-          <option value="">
-            All Levels
-          </option>
 
-        </select>
+.user-summary-icon.active {
+  color: #18a65b;
 
+  background: #e9f9f0;
+}
 
 
-        <!-- STATUS FILTER -->
+.user-summary-icon.inactive {
+  color: #d75454;
 
-        <select
-          id="userStatusFilter"
-          class="user-filter-select"
-          aria-label="Filter user status"
-        >
+  background: #fff0f0;
+}
 
-          <option value="">
-            All Status
-          </option>
 
-          <option value="ACTIVE">
-            Active
-          </option>
+/* =====================================================
+   SUMMARY CONTENT
+   ===================================================== */
 
-          <option value="INACTIVE">
-            Inactive
-          </option>
+.user-summary-content {
+  min-width: 0;
 
-        </select>
+  display: flex;
+  flex-direction: column;
 
-      </section>
+  gap: 4px;
+}
 
 
+.user-summary-content strong {
+  color: #1c2a31;
 
-      <!-- =================================================
-           USER LIST HEADER
-           ================================================= -->
+  font-size: 27px;
 
-      <section class="user-list-heading">
+  line-height: 1;
 
-        <div>
+  font-weight: 800;
+}
 
-          <h2>
-            Users
-          </h2>
 
-          <p id="userListResultText">
-            Loading user database...
-          </p>
+.user-summary-content small {
+  color: #758087;
 
-        </div>
+  font-size: 12px;
 
-        <button
-          type="button"
-          id="userAddButton"
-          class="user-add-button"
-        >
-          <span aria-hidden="true">+</span>
-          Add User
-        </button>
+  font-weight: 600;
+}
 
-      </section>
 
+/* =====================================================
+   SEARCH & FILTER
+   ===================================================== */
 
+.user-tools-card {
+  margin-top: 18px;
 
-      <!-- =================================================
-           LOADING
-           ================================================= -->
+  display: grid;
 
-      <section
-        id="userManagementLoading"
-        class="user-management-state"
-      >
+  grid-template-columns:
+    minmax(250px, 1fr)
+    190px
+    190px;
 
-        <span class="user-loading-spinner"></span>
+  gap: 11px;
 
-        <strong>
-          Loading Users
-        </strong>
+  padding: 13px;
 
-        <p>
-          Mengambil User Database terbaru...
-        </p>
+  border:
+    1px solid rgba(55, 116, 145, 0.13);
 
-      </section>
+  border-radius: 20px;
 
+  background:
+    rgba(255, 255, 255, 0.97);
 
+  box-shadow:
+    0 7px 20px
+    rgba(31, 77, 96, 0.07);
+}
 
-      <!-- =================================================
-           ERROR
-           ================================================= -->
 
-      <section
-        id="userManagementError"
-        class="user-management-state user-management-error"
-        hidden
-      >
+/* =====================================================
+   SEARCH
+   ===================================================== */
 
-        <span
-          class="user-state-icon"
-          aria-hidden="true"
-        >
+.user-search-box {
+  position: relative;
 
-          <svg viewBox="0 0 24 24">
+  min-width: 0;
+}
 
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-            ></circle>
 
-            <path d="M12 7v6"></path>
+.user-search-icon {
+  position: absolute;
 
-            <path d="M12 17h.01"></path>
+  left: 14px;
+  top: 50%;
 
-          </svg>
+  transform: translateY(-50%);
 
-        </span>
+  width: 21px;
+  height: 21px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-        <strong>
-          Unable to Load Users
-        </strong>
+  color: #728089;
 
-        <p id="userManagementErrorMessage">
-          User Database tidak dapat dimuat.
-        </p>
+  pointer-events: none;
+}
 
 
-        <button
-          type="button"
-          id="userManagementRetryButton"
-          class="user-retry-button"
-        >
-          Try Again
-        </button>
+.user-search-icon svg {
+  width: 20px;
+  height: 20px;
 
-      </section>
+  fill: none;
 
+  stroke: currentColor;
 
+  stroke-width: 2;
 
-      <!-- =================================================
-           EMPTY
-           ================================================= -->
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-      <section
-        id="userManagementEmpty"
-        class="user-management-state"
-        hidden
-      >
 
-        <span
-          class="user-state-icon"
-          aria-hidden="true"
-        >
+.user-search-box input,
+.user-filter-select {
+  width: 100%;
 
-          <svg viewBox="0 0 24 24">
+  height: 46px;
 
-            <circle
-              cx="9"
-              cy="8"
-              r="3"
-            ></circle>
+  border:
+    1px solid rgba(65, 111, 132, 0.18);
 
-            <circle
-              cx="17"
-              cy="9"
-              r="2.5"
-            ></circle>
+  border-radius: 13px;
 
-            <path
-              d="M3 20a6 6 0 0 1 12 0"
-            ></path>
+  background: #f8fafb;
 
-            <path
-              d="M14 15a5 5 0 0 1 7 5"
-            ></path>
+  color: #26333a;
 
-          </svg>
+  font-family: inherit;
 
-        </span>
+  font-size: 13px;
 
+  outline: none;
 
-        <strong>
-          No Users Found
-        </strong>
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
 
-        <p>
-          Tidak ada user yang sesuai dengan pencarian atau filter.
-        </p>
 
-      </section>
+.user-search-box input {
+  padding:
+    0 15px
+    0 44px;
+}
 
 
+.user-filter-select {
+  padding:
+    0 37px
+    0 13px;
 
-      <!-- =================================================
-           USER LIST
+  cursor: pointer;
+}
 
-           Card user akan dibuat oleh JavaScript
-           berdasarkan response getUsers dari HEXA API.
-           ================================================= -->
 
-      <section
-        id="userManagementList"
-        class="user-management-list"
-        aria-live="polite"
-      ></section>
+.user-search-box input:focus,
+.user-filter-select:focus {
+  border-color:
+    rgba(38, 133, 200, 0.55);
 
+  background: #ffffff;
 
-    </section>
+  box-shadow:
+    0 0 0 3px
+    rgba(45, 145, 215, 0.10);
+}
 
-  </main>
 
+.user-search-box input::placeholder {
+  color: #9ba4a9;
+}
 
 
+/* =====================================================
+   USER LIST HEADING
+   ===================================================== */
 
+.user-list-heading {
+  margin-top: 25px;
 
-  <!-- ==================================================
-       RESET PASSWORD CONFIRMATION
-       ================================================== -->
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
 
-  <div
-    id="userResetPasswordBackdrop"
-    class="user-add-backdrop"
-    hidden
-  ></div>
+  gap: 15px;
 
-  <section
-    id="userResetPasswordModal"
-    class="user-reset-password-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="userResetPasswordTitle"
-    hidden
-  >
-    <div class="user-reset-password-header">
+  padding:
+    0 4px
+    9px;
+}
 
-      <div class="user-reset-password-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 12a8 8 0 1 0 2.34-5.66"></path>
-          <path d="M4 4v5h5"></path>
-          <path d="M12 8v4l2.5 1.5"></path>
-        </svg>
-      </div>
 
-      <button
-        type="button"
-        id="userResetPasswordClose"
-        class="user-add-close"
-        aria-label="Close Reset Password"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 6l12 12"></path>
-          <path d="M18 6L6 18"></path>
-        </svg>
-      </button>
+.user-list-heading h2 {
+  margin: 0;
 
-    </div>
+  color: #29343a;
 
-    <div class="user-reset-password-content">
+  font-size: 20px;
 
-      <h2 id="userResetPasswordTitle">
-        Reset Password?
-      </h2>
+  font-weight: 800;
+}
 
-      <p>
-        Password akun
-        <strong id="userResetPasswordName">User</strong>
-        akan dikembalikan ke password default.
-      </p>
 
-      <div class="user-reset-password-default">
-        <span>Password Default</span>
-        <strong id="userResetPasswordUserId">-</strong>
-        <small>Sama dengan User ID akun</small>
-      </div>
+.user-list-heading p {
+  margin: 5px 0 0;
 
-      <p class="user-reset-password-note">
-        User dapat mengganti password kembali melalui My Profile setelah login.
-      </p>
+  color: #7a858b;
 
-      <p
-        id="userResetPasswordMessage"
-        class="user-add-message"
-        aria-live="polite"
-        hidden
-      ></p>
+  font-size: 12px;
 
-      <div class="user-add-actions">
+  font-weight: 500;
+}
 
-        <button
-          type="button"
-          id="userResetPasswordCancel"
-          class="user-add-secondary"
-        >
-          Cancel
-        </button>
 
-        <button
-          type="button"
-          id="userResetPasswordConfirm"
-          class="user-reset-password-confirm"
-        >
-          Reset Password
-        </button>
+/* =====================================================
+   USER LIST
+   ===================================================== */
 
-      </div>
+.user-management-list {
+  display: grid;
 
-    </div>
-  </section>
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
+  gap: 12px;
+}
 
-  <!-- ==================================================
-       EDIT USER MODAL
-       Desktop = modal, Mobile = bottom sheet
-       ================================================== -->
 
-  <div
-    id="userEditBackdrop"
-    class="user-add-backdrop"
-    hidden
-  ></div>
+/* =====================================================
+   USER CARD
+   Generated by JS
+   ===================================================== */
 
-  <section
-    id="userEditModal"
-    class="user-add-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="userEditModalTitle"
-    hidden
-  >
-    <div class="user-add-modal-header">
-      <div>
-        <h2 id="userEditModalTitle">Edit User</h2>
-        <p>Update HEXA account information</p>
-      </div>
+.user-card {
+  position: relative;
 
-      <button
-        type="button"
-        id="userEditClose"
-        class="user-add-close"
-        aria-label="Close Edit User"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 6l12 12"></path>
-          <path d="M18 6L6 18"></path>
-        </svg>
-      </button>
-    </div>
+  min-width: 0;
 
-    <form id="userEditForm" class="user-add-form" novalidate>
-      <input type="hidden" id="userEditUniqId">
+  display: flex;
+  align-items: center;
 
-      <div class="user-add-grid">
-        <label class="user-add-field user-add-field-wide">
-          <span>Nama <b>*</b></span>
-          <input type="text" id="userEditName" autocomplete="name" required>
-        </label>
+  gap: 16px;
 
-        <label class="user-add-field">
-          <span>User ID <b>*</b></span>
-          <input type="text" id="userEditUserId" autocomplete="off" required>
-        </label>
+  padding:
+    16px 18px;
 
-        <label class="user-add-field">
-          <span>Role <b>*</b></span>
-          <select id="userEditRole" required>
-            <option value="1">MASTER — Level 1</option>
-            <option value="2">SECTION HEAD — Level 2</option>
-            <option value="3">GROUP LEADER — Level 3</option>
-            <option value="4">ADMIN — Level 4</option>
-            <option value="5">MECHANIC — Level 5</option>
-            <option value="6">VISITOR — Level 6</option>
-          </select>
-        </label>
+  border:
+    1px solid rgba(55, 116, 145, 0.13);
 
-        <label class="user-add-field">
-          <span>Status <b>*</b></span>
-          <select id="userEditStatus" required>
-            <option value="ACTIVE">ACTIVE</option>
-            <option value="INACTIVE">INACTIVE</option>
-          </select>
-        </label>
+  border-radius: 20px;
 
-        <label class="user-add-field">
-          <span>No. HP</span>
-          <input type="tel" id="userEditPhone" inputmode="tel" autocomplete="tel">
-        </label>
+  background:
+    rgba(255, 255, 255, 0.98);
 
-        <label class="user-add-field">
-          <span>Email</span>
-          <input type="email" id="userEditEmail" autocomplete="email">
-        </label>
-      </div>
+  box-shadow:
+    0 6px 18px
+    rgba(31, 77, 96, 0.065);
 
-      <p
-        id="userEditMessage"
-        class="user-add-message"
-        aria-live="polite"
-        hidden
-      ></p>
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
 
-      <div class="user-add-actions">
-        <button type="button" id="userEditCancel" class="user-add-secondary">
-          Cancel
-        </button>
 
-        <button type="submit" id="userEditSave" class="user-add-primary">
-          Save Changes
-        </button>
-      </div>
-    </form>
-  </section>
+.user-card:hover {
+  transform:
+    translateY(-2px);
 
+  border-color:
+    rgba(55, 135, 175, 0.26);
 
-  <!-- ==================================================
-       ADD USER MODAL
-       Desktop = modal, Mobile = bottom sheet
-       ================================================== -->
+  box-shadow:
+    0 10px 24px
+    rgba(31, 77, 96, 0.105);
+}
 
-  <div
-    id="userAddBackdrop"
-    class="user-add-backdrop"
-    hidden
-  ></div>
 
-  <section
-    id="userAddModal"
-    class="user-add-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="userAddModalTitle"
-    hidden
-  >
-    <div class="user-add-modal-header">
-      <div>
-        <h2 id="userAddModalTitle">Add New User</h2>
-        <p>Create a new HEXA account</p>
-      </div>
+/* =====================================================
+   USER AVATAR
+   ===================================================== */
 
-      <button
-        type="button"
-        id="userAddClose"
-        class="user-add-close"
-        aria-label="Close Add User"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M6 6l12 12"></path>
-          <path d="M18 6L6 18"></path>
-        </svg>
-      </button>
-    </div>
+.user-card-avatar {
+  position: relative;
 
-    <form id="userAddForm" class="user-add-form" novalidate>
+  width: 66px;
+  height: 66px;
 
-      <div class="user-add-grid">
+  flex: 0 0 66px;
 
-        <label class="user-add-field user-add-field-wide">
-          <span>Nama <b>*</b></span>
-          <input
-            type="text"
-            id="userAddName"
-            autocomplete="name"
-            placeholder="Nama lengkap"
-            required
-          >
-        </label>
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-        <label class="user-add-field">
-          <span>User ID <b>*</b></span>
-          <input
-            type="text"
-            id="userAddUserId"
-            autocomplete="off"
-            placeholder="Contoh: hendri"
-            required
-          >
-        </label>
+  overflow: hidden;
 
-        <label class="user-add-field">
-          <span>Password <b>*</b></span>
-          <div class="user-add-password-wrap">
-            <input
-              type="password"
-              id="userAddPassword"
-              autocomplete="new-password"
-              placeholder="Minimal 6 karakter"
-              required
-            >
-            <button
-              type="button"
-              id="userAddPasswordToggle"
-              class="user-add-password-toggle"
-              aria-label="Show password"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6z"></path>
-                <circle cx="12" cy="12" r="2.7"></circle>
-              </svg>
-            </button>
-          </div>
-        </label>
+  border-radius: 50%;
 
-        <label class="user-add-field">
-          <span>Role <b>*</b></span>
-          <select id="userAddRole" required>
-            <option value="">Select Role</option>
-            <option value="1">MASTER — Level 1</option>
-            <option value="2">SECTION HEAD — Level 2</option>
-            <option value="3">GROUP LEADER — Level 3</option>
-            <option value="4">ADMIN — Level 4</option>
-            <option value="5">MECHANIC — Level 5</option>
-            <option value="6">VISITOR — Level 6</option>
-          </select>
-        </label>
+  background:
+    linear-gradient(
+      145deg,
+      #dff5fb,
+      #e9efff
+    );
 
-        <label class="user-add-field">
-          <span>Status <b>*</b></span>
-          <select id="userAddStatus" required>
-            <option value="ACTIVE" selected>ACTIVE</option>
-            <option value="INACTIVE">INACTIVE</option>
-          </select>
-        </label>
+  color: #327c9c;
 
-        <label class="user-add-field">
-          <span>No. HP</span>
-          <input
-            type="tel"
-            id="userAddPhone"
-            inputmode="tel"
-            autocomplete="tel"
-            placeholder="Contoh: 0821099090"
-          >
-        </label>
+  font-size: 20px;
 
-        <label class="user-add-field">
-          <span>Email</span>
-          <input
-            type="email"
-            id="userAddEmail"
-            autocomplete="email"
-            placeholder="nama@email.com"
-          >
-        </label>
+  font-weight: 800;
+}
 
-      </div>
 
-      <p
-        id="userAddMessage"
-        class="user-add-message"
-        aria-live="polite"
-        hidden
-      ></p>
+.user-card-avatar img {
+  position: absolute;
 
-      <div class="user-add-actions">
-        <button
-          type="button"
-          id="userAddCancel"
-          class="user-add-secondary"
-        >
-          Cancel
-        </button>
+  inset: 0;
 
-        <button
-          type="submit"
-          id="userAddSave"
-          class="user-add-primary"
-        >
-          Create User
-        </button>
-      </div>
+  width: 100%;
+  height: 100%;
 
-    </form>
-  </section>
+  display: none;
 
+  object-fit: cover;
+}
 
-  <!-- ==================================================
-       JAVASCRIPT
-       ================================================== -->
 
-  <script src="hexa-menu.js"></script>
+/* =====================================================
+   USER INFO
+   ===================================================== */
 
-  <script src="hexa-header.js"></script>
+.user-card-info {
+  min-width: 0;
 
-  <script src="user-management.js"></script>
+  flex: 1;
+}
 
 
-</body>
+.user-card-name {
+  margin: 0;
 
-</html>
+  overflow: hidden;
+
+  color: #26343a;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  line-height: 1.25;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.user-card-id {
+  margin-top: 4px;
+
+  overflow: hidden;
+
+  color: #77838a;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.user-card-meta {
+  margin-top: 9px;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+
+/* =====================================================
+   BADGES
+   ===================================================== */
+
+.user-level-badge,
+.user-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 24px;
+
+  padding:
+    3px 10px;
+
+  border-radius: 999px;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.35px;
+
+  text-transform: uppercase;
+}
+
+
+.user-level-badge {
+  color: #2976aa;
+
+  background: #e8f4fb;
+}
+
+
+.user-status-badge.active {
+  color: #148c4b;
+
+  background: #e8f8ef;
+}
+
+
+.user-status-badge.inactive {
+  color: #c64242;
+
+  background: #ffeded;
+}
+
+
+/* =====================================================
+   USER SECONDARY DATA
+   ===================================================== */
+
+.user-card-secondary {
+  margin-top: 8px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.user-card-secondary span {
+  overflow: hidden;
+
+  color: #8a9499;
+
+  font-size: 10.5px;
+
+  line-height: 1.35;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   STATE
+   ===================================================== */
+
+.user-management-state {
+  min-height: 220px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 35px 20px;
+
+  border:
+    1px solid rgba(55, 116, 145, 0.13);
+
+  border-radius: 22px;
+
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  text-align: center;
+
+  box-shadow:
+    0 7px 20px
+    rgba(31, 77, 96, 0.065);
+}
+
+
+.user-management-state strong {
+  margin-top: 13px;
+
+  color: #334148;
+
+  font-size: 16px;
+
+  font-weight: 800;
+}
+
+
+.user-management-state p {
+  max-width: 400px;
+
+  margin:
+    7px 0 0;
+
+  color: #808a90;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+.user-state-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background: #edf5f8;
+
+  color: #608293;
+}
+
+
+.user-state-icon svg {
+  width: 30px;
+  height: 30px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.8;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.user-management-error
+.user-state-icon {
+  color: #d84c4c;
+
+  background: #fff0f0;
+}
+
+
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.user-loading-spinner {
+  width: 39px;
+  height: 39px;
+
+  border:
+    4px solid #e6eef2;
+
+  border-top-color: #328ed0;
+
+  border-radius: 50%;
+
+  animation:
+    userLoadingSpin
+    0.8s linear
+    infinite;
+}
+
+
+@keyframes userLoadingSpin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+/* =====================================================
+   RETRY
+   ===================================================== */
+
+.user-retry-button {
+  min-width: 110px;
+
+  height: 39px;
+
+  margin-top: 17px;
+
+  padding:
+    0 18px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #2e8fd1;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+
+
+.user-retry-button:hover {
+  transform:
+    translateY(-1px);
+
+  opacity: 0.92;
+}
+
+
+/* =====================================================
+   HIDDEN
+   ===================================================== */
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media
+(max-width: 800px) {
+
+  .user-management-heading,
+  .user-management-container {
+    width: 94%;
+  }
+
+
+  .user-summary-grid {
+    gap: 9px;
+  }
+
+
+  .user-tools-card {
+    grid-template-columns:
+      1fr
+      160px
+      160px;
+  }
+
+
+  .user-management-list {
+    grid-template-columns:
+      1fr;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media
+(max-width: 560px) {
+
+  .user-management-page {
+    background-size:
+      auto,
+      600px auto;
+  }
+
+
+  /* HEADING */
+
+  .user-management-heading {
+    min-height: 78px;
+
+    gap: 9px;
+
+    padding:
+      7px 0;
+  }
+
+
+  .user-management-back-button {
+    width: 36px;
+    height: 36px;
+
+    flex-basis: 36px;
+  }
+
+
+  .user-management-back-button svg {
+    width: 19px;
+    height: 19px;
+  }
+
+
+  .user-management-heading-icon {
+    width: 52px;
+    height: 52px;
+
+    flex-basis: 52px;
+
+    border-radius: 15px;
+  }
+
+
+  .user-management-heading-icon svg {
+    width: 29px;
+    height: 29px;
+  }
+
+
+  .user-management-heading-text h1 {
+    font-size: 23px;
+  }
+
+
+  .user-management-heading-text p {
+    margin-top: 4px;
+
+    font-size: 10.5px;
+  }
+
+
+  /* CONTAINER */
+
+  .user-management-container {
+    padding:
+      14px 0
+      35px;
+  }
+
+
+  /* SUMMARY */
+
+  .user-summary-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 6px;
+  }
+
+
+  .user-summary-card {
+    min-height: 84px;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding:
+      10px 5px;
+
+    border-radius: 16px;
+
+    text-align: center;
+  }
+
+
+  .user-summary-icon {
+    width: 37px;
+    height: 37px;
+
+    flex-basis: 37px;
+
+    border-radius: 11px;
+  }
+
+
+  .user-summary-icon svg {
+    width: 21px;
+    height: 21px;
+  }
+
+
+  .user-summary-content {
+    align-items: center;
+
+    gap: 2px;
+  }
+
+
+  .user-summary-content strong {
+    font-size: 20px;
+  }
+
+
+  .user-summary-content small {
+    font-size: 9px;
+  }
+
+
+  /* SEARCH */
+
+  .user-tools-card {
+    margin-top: 12px;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 7px;
+
+    padding: 9px;
+
+    border-radius: 16px;
+  }
+
+
+  .user-search-box {
+    grid-column:
+      1 / -1;
+  }
+
+
+  .user-search-box input,
+  .user-filter-select {
+    height: 42px;
+
+    border-radius: 11px;
+
+    font-size: 11px;
+  }
+
+
+  /* LIST HEADING */
+
+  .user-list-heading {
+    margin-top: 18px;
+
+    padding-bottom: 7px;
+  }
+
+
+  .user-list-heading h2 {
+    font-size: 17px;
+  }
+
+
+  .user-list-heading p {
+    margin-top: 3px;
+
+    font-size: 10px;
+  }
+
+
+  /* USER CARD */
+
+  .user-management-list {
+    gap: 8px;
+  }
+
+
+  .user-card {
+    gap: 12px;
+
+    padding:
+      12px;
+
+    border-radius: 17px;
+  }
+
+
+  .user-card-avatar {
+    width: 55px;
+    height: 55px;
+
+    flex-basis: 55px;
+
+    font-size: 17px;
+  }
+
+
+  .user-card-name {
+    font-size: 14px;
+  }
+
+
+  .user-card-id {
+    margin-top: 3px;
+
+    font-size: 10.5px;
+  }
+
+
+  .user-card-meta {
+    margin-top: 6px;
+
+    gap: 5px;
+  }
+
+
+  .user-level-badge,
+  .user-status-badge {
+    min-height: 21px;
+
+    padding:
+      2px 8px;
+
+    font-size: 8px;
+  }
+
+
+  .user-card-secondary {
+    margin-top: 6px;
+  }
+
+
+  .user-card-secondary span {
+    font-size: 9.5px;
+  }
+
+
+  /* STATE */
+
+  .user-management-state {
+    min-height: 190px;
+
+    padding:
+      28px 15px;
+
+    border-radius: 18px;
+  }
+
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+   ===================================================== */
+
+@media
+(max-width: 390px) {
+
+  .user-management-heading {
+    gap: 7px;
+  }
+
+
+  .user-management-heading-icon {
+    width: 47px;
+    height: 47px;
+
+    flex-basis: 47px;
+  }
+
+
+  .user-management-heading-text h1 {
+    font-size: 20px;
+  }
+
+
+  .user-management-heading-text p {
+    font-size: 9px;
+  }
+
+
+  .user-summary-card {
+    min-height: 80px;
+  }
+
+
+  .user-card {
+    gap: 10px;
+  }
+
+
+  .user-card-avatar {
+    width: 50px;
+    height: 50px;
+
+    flex-basis: 50px;
+  }
+
+}
+
+
+/* =====================================================
+   ADD USER
+   ===================================================== */
+
+.user-add-button {
+  min-width: 118px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: #2e8fd1;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(46, 143, 209, 0.20);
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+.user-add-button:hover {
+  transform: translateY(-1px);
+  opacity: 0.94;
+}
+
+.user-add-button span {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.user-add-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(10, 22, 29, 0.48);
+  backdrop-filter: blur(2px);
+}
+
+.user-add-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2010;
+  width: min(92%, 620px);
+  max-height: min(86vh, 760px);
+  overflow-y: auto;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(55, 116, 145, 0.16);
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 38, 50, 0.24);
+}
+
+.user-add-modal-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid rgba(55, 116, 145, 0.11);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+.user-add-modal-header h2 {
+  margin: 0;
+  color: #26343a;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.user-add-modal-header p {
+  margin: 4px 0 0;
+  color: #7a858b;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.user-add-close {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(65, 111, 132, 0.14);
+  border-radius: 50%;
+  background: #f7fafb;
+  color: #66777f;
+  cursor: pointer;
+}
+
+.user-add-close svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.user-add-form {
+  padding: 20px 22px 22px;
+}
+
+.user-add-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.user-add-field {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.user-add-field-wide {
+  grid-column: 1 / -1;
+}
+
+.user-add-field > span {
+  color: #4c5b62;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.user-add-field > span b {
+  color: #d65353;
+}
+
+.user-add-field input,
+.user-add-field select {
+  width: 100%;
+  height: 45px;
+  padding: 0 13px;
+  border: 1px solid rgba(65, 111, 132, 0.18);
+  border-radius: 12px;
+  outline: none;
+  background: #f8fafb;
+  color: #26333a;
+  font-family: inherit;
+  font-size: 12px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.user-add-field input:focus,
+.user-add-field select:focus {
+  border-color: rgba(38, 133, 200, 0.55);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(45, 145, 215, 0.10);
+}
+
+.user-add-password-wrap {
+  position: relative;
+}
+
+.user-add-password-wrap input {
+  padding-right: 46px;
+}
+
+.user-add-password-toggle {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #718089;
+  cursor: pointer;
+}
+
+.user-add-password-toggle svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.user-add-message {
+  margin: 15px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.user-add-message.error {
+  color: #b53c3c;
+  background: #fff0f0;
+}
+
+.user-add-message.success {
+  color: #137f46;
+  background: #e9f8f0;
+}
+
+.user-add-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.user-add-secondary,
+.user-add-primary {
+  min-width: 110px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 11px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.user-add-secondary {
+  border: 1px solid rgba(65, 111, 132, 0.18);
+  background: #f7fafb;
+  color: #5f7078;
+}
+
+.user-add-primary {
+  border: none;
+  background: #2e8fd1;
+  color: #ffffff;
+}
+
+.user-add-primary:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+body.user-add-open {
+  overflow: hidden;
+}
+
+@media (max-width: 560px) {
+  .user-list-heading {
+    align-items: center;
+  }
+
+  .user-add-button {
+    min-width: 105px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
+    font-size: 10.5px;
+  }
+
+  .user-add-modal {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    max-height: 88vh;
+    transform: none;
+    border-radius: 23px 23px 0 0;
+  }
+
+  .user-add-modal-header {
+    padding: 17px 18px 14px;
+  }
+
+  .user-add-modal-header h2 {
+    font-size: 19px;
+  }
+
+  .user-add-form {
+    padding: 17px 18px 22px;
+  }
+
+  .user-add-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .user-add-field-wide {
+    grid-column: auto;
+  }
+
+  .user-add-actions {
+    position: sticky;
+    bottom: 0;
+    padding-top: 12px;
+    background: #ffffff;
+  }
+
+  .user-add-secondary,
+  .user-add-primary {
+    flex: 1;
+  }
+}
+
+
+/* =====================================================
+   EDIT USER BUTTON
+   ===================================================== */
+
+.user-card-edit-button {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border:
+    1px solid rgba(55, 116, 145, 0.14);
+
+  border-radius: 10px;
+
+  background: #f5f9fb;
+
+  color: #4f7f97;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.user-card-edit-button:hover {
+  background: #eaf4f9;
+  transform: translateY(-1px);
+}
+
+
+.user-card-edit-button svg {
+  width: 17px;
+  height: 17px;
+
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.user-card.has-edit-button .user-card-info {
+  padding-right: 36px;
+}
+
+
+@media (max-width: 560px) {
+
+  .user-card-edit-button {
+    top: 11px;
+    right: 11px;
+
+    width: 32px;
+    height: 32px;
+
+    border-radius: 9px;
+  }
+
+}
