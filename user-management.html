@@ -566,6 +566,101 @@
 
 
   <!-- ==================================================
+       RESET PASSWORD CONFIRMATION
+       ================================================== -->
+
+  <div
+    id="userResetPasswordBackdrop"
+    class="user-add-backdrop"
+    hidden
+  ></div>
+
+  <section
+    id="userResetPasswordModal"
+    class="user-reset-password-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="userResetPasswordTitle"
+    hidden
+  >
+    <div class="user-reset-password-header">
+
+      <div class="user-reset-password-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M4 12a8 8 0 1 0 2.34-5.66"></path>
+          <path d="M4 4v5h5"></path>
+          <path d="M12 8v4l2.5 1.5"></path>
+        </svg>
+      </div>
+
+      <button
+        type="button"
+        id="userResetPasswordClose"
+        class="user-add-close"
+        aria-label="Close Reset Password"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12"></path>
+          <path d="M18 6L6 18"></path>
+        </svg>
+      </button>
+
+    </div>
+
+    <div class="user-reset-password-content">
+
+      <h2 id="userResetPasswordTitle">
+        Reset Password?
+      </h2>
+
+      <p>
+        Password akun
+        <strong id="userResetPasswordName">User</strong>
+        akan dikembalikan ke password default.
+      </p>
+
+      <div class="user-reset-password-default">
+        <span>Password Default</span>
+        <strong id="userResetPasswordUserId">-</strong>
+        <small>Sama dengan User ID akun</small>
+      </div>
+
+      <p class="user-reset-password-note">
+        User dapat mengganti password kembali melalui My Profile setelah login.
+      </p>
+
+      <p
+        id="userResetPasswordMessage"
+        class="user-add-message"
+        aria-live="polite"
+        hidden
+      ></p>
+
+      <div class="user-add-actions">
+
+        <button
+          type="button"
+          id="userResetPasswordCancel"
+          class="user-add-secondary"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          id="userResetPasswordConfirm"
+          class="user-reset-password-confirm"
+        >
+          Reset Password
+        </button>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==================================================
        EDIT USER MODAL
        Desktop = modal, Mobile = bottom sheet
        ================================================== -->
