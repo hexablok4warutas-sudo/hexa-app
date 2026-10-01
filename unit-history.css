@@ -1928,28 +1928,22 @@ body.modal-open {
 }
 
 /* =====================================================
-   UNIT HISTORY - COLUMNS PANEL FIX
+   CUSTOM COLUMNS PANEL
+   Mengikuti desain FILTER PANEL
 ===================================================== */
 
 .unit-history-columns-panel {
-  position: fixed;
-  top: 92px;
-  right: 24px;
-  z-index: 1200;
+  width: 100%;
+  margin: 12px 0 14px;
 
-  width: min(420px, calc(100vw - 32px));
-  max-height: calc(100vh - 120px);
-
-  padding: 18px;
+  padding: 26px 24px 24px;
 
   background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
 
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.16);
+  border: 1px solid #f59e0b;
+  border-radius: 14px;
 
-  overflow-y: auto;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
 .unit-history-columns-panel[hidden] {
@@ -1957,96 +1951,132 @@ body.modal-open {
 }
 
 
-/* HEADER */
+/* =====================================================
+   HEADER
+===================================================== */
 
 .unit-history-columns-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 16px;
+
+  margin-bottom: 24px;
 }
 
 .unit-history-columns-header h2 {
   margin: 0;
 
-  font-size: 18px;
+  font-size: 24px;
+  line-height: 1.2;
   font-weight: 700;
+
   color: #1f2937;
 }
+
+
+/* CLOSE BUTTON */
 
 .unit-history-columns-close {
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 34px;
-  height: 34px;
+  width: 42px;
+  height: 42px;
 
   padding: 0;
 
+  flex: 0 0 auto;
+
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
 
   background: #f3f4f6;
-  color: #374151;
+  color: #6b7280;
 
-  font-size: 22px;
+  font-size: 26px;
+  font-weight: 400;
   line-height: 1;
 
   cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .unit-history-columns-close:hover {
   background: #e5e7eb;
+  color: #374151;
 }
 
 
-/* COLUMN OPTIONS */
+/* =====================================================
+   COLUMN LIST
+===================================================== */
 
 .unit-history-columns-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 
-  gap: 8px;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
 
-  margin-bottom: 18px;
+  gap: 12px;
+
+  margin-bottom: 24px;
 }
+
+
+/* COLUMN ITEM */
 
 .unit-history-column-option {
   display: flex;
   align-items: center;
 
-  gap: 8px;
-
   min-width: 0;
-  padding: 9px 10px;
 
-  border: 1px solid #e5e7eb;
+  gap: 10px;
+
+  padding: 12px 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #d1d5db;
   border-radius: 9px;
 
-  background: #fafafa;
-
-  font-size: 13px;
   color: #374151;
 
+  font-size: 14px;
+  font-weight: 500;
+
   cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .unit-history-column-option:hover {
-  background: #f3f4f6;
+  border-color: #f59e0b;
+  background: #fffaf0;
 }
 
+
+/* CHECKBOX */
+
 .unit-history-column-option input {
-  width: 16px;
-  height: 16px;
+  width: 17px;
+  height: 17px;
 
   margin: 0;
 
   flex: 0 0 auto;
 
   accent-color: #f59e0b;
+
+  cursor: pointer;
 }
 
 .unit-history-column-option span {
@@ -2058,55 +2088,95 @@ body.modal-open {
 }
 
 
-/* ACTION BUTTONS */
+/* =====================================================
+   ACTION AREA
+===================================================== */
 
 .unit-history-columns-actions {
   display: flex;
   align-items: center;
 
-  gap: 8px;
+  gap: 12px;
 
-  padding-top: 14px;
+  padding-top: 18px;
 
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #eeeeee;
 }
 
-.unit-history-columns-secondary-button,
-.unit-history-columns-apply-button {
-  min-height: 38px;
 
-  padding: 0 14px;
-
-  border-radius: 8px;
-
-  font-size: 13px;
-  font-weight: 600;
-
-  cursor: pointer;
-}
+/* DEFAULT + SELECT ALL */
 
 .unit-history-columns-secondary-button {
+  min-width: 112px;
+  height: 46px;
+
+  padding: 0 20px;
+
   border: 1px solid #d1d5db;
+  border-radius: 24px;
 
   background: #ffffff;
   color: #374151;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
 }
 
 .unit-history-columns-secondary-button:hover {
-  background: #f3f4f6;
+  border-color: #f59e0b;
+  background: #fffaf0;
 }
 
+
+/* APPLY */
+
 .unit-history-columns-apply-button {
+  min-width: 144px;
+  height: 46px;
+
   margin-left: auto;
 
+  padding: 0 24px;
+
   border: 1px solid #f59e0b;
+  border-radius: 24px;
 
   background: #f59e0b;
-  color: #ffffff;
+  color: #111827;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .unit-history-columns-apply-button:hover {
-  background: #d97706;
+  background: #e99500;
+  border-color: #e99500;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+  .unit-history-columns-list {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
 }
 
 
@@ -2117,32 +2187,81 @@ body.modal-open {
 @media (max-width: 600px) {
 
   .unit-history-columns-panel {
-    top: 78px;
-    left: 12px;
-    right: 12px;
+    margin: 8px 0 12px;
 
-    width: auto;
-    max-height: calc(100vh - 96px);
+    padding: 18px 14px;
 
-    padding: 16px;
-
-    border-radius: 14px;
+    border-radius: 12px;
   }
+
+
+  .unit-history-columns-header {
+    margin-bottom: 18px;
+  }
+
+
+  .unit-history-columns-header h2 {
+    font-size: 20px;
+  }
+
+
+  .unit-history-columns-close {
+    width: 38px;
+    height: 38px;
+
+    font-size: 23px;
+  }
+
 
   .unit-history-columns-list {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
   }
 
-  .unit-history-columns-actions {
-    flex-wrap: wrap;
+
+  .unit-history-column-option {
+    padding: 10px;
+
+    gap: 7px;
+
+    font-size: 12px;
   }
+
+
+  .unit-history-column-option input {
+    width: 16px;
+    height: 16px;
+  }
+
+
+  .unit-history-columns-actions {
+    display: grid;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap: 8px;
+  }
+
 
   .unit-history-columns-secondary-button,
   .unit-history-columns-apply-button {
-    flex: 1;
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+
+    margin: 0;
+
+    padding: 0 10px;
+
+    font-size: 12px;
   }
 
+
   .unit-history-columns-apply-button {
-    margin-left: 0;
+    grid-column: 1 / -1;
   }
+
 }
