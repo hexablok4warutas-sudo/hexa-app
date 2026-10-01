@@ -204,11 +204,19 @@ function getProfilePhotoDisplayUrl(photoUrl) {
 }
 
 function renderProfileSignature(signatureUrl) {
+  profileSavedSignatureUrl = cleanProfileValue(signatureUrl);
+  profilePendingSignatureDataUrl = "";
+
   const image = document.getElementById("profileSignatureImage");
   const empty = document.getElementById("profileSignatureEmpty");
   const buttonText = document.getElementById("profileSignatureButtonText");
+  const signatureButton = document.getElementById("profileSignatureButton");
+  const pendingActions = document.getElementById("profileSignaturePendingActions");
 
   if (!image || !empty) return;
+
+  if (signatureButton) signatureButton.hidden = false;
+  if (pendingActions) pendingActions.hidden = true;
 
   image.onload = null;
   image.onerror = null;
@@ -902,6 +910,8 @@ async function submitProfilePasswordChange(event) {
 let profileSignatureDrawing = false;
 let profileSignatureHasInk = false;
 let profileSignatureLastPoint = null;
+let profilePendingSignatureDataUrl = "";
+let profileSavedSignatureUrl = "";
 
 function initializeProfileSignatureControls() {
   const sheetBackdrop = document.getElementById("profileSignatureSheetBackdrop");
@@ -913,6 +923,8 @@ function initializeProfileSignatureControls() {
   const drawClose = document.getElementById("profileDrawSignatureClose");
   const clearButton = document.getElementById("profileSignatureClear");
   const useButton = document.getElementById("profileSignatureUse");
+  const saveButton = document.getElementById("profileSignatureSave");
+  const cancelPreviewButton = document.getElementById("profileSignatureCancelPreview");
   const canvas = document.getElementById("profileSignatureCanvas");
 
   if (sheetBackdrop) {
@@ -950,6 +962,14 @@ function initializeProfileSignatureControls() {
 
   if (useButton) {
     useButton.addEventListener("click", useProfileDrawnSignaturePreview);
+  }
+
+  if (saveButton) {
+    saveButton.addEventListener("click", saveProfileSignature);
+  }
+
+  if (cancelPreviewButton) {
+    cancelPreviewButton.addEventListener("click", cancelProfileSignaturePreview);
   }
 
   if (!canvas) return;
@@ -1170,23 +1190,122 @@ function useProfileDrawnSignaturePreview() {
   const canvas = document.getElementById("profileSignatureCanvas");
   const image = document.getElementById("profileSignatureImage");
   const empty = document.getElementById("profileSignatureEmpty");
-  const buttonText = document.getElementById("profileSignatureButtonText");
+  const signatureButton = document.getElementById("profileSignatureButton");
+  const pendingActions = document.getElementById("profileSignaturePendingActions");
 
   if (!canvas || !image || !empty) return;
 
-  const previewDataUrl = canvas.toDataURL("image/png");
+  profilePendingSignatureDataUrl = canvas.toDataURL("image/png");
 
   image.onload = function () {
     image.hidden = false;
     empty.hidden = true;
-    if (buttonText) buttonText.textContent = "Change Signature";
   };
 
-  image.src = previewDataUrl;
+  image.onerror = null;
+  image.src = profilePendingSignatureDataUrl;
+
+  if (signatureButton) signatureButton.hidden = true;
+  if (pendingActions) pendingActions.hidden = false;
 
   closeProfileDrawSignature();
+}
 
-  alert(
-    "Preview signature berhasil. Pada tahap ini belum disimpan ke Google Drive."
-  );
+function cancelProfileSignaturePreview() {
+  profilePendingSignatureDataUrl = "";
+
+  if (currentProfileUser) {
+    renderProfileSignature(currentProfileUser.signature || profileSavedSignatureUrl || "");
+  } else {
+    renderProfileSignature(profileSavedSignatureUrl);
+  }
+}
+
+async function saveProfileSignature() {
+  if (!profilePendingSignatureDataUrl) {
+    alert("Tidak ada signature baru untuk disimpan.");
+    return;
+  }
+
+  if (!currentProfileUser || !currentProfileUser.uniqId) {
+    alert("Data user tidak ditemukan. Silakan login ulang.");
+    return;
+  }
+
+  const saveButton = document.getElementById("profileSignatureSave");
+  const cancelButton = document.getElementById("profileSignatureCancelPreview");
+  const originalText = saveButton ? saveButton.textContent : "Save Signature";
+
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+  }
+
+  if (cancelButton) {
+    cancelButton.disabled = true;
+  }
+
+  try {
+    const base64 = profilePendingSignatureDataUrl.split(",")[1] || "";
+
+    if (!base64) {
+      throw new Error("Data signature PNG tidak valid.");
+    }
+
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateUserSignature",
+        uniqId: currentProfileUser.uniqId,
+        signatureBase64: base64,
+        signatureMimeType: "image/png"
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result || result.success !== true || !result.user) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Response update Digital Signature tidak valid."
+      );
+    }
+
+    currentProfileUser = normalizeProfileUser(result.user);
+
+    sessionStorage.setItem(
+      "hexaUser",
+      JSON.stringify(currentProfileUser)
+    );
+
+    renderProfile(currentProfileUser);
+
+    alert("Digital Signature berhasil disimpan.");
+
+  } catch (error) {
+    console.error("HEXA Profile: gagal menyimpan Digital Signature.", error);
+
+    alert(
+      "Digital Signature gagal disimpan.\n\n" +
+      (error.message || "Terjadi kesalahan saat menghubungi HEXA API.")
+    );
+
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalText;
+    }
+
+    if (cancelButton) {
+      cancelButton.disabled = false;
+    }
+  }
 }
