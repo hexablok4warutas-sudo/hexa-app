@@ -834,3 +834,60 @@ body.profile-signature-overlay-open {
     grid-template-columns: 1fr 1.45fr;
   }
 }
+
+
+/* =====================================================
+   DIGITAL SIGNATURE - STAGE 3
+   Confirm + Save to HEXA API
+   ===================================================== */
+
+.profile-signature-pending-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.profile-signature-pending-actions[hidden] {
+  display: none !important;
+}
+
+.profile-signature-preview-cancel,
+.profile-signature-preview-save {
+  min-height: 60px;
+  border-radius: 16px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.profile-signature-preview-cancel {
+  border: 1px solid #d5dde1;
+  background: #ffffff;
+  color: #657078;
+}
+
+.profile-signature-preview-save {
+  border: 0;
+  background: #168de0;
+  color: #ffffff;
+}
+
+.profile-signature-preview-cancel:disabled,
+.profile-signature-preview-save:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+@media(max-width:560px) {
+  .profile-signature-pending-actions {
+    grid-template-columns: 1fr 1.55fr;
+  }
+
+  .profile-signature-preview-cancel,
+  .profile-signature-preview-save {
+    min-height: 52px;
+    font-size: 13px;
+  }
+}
