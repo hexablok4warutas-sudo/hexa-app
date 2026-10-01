@@ -1,345 +1,669 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Profile | HEXA</title>
-  <link rel="stylesheet" href="hexa-header.css">
-  <link rel="stylesheet" href="profile.css">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Settings | HEXA</title>
+
+
+  <!-- GLOBAL HEXA HEADER -->
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- SETTINGS -->
+  <link
+    rel="stylesheet"
+    href="settings.css"
+  >
+
 </head>
+
+
 <body>
-  <header id="hexaHeader" data-header-type="standard" data-page="settings"></header>
 
-  <main id="profilePage" class="profile-page">
-    <section class="profile-heading-shell">
-      <div class="profile-heading">
-        <button type="button" id="profileBackButton" class="profile-back-button" aria-label="Back to Settings">
-          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
-        </button>
-        <div class="profile-heading-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>
+
+  <!-- ==================================================
+       GLOBAL HEXA HEADER
+       ================================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="settings"
+  ></header>
+
+
+
+  <!-- ==================================================
+       SETTINGS PAGE
+       ================================================== -->
+
+  <main
+    id="settingsPage"
+    class="settings-page"
+  >
+
+
+    <!-- =================================================
+         STICKY SETTINGS HEADING
+
+         Dibuat terpisah dari content agar card yang
+         discroll ke atas tidak terlihat menembus
+         di belakang heading.
+         ================================================= -->
+
+    <section class="settings-heading-shell">
+
+      <div class="settings-heading">
+
+        <img
+          class="settings-heading-icon"
+          src="HEXA-ICON-svg-settings-page.svg"
+          alt=""
+          aria-hidden="true"
+        >
+
+
+        <div class="settings-heading-text">
+
+          <h1>
+            Settings
+          </h1>
+
+          <p>
+            Account &amp; Application Management
+          </p>
+
         </div>
-        <div class="profile-heading-text">
-          <h1>My Profile</h1>
-          <p>Personal &amp; Account Information</p>
-        </div>
+
       </div>
+
     </section>
 
-    <section class="profile-container">
-      <section class="profile-hero">
-        <div class="profile-photo-wrap">
-          <div class="profile-photo">
-            <img id="profilePhoto" src="" alt="">
-            <span id="profileInitial" class="profile-initial" aria-hidden="true">US</span>
-          </div>
-          <button type="button" class="profile-photo-action" id="profilePhotoAction" aria-label="Change profile photo">
-            <svg viewBox="0 0 24 24"><path d="M9 5l1.3-2h3.4L15 5h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4z"></path><circle cx="12" cy="12" r="4"></circle></svg>
-          </button>
-        </div>
 
-        <div class="profile-hero-info">
-          <div class="profile-name-row">
-            <h2 id="profileHeroName">User Name</h2>
-            <span id="profileActiveMark" class="profile-active-mark" title="Active Account">
-              <svg viewBox="0 0 24 24"><path d="M12 2.5 14.1 4l2.6-.2.9 2.4L20 7.3l-.4 2.6 1.9 2.1-1.9 2.1.4 2.6-2.4 1.1-.9 2.4-2.6-.2-2.1 1.5L9.9 20l-2.6.2-.9-2.4L4 16.7l.4-2.6L2.5 12l1.9-2.1L4 7.3l2.4-1.1.9-2.4 2.6.2z"></path><path class="profile-active-check" d="M8.3 12.1l2.3 2.3 5.2-5.2"></path></svg>
+
+    <!-- =================================================
+         PAGE CONTENT
+         ================================================= -->
+
+    <section class="settings-container">
+
+
+      <!-- =================================================
+           PROFILE / MY PROFILE
+
+           Card ini sekaligus menjadi shortcut
+           menuju halaman My Profile.
+           ================================================= -->
+
+      <button
+        type="button"
+        id="settingsProfileCard"
+        class="settings-profile-card"
+        aria-label="Open My Profile"
+      >
+
+
+        <!-- PROFILE PHOTO -->
+
+        <span class="settings-profile-photo">
+
+          <img
+            id="settingsProfilePhoto"
+            src=""
+            alt=""
+          >
+
+          <span
+            id="settingsProfileInitial"
+            class="settings-profile-initial"
+            aria-hidden="true"
+          >
+            US
+          </span>
+
+        </span>
+
+
+
+        <!-- PROFILE INFORMATION -->
+
+        <span class="settings-profile-info">
+
+
+          <!-- NAME -->
+
+          <span class="settings-profile-name-row">
+
+            <strong
+              id="settingsProfileName"
+              class="settings-profile-name"
+            >
+              User Name
+            </strong>
+
+
+            <!-- VERIFIED / ACTIVE ACCOUNT -->
+
+            <span
+              class="settings-verified"
+              title="Active Account"
+              aria-label="Active Account"
+            >
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+
+                <path
+                  d="
+                    M12 2.5
+                    14.1 4
+                    16.7 3.8
+                    17.6 6.2
+                    20 7.3
+                    19.6 9.9
+                    21.5 12
+                    19.6 14.1
+                    20 16.7
+                    17.6 17.8
+                    16.7 20.2
+                    14.1 20
+                    12 21.5
+                    9.9 20
+                    7.3 20.2
+                    6.4 17.8
+                    4 16.7
+                    4.4 14.1
+                    2.5 12
+                    4.4 9.9
+                    4 7.3
+                    6.4 6.2
+                    7.3 3.8
+                    9.9 4
+                    Z
+                  "
+                ></path>
+
+                <path
+                  class="settings-verified-check"
+                  d="M8.3 12.1l2.3 2.3 5.2-5.2"
+                ></path>
+
+              </svg>
+
             </span>
-          </div>
-          <div class="profile-hero-meta">
-            <span id="profileHeroUserId">User ID</span><span>•</span><span id="profileHeroLevel">Level 1</span>
-          </div>
-          <span id="profileRoleBadge" class="profile-role-badge">MASTER</span>
-          <p id="profileMotto" class="profile-motto" hidden></p>
+
+          </span>
+
+
+
+          <!-- ID + LEVEL -->
+
+          <span class="settings-profile-meta">
+
+            <span id="settingsProfileId">
+              User ID
+            </span>
+
+            <span class="settings-profile-divider">
+              •
+            </span>
+
+            <span id="settingsProfileLevel">
+              Level 1
+            </span>
+
+          </span>
+
+
+
+          <!-- ROLE -->
+
+          <span
+            id="settingsRoleBadge"
+            class="settings-role-badge"
+          >
+            MASTER
+          </span>
+
+
+
+          <!-- MOTTO -->
+
+          <span
+            id="settingsProfileMotto"
+            class="settings-profile-motto"
+          >
+            “Motto atau kutipan”
+          </span>
+
+
+        </span>
+
+
+
+        <!-- PROFILE ARROW -->
+
+        <span
+          class="settings-card-arrow settings-profile-arrow"
+          aria-hidden="true"
+        >
+
+          <svg viewBox="0 0 24 24">
+
+            <path d="M9 18l6-6-6-6"></path>
+
+          </svg>
+
+        </span>
+
+
+      </button>
+
+
+
+      <!-- =================================================
+           ADMINISTRATION
+           ================================================= -->
+
+      <section
+        id="settingsAdministrationSection"
+        class="settings-section"
+      >
+
+        <div class="settings-section-heading">
+
+          <span class="settings-section-accent"></span>
+
+          <h2>
+            ADMINISTRATION
+          </h2>
+
         </div>
-      </section>
 
-      <section class="profile-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Personal Information</h2><p>Information you can update from your profile</p></div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-field"><label>Name</label><div id="profileName" class="profile-field-value">-</div></div>
-          <div class="profile-field"><label>Phone Number</label><div id="profilePhone" class="profile-field-value">-</div></div>
-          <div class="profile-field"><label>Email</label><div id="profileEmail" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-quote-field">
-            <label>Kutipan</label>
-            <div id="profileQuote" class="profile-field-value profile-quote-value">-</div>
-          </div>
 
-          <div id="profileViewActions" class="profile-actions">
-            <button type="button" id="profileEditButton" class="profile-primary-button">
-              <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z"></path><path d="M13.5 6.5l4 4"></path></svg>
-              <span>Edit Profile</span>
-            </button>
-          </div>
 
-          <div id="profileEditActions" class="profile-actions profile-edit-actions" hidden>
-            <button type="button" id="profileCancelButton" class="profile-secondary-button">
-              Cancel
-            </button>
-            <button type="button" id="profileSaveButton" class="profile-primary-button">
-              Save Changes
-            </button>
-          </div>
-        </div>
-      </section>
+        <!-- USER MANAGEMENT -->
 
-      <section class="profile-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Account Information</h2><p>Managed by HEXA Master Administrator</p></div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-field profile-locked-field"><label>User ID <span class="profile-lock">🔒</span></label><div id="profileUserId" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-locked-field"><label>Level <span class="profile-lock">🔒</span></label><div id="profileLevel" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-locked-field"><label>Kode <span class="profile-lock">🔒</span></label><div id="profileKode" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-locked-field"><label>Status <span class="profile-lock">🔒</span></label><div class="profile-status-row"><span id="profileStatus" class="profile-status-badge">-</span></div></div>
-        </div>
-      </section>
+        <button
+          type="button"
+          class="settings-menu-card"
+          data-settings-page="user-management"
+        >
 
-      <!-- DIGITAL SIGNATURE -->
-      <section class="profile-section profile-signature-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Digital Signature</h2><p>Signature used for approval &amp; authorization</p></div>
-        </div>
 
-        <div class="profile-signature-card">
-          <div class="profile-signature-preview">
-            <img id="profileSignatureImage" class="profile-signature-image" src="" alt="Digital Signature" hidden>
+          <span class="settings-menu-icon user-management-icon">
 
-            <div id="profileSignatureEmpty" class="profile-signature-empty">
-              <span class="profile-signature-empty-icon" aria-hidden="true">✍️</span>
-              <strong>No signature registered</strong>
-              <small>Create your digital signature for future approval.</small>
-            </div>
-          </div>
+            <svg viewBox="0 0 24 24">
 
-          <button type="button" id="profileSignatureButton" class="profile-signature-button">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5c2.5-3.5 4.4-5.2 5.8-5.2 1.1 0 1.2 1.4.3 2.8-.8 1.2-.4 1.9.6 1.9 1.5 0 3.2-2.8 4.5-2.8.9 0 .8 1.4 1.7 1.4.8 0 1.7-.7 3.1-1.9"></path><path d="M14.2 5.1 16 3.3a1.5 1.5 0 0 1 2.1 0l2.6 2.6a1.5 1.5 0 0 1 0 2.1l-1.8 1.8"></path><path d="m14.2 5.1-7.7 7.7-.8 3.5 3.5-.8 7.7-7.7z"></path></svg>
-            <span id="profileSignatureButtonText">Create Signature</span>
-          </button>
-        </div>
-      </section>
+              <circle
+                cx="9"
+                cy="8"
+                r="3"
+              ></circle>
 
-      <section class="profile-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Security</h2><p>Password &amp; account security</p></div>
-        </div>
-        <button type="button" id="profilePasswordButton" class="profile-security-card">
-          <span class="profile-security-icon">🔐</span>
-          <span class="profile-security-content"><strong>Change Password</strong><small>Password ••••••••</small></span>
-          <span class="profile-arrow">›</span>
+              <circle
+                cx="17"
+                cy="9"
+                r="2.5"
+              ></circle>
+
+              <path
+                d="M3 20a6 6 0 0 1 12 0"
+              ></path>
+
+              <path
+                d="M14 15a5 5 0 0 1 7 5"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              User Management
+            </strong>
+
+            <small>
+              Manage users, accounts and user levels
+            </small>
+
+          </span>
+
+
+
+          <span
+            class="settings-card-arrow"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path d="M9 18l6-6-6-6"></path>
+
+            </svg>
+
+          </span>
+
+
         </button>
+
+
+
+        <!-- ACCESS SETTINGS -->
+
+        <button
+          type="button"
+          class="settings-menu-card"
+          data-settings-page="access-settings"
+        >
+
+
+          <span class="settings-menu-icon access-settings-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="
+                  M12 3
+                  19 6
+                  V11
+                  C19 16
+                  16 19
+                  12 21
+                  C8 19
+                  5 16
+                  5 11
+                  V6
+                  Z
+                "
+              ></path>
+
+              <path
+                d="M9 12l2 2 4-4"
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              Access Settings
+            </strong>
+
+            <small>
+              Manage application access &amp; permissions
+            </small>
+
+          </span>
+
+
+
+          <span
+            class="settings-card-arrow"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path d="M9 18l6-6-6-6"></path>
+
+            </svg>
+
+          </span>
+
+
+        </button>
+
+
       </section>
+
+
+
+      <!-- =================================================
+           SYSTEM
+           ================================================= -->
+
+      <section
+        id="settingsSystemSection"
+        class="settings-section"
+      >
+
+        <div class="settings-section-heading">
+
+          <span class="settings-section-accent"></span>
+
+          <h2>
+            SYSTEM
+          </h2>
+
+        </div>
+
+
+
+        <!-- SYSTEM SETTINGS -->
+
+        <button
+          type="button"
+          class="settings-menu-card"
+          data-settings-page="system-settings"
+        >
+
+
+          <span class="settings-menu-icon system-settings-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+              ></circle>
+
+              <path
+                d="
+                  M19.4 15
+                  A1.7 1.7 0 0 0 19.7 16.9
+                  L19.8 17
+                  A2 2 0 1 1 17 19.8
+                  L16.9 19.7
+                  A1.7 1.7 0 0 0 15 19.4
+                  A1.7 1.7 0 0 0 14 20
+                  A1.7 1.7 0 0 0 13.6 21.1
+                  V21.2
+                  A2 2 0 1 1 9.6 21.2
+                  V21.1
+                  A1.7 1.7 0 0 0 8.6 19.4
+                  A1.7 1.7 0 0 0 6.7 19.7
+                  L6.6 19.8
+                  A2 2 0 1 1 3.8 17
+                  L3.9 16.9
+                  A1.7 1.7 0 0 0 4.6 15
+                  A1.7 1.7 0 0 0 4 14
+                  A1.7 1.7 0 0 0 2.9 13.6
+                  H2.8
+                  A2 2 0 1 1 2.8 9.6
+                  H2.9
+                  A1.7 1.7 0 0 0 4.6 8.6
+                  A1.7 1.7 0 0 0 4.3 6.7
+                  L4.2 6.6
+                  A2 2 0 1 1 7 3.8
+                  L7.1 3.9
+                  A1.7 1.7 0 0 0 9 4.6
+                  A1.7 1.7 0 0 0 10 4
+                  A1.7 1.7 0 0 0 10.4 2.9
+                  V2.8
+                  A2 2 0 1 1 14.4 2.8
+                  V2.9
+                  A1.7 1.7 0 0 0 15.4 4.6
+                  A1.7 1.7 0 0 0 17.3 4.3
+                  L17.4 4.2
+                  A2 2 0 1 1 20.2 7
+                  L20.1 7.1
+                  A1.7 1.7 0 0 0 19.4 9
+                  A1.7 1.7 0 0 0 20 10
+                  A1.7 1.7 0 0 0 21.1 10.4
+                  H21.2
+                  A2 2 0 1 1 21.2 14.4
+                  H21.1
+                  A1.7 1.7 0 0 0 19.4 15
+                  Z
+                "
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              System Settings
+            </strong>
+
+            <small>
+              Master data &amp; application configuration
+            </small>
+
+          </span>
+
+
+
+          <span
+            class="settings-card-arrow"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path d="M9 18l6-6-6-6"></path>
+
+            </svg>
+
+          </span>
+
+
+        </button>
+
+
+      </section>
+
+
+
+      <!-- =================================================
+           LOGOUT
+           ================================================= -->
+
+      <section class="settings-logout-section">
+
+        <button
+          type="button"
+          id="settingsLogoutButton"
+          class="settings-logout-card"
+        >
+
+
+          <span class="settings-menu-icon logout-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M10 17l5-5-5-5"
+              ></path>
+
+              <path
+                d="M15 12H3"
+              ></path>
+
+              <path
+                d="
+                  M14 3
+                  H19
+                  A2 2 0 0 1 21 5
+                  V19
+                  A2 2 0 0 1 19 21
+                  H14
+                "
+              ></path>
+
+            </svg>
+
+          </span>
+
+
+
+          <span class="settings-menu-content">
+
+            <strong>
+              Logout
+            </strong>
+
+            <small>
+              Sign out from HEXA
+            </small>
+
+          </span>
+
+
+
+          <span
+            class="settings-card-arrow logout-arrow"
+            aria-hidden="true"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path d="M9 18l6-6-6-6"></path>
+
+            </svg>
+
+          </span>
+
+
+        </button>
+
+      </section>
+
+
     </section>
+
   </main>
 
-    <!-- CHANGE PROFILE PHOTO -->
-  <input
-    type="file"
-    id="profileCameraInput"
-    accept="image/*"
-    capture="environment"
-    hidden
-  >
-
-  <input
-    type="file"
-    id="profileGalleryInput"
-    accept="image/*"
-    hidden
-  >
-
-  <div
-    id="profilePhotoSheetBackdrop"
-    class="profile-photo-sheet-backdrop"
-    hidden
-  ></div>
-
-  <section
-    id="profilePhotoSheet"
-    class="profile-photo-sheet"
-    aria-hidden="true"
-  >
-    <div class="profile-photo-sheet-handle"></div>
-
-    <h2>Change Profile Photo</h2>
-    <p>Select photo source</p>
-
-    <button
-      type="button"
-      id="profileTakePhotoButton"
-      class="profile-photo-option"
-    >
-      <span class="profile-photo-option-icon">📷</span>
-
-      <span class="profile-photo-option-text">
-        <strong>Take Photo</strong>
-        <small>Use device camera</small>
-      </span>
-    </button>
-
-    <button
-      type="button"
-      id="profileChooseGalleryButton"
-      class="profile-photo-option"
-    >
-      <span class="profile-photo-option-icon">🖼️</span>
-
-      <span class="profile-photo-option-text">
-        <strong>Choose from Gallery</strong>
-        <small>Select an existing photo</small>
-      </span>
-    </button>
-
-    <button
-      type="button"
-      id="profilePhotoSheetCancel"
-      class="profile-photo-cancel"
-    >
-      Cancel
-    </button>
-  </section>
-
-  <div
-    id="profilePhotoUploading"
-    class="profile-photo-uploading"
-    hidden
-  >
-    <div class="profile-photo-uploading-card">
-      <div class="profile-photo-spinner"></div>
-      <strong>Updating profile photo...</strong>
-      <small>Please wait</small>
-    </div>
-  </div>
 
 
-  <!-- DIGITAL SIGNATURE METHOD SHEET -->
-  <div id="profileSignatureSheetBackdrop" class="profile-signature-sheet-backdrop" hidden></div>
-
-  <section
-    id="profileSignatureSheet"
-    class="profile-signature-sheet"
-    aria-hidden="true"
-  >
-    <div class="profile-signature-sheet-handle"></div>
-    <h2>Create Digital Signature</h2>
-    <p>Choose how you want to create your signature</p>
-
-    <button type="button" id="profileDrawSignatureButton" class="profile-signature-option">
-      <span class="profile-signature-option-icon">✍️</span>
-      <span class="profile-signature-option-text">
-        <strong>Draw Signature</strong>
-        <small>Draw directly using mouse or finger</small>
-      </span>
-    </button>
-
-    <button type="button" id="profileScanSignatureButton" class="profile-signature-option">
-      <span class="profile-signature-option-icon">📷</span>
-      <span class="profile-signature-option-text">
-        <strong>Scan / Upload Signature</strong>
-        <small>Camera or gallery — available in the next stage</small>
-      </span>
-    </button>
-
-    <button type="button" id="profileSignatureSheetCancel" class="profile-signature-sheet-cancel">
-      Cancel
-    </button>
-  </section>
-
-  <!-- DRAW SIGNATURE MODAL -->
-  <div id="profileDrawSignatureBackdrop" class="profile-draw-signature-backdrop" hidden></div>
-
-  <section
-    id="profileDrawSignatureModal"
-    class="profile-draw-signature-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="profileDrawSignatureTitle"
-    aria-hidden="true"
-  >
-    <div class="profile-draw-signature-header">
-      <div>
-        <h2 id="profileDrawSignatureTitle">Draw Signature</h2>
-        <p>Use your mouse or finger inside the box</p>
-      </div>
-      <button type="button" id="profileDrawSignatureClose" class="profile-draw-signature-close" aria-label="Close">×</button>
-    </div>
-
-    <div class="profile-signature-canvas-wrap">
-      <canvas id="profileSignatureCanvas" class="profile-signature-canvas"></canvas>
-      <span class="profile-signature-canvas-hint">Sign here</span>
-    </div>
-
-    <div class="profile-draw-signature-actions">
-      <button type="button" id="profileSignatureClear" class="profile-signature-clear">Clear</button>
-      <button type="button" id="profileSignatureUse" class="profile-signature-use">Use Signature</button>
-    </div>
-
-    <p class="profile-signature-stage-note">
-      Stage 2 preview only — signature is not uploaded yet.
-    </p>
-  </section>
-
-
-  <!-- CHANGE PASSWORD MODAL -->
-  <div id="profilePasswordBackdrop" class="profile-password-backdrop" hidden></div>
-
-  <section
-    id="profilePasswordModal"
-    class="profile-password-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="profilePasswordTitle"
-    aria-hidden="true"
-  >
-    <div class="profile-password-modal-header">
-      <div>
-        <h2 id="profilePasswordTitle">Change Password</h2>
-        <p>Update your HEXA account password</p>
-      </div>
-      <button type="button" id="profilePasswordClose" class="profile-password-close" aria-label="Close">×</button>
-    </div>
-
-    <form id="profilePasswordForm" class="profile-password-form" novalidate>
-      <label class="profile-password-field">
-        <span>Current Password</span>
-        <div class="profile-password-input-wrap">
-          <input id="profileCurrentPassword" type="password" autocomplete="current-password" placeholder="Enter current password">
-          <button type="button" class="profile-password-toggle" data-password-target="profileCurrentPassword" aria-label="Show password">👁</button>
-        </div>
-      </label>
-
-      <label class="profile-password-field">
-        <span>New Password</span>
-        <div class="profile-password-input-wrap">
-          <input id="profileNewPassword" type="password" autocomplete="new-password" placeholder="Minimum 6 characters">
-          <button type="button" class="profile-password-toggle" data-password-target="profileNewPassword" aria-label="Show password">👁</button>
-        </div>
-      </label>
-
-      <label class="profile-password-field">
-        <span>Confirm New Password</span>
-        <div class="profile-password-input-wrap">
-          <input id="profileConfirmPassword" type="password" autocomplete="new-password" placeholder="Repeat new password">
-          <button type="button" class="profile-password-toggle" data-password-target="profileConfirmPassword" aria-label="Show password">👁</button>
-        </div>
-      </label>
-
-      <p id="profilePasswordMessage" class="profile-password-message" hidden></p>
-
-      <div class="profile-password-actions">
-        <button type="button" id="profilePasswordCancel" class="profile-password-cancel">Cancel</button>
-        <button type="submit" id="profilePasswordSave" class="profile-password-save">Change Password</button>
-      </div>
-    </form>
-  </section>
+  <!-- ==================================================
+       JAVASCRIPT
+       ================================================== -->
 
   <script src="hexa-menu.js"></script>
+
   <script src="hexa-header.js"></script>
-  <script src="profile.js"></script>
+
+  <script src="settings.js"></script>
+
+
 </body>
+
 </html>
