@@ -891,3 +891,19 @@ body.profile-signature-overlay-open {
     font-size: 13px;
   }
 }
+
+/* =====================================================
+   FIX DIGITAL SIGNATURE STAGE 3 SHOW / HIDE
+   ===================================================== */
+
+#profileSignatureButton[hidden] {
+  display: none !important;
+}
+
+#profileSignaturePendingActions[hidden] {
+  display: none !important;
+}
+
+#profileSignaturePendingActions:not([hidden]) {
+  display: grid !important;
+}
