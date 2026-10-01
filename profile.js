@@ -57,7 +57,8 @@ function normalizeProfileUser(user) {
     photo: cleanProfileValue(user.photo),
     email: cleanProfileValue(user.email),
     status: cleanProfileValue(user.status),
-    kutipan: cleanProfileValue(user.kutipan)
+    kutipan: cleanProfileValue(user.kutipan),
+    signature: cleanProfileValue(user.signature)
   };
 }
 
@@ -94,6 +95,7 @@ function renderProfile(user) {
   renderProfileStatus(user.status);
   renderProfileMotto(user.kutipan);
   renderProfilePhoto(user.nama, user.photo);
+  renderProfileSignature(user.signature);
 }
 
 function setProfileText(id, value) {
@@ -199,6 +201,42 @@ function getProfilePhotoDisplayUrl(photoUrl) {
 
   // Kalau bukan Google Drive, gunakan URL asli.
   return url;
+}
+
+function renderProfileSignature(signatureUrl) {
+  const image = document.getElementById("profileSignatureImage");
+  const empty = document.getElementById("profileSignatureEmpty");
+  const buttonText = document.getElementById("profileSignatureButtonText");
+
+  if (!image || !empty) return;
+
+  image.onload = null;
+  image.onerror = null;
+  image.hidden = true;
+  image.removeAttribute("src");
+  empty.hidden = false;
+
+  const url = getProfilePhotoDisplayUrl(signatureUrl);
+
+  if (!url) {
+    if (buttonText) buttonText.textContent = "Create Signature";
+    return;
+  }
+
+  image.onload = function () {
+    image.hidden = false;
+    empty.hidden = true;
+    if (buttonText) buttonText.textContent = "Change Signature";
+  };
+
+  image.onerror = function () {
+    image.hidden = true;
+    image.removeAttribute("src");
+    empty.hidden = false;
+    if (buttonText) buttonText.textContent = "Create Signature";
+  };
+
+  image.src = url;
 }
 
 function getProfileInitials(name) {
@@ -848,4 +886,3 @@ async function submitProfilePasswordChange(event) {
     }
   }
 }
-
