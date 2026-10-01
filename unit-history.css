@@ -55,28 +55,22 @@ body {
 
 /* =====================================================
    MAIN CONTAINER
-   SAMA DENGAN DAILY OUTSTANDING
 ===================================================== */
 
 .unit-history-container {
   width: min(94%, 1220px);
-
   margin: 0 auto;
-
   padding-bottom: 55px;
 }
 
 
 /* =====================================================
    TITLE BAR
-   Ukuran sama dengan Daily Outstanding
 ===================================================== */
 
 .unit-history-title-bar {
   position: sticky;
-
   top: 88px;
-
   z-index: 120;
 
   min-height: 88px;
@@ -141,7 +135,6 @@ body {
 
 /* =====================================================
    TITLE ACTIONS
-   Filter + Print + Delete
 ===================================================== */
 
 .unit-history-actions {
@@ -156,7 +149,6 @@ body {
 
 /* =====================================================
    ACTION BUTTONS
-   Ukuran dasar sama dengan Filter Daily Outstanding
 ===================================================== */
 
 .unit-history-action-button {
@@ -512,8 +504,7 @@ body {
 
 
 /* =====================================================
-   UNIT HISTORY LIST SECTION
-   Sama posisi dengan Outstanding List Section
+   LIST SECTION
 ===================================================== */
 
 .unit-history-list-section {
@@ -570,9 +561,6 @@ body {
 
 /* =====================================================
    TABLE SCROLL AREA
-
-   Perbedaan utama dengan Daily Outstanding:
-   Unit History membutuhkan scroll Y + X.
 ===================================================== */
 
 .unit-history-scroll-container {
@@ -721,8 +709,6 @@ body {
    TABLE COLUMN WIDTH
 ===================================================== */
 
-/* DELETE CHECKBOX */
-
 .unit-history-table th:nth-child(1),
 .unit-history-table td:nth-child(1) {
   width: 48px;
@@ -731,17 +717,11 @@ body {
   text-align: center;
 }
 
-
-/* UNIT CODE */
-
 .unit-history-table th:nth-child(2),
 .unit-history-table td:nth-child(2) {
   width: 120px;
   min-width: 120px;
 }
-
-
-/* HM INSPECTION */
 
 .unit-history-table th:nth-child(3),
 .unit-history-table td:nth-child(3) {
@@ -749,26 +729,17 @@ body {
   min-width: 125px;
 }
 
-
-/* GROUP COMPONENT */
-
 .unit-history-table th:nth-child(4),
 .unit-history-table td:nth-child(4) {
   width: 175px;
   min-width: 175px;
 }
 
-
-/* PROBLEM DESCRIPTION */
-
 .unit-history-table th:nth-child(5),
 .unit-history-table td:nth-child(5) {
   width: 280px;
   min-width: 280px;
 }
-
-
-/* PHOTO */
 
 .unit-history-table th:nth-child(6),
 .unit-history-table td:nth-child(6) {
@@ -778,17 +749,11 @@ body {
   text-align: center;
 }
 
-
-/* RATING */
-
 .unit-history-table th:nth-child(7),
 .unit-history-table td:nth-child(7) {
   width: 95px;
   min-width: 95px;
 }
-
-
-/* STATUS */
 
 .unit-history-table th:nth-child(8),
 .unit-history-table td:nth-child(8) {
@@ -796,26 +761,17 @@ body {
   min-width: 100px;
 }
 
-
-/* PARTS DESCRIPTION */
-
 .unit-history-table th:nth-child(9),
 .unit-history-table td:nth-child(9) {
   width: 220px;
   min-width: 220px;
 }
 
-
-/* PART NO */
-
 .unit-history-table th:nth-child(10),
 .unit-history-table td:nth-child(10) {
   width: 170px;
   min-width: 170px;
 }
-
-
-/* QUANTITY */
 
 .unit-history-table th:nth-child(11),
 .unit-history-table td:nth-child(11) {
@@ -825,17 +781,11 @@ body {
   text-align: center;
 }
 
-
-/* MOL */
-
 .unit-history-table th:nth-child(12),
 .unit-history-table td:nth-child(12) {
   width: 110px;
   min-width: 110px;
 }
-
-
-/* PARTS STATUS */
 
 .unit-history-table th:nth-child(13),
 .unit-history-table td:nth-child(13) {
@@ -843,17 +793,14 @@ body {
   min-width: 140px;
 }
 
+
 /* =====================================================
    MULTI PART REQUIREMENT
-   Unit History menampilkan SEMUA part.
 ===================================================== */
 
 .unit-history-parts-cell {
   vertical-align: top !important;
 }
-
-
-/* WRAPPER SEMUA PART */
 
 .unit-history-part-list {
   display: flex;
@@ -863,9 +810,6 @@ body {
 
   gap: 0;
 }
-
-
-/* SATU BARIS PART */
 
 .unit-history-part-line {
   min-height: 26px;
@@ -885,29 +829,17 @@ body {
   overflow-wrap: anywhere;
 }
 
-
-/* BARIS PART TERAKHIR */
-
 .unit-history-part-line:last-child {
   border-bottom: 0;
 }
-
-
-/* PART DESCRIPTION */
 
 .unit-history-part-description {
   text-align: left;
 }
 
-
-/* PART NO */
-
 .unit-history-part-number {
   text-align: left;
 }
-
-
-/* QUANTITY */
 
 .unit-history-part-quantity {
   justify-content: center;
@@ -915,22 +847,10 @@ body {
   text-align: center;
 }
 
-
-/* NILAI PART YANG KOSONG */
-
 .unit-history-part-empty {
   color: #aaa;
 }
 
-
-/*
-  Tidak ada max-height.
-  Tidak ada overflow hidden.
-  Tidak ada line-clamp.
-
-  Row akan terus bertambah tinggi
-  mengikuti jumlah Part Requirement.
-*/
 
 /* =====================================================
    DELETE COLUMN
@@ -1028,7 +948,6 @@ body {
 
 /* =====================================================
    SCROLL NAVIGATION
-   Sama seperti Daily Outstanding
 ===================================================== */
 
 .unit-history-scroll-navigation {
@@ -1115,7 +1034,6 @@ body {
 
 /* =====================================================
    DETAIL MODAL
-   Mengikuti desain Detail Daily Outstanding
 ===================================================== */
 
 .unit-history-detail-modal {
@@ -1479,6 +1397,7 @@ body {
   color: #555;
 
   font-size: 14px;
+
   line-height: 1.5;
 }
 
@@ -1523,7 +1442,6 @@ body {
 
 /* =====================================================
    START INSPECTION SHORTCUT
-   Ukuran PERSIS Daily Outstanding
 ===================================================== */
 
 .unit-history-start-inspection-shortcut {
@@ -1649,7 +1567,6 @@ body.modal-open {
 
 /* =====================================================
    MOBILE
-   Ukuran mengikuti Daily Outstanding
 ===================================================== */
 
 @media (max-width: 600px) {
@@ -1662,8 +1579,6 @@ body.modal-open {
   }
 
 
-  /* CONTAINER */
-
   .unit-history-container {
     width:
       calc(
@@ -1674,8 +1589,6 @@ body.modal-open {
       35px;
   }
 
-
-  /* TITLE */
 
   .unit-history-title-bar {
     top: 72px;
@@ -1709,26 +1622,20 @@ body.modal-open {
   }
 
 
-  /* ACTIONS */
+  .unit-history-actions {
+    gap: 5px;
+  }
 
-.unit-history-actions {
-  gap: 4px;
-}
+  .unit-history-action-button {
+    width: 40px;
+    height: 40px;
+  }
 
-.unit-history-action-button {
-  width: 36px;
-  height: 36px;
+  .unit-history-action-button svg {
+    width: 21px;
+    height: 21px;
+  }
 
-  border-width: 1.5px;
-}
-
-.unit-history-action-button svg {
-  width: 18px;
-  height: 18px;
-}
-
-
-  /* FILTER */
 
   .unit-history-filter-panel {
     margin-top: 6px;
@@ -1774,8 +1681,6 @@ body.modal-open {
     min-width: 0;
   }
 
-
-  /* TABLE */
 
   .unit-history-list-section {
     margin-top: 5px;
@@ -1823,8 +1728,6 @@ body.modal-open {
     right: 2px;
   }
 
-
-  /* DETAIL MODAL */
 
   .unit-history-modal-overlay {
     padding: 10px;
@@ -1895,8 +1798,6 @@ body.modal-open {
   }
 
 
-  /* PHOTO VIEWER */
-
   .unit-history-photo-viewer-toolbar {
     top: 10px;
     right: 10px;
@@ -1921,8 +1822,6 @@ body.modal-open {
       8px;
   }
 
-
-  /* SHORTCUT */
 
   .unit-history-start-inspection-shortcut {
     right: 18px;
@@ -1954,287 +1853,43 @@ body.modal-open {
    SMALL MOBILE
 ===================================================== */
 
-.unit-history-title {
-  gap: 5px;
-}
-
-.unit-history-title img {
-  width: 46px;
-  height: 46px;
-}
-
-.unit-history-title h1 {
-  font-size: 19px;
-  letter-spacing: -0.6px;
-}
-
-.unit-history-actions {
-  gap: 3px;
-}
-
-.unit-history-action-button {
-  width: 34px;
-  height: 34px;
-}
-
-.unit-history-action-button svg {
-  width: 17px;
-  height: 17px;
-}
-
-/* =====================================================
-   CUSTOM COLUMNS PANEL
-===================================================== */
-
-.unit-history-columns-panel {
-  position: relative;
-  z-index: 110;
-
-  margin-top: 10px;
-  padding: 20px;
-
-  background: #fff;
-
-  border: 1px solid rgba(245, 160, 0, 0.45);
-  border-radius: 10px;
-
-  box-shadow:
-    0 10px 30px
-    rgba(0, 0, 0, 0.10);
-}
-
-
-/* HEADER */
-
-.unit-history-columns-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 15px;
-  margin-bottom: 18px;
-}
-
-.unit-history-columns-header h2 {
-  margin: 0;
-
-  color: #222;
-
-  font-size: 18px;
-}
-
-.unit-history-columns-close {
-  width: 32px;
-  height: 32px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 0;
-
-  border: 0;
-  border-radius: 50%;
-
-  background: #efefef;
-  color: #555;
-
-  font-size: 23px;
-
-  cursor: pointer;
-}
-
-
-/* =====================================================
-   COLUMN LIST
-===================================================== */
-
-.unit-history-columns-list {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
-
-  gap: 10px;
-}
-
-
-/* SATU PILIHAN COLUMN */
-
-.unit-history-column-option {
-  min-height: 44px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 9px;
-
-  padding: 9px 11px;
-
-  border: 1px solid #e6e6e6;
-  border-radius: 9px;
-
-  background: #fafafa;
-
-  cursor: pointer;
-  user-select: none;
-}
-
-.unit-history-column-option:hover {
-  background: #f5f5f5;
-}
-
-.unit-history-column-option input {
-  width: 17px;
-  height: 17px;
-
-  margin: 0;
-
-  flex-shrink: 0;
-
-  accent-color: #f5a000;
-}
-
-.unit-history-column-option span {
-  min-width: 0;
-
-  color: #333;
-
-  font-size: 13px;
-  font-weight: 600;
-
-  line-height: 1.3;
-}
-
-
-/* =====================================================
-   COLUMN ACTIONS
-===================================================== */
-
-.unit-history-columns-actions {
-  margin-top: 18px;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  gap: 8px;
-}
-
-.unit-history-columns-secondary-button,
-.unit-history-columns-apply-button {
-  min-height: 38px;
-
-  padding: 8px 15px;
-
-  border-radius: 8px;
-
-  font-size: 13px;
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.unit-history-columns-secondary-button {
-  border: 1px solid #d8d8d8;
-
-  background: #fff;
-  color: #333;
-}
-
-.unit-history-columns-apply-button {
-  border: 1px solid #f5a000;
-
-  background: #f5a000;
-  color: #111;
-}
-
-
-/* =====================================================
-   CUSTOM COLUMNS - TABLET
-===================================================== */
-
-@media (max-width: 900px) {
-
-  .unit-history-columns-list {
-    grid-template-columns:
-      repeat(3, minmax(0, 1fr));
-  }
-
-}
-
-
-/* =====================================================
-   CUSTOM COLUMNS - MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-  .unit-history-columns-panel {
-    margin-top: 6px;
-
-    padding: 15px;
-  }
-
-  .unit-history-columns-list {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap: 7px;
-  }
-
-  .unit-history-column-option {
-    min-height: 40px;
-
-    padding: 7px 9px;
-  }
-
-  .unit-history-column-option span {
-    font-size: 12px;
-  }
-
-  .unit-history-columns-actions {
-    margin-top: 14px;
-
-    gap: 6px;
-  }
-
-  .unit-history-columns-secondary-button,
-  .unit-history-columns-apply-button {
-    min-height: 36px;
-
-    padding: 7px 11px;
-
-    font-size: 12px;
-  }
-
-}
-
-
-/* =====================================================
-   CUSTOM COLUMNS - SMALL MOBILE
-===================================================== */
-
 @media (max-width: 380px) {
 
-  .unit-history-columns-panel {
-    padding: 12px;
+  .unit-history-container {
+    width:
+      calc(
+        100% - 10px
+      );
   }
 
-  .unit-history-columns-list {
+  .unit-history-title img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .unit-history-title h1 {
+    font-size: 21px;
+  }
+
+  .unit-history-actions {
+    gap: 3px;
+  }
+
+  .unit-history-action-button {
+    width: 37px;
+    height: 37px;
+  }
+
+  .unit-history-action-button svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .unit-history-detail-row {
     grid-template-columns:
-      1fr 1fr;
+      112px 7px minmax(0, 1fr);
 
-    gap: 6px;
+    font-size: 11px;
   }
 
-  .unit-history-column-option {
-    padding: 7px;
-  }
-
-}
-/* FIX: hidden modal/backdrop must really disappear */
-.user-add-backdrop[hidden],
-.user-reset-password-modal[hidden] {
-  display: none !important;
 }
