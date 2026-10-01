@@ -473,3 +473,89 @@ body.profile-password-open{overflow:hidden}
   .profile-password-actions{grid-template-columns:1fr 1.4fr}
 }
 
+
+/* =====================================================
+   DIGITAL SIGNATURE - STAGE 1
+   ===================================================== */
+.profile-signature-card {
+  padding: 18px;
+  border: 1px solid rgba(55,116,145,.14);
+  border-radius: 20px;
+  background: rgba(255,255,255,.97);
+  box-shadow: 0 7px 20px rgba(31,77,96,.075);
+}
+.profile-signature-preview {
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border: 1px dashed #cbd7dc;
+  border-radius: 15px;
+  background: #fbfcfd;
+  overflow: hidden;
+}
+.profile-signature-image {
+  display: block;
+  width: min(100%, 430px);
+  max-height: 140px;
+  object-fit: contain;
+}
+.profile-signature-image[hidden] { display: none !important; }
+.profile-signature-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #6f7a80;
+  text-align: center;
+}
+.profile-signature-empty[hidden] { display: none !important; }
+.profile-signature-empty-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3px;
+  border-radius: 14px;
+  background: #edf7fd;
+  font-size: 23px;
+}
+.profile-signature-empty strong { color: #4b555b; font-size: 14px; }
+.profile-signature-empty small { color: #8a9297; font-size: 11px; }
+.profile-signature-button {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 13px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 13px;
+  background: #168de0;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.profile-signature-button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.profile-signature-button:hover { filter: brightness(.97); }
+@media(max-width:560px) {
+  .profile-signature-card { padding: 12px; border-radius: 17px; }
+  .profile-signature-preview { min-height: 145px; padding: 14px; }
+  .profile-signature-image { max-height: 115px; }
+  .profile-signature-button { min-height: 44px; }
+}
