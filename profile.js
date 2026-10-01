@@ -258,6 +258,7 @@ function initializeProfileNavigation() {
   const saveButton = document.getElementById("profileSaveButton");
   const photoButton = document.getElementById("profilePhotoAction");
   const passwordButton = document.getElementById("profilePasswordButton");
+  const signatureButton = document.getElementById("profileSignatureButton");
 
   if (backButton) {
     backButton.addEventListener("click", function () {
@@ -285,6 +286,11 @@ function initializeProfileNavigation() {
     passwordButton.addEventListener("click", openProfilePasswordModal);
   }
 
+  if (signatureButton) {
+    signatureButton.addEventListener("click", openProfileSignatureSheet);
+  }
+
+  initializeProfileSignatureControls();
   initializeProfilePhotoControls();
   initializeProfilePasswordControls();
 }
@@ -885,4 +891,302 @@ async function submitProfilePasswordChange(event) {
       saveButton.textContent = originalText || "Change Password";
     }
   }
+}
+
+
+// =====================================================
+// DIGITAL SIGNATURE - STAGE 2
+// Method chooser + local Draw Signature preview only
+// =====================================================
+
+let profileSignatureDrawing = false;
+let profileSignatureHasInk = false;
+let profileSignatureLastPoint = null;
+
+function initializeProfileSignatureControls() {
+  const sheetBackdrop = document.getElementById("profileSignatureSheetBackdrop");
+  const sheetCancel = document.getElementById("profileSignatureSheetCancel");
+  const drawButton = document.getElementById("profileDrawSignatureButton");
+  const scanButton = document.getElementById("profileScanSignatureButton");
+
+  const drawBackdrop = document.getElementById("profileDrawSignatureBackdrop");
+  const drawClose = document.getElementById("profileDrawSignatureClose");
+  const clearButton = document.getElementById("profileSignatureClear");
+  const useButton = document.getElementById("profileSignatureUse");
+  const canvas = document.getElementById("profileSignatureCanvas");
+
+  if (sheetBackdrop) {
+    sheetBackdrop.addEventListener("click", closeProfileSignatureSheet);
+  }
+
+  if (sheetCancel) {
+    sheetCancel.addEventListener("click", closeProfileSignatureSheet);
+  }
+
+  if (drawButton) {
+    drawButton.addEventListener("click", function () {
+      closeProfileSignatureSheet();
+      openProfileDrawSignature();
+    });
+  }
+
+  if (scanButton) {
+    scanButton.addEventListener("click", function () {
+      alert("Scan / Upload Signature akan kita aktifkan pada tahap berikutnya.");
+    });
+  }
+
+  if (drawBackdrop) {
+    drawBackdrop.addEventListener("click", closeProfileDrawSignature);
+  }
+
+  if (drawClose) {
+    drawClose.addEventListener("click", closeProfileDrawSignature);
+  }
+
+  if (clearButton) {
+    clearButton.addEventListener("click", clearProfileSignatureCanvas);
+  }
+
+  if (useButton) {
+    useButton.addEventListener("click", useProfileDrawnSignaturePreview);
+  }
+
+  if (!canvas) return;
+
+  canvas.addEventListener("pointerdown", startProfileSignatureDrawing);
+  canvas.addEventListener("pointermove", moveProfileSignatureDrawing);
+  canvas.addEventListener("pointerup", endProfileSignatureDrawing);
+  canvas.addEventListener("pointercancel", endProfileSignatureDrawing);
+  canvas.addEventListener("pointerleave", function (event) {
+    if (profileSignatureDrawing) {
+      endProfileSignatureDrawing(event);
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    const modal = document.getElementById("profileDrawSignatureModal");
+    if (modal && modal.classList.contains("is-open") && !profileSignatureHasInk) {
+      prepareProfileSignatureCanvas();
+    }
+  });
+}
+
+function openProfileSignatureSheet() {
+  const sheet = document.getElementById("profileSignatureSheet");
+  const backdrop = document.getElementById("profileSignatureSheetBackdrop");
+
+  if (!sheet || !backdrop) return;
+
+  backdrop.hidden = false;
+  sheet.setAttribute("aria-hidden", "false");
+  document.body.classList.add("profile-signature-overlay-open");
+
+  requestAnimationFrame(function () {
+    sheet.classList.add("is-open");
+  });
+}
+
+function closeProfileSignatureSheet() {
+  const sheet = document.getElementById("profileSignatureSheet");
+  const backdrop = document.getElementById("profileSignatureSheetBackdrop");
+
+  if (!sheet || !backdrop) return;
+
+  sheet.classList.remove("is-open");
+  sheet.setAttribute("aria-hidden", "true");
+
+  setTimeout(function () {
+    if (!sheet.classList.contains("is-open")) {
+      backdrop.hidden = true;
+
+      const drawModal = document.getElementById("profileDrawSignatureModal");
+      if (!drawModal || !drawModal.classList.contains("is-open")) {
+        document.body.classList.remove("profile-signature-overlay-open");
+      }
+    }
+  }, 240);
+}
+
+function openProfileDrawSignature() {
+  const modal = document.getElementById("profileDrawSignatureModal");
+  const backdrop = document.getElementById("profileDrawSignatureBackdrop");
+
+  if (!modal || !backdrop) return;
+
+  backdrop.hidden = false;
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("profile-signature-overlay-open");
+
+  requestAnimationFrame(function () {
+    modal.classList.add("is-open");
+
+    requestAnimationFrame(function () {
+      prepareProfileSignatureCanvas();
+    });
+  });
+}
+
+function closeProfileDrawSignature() {
+  const modal = document.getElementById("profileDrawSignatureModal");
+  const backdrop = document.getElementById("profileDrawSignatureBackdrop");
+
+  if (!modal || !backdrop) return;
+
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden", "true");
+  backdrop.hidden = true;
+  document.body.classList.remove("profile-signature-overlay-open");
+
+  profileSignatureDrawing = false;
+  profileSignatureLastPoint = null;
+}
+
+function prepareProfileSignatureCanvas() {
+  const canvas = document.getElementById("profileSignatureCanvas");
+  const wrap = canvas?.parentElement;
+
+  if (!canvas || !wrap) return;
+
+  const rect = wrap.getBoundingClientRect();
+  const dpr = Math.max(window.devicePixelRatio || 1, 1);
+
+  canvas.width = Math.max(1, Math.round(rect.width * dpr));
+  canvas.height = Math.max(1, Math.round(rect.height * dpr));
+
+  const context = canvas.getContext("2d");
+  context.setTransform(dpr, 0, 0, dpr, 0, 0);
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.strokeStyle = "#111111";
+  context.lineWidth = 2.4;
+
+  profileSignatureHasInk = false;
+  profileSignatureDrawing = false;
+  profileSignatureLastPoint = null;
+  updateProfileSignatureUseButton();
+}
+
+function getProfileSignaturePoint(event) {
+  const canvas = document.getElementById("profileSignatureCanvas");
+  const rect = canvas.getBoundingClientRect();
+
+  return {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
+  };
+}
+
+function startProfileSignatureDrawing(event) {
+  const canvas = event.currentTarget;
+
+  event.preventDefault();
+
+  try {
+    canvas.setPointerCapture(event.pointerId);
+  } catch (error) {
+    // Pointer capture is optional.
+  }
+
+  profileSignatureDrawing = true;
+  profileSignatureLastPoint = getProfileSignaturePoint(event);
+
+  const context = canvas.getContext("2d");
+  context.beginPath();
+  context.arc(
+    profileSignatureLastPoint.x,
+    profileSignatureLastPoint.y,
+    1.2,
+    0,
+    Math.PI * 2
+  );
+  context.fillStyle = "#111111";
+  context.fill();
+
+  profileSignatureHasInk = true;
+  updateProfileSignatureUseButton();
+}
+
+function moveProfileSignatureDrawing(event) {
+  if (!profileSignatureDrawing || !profileSignatureLastPoint) return;
+
+  event.preventDefault();
+
+  const canvas = event.currentTarget;
+  const point = getProfileSignaturePoint(event);
+  const context = canvas.getContext("2d");
+
+  context.beginPath();
+  context.moveTo(profileSignatureLastPoint.x, profileSignatureLastPoint.y);
+  context.lineTo(point.x, point.y);
+  context.stroke();
+
+  profileSignatureLastPoint = point;
+  profileSignatureHasInk = true;
+  updateProfileSignatureUseButton();
+}
+
+function endProfileSignatureDrawing(event) {
+  if (!profileSignatureDrawing) return;
+
+  profileSignatureDrawing = false;
+  profileSignatureLastPoint = null;
+
+  try {
+    event.currentTarget.releasePointerCapture(event.pointerId);
+  } catch (error) {
+    // Pointer capture may already be released.
+  }
+}
+
+function clearProfileSignatureCanvas() {
+  const canvas = document.getElementById("profileSignatureCanvas");
+
+  if (!canvas) return;
+
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  profileSignatureHasInk = false;
+  profileSignatureDrawing = false;
+  profileSignatureLastPoint = null;
+  updateProfileSignatureUseButton();
+}
+
+function updateProfileSignatureUseButton() {
+  const button = document.getElementById("profileSignatureUse");
+
+  if (button) {
+    button.disabled = !profileSignatureHasInk;
+  }
+}
+
+function useProfileDrawnSignaturePreview() {
+  if (!profileSignatureHasInk) {
+    alert("Silakan gambar tanda tangan terlebih dahulu.");
+    return;
+  }
+
+  const canvas = document.getElementById("profileSignatureCanvas");
+  const image = document.getElementById("profileSignatureImage");
+  const empty = document.getElementById("profileSignatureEmpty");
+  const buttonText = document.getElementById("profileSignatureButtonText");
+
+  if (!canvas || !image || !empty) return;
+
+  const previewDataUrl = canvas.toDataURL("image/png");
+
+  image.onload = function () {
+    image.hidden = false;
+    empty.hidden = true;
+    if (buttonText) buttonText.textContent = "Change Signature";
+  };
+
+  image.src = previewDataUrl;
+
+  closeProfileDrawSignature();
+
+  alert(
+    "Preview signature berhasil. Pada tahap ini belum disimpan ke Google Drive."
+  );
 }
