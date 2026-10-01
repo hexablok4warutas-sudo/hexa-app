@@ -1,277 +1,836 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Profile | HEXA</title>
-  <link rel="stylesheet" href="hexa-header.css">
-  <link rel="stylesheet" href="profile.css">
-</head>
-<body>
-  <header id="hexaHeader" data-header-type="standard" data-page="settings"></header>
-
-  <main id="profilePage" class="profile-page">
-    <section class="profile-heading-shell">
-      <div class="profile-heading">
-        <button type="button" id="profileBackButton" class="profile-back-button" aria-label="Back to Settings">
-          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
-        </button>
-        <div class="profile-heading-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>
-        </div>
-        <div class="profile-heading-text">
-          <h1>My Profile</h1>
-          <p>Personal &amp; Account Information</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="profile-container">
-      <section class="profile-hero">
-        <div class="profile-photo-wrap">
-          <div class="profile-photo">
-            <img id="profilePhoto" src="" alt="">
-            <span id="profileInitial" class="profile-initial" aria-hidden="true">US</span>
-          </div>
-          <button type="button" class="profile-photo-action" id="profilePhotoAction" aria-label="Change profile photo">
-            <svg viewBox="0 0 24 24"><path d="M9 5l1.3-2h3.4L15 5h4a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4z"></path><circle cx="12" cy="12" r="4"></circle></svg>
-          </button>
-        </div>
-
-        <div class="profile-hero-info">
-          <div class="profile-name-row">
-            <h2 id="profileHeroName">User Name</h2>
-            <span id="profileActiveMark" class="profile-active-mark" title="Active Account">
-              <svg viewBox="0 0 24 24"><path d="M12 2.5 14.1 4l2.6-.2.9 2.4L20 7.3l-.4 2.6 1.9 2.1-1.9 2.1.4 2.6-2.4 1.1-.9 2.4-2.6-.2-2.1 1.5L9.9 20l-2.6.2-.9-2.4L4 16.7l.4-2.6L2.5 12l1.9-2.1L4 7.3l2.4-1.1.9-2.4 2.6.2z"></path><path class="profile-active-check" d="M8.3 12.1l2.3 2.3 5.2-5.2"></path></svg>
-            </span>
-          </div>
-          <div class="profile-hero-meta">
-            <span id="profileHeroUserId">User ID</span><span>•</span><span id="profileHeroLevel">Level 1</span>
-          </div>
-          <span id="profileRoleBadge" class="profile-role-badge">MASTER</span>
-          <p id="profileMotto" class="profile-motto" hidden></p>
-        </div>
-      </section>
-
-      <section class="profile-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Personal Information</h2><p>Information you can update from your profile</p></div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-field"><label>Name</label><div id="profileName" class="profile-field-value">-</div></div>
-          <div class="profile-field"><label>Phone Number</label><div id="profilePhone" class="profile-field-value">-</div></div>
-          <div class="profile-field"><label>Email</label><div id="profileEmail" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-quote-field">
-            <label>Kutipan</label>
-            <div id="profileQuote" class="profile-field-value profile-quote-value">-</div>
-          </div>
-
-          <div id="profileViewActions" class="profile-actions">
-            <button type="button" id="profileEditButton" class="profile-primary-button">
-              <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z"></path><path d="M13.5 6.5l4 4"></path></svg>
-              <span>Edit Profile</span>
-            </button>
-          </div>
-
-          <div id="profileEditActions" class="profile-actions profile-edit-actions" hidden>
-            <button type="button" id="profileCancelButton" class="profile-secondary-button">
-              Cancel
-            </button>
-            <button type="button" id="profileSaveButton" class="profile-primary-button">
-              Save Changes
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section class="profile-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Account Information</h2><p>Managed by HEXA Master Administrator</p></div>
-        </div>
-        <div class="profile-card">
-          <div class="profile-field profile-locked-field"><label>User ID <span class="profile-lock">🔒</span></label><div id="profileUserId" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-locked-field"><label>Level <span class="profile-lock">🔒</span></label><div id="profileLevel" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-locked-field"><label>Kode <span class="profile-lock">🔒</span></label><div id="profileKode" class="profile-field-value">-</div></div>
-          <div class="profile-field profile-locked-field"><label>Status <span class="profile-lock">🔒</span></label><div class="profile-status-row"><span id="profileStatus" class="profile-status-badge">-</span></div></div>
-        </div>
-      </section>
-
-      <!-- DIGITAL SIGNATURE -->
-      <section class="profile-section profile-signature-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Digital Signature</h2><p>Signature used for approval &amp; authorization</p></div>
-        </div>
-
-        <div class="profile-signature-card">
-          <div class="profile-signature-preview">
-            <img id="profileSignatureImage" class="profile-signature-image" src="" alt="Digital Signature" hidden>
-
-            <div id="profileSignatureEmpty" class="profile-signature-empty">
-              <span class="profile-signature-empty-icon" aria-hidden="true">✍️</span>
-              <strong>No signature registered</strong>
-              <small>Create your digital signature for future approval.</small>
-            </div>
-          </div>
-
-          <button type="button" id="profileSignatureButton" class="profile-signature-button">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18.5c2.5-3.5 4.4-5.2 5.8-5.2 1.1 0 1.2 1.4.3 2.8-.8 1.2-.4 1.9.6 1.9 1.5 0 3.2-2.8 4.5-2.8.9 0 .8 1.4 1.7 1.4.8 0 1.7-.7 3.1-1.9"></path><path d="M14.2 5.1 16 3.3a1.5 1.5 0 0 1 2.1 0l2.6 2.6a1.5 1.5 0 0 1 0 2.1l-1.8 1.8"></path><path d="m14.2 5.1-7.7 7.7-.8 3.5 3.5-.8 7.7-7.7z"></path></svg>
-            <span id="profileSignatureButtonText">Create Signature</span>
-          </button>
-        </div>
-      </section>
-
-      <section class="profile-section">
-        <div class="profile-section-heading">
-          <span class="profile-section-accent"></span>
-          <div><h2>Security</h2><p>Password &amp; account security</p></div>
-        </div>
-        <button type="button" id="profilePasswordButton" class="profile-security-card">
-          <span class="profile-security-icon">🔐</span>
-          <span class="profile-security-content"><strong>Change Password</strong><small>Password ••••••••</small></span>
-          <span class="profile-arrow">›</span>
-        </button>
-      </section>
-    </section>
-  </main>
-
-    <!-- CHANGE PROFILE PHOTO -->
-  <input
-    type="file"
-    id="profileCameraInput"
-    accept="image/*"
-    capture="environment"
-    hidden
-  >
-
-  <input
-    type="file"
-    id="profileGalleryInput"
-    accept="image/*"
-    hidden
-  >
-
-  <div
-    id="profilePhotoSheetBackdrop"
-    class="profile-photo-sheet-backdrop"
-    hidden
-  ></div>
-
-  <section
-    id="profilePhotoSheet"
-    class="profile-photo-sheet"
-    aria-hidden="true"
-  >
-    <div class="profile-photo-sheet-handle"></div>
-
-    <h2>Change Profile Photo</h2>
-    <p>Select photo source</p>
-
-    <button
-      type="button"
-      id="profileTakePhotoButton"
-      class="profile-photo-option"
-    >
-      <span class="profile-photo-option-icon">📷</span>
-
-      <span class="profile-photo-option-text">
-        <strong>Take Photo</strong>
-        <small>Use device camera</small>
-      </span>
-    </button>
-
-    <button
-      type="button"
-      id="profileChooseGalleryButton"
-      class="profile-photo-option"
-    >
-      <span class="profile-photo-option-icon">🖼️</span>
-
-      <span class="profile-photo-option-text">
-        <strong>Choose from Gallery</strong>
-        <small>Select an existing photo</small>
-      </span>
-    </button>
-
-    <button
-      type="button"
-      id="profilePhotoSheetCancel"
-      class="profile-photo-cancel"
-    >
-      Cancel
-    </button>
-  </section>
-
-  <div
-    id="profilePhotoUploading"
-    class="profile-photo-uploading"
-    hidden
-  >
-    <div class="profile-photo-uploading-card">
-      <div class="profile-photo-spinner"></div>
-      <strong>Updating profile photo...</strong>
-      <small>Please wait</small>
-    </div>
-  </div>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#252525;background:#f5f7f8}
+.profile-page{min-height:100vh;padding-top:88px;background:linear-gradient(rgba(255,255,255,.72),rgba(255,255,255,.72)),url("hexa-doodleblue.png");background-repeat:repeat,repeat;background-size:auto,760px auto;background-position:center,top center}
+body.theme-orange .profile-page{background:linear-gradient(rgba(255,255,255,.72),rgba(255,255,255,.72)),url("hexa-doodle.png");background-repeat:repeat,repeat;background-size:auto,760px auto}
+.profile-heading-shell{position:sticky;top:88px;z-index:500;width:100%;background:rgba(248,251,252,.98);border-bottom:1px solid rgba(70,120,145,.16);box-shadow:0 5px 15px rgba(0,0,0,.035)}
+.profile-heading{width:min(90%,1200px);min-height:104px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:10px 0}
+.profile-back-button{width:46px;height:46px;flex:0 0 46px;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid rgba(55,116,145,.15);border-radius:50%;background:#fff;color:#287493;cursor:pointer;box-shadow:0 5px 14px rgba(31,77,96,.08)}
+.profile-back-button svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.profile-heading-icon{width:70px;height:70px;flex:0 0 70px;display:flex;align-items:center;justify-content:center;border-radius:18px;background:linear-gradient(145deg,#2ba7e9,#5270ed);color:#fff}
+.profile-heading-icon svg{width:40px;height:40px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.profile-heading-text h1{margin:0;color:#101010;font-size:clamp(30px,3vw,42px);line-height:1.05;font-weight:800;letter-spacing:-.8px}.profile-heading-text p{margin:7px 0 0;color:#68727a;font-size:14px;font-weight:500}
+.profile-container{width:min(90%,1200px);margin:0 auto;padding:22px 0 55px}
+.profile-hero{position:relative;min-height:190px;display:flex;align-items:center;gap:30px;padding:28px 34px;border-radius:28px;background:linear-gradient(115deg,#70e0e5 0%,#59d6e0 52%,#4ac9da 100%);overflow:hidden;box-shadow:0 12px 28px rgba(31,113,132,.18)}
+.profile-hero:before,.profile-hero:after{content:"";position:absolute;pointer-events:none;transform:rotate(30deg);border-radius:22px;background:rgba(255,255,255,.07)}.profile-hero:before{width:170px;height:170px;right:120px;top:-65px}.profile-hero:after{width:125px;height:125px;right:230px;bottom:-82px}
+body.theme-orange .profile-hero{background:linear-gradient(115deg,#ffd785 0%,#ffc45d 52%,#ffb43d 100%)}
+.profile-photo-wrap{position:relative;z-index:2;width:132px;height:132px;flex:0 0 132px}.profile-photo{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border:4px solid rgba(255,255,255,.96);border-radius:50%;background:rgba(255,255,255,.30);overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.13)}
+.profile-photo img{position:relative;z-index:2;display:none;width:100%;height:100%;object-fit:cover}.profile-initial{position:absolute;inset:0;z-index:1;display:flex;align-items:center;justify-content:center;border-radius:50%;color:#23748a;font-size:39px;font-weight:800}
+.profile-photo-action{position:absolute;right:-3px;bottom:4px;z-index:4;width:42px;height:42px;display:flex;align-items:center;justify-content:center;padding:0;border:3px solid #fff;border-radius:50%;background:#168de0;color:#fff;cursor:pointer;box-shadow:0 5px 14px rgba(0,0,0,.18)}.profile-photo-action svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8}
+.profile-hero-info{position:relative;z-index:2;min-width:0;flex:1}.profile-name-row{display:flex;align-items:center;gap:10px}.profile-name-row h2{margin:0;color:#102229;font-size:28px;font-weight:800}.profile-active-mark{width:30px;height:30px}.profile-active-mark svg{width:100%;height:100%;fill:#168de0}.profile-active-check{fill:none;stroke:#fff;stroke-width:2.2}
+.profile-hero-meta{margin-top:8px;display:flex;gap:8px;color:#3d6671;font-size:14px;font-weight:600}.profile-role-badge{margin-top:10px;display:inline-flex;min-height:27px;align-items:center;padding:4px 15px;border-radius:999px;background:rgba(255,255,255,.55);color:#0879ba;font-size:12px;font-weight:800}.profile-motto{margin:10px 0 0;color:#244d58;font-size:13px;font-style:italic}
+.profile-section{margin-top:26px}.profile-section-heading{min-height:42px;display:flex;align-items:center;gap:11px;padding-left:5px;margin-bottom:9px}.profile-section-accent{width:5px;height:32px;flex:0 0 5px;border-radius:10px;background:#ff9d00}.profile-section-heading h2{margin:0;color:#4f565b;font-size:17px;font-weight:800}.profile-section-heading p{margin:3px 0 0;color:#8a9094;font-size:11px}
+.profile-card{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:20px;border:1px solid rgba(55,116,145,.14);border-radius:20px;background:rgba(255,255,255,.97);box-shadow:0 7px 20px rgba(31,77,96,.075)}
+.profile-field{min-width:0;padding:15px 16px;border:1px solid rgba(62,111,134,.11);border-radius:14px;background:#fbfcfd}.profile-field label{display:flex;align-items:center;gap:7px;margin-bottom:7px;color:#7b858b;font-size:11px;font-weight:700;text-transform:uppercase}.profile-field-value{min-height:20px;color:#273038;font-size:15px;font-weight:700;overflow-wrap:anywhere}.profile-locked-field{background:#f5f7f8}.profile-locked-field .profile-field-value{color:#6d767c}.profile-lock{font-size:11px}
+.profile-status-badge{display:inline-flex;min-height:24px;align-items:center;padding:3px 11px;border-radius:999px;background:#e8f6ee;color:#18894e;font-size:11px;font-weight:800;text-transform:uppercase}.profile-status-badge.is-inactive{background:#fdeaea;color:#c53a3a}
+.profile-primary-button{grid-column:1/-1;min-height:48px;display:flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:13px;background:linear-gradient(145deg,#2196f3,#596cf3);color:#fff;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer}.profile-primary-button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+.profile-security-card{width:100%;min-height:82px;display:flex;align-items:center;gap:18px;padding:11px 20px 11px 14px;border:1px solid rgba(55,116,145,.14);border-radius:20px;background:rgba(255,255,255,.97);font-family:inherit;text-align:left;cursor:pointer;box-shadow:0 7px 20px rgba(31,77,96,.075)}.profile-security-icon{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:15px;background:linear-gradient(145deg,#ffb64a,#f08b24);font-size:27px}.profile-security-content{flex:1;display:flex;flex-direction:column;gap:5px}.profile-security-content strong{font-size:17px}.profile-security-content small{color:#747c82;font-size:13px}.profile-arrow{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#e8f5fb;color:#287493;font-size:28px}
+@media(max-width:800px){.profile-heading,.profile-container{width:94%}}
+@media(max-width:560px){.profile-page{background-size:auto,600px auto}.profile-heading{min-height:78px;gap:9px;padding:7px 0}.profile-back-button{width:36px;height:36px;flex-basis:36px}.profile-heading-icon{width:52px;height:52px;flex-basis:52px;border-radius:14px}.profile-heading-icon svg{width:30px}.profile-heading-text h1{font-size:26px}.profile-heading-text p{font-size:10.5px}.profile-container{padding:15px 0 35px}.profile-hero{min-height:150px;gap:17px;padding:19px 17px;border-radius:22px}.profile-photo-wrap{width:92px;height:92px;flex-basis:92px}.profile-initial{font-size:28px}.profile-photo-action{width:34px;height:34px;border-width:2px}.profile-name-row h2{max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:18px}.profile-active-mark{width:23px;height:23px}.profile-hero-meta{margin-top:5px;font-size:11px}.profile-role-badge{min-height:22px;margin-top:7px;padding:3px 10px;font-size:9px}.profile-section{margin-top:20px}.profile-section-heading h2{font-size:14px}.profile-section-heading p{font-size:9px}.profile-card{grid-template-columns:1fr;gap:9px;padding:12px;border-radius:17px}.profile-field{padding:12px 13px}.profile-field-value{font-size:13px}.profile-security-card{min-height:72px;gap:13px;padding:9px 12px;border-radius:17px}.profile-security-icon{width:50px;height:50px}.profile-security-content strong{font-size:14px}.profile-security-content small{font-size:10.5px}}
 
 
-  <!-- CHANGE PASSWORD MODAL -->
-  <div id="profilePasswordBackdrop" class="profile-password-backdrop" hidden></div>
+/* =====================================================
+   PROFILE EDIT MODE
+   ===================================================== */
 
-  <section
-    id="profilePasswordModal"
-    class="profile-password-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="profilePasswordTitle"
-    aria-hidden="true"
-  >
-    <div class="profile-password-modal-header">
-      <div>
-        <h2 id="profilePasswordTitle">Change Password</h2>
-        <p>Update your HEXA account password</p>
-      </div>
-      <button type="button" id="profilePasswordClose" class="profile-password-close" aria-label="Close">×</button>
-    </div>
+.profile-quote-field {
+  grid-column: 1 / -1;
+}
 
-    <form id="profilePasswordForm" class="profile-password-form" novalidate>
-      <label class="profile-password-field">
-        <span>Current Password</span>
-        <div class="profile-password-input-wrap">
-          <input id="profileCurrentPassword" type="password" autocomplete="current-password" placeholder="Enter current password">
-          <button type="button" class="profile-password-toggle" data-password-target="profileCurrentPassword" aria-label="Show password">👁</button>
-        </div>
-      </label>
+.profile-quote-value {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
 
-      <label class="profile-password-field">
-        <span>New Password</span>
-        <div class="profile-password-input-wrap">
-          <input id="profileNewPassword" type="password" autocomplete="new-password" placeholder="Minimum 6 characters">
-          <button type="button" class="profile-password-toggle" data-password-target="profileNewPassword" aria-label="Show password">👁</button>
-        </div>
-      </label>
+.profile-actions {
+  grid-column: 1 / -1;
+}
 
-      <label class="profile-password-field">
-        <span>Confirm New Password</span>
-        <div class="profile-password-input-wrap">
-          <input id="profileConfirmPassword" type="password" autocomplete="new-password" placeholder="Repeat new password">
-          <button type="button" class="profile-password-toggle" data-password-target="profileConfirmPassword" aria-label="Show password">👁</button>
-        </div>
-      </label>
+.profile-actions .profile-primary-button {
+  width: 100%;
+}
 
-      <p id="profilePasswordMessage" class="profile-password-message" hidden></p>
+.profile-edit-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
-      <div class="profile-password-actions">
-        <button type="button" id="profilePasswordCancel" class="profile-password-cancel">Cancel</button>
-        <button type="submit" id="profilePasswordSave" class="profile-password-save">Change Password</button>
-      </div>
-    </form>
-  </section>
+.profile-edit-actions[hidden] {
+  display: none !important;
+}
 
-  <script src="hexa-menu.js"></script>
-  <script src="hexa-header.js"></script>
-  <script src="profile.js"></script>
-</body>
-</html>
+.profile-secondary-button {
+  min-height: 48px;
+  padding: 10px 18px;
+
+  border: 1px solid #cfd8dd;
+  border-radius: 13px;
+
+  background: #ffffff;
+  color: #59636a;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.profile-edit-input {
+  width: 100%;
+  min-height: 42px;
+
+  padding: 9px 11px;
+
+  border: 1px solid #b8c9d2;
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #273038;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+textarea.profile-edit-input {
+  min-height: 88px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.profile-edit-input:focus {
+  border-color: #3298e9;
+
+  box-shadow:
+    0 0 0 3px rgba(50, 152, 233, 0.10);
+}
+
+.profile-field.is-editing {
+  background: #ffffff;
+  border-color: rgba(50, 152, 233, 0.24);
+}
+
+@media(max-width:560px) {
+  .profile-edit-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-secondary-button,
+  .profile-edit-actions .profile-primary-button {
+    min-height: 44px;
+  }
+}
+
+/* =====================================================
+   CHANGE PROFILE PHOTO
+   ===================================================== */
+
+.profile-photo-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1900;
+
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.profile-photo-sheet-backdrop[hidden] {
+  display: none !important;
+}
+
+
+/* Bottom Sheet */
+
+.profile-photo-sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 1901;
+
+  width: min(100%, 520px);
+
+  padding:
+    10px
+    18px
+    calc(18px + env(safe-area-inset-bottom));
+
+  border-radius: 24px 24px 0 0;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 -12px 35px rgba(0, 0, 0, 0.18);
+
+  transform: translate(-50%, 110%);
+
+  transition:
+    transform 0.24s ease;
+}
+
+.profile-photo-sheet.is-open {
+  transform: translate(-50%, 0);
+}
+
+
+/* Handle */
+
+.profile-photo-sheet-handle {
+  width: 48px;
+  height: 5px;
+
+  margin:
+    0
+    auto
+    17px;
+
+  border-radius: 99px;
+
+  background: #d7dde1;
+}
+
+
+/* Heading */
+
+.profile-photo-sheet h2 {
+  margin: 0;
+
+  color: #252525;
+
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.profile-photo-sheet > p {
+  margin:
+    4px
+    0
+    13px;
+
+  color: #858d92;
+
+  font-size: 12px;
+}
+
+
+/* Camera / Gallery */
+
+.profile-photo-option {
+  width: 100%;
+  min-height: 68px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 9px;
+
+  padding:
+    10px
+    13px;
+
+  border:
+    1px
+    solid
+    #e2e8eb;
+
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  font-family: inherit;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.profile-photo-option-icon {
+  width: 45px;
+  height: 45px;
+
+  flex:
+    0
+    0
+    45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+
+  background: #edf7fd;
+
+  font-size: 22px;
+}
+
+.profile-photo-option-text {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.profile-photo-option-text strong {
+  color: #273038;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.profile-photo-option-text small {
+  color: #899197;
+
+  font-size: 11px;
+}
+
+
+/* Cancel */
+
+.profile-photo-cancel {
+  width: 100%;
+  min-height: 46px;
+
+  margin-top: 12px;
+
+  border: 0;
+  border-radius: 13px;
+
+  background: #f1f4f5;
+
+  color: #616b71;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+/* Upload Loading */
+
+.profile-photo-uploading {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.profile-photo-uploading[hidden] {
+  display: none !important;
+}
+
+.profile-photo-uploading-card {
+  width: min(86vw, 290px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 7px;
+
+  padding:
+    24px
+    20px;
+
+  border-radius: 19px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.22);
+
+  text-align: center;
+}
+
+.profile-photo-uploading-card strong {
+  color: #273038;
+
+  font-size: 14px;
+}
+
+.profile-photo-uploading-card small {
+  color: #8a9297;
+
+  font-size: 11px;
+}
+
+
+/* Spinner */
+
+.profile-photo-spinner {
+  width: 34px;
+  height: 34px;
+
+  margin-bottom: 5px;
+
+  border:
+    4px
+    solid
+    #e5eef3;
+
+  border-top-color: #2196f3;
+
+  border-radius: 50%;
+
+  animation:
+    profilePhotoSpin
+    0.8s
+    linear
+    infinite;
+}
+
+@keyframes profilePhotoSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Lock page scroll while sheet is open */
+
+body.profile-photo-sheet-open {
+  overflow: hidden;
+}
+
+
+/* Mobile */
+
+@media (max-width: 560px) {
+
+  .profile-photo-sheet {
+    width: 100%;
+
+    padding:
+      10px
+      16px
+      calc(16px + env(safe-area-inset-bottom));
+
+    border-radius:
+      22px
+      22px
+      0
+      0;
+  }
+
+  .profile-photo-option {
+    min-height: 64px;
+  }
+
+  .profile-photo-option-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-basis: 42px;
+
+    font-size: 20px;
+  }
+}
+
+/* =====================================================
+   CHANGE PASSWORD
+   ===================================================== */
+
+body.profile-password-open{overflow:hidden}
+.profile-password-backdrop{position:fixed;inset:0;z-index:1600;background:rgba(8,20,29,.52);backdrop-filter:blur(2px)}
+.profile-password-modal{position:fixed;left:50%;top:50%;z-index:1610;width:min(92%,470px);max-height:90vh;overflow:auto;padding:22px;border:1px solid rgba(55,116,145,.15);border-radius:24px;background:#fff;box-shadow:0 24px 70px rgba(10,36,52,.28);opacity:0;visibility:hidden;transform:translate(-50%,-46%) scale(.98);transition:opacity .18s ease,transform .18s ease,visibility .18s ease}
+.profile-password-modal.is-open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}
+.profile-password-modal-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:20px}
+.profile-password-modal-header h2{margin:0;color:#18242b;font-size:23px;font-weight:800}
+.profile-password-modal-header p{margin:5px 0 0;color:#7a858b;font-size:12px}
+.profile-password-close{width:38px;height:38px;flex:0 0 38px;border:0;border-radius:50%;background:#eef5f8;color:#52636d;font-size:25px;line-height:1;cursor:pointer}
+.profile-password-form{display:flex;flex-direction:column;gap:15px}
+.profile-password-field{display:flex;flex-direction:column;gap:7px;color:#68757d;font-size:11px;font-weight:800;text-transform:uppercase}
+.profile-password-input-wrap{display:flex;align-items:center;border:1px solid rgba(61,108,130,.2);border-radius:13px;background:#f9fbfc;overflow:hidden;transition:border-color .18s ease,box-shadow .18s ease}
+.profile-password-input-wrap:focus-within{border-color:#2698df;box-shadow:0 0 0 3px rgba(38,152,223,.10)}
+.profile-password-input-wrap input{width:100%;min-width:0;height:48px;padding:0 5px 0 14px;border:0;outline:0;background:transparent;color:#273038;font-family:inherit;font-size:14px}
+.profile-password-toggle{width:48px;height:48px;flex:0 0 48px;border:0;background:transparent;cursor:pointer;font-size:17px}
+.profile-password-message{margin:0;padding:11px 13px;border-radius:11px;font-size:12px;font-weight:700;line-height:1.4}
+.profile-password-message.is-error{background:#fdecec;color:#b63232}
+.profile-password-message.is-success{background:#e8f7ee;color:#16834a}
+.profile-password-actions{display:grid;grid-template-columns:1fr 1.35fr;gap:10px;margin-top:3px}
+.profile-password-cancel,.profile-password-save{min-height:47px;border:0;border-radius:12px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.profile-password-cancel{background:#edf2f4;color:#59676f}
+.profile-password-save{background:linear-gradient(145deg,#2196f3,#596cf3);color:#fff}
+.profile-password-save:disabled{opacity:.65;cursor:not-allowed}
+
+@media(max-width:560px){
+  .profile-password-modal{top:auto;bottom:0;width:100%;max-height:92vh;padding:20px 17px 22px;border-radius:24px 24px 0 0;transform:translate(-50%,100%)}
+  .profile-password-modal.is-open{transform:translate(-50%,0)}
+  .profile-password-modal-header h2{font-size:20px}
+  .profile-password-actions{grid-template-columns:1fr 1.4fr}
+}
+
+
+/* =====================================================
+   DIGITAL SIGNATURE - STAGE 1
+   ===================================================== */
+.profile-signature-card {
+  padding: 18px;
+  border: 1px solid rgba(55,116,145,.14);
+  border-radius: 20px;
+  background: rgba(255,255,255,.97);
+  box-shadow: 0 7px 20px rgba(31,77,96,.075);
+}
+.profile-signature-preview {
+  min-height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  border: 1px dashed #cbd7dc;
+  border-radius: 15px;
+  background: #fbfcfd;
+  overflow: hidden;
+}
+.profile-signature-image {
+  display: block;
+  width: min(100%, 430px);
+  max-height: 140px;
+  object-fit: contain;
+}
+.profile-signature-image[hidden] { display: none !important; }
+.profile-signature-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  color: #6f7a80;
+  text-align: center;
+}
+.profile-signature-empty[hidden] { display: none !important; }
+.profile-signature-empty-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3px;
+  border-radius: 14px;
+  background: #edf7fd;
+  font-size: 23px;
+}
+.profile-signature-empty strong { color: #4b555b; font-size: 14px; }
+.profile-signature-empty small { color: #8a9297; font-size: 11px; }
+.profile-signature-button {
+  width: 100%;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 13px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 13px;
+  background: #168de0;
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.profile-signature-button svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.profile-signature-button:hover { filter: brightness(.97); }
+@media(max-width:560px) {
+  .profile-signature-card { padding: 12px; border-radius: 17px; }
+  .profile-signature-preview { min-height: 145px; padding: 14px; }
+  .profile-signature-image { max-height: 115px; }
+  .profile-signature-button { min-height: 44px; }
+}
+
+
+/* =====================================================
+   DIGITAL SIGNATURE - STAGE 2
+   Method chooser + Draw Signature preview
+   ===================================================== */
+
+.profile-signature-sheet-backdrop,
+.profile-draw-signature-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2100;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.profile-signature-sheet-backdrop[hidden],
+.profile-draw-signature-backdrop[hidden] {
+  display: none !important;
+}
+
+.profile-signature-sheet {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 2101;
+  width: min(100%, 520px);
+  padding: 10px 18px calc(18px + env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  background: #ffffff;
+  box-shadow: 0 -12px 35px rgba(0, 0, 0, 0.18);
+  transform: translate(-50%, 110%);
+  transition: transform 0.24s ease;
+}
+
+.profile-signature-sheet.is-open {
+  transform: translate(-50%, 0);
+}
+
+.profile-signature-sheet-handle {
+  width: 48px;
+  height: 5px;
+  margin: 0 auto 17px;
+  border-radius: 99px;
+  background: #d7dde1;
+}
+
+.profile-signature-sheet h2 {
+  margin: 0;
+  color: #252525;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.profile-signature-sheet > p {
+  margin: 4px 0 13px;
+  color: #858d92;
+  font-size: 12px;
+}
+
+.profile-signature-option {
+  width: 100%;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 9px;
+  padding: 10px 13px;
+  border: 1px solid #e2e8eb;
+  border-radius: 15px;
+  background: #ffffff;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-signature-option:hover {
+  background: #f8fbfd;
+}
+
+.profile-signature-option-icon {
+  width: 45px;
+  height: 45px;
+  flex: 0 0 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: #edf7fd;
+  font-size: 22px;
+}
+
+.profile-signature-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.profile-signature-option-text strong {
+  color: #273038;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.profile-signature-option-text small {
+  color: #899197;
+  font-size: 11px;
+}
+
+.profile-signature-sheet-cancel {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 13px;
+  background: #f1f4f5;
+  color: #616b71;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.profile-draw-signature-backdrop {
+  z-index: 2200;
+}
+
+.profile-draw-signature-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2201;
+  width: min(calc(100% - 28px), 620px);
+  padding: 20px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.22);
+  transform: translate(-50%, -50%) scale(.96);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .18s ease, transform .18s ease, visibility .18s ease;
+}
+
+.profile-draw-signature-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.profile-draw-signature-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.profile-draw-signature-header h2 {
+  margin: 0;
+  color: #273038;
+  font-size: 19px;
+  font-weight: 800;
+}
+
+.profile-draw-signature-header p {
+  margin: 4px 0 0;
+  color: #858d92;
+  font-size: 12px;
+}
+
+.profile-draw-signature-close {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border: 0;
+  border-radius: 50%;
+  background: #f0f3f5;
+  color: #657078;
+  font-family: inherit;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.profile-signature-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  border: 2px dashed #cbd8de;
+  border-radius: 16px;
+  background: #ffffff;
+  touch-action: none;
+}
+
+.profile-signature-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.profile-signature-canvas-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: -1;
+  transform: translateX(-50%);
+  color: #d1d7da;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.profile-draw-signature-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.profile-signature-clear,
+.profile-signature-use {
+  min-height: 46px;
+  border-radius: 13px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.profile-signature-clear {
+  border: 1px solid #d6dee2;
+  background: #ffffff;
+  color: #626d73;
+}
+
+.profile-signature-use {
+  border: 0;
+  background: #168de0;
+  color: #ffffff;
+}
+
+.profile-signature-use:disabled {
+  opacity: .48;
+  cursor: not-allowed;
+}
+
+.profile-signature-stage-note {
+  margin: 10px 0 0;
+  color: #92999d;
+  font-size: 10px;
+  text-align: center;
+}
+
+body.profile-signature-overlay-open {
+  overflow: hidden;
+}
+
+@media(max-width:560px) {
+  .profile-draw-signature-modal {
+    width: calc(100% - 20px);
+    padding: 16px;
+    border-radius: 19px;
+  }
+
+  .profile-signature-canvas-wrap {
+    height: 210px;
+  }
+
+  .profile-draw-signature-actions {
+    grid-template-columns: 1fr 1.45fr;
+  }
+}
