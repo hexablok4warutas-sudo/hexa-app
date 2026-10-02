@@ -230,6 +230,21 @@ dailyMenuItems.forEach(
         }
 
         // =================================
+        // DAILY ACTIVITY
+        // =================================
+
+        if (
+          menu ===
+          "daily-activity"
+        ) {
+
+          openDailyActivity();
+
+          return;
+
+        }
+
+        // =================================
         // UNIT HISTORY
         // =================================
 
@@ -276,6 +291,17 @@ function openDailyOutstanding() {
 }
 function openUnitHistory() {
   window.location.href = "/unit-history";
+}
+
+// ========================================
+// OPEN DAILY ACTIVITY
+// ========================================
+
+function openDailyActivity() {
+
+  window.location.href =
+    "/daily-activity";
+
 }
 // ========================================
 // FLOATING BUTTON
