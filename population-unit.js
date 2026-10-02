@@ -74,6 +74,8 @@ async function initializePopulationUnit() {
 
   initializePopulationModal();
 
+  initializeEGIManager();
+
   initializePopulationRetry();
 
 
@@ -1877,14 +1879,6 @@ function redirectPopulationToLogin() {
 let egiManagerData = [];
 let equipmentTypeMasterData = [];
 let egiFormMode = "add";
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
-    initializeEGIManager();
-  }
-);
-
 
 function initializeEGIManager() {
 
