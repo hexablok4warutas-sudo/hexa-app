@@ -998,10 +998,10 @@ function initializeProfileSignatureControls() {
   }
 
   if (scanButton) {
-    scanButton.addEventListener("click", function () {
-      alert("Scan / Upload Signature akan kita aktifkan pada tahap berikutnya.");
-    });
+    scanButton.addEventListener("click", openProfileSignatureScanChooser);
   }
+
+  ensureProfileSignatureScanInputs();
 
   if (drawBackdrop) {
     drawBackdrop.addEventListener("click", closeProfileDrawSignature);
@@ -1045,6 +1045,300 @@ function initializeProfileSignatureControls() {
       prepareProfileSignatureCanvas();
     }
   });
+}
+
+
+function ensureProfileSignatureScanInputs() {
+  if (document.getElementById("profileSignatureCameraInput")) return;
+
+  const cameraInput = document.createElement("input");
+  cameraInput.type = "file";
+  cameraInput.id = "profileSignatureCameraInput";
+  cameraInput.accept = "image/*";
+  cameraInput.capture = "environment";
+  cameraInput.hidden = true;
+
+  const galleryInput = document.createElement("input");
+  galleryInput.type = "file";
+  galleryInput.id = "profileSignatureGalleryInput";
+  galleryInput.accept = "image/*";
+  galleryInput.hidden = true;
+
+  cameraInput.addEventListener("change", handleProfileSignatureScanFile);
+  galleryInput.addEventListener("change", handleProfileSignatureScanFile);
+
+  document.body.appendChild(cameraInput);
+  document.body.appendChild(galleryInput);
+}
+
+function openProfileSignatureScanChooser() {
+  closeProfileSignatureSheet();
+
+  const useCamera = window.confirm(
+    "Scan / Upload Signature\\n\\nOK = Camera\\nCancel = Gallery"
+  );
+
+  const input = document.getElementById(
+    useCamera
+      ? "profileSignatureCameraInput"
+      : "profileSignatureGalleryInput"
+  );
+
+  if (!input) return;
+
+  input.value = "";
+  input.click();
+}
+
+async function handleProfileSignatureScanFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  if (!file.type || !file.type.startsWith("image/")) {
+    alert("File harus berupa gambar.");
+    return;
+  }
+
+  try {
+    const dataUrl = await readProfileSignatureFile(file);
+    const processedDataUrl = await processProfileSignatureImage(dataUrl);
+
+    showProfileSignatureProcessedPreview(processedDataUrl);
+
+  } catch (error) {
+    console.error(
+      "HEXA Profile: gagal memproses Scan / Upload Signature.",
+      error
+    );
+
+    alert(
+      "Gambar signature gagal diproses.\\n\\n" +
+      (error.message || "Silakan coba foto atau gambar lain.")
+    );
+  }
+}
+
+function readProfileSignatureFile(file) {
+  return new Promise(function (resolve, reject) {
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      resolve(reader.result);
+    };
+
+    reader.onerror = function () {
+      reject(new Error("Gagal membaca file gambar."));
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+function loadProfileSignatureImage(dataUrl) {
+  return new Promise(function (resolve, reject) {
+    const image = new Image();
+
+    image.onload = function () {
+      resolve(image);
+    };
+
+    image.onerror = function () {
+      reject(new Error("Gambar tidak dapat dibuka."));
+    };
+
+    image.src = dataUrl;
+  });
+}
+
+async function processProfileSignatureImage(dataUrl) {
+  const image = await loadProfileSignatureImage(dataUrl);
+
+  const maxWidth = 1400;
+  const maxHeight = 900;
+  const scale = Math.min(
+    1,
+    maxWidth / image.naturalWidth,
+    maxHeight / image.naturalHeight
+  );
+
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+  const workCanvas = document.createElement("canvas");
+  workCanvas.width = width;
+  workCanvas.height = height;
+
+  const context = workCanvas.getContext("2d", {
+    willReadFrequently: true
+  });
+
+  context.drawImage(image, 0, 0, width, height);
+
+  const imageData = context.getImageData(0, 0, width, height);
+  const pixels = imageData.data;
+
+  // Estimate paper brightness from the image itself.
+  // This keeps processing usable across white/off-white paper and lighting.
+  let luminanceTotal = 0;
+  let luminanceSamples = 0;
+  const sampleStep = Math.max(1, Math.floor((width * height) / 30000));
+
+  for (let i = 0; i < pixels.length; i += 4 * sampleStep) {
+    const r = pixels[i];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+    luminanceTotal += (0.299 * r) + (0.587 * g) + (0.114 * b);
+    luminanceSamples++;
+  }
+
+  const averageLum =
+    luminanceSamples > 0
+      ? luminanceTotal / luminanceSamples
+      : 230;
+
+  // Adaptive threshold: enough to remove paper while preserving dark ink.
+  const threshold = Math.max(135, Math.min(215, averageLum - 28));
+
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i];
+    const g = pixels[i + 1];
+    const b = pixels[i + 2];
+
+    const gray = (0.299 * r) + (0.587 * g) + (0.114 * b);
+
+    if (gray >= threshold) {
+      pixels[i] = 0;
+      pixels[i + 1] = 0;
+      pixels[i + 2] = 0;
+      pixels[i + 3] = 0;
+      continue;
+    }
+
+    // Darker pixels become more opaque; light paper/noise fades out.
+    const darkness = Math.max(
+      0,
+      Math.min(1, (threshold - gray) / Math.max(1, threshold - 45))
+    );
+
+    let alpha = Math.round(255 * Math.pow(darkness, 0.72));
+
+    // Remove very faint camera noise.
+    if (alpha < 34) alpha = 0;
+
+    pixels[i] = 17;
+    pixels[i + 1] = 17;
+    pixels[i + 2] = 17;
+    pixels[i + 3] = alpha;
+  }
+
+  context.putImageData(imageData, 0, 0);
+
+  // Crop transparent margins around the detected signature.
+  const bounds = getProfileSignatureInkBounds(workCanvas);
+
+  if (!bounds) {
+    throw new Error(
+      "Tanda tangan tidak terdeteksi. Gunakan kertas terang dan tinta gelap."
+    );
+  }
+
+  const padding = Math.max(
+    18,
+    Math.round(Math.min(width, height) * 0.035)
+  );
+
+  const sx = Math.max(0, bounds.left - padding);
+  const sy = Math.max(0, bounds.top - padding);
+  const ex = Math.min(width, bounds.right + padding);
+  const ey = Math.min(height, bounds.bottom + padding);
+
+  const cropWidth = Math.max(1, ex - sx);
+  const cropHeight = Math.max(1, ey - sy);
+
+  const outputCanvas = document.createElement("canvas");
+  outputCanvas.width = cropWidth;
+  outputCanvas.height = cropHeight;
+
+  const outputContext = outputCanvas.getContext("2d");
+  outputContext.drawImage(
+    workCanvas,
+    sx,
+    sy,
+    cropWidth,
+    cropHeight,
+    0,
+    0,
+    cropWidth,
+    cropHeight
+  );
+
+  return outputCanvas.toDataURL("image/png");
+}
+
+function getProfileSignatureInkBounds(canvas) {
+  const context = canvas.getContext("2d", {
+    willReadFrequently: true
+  });
+
+  const width = canvas.width;
+  const height = canvas.height;
+  const data = context.getImageData(0, 0, width, height).data;
+
+  let left = width;
+  let top = height;
+  let right = -1;
+  let bottom = -1;
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const alpha = data[((y * width) + x) * 4 + 3];
+
+      if (alpha > 45) {
+        if (x < left) left = x;
+        if (x > right) right = x;
+        if (y < top) top = y;
+        if (y > bottom) bottom = y;
+      }
+    }
+  }
+
+  if (right < left || bottom < top) {
+    return null;
+  }
+
+  return {
+    left: left,
+    top: top,
+    right: right + 1,
+    bottom: bottom + 1
+  };
+}
+
+function showProfileSignatureProcessedPreview(dataUrl) {
+  const image = document.getElementById("profileSignatureImage");
+  const empty = document.getElementById("profileSignatureEmpty");
+  const signatureButton = document.getElementById("profileSignatureButton");
+  const pendingActions = document.getElementById(
+    "profileSignaturePendingActions"
+  );
+
+  if (!image || !empty) return;
+
+  profilePendingSignatureDataUrl = dataUrl;
+
+  image.onload = function () {
+    image.hidden = false;
+    empty.hidden = true;
+  };
+
+  image.onerror = function () {
+    alert("Preview signature tidak dapat ditampilkan.");
+  };
+
+  image.src = profilePendingSignatureDataUrl;
+
+  if (signatureButton) signatureButton.hidden = true;
+  if (pendingActions) pendingActions.hidden = false;
 }
 
 function openProfileSignatureSheet() {
