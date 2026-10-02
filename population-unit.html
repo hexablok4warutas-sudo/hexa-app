@@ -228,6 +228,14 @@
 
         </button>
 
+        <button
+          type="button"
+          id="populationManageEGIButton"
+          class="population-add-button"
+        >
+          Manage EGI
+        </button>
+
 
       </section>
 
@@ -675,6 +683,213 @@
 
   </div>
 
+
+
+  <!-- ==================================================
+       MANAGE EGI MODAL
+       HTML ONLY - FUNCTION WILL BE CONNECTED IN NEXT STAGE
+       ================================================== -->
+
+  <div
+    id="egiManagerModal"
+    class="population-modal"
+    hidden
+  >
+
+    <div
+      class="population-modal-backdrop"
+      data-close-egi-manager
+    ></div>
+
+    <section
+      class="population-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="egiManagerTitle"
+    >
+
+      <div class="population-modal-header">
+
+        <div>
+          <h2 id="egiManagerTitle">
+            Manage EGI
+          </h2>
+
+          <p>
+            Manage equipment groups and equipment types
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="egiManagerCloseButton"
+          class="population-modal-close"
+          aria-label="Close Manage EGI"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6L6 18"></path>
+          </svg>
+        </button>
+
+      </div>
+
+      <div class="population-form">
+
+        <button
+          type="button"
+          id="egiAddButton"
+          class="population-save-button"
+        >
+          + Add EGI
+        </button>
+
+        <div
+          id="egiManagerList"
+          class="egi-manager-list"
+          aria-live="polite"
+        >
+          <!-- EGI cards will be rendered by JavaScript -->
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- ==================================================
+       ADD / EDIT EGI MODAL
+       ================================================== -->
+
+  <div
+    id="egiFormModal"
+    class="population-modal"
+    hidden
+  >
+
+    <div
+      class="population-modal-backdrop"
+      data-close-egi-form
+    ></div>
+
+    <section
+      class="population-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="egiFormTitle"
+    >
+
+      <div class="population-modal-header">
+
+        <div>
+          <h2 id="egiFormTitle">
+            Add EGI
+          </h2>
+
+          <p id="egiFormSubtitle">
+            Add a new EGI to HEXA master data
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="egiFormCloseButton"
+          class="population-modal-close"
+          aria-label="Close"
+        >
+          <svg viewBox="0 0 24 24">
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6L6 18"></path>
+          </svg>
+        </button>
+
+      </div>
+
+      <form
+        id="egiForm"
+        class="population-form"
+        autocomplete="off"
+      >
+
+        <input
+          type="hidden"
+          id="egiUniqId"
+          name="uniqId"
+        >
+
+        <div class="population-form-group">
+
+          <label for="egiName">
+            EGI
+          </label>
+
+          <input
+            type="text"
+            id="egiName"
+            name="egi"
+            placeholder="Example: CAT 395"
+            required
+          >
+
+        </div>
+
+        <div class="population-form-group">
+
+          <label for="egiEquipmentType">
+            Equipment Type
+          </label>
+
+          <select
+            id="egiEquipmentType"
+            name="type"
+            required
+          >
+            <option value="">
+              Select Equipment Type
+            </option>
+          </select>
+
+          <small class="population-field-help">
+            Equipment Type will be loaded from the Equipment Type master.
+          </small>
+
+        </div>
+
+        <div
+          id="egiFormMessage"
+          class="population-form-message"
+          hidden
+        ></div>
+
+        <div class="population-form-actions">
+
+          <button
+            type="button"
+            id="egiFormCancelButton"
+            class="population-cancel-button"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            id="egiSaveButton"
+            class="population-save-button"
+          >
+            <span id="egiSaveButtonText">
+              Save EGI
+            </span>
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </div>
 
 
   <!-- ==================================================
