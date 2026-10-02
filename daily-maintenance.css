@@ -32,7 +32,6 @@ body {
 
 .daily-main-content {
   width: 100%;
-
   min-height: 100vh;
 
   /*
@@ -49,9 +48,7 @@ body {
 
 .daily-section {
   position: relative;
-
   width: 100%;
-
   min-height: calc(100vh - 88px);
 
   padding:
@@ -69,9 +66,7 @@ body {
     url("hexa-doodle.png");
 
   background-size: cover;
-
   background-position: center;
-
   background-repeat: repeat;
 }
 
@@ -89,11 +84,8 @@ body {
   margin: 0 auto 52px;
 
   color: #151515;
-
   font-size: 15px;
-
   line-height: 1.6;
-
   text-align: justify;
 }
 
@@ -116,7 +108,7 @@ body {
 
 .daily-menu-grid {
   width: min(
-    760px,
+    980px,
     100%
   );
 
@@ -126,11 +118,11 @@ body {
 
   grid-template-columns:
     repeat(
-      3,
+      4,
       1fr
     );
 
-  gap: 55px;
+  gap: 45px;
 
   align-items: start;
 }
@@ -144,17 +136,12 @@ body {
   position: relative;
 
   border: none;
-
   outline: none;
-
   background: transparent;
 
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: flex-start;
 
   gap: 12px;
@@ -187,7 +174,6 @@ body {
   height: 135px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -209,7 +195,6 @@ body {
 
 .daily-menu-item:hover
 .daily-icon-card {
-
   filter:
     drop-shadow(
       0 11px 12px
@@ -244,9 +229,7 @@ body {
   text-align: center;
 
   font-size: 14px;
-
   font-weight: 600;
-
   line-height: 1.25;
 
   color: #222222;
@@ -276,7 +259,6 @@ body {
   height: 72px;
 
   border: none;
-
   border-radius: 50%;
 
   background:
@@ -287,7 +269,6 @@ body {
     rgba(0, 0, 0, 0.20);
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -296,7 +277,6 @@ body {
   z-index: 1500;
 
   user-select: none;
-
   touch-action: none;
 
   backdrop-filter: blur(4px);
@@ -323,9 +303,7 @@ body {
   color: #ffffff;
 
   font-size: 46px;
-
   font-weight: 300;
-
   line-height: 1;
 
   pointer-events: none;
@@ -340,11 +318,11 @@ body {
 
   .daily-menu-grid {
     width: min(
-      650px,
+      850px,
       100%
     );
 
-    gap: 35px;
+    gap: 30px;
   }
 
 }
@@ -397,7 +375,6 @@ body {
     margin-bottom: 38px;
 
     font-size: 13px;
-
     line-height: 1.55;
 
     text-align: justify;
@@ -422,7 +399,6 @@ body {
       );
 
     column-gap: 12px;
-
     row-gap: 28px;
   }
 
@@ -451,7 +427,6 @@ body {
 
   .daily-icon-card img {
     width: 90px;
-
     height: 90px;
   }
 
@@ -464,21 +439,17 @@ body {
     display: block;
 
     width: 90px;
-
     max-width: 90px;
 
     overflow: hidden;
 
     white-space: nowrap;
-
     text-overflow: ellipsis;
 
     text-align: center;
 
     font-size: 12px;
-
     font-weight: 600;
-
     line-height: 1.25;
 
     color: #222222;
@@ -491,11 +462,9 @@ body {
 
   .inspection-shortcut {
     width: 62px;
-
     height: 62px;
 
     right: 18px;
-
     bottom: 20px;
   }
 
@@ -538,7 +507,6 @@ body {
 
   .daily-icon-card {
     width: 86px;
-
     height: 86px;
 
     border-radius: 17px;
@@ -551,7 +519,6 @@ body {
 
   .daily-icon-card img {
     width: 78px;
-
     height: 78px;
   }
 
@@ -562,13 +529,11 @@ body {
 
   .daily-menu-item > span {
     width: 78px;
-
     max-width: 78px;
 
     overflow: hidden;
 
     white-space: nowrap;
-
     text-overflow: ellipsis;
 
     font-size: 11px;
