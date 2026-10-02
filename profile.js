@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", initializeProfile);
 
 let currentProfileUser = null;
 
-function initializeProfile() {
+async function initializeProfile() {
   const user = getProfileSessionUser();
   if (!user) return;
 
@@ -16,6 +16,61 @@ function initializeProfile() {
   applyProfileTheme(user.kode);
   renderProfile(user);
   initializeProfileNavigation();
+
+  await syncProfileFromDatabase();
+}
+
+async function syncProfileFromDatabase() {
+  if (!currentProfileUser || !currentProfileUser.uniqId) return;
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "getUserProfile",
+        uniqId: currentProfileUser.uniqId
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result || result.success !== true || !result.user) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Response User Profile tidak valid."
+      );
+    }
+
+    const freshUser = normalizeProfileUser(result.user);
+
+    if (!freshUser.uniqId || !freshUser.userId) {
+      throw new Error("Data User Profile tidak lengkap.");
+    }
+
+    currentProfileUser = freshUser;
+
+    sessionStorage.setItem(
+      "hexaUser",
+      JSON.stringify(currentProfileUser)
+    );
+
+    applyProfileTheme(currentProfileUser.kode);
+    renderProfile(currentProfileUser);
+
+  } catch (error) {
+    console.error(
+      "HEXA Profile: gagal sync User Profile dari database.",
+      error
+    );
+  }
 }
 
 function getProfileSessionUser() {
@@ -58,7 +113,6 @@ function normalizeProfileUser(user) {
     email: cleanProfileValue(user.email),
     status: cleanProfileValue(user.status),
     kutipan: cleanProfileValue(user.kutipan),
-    signature: cleanProfileValue(user.signature)
     signature: cleanProfileValue(user.signature)
   };
 }
