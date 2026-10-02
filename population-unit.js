@@ -1866,3 +1866,808 @@ function redirectPopulationToLogin() {
   );
 
 }
+
+
+// =====================================================
+// MANAGE EGI - STAGE 1
+// Load & display EGI master + Equipment Type
+// Existing Population Unit logic is intentionally untouched.
+// =====================================================
+
+let egiManagerData = [];
+let equipmentTypeMasterData = [];
+let egiFormMode = "add";
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+    initializeEGIManager();
+  }
+);
+
+
+function initializeEGIManager() {
+
+  const manageButton =
+    document.getElementById(
+      "populationManageEGIButton"
+    );
+
+  const managerClose =
+    document.getElementById(
+      "egiManagerCloseButton"
+    );
+
+  const managerBackdrop =
+    document.querySelector(
+      "[data-close-egi-manager]"
+    );
+
+  const addButton =
+    document.getElementById(
+      "egiAddButton"
+    );
+
+  const formClose =
+    document.getElementById(
+      "egiFormCloseButton"
+    );
+
+  const formCancel =
+    document.getElementById(
+      "egiFormCancelButton"
+    );
+
+  const formBackdrop =
+    document.querySelector(
+      "[data-close-egi-form]"
+    );
+
+  const form =
+    document.getElementById(
+      "egiForm"
+    );
+
+
+  if (manageButton) {
+    manageButton.addEventListener(
+      "click",
+      openEGIManager
+    );
+  }
+
+  if (managerClose) {
+    managerClose.addEventListener(
+      "click",
+      closeEGIManager
+    );
+  }
+
+  if (managerBackdrop) {
+    managerBackdrop.addEventListener(
+      "click",
+      closeEGIManager
+    );
+  }
+
+  if (addButton) {
+    addButton.addEventListener(
+      "click",
+      openAddEGIForm
+    );
+  }
+
+  if (formClose) {
+    formClose.addEventListener(
+      "click",
+      closeEGIForm
+    );
+  }
+
+  if (formCancel) {
+    formCancel.addEventListener(
+      "click",
+      closeEGIForm
+    );
+  }
+
+  if (formBackdrop) {
+    formBackdrop.addEventListener(
+      "click",
+      closeEGIForm
+    );
+  }
+
+  if (form) {
+    form.addEventListener(
+      "submit",
+      handleEGIFormSubmit
+    );
+  }
+}
+
+
+async function openEGIManager() {
+
+  const modal =
+    document.getElementById(
+      "egiManagerModal"
+    );
+
+  if (!modal) {
+    return;
+  }
+
+  modal.hidden = false;
+  document.body.style.overflow =
+    "hidden";
+
+  renderEGIManagerLoading();
+
+  try {
+
+    await Promise.all([
+      loadEGIManagerData(),
+      loadEquipmentTypeMaster()
+    ]);
+
+    renderEGIManagerList();
+
+  } catch (error) {
+
+    renderEGIManagerError(
+      error &&
+      error.message
+        ? error.message
+        : "Unable to load EGI data."
+    );
+
+  }
+}
+
+
+function closeEGIManager() {
+
+  const modal =
+    document.getElementById(
+      "egiManagerModal"
+    );
+
+  if (modal) {
+    modal.hidden = true;
+  }
+
+  document.body.style.overflow = "";
+}
+
+
+async function loadEGIManagerData() {
+
+  const result =
+    await populationApiRequest({
+      action: "getEGIList"
+    });
+
+  if (
+    !result ||
+    result.success !== true
+  ) {
+    throw new Error(
+      result && result.message
+        ? result.message
+        : "Unable to load EGI list."
+    );
+  }
+
+  egiManagerData =
+    Array.isArray(result.egiList)
+      ? result.egiList
+      : [];
+}
+
+
+async function loadEquipmentTypeMaster() {
+
+  const result =
+    await populationApiRequest({
+      action: "getEquipmentTypeList"
+    });
+
+  if (
+    !result ||
+    result.success !== true
+  ) {
+    throw new Error(
+      result && result.message
+        ? result.message
+        : "Unable to load Equipment Type."
+    );
+  }
+
+  equipmentTypeMasterData =
+    Array.isArray(
+      result.equipmentTypes
+    )
+      ? result.equipmentTypes
+      : [];
+
+  populateEquipmentTypeSelect();
+}
+
+
+function populateEquipmentTypeSelect() {
+
+  const select =
+    document.getElementById(
+      "egiEquipmentType"
+    );
+
+  if (!select) {
+    return;
+  }
+
+  const currentValue =
+    select.value;
+
+  select.innerHTML =
+    '<option value="">' +
+    'Select Equipment Type' +
+    '</option>';
+
+  equipmentTypeMasterData.forEach(
+    function(type) {
+
+      const value =
+        cleanPopulationValue(type);
+
+      if (!value) {
+        return;
+      }
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value = value;
+      option.textContent = value;
+
+      select.appendChild(option);
+    }
+  );
+
+  if (currentValue) {
+    select.value = currentValue;
+  }
+}
+
+
+function renderEGIManagerLoading() {
+
+  const list =
+    document.getElementById(
+      "egiManagerList"
+    );
+
+  if (!list) {
+    return;
+  }
+
+  list.innerHTML =
+    '<div class="population-state">' +
+      '<span>Loading EGI...</span>' +
+    '</div>';
+}
+
+
+function renderEGIManagerError(
+  message
+) {
+
+  const list =
+    document.getElementById(
+      "egiManagerList"
+    );
+
+  if (!list) {
+    return;
+  }
+
+  list.innerHTML = "";
+
+  const state =
+    document.createElement("div");
+
+  state.className =
+    "population-state";
+
+  const strong =
+    document.createElement("strong");
+
+  strong.textContent =
+    "Unable to Load EGI";
+
+  const detail =
+    document.createElement("span");
+
+  detail.textContent =
+    message || "Please try again.";
+
+  state.appendChild(strong);
+  state.appendChild(detail);
+  list.appendChild(state);
+}
+
+
+function renderEGIManagerList() {
+
+  const list =
+    document.getElementById(
+      "egiManagerList"
+    );
+
+  if (!list) {
+    return;
+  }
+
+  list.innerHTML = "";
+
+  if (!egiManagerData.length) {
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "population-state";
+
+    empty.textContent =
+      "No EGI data found.";
+
+    list.appendChild(empty);
+
+    return;
+  }
+
+  egiManagerData.forEach(
+    function(item) {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+      card.className =
+        "population-card";
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+      content.className =
+        "population-card-content";
+
+      const title =
+        document.createElement(
+          "strong"
+        );
+
+      title.textContent =
+        cleanPopulationValue(
+          item.egi
+        ) || "-";
+
+      const type =
+        document.createElement(
+          "span"
+        );
+
+      type.textContent =
+        cleanPopulationValue(
+          item.type
+        ) || "No Equipment Type";
+
+      content.appendChild(title);
+      content.appendChild(type);
+
+      const editButton =
+        document.createElement(
+          "button"
+        );
+
+      editButton.type =
+        "button";
+
+      editButton.className =
+        "population-edit-button";
+
+      editButton.setAttribute(
+        "aria-label",
+        "Edit " +
+        (
+          cleanPopulationValue(
+            item.egi
+          ) || "EGI"
+        )
+      );
+
+      editButton.innerHTML = `
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M4 20h4l11-11-4-4L4 16z"
+          ></path>
+          <path
+            d="M13.5 6.5l4 4"
+          ></path>
+        </svg>
+      `;
+
+      editButton.addEventListener(
+        "click",
+        function() {
+          openEditEGIForm(item);
+        }
+      );
+
+      card.appendChild(content);
+      card.appendChild(editButton);
+      list.appendChild(card);
+    }
+  );
+}
+
+
+function openAddEGIForm() {
+
+  egiFormMode = "add";
+
+  const form =
+    document.getElementById(
+      "egiForm"
+    );
+
+  if (form) {
+    form.reset();
+  }
+
+  setEGIFormValue(
+    "egiUniqId",
+    ""
+  );
+
+  setEGIFormText(
+    "Add EGI",
+    "Add a new EGI to HEXA master data",
+    "Save EGI"
+  );
+
+  populateEquipmentTypeSelect();
+  clearEGIFormMessage();
+  showEGIForm();
+}
+
+
+function openEditEGIForm(
+  item
+) {
+
+  egiFormMode = "edit";
+
+  setEGIFormValue(
+    "egiUniqId",
+    item.uniqId
+  );
+
+  setEGIFormValue(
+    "egiName",
+    item.egi
+  );
+
+  populateEquipmentTypeSelect();
+
+  setEGIFormValue(
+    "egiEquipmentType",
+    item.type
+  );
+
+  setEGIFormText(
+    "Edit EGI",
+    "Update EGI master information",
+    "Save Changes"
+  );
+
+  clearEGIFormMessage();
+  showEGIForm();
+}
+
+
+function showEGIForm() {
+
+  const modal =
+    document.getElementById(
+      "egiFormModal"
+    );
+
+  if (!modal) {
+    return;
+  }
+
+  modal.hidden = false;
+
+  window.setTimeout(
+    function() {
+
+      const input =
+        document.getElementById(
+          "egiName"
+        );
+
+      if (input) {
+        input.focus();
+      }
+
+    },
+    50
+  );
+}
+
+
+function closeEGIForm() {
+
+  const modal =
+    document.getElementById(
+      "egiFormModal"
+    );
+
+  if (modal) {
+    modal.hidden = true;
+  }
+
+  clearEGIFormMessage();
+}
+
+
+function setEGIFormText(
+  title,
+  subtitle,
+  buttonText
+) {
+
+  const titleElement =
+    document.getElementById(
+      "egiFormTitle"
+    );
+
+  const subtitleElement =
+    document.getElementById(
+      "egiFormSubtitle"
+    );
+
+  const buttonElement =
+    document.getElementById(
+      "egiSaveButtonText"
+    );
+
+  if (titleElement) {
+    titleElement.textContent =
+      title;
+  }
+
+  if (subtitleElement) {
+    subtitleElement.textContent =
+      subtitle;
+  }
+
+  if (buttonElement) {
+    buttonElement.textContent =
+      buttonText;
+  }
+}
+
+
+function setEGIFormValue(
+  id,
+  value
+) {
+
+  const element =
+    document.getElementById(id);
+
+  if (element) {
+    element.value =
+      cleanPopulationValue(value);
+  }
+}
+
+
+async function handleEGIFormSubmit(
+  event
+) {
+
+  event.preventDefault();
+
+  const uniqId =
+    getEGIFormValue(
+      "egiUniqId"
+    );
+
+  const egi =
+    getEGIFormValue(
+      "egiName"
+    );
+
+  const type =
+    getEGIFormValue(
+      "egiEquipmentType"
+    );
+
+  if (!egi) {
+    showEGIFormMessage(
+      "EGI is required.",
+      "error"
+    );
+    return;
+  }
+
+  if (!type) {
+    showEGIFormMessage(
+      "Equipment Type is required.",
+      "error"
+    );
+    return;
+  }
+
+  setEGISaveLoading(true);
+
+  try {
+
+    const payload = {
+      action:
+        egiFormMode === "edit"
+          ? "updateEGI"
+          : "addEGI",
+      uniqId: uniqId,
+      egi: egi,
+      type: type
+    };
+
+    const result =
+      await populationApiRequest(
+        payload
+      );
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Unable to save EGI."
+      );
+    }
+
+    closeEGIForm();
+
+    await Promise.all([
+      loadEGIManagerData(),
+      loadEquipmentTypeMaster()
+    ]);
+
+    renderEGIManagerList();
+
+    // Refresh existing EGI source used by Population Unit.
+    if (
+      typeof loadPopulationEGIData ===
+      "function"
+    ) {
+      await loadPopulationEGIData();
+    }
+
+  } catch (error) {
+
+    showEGIFormMessage(
+      error &&
+      error.message
+        ? error.message
+        : "Unable to save EGI.",
+      "error"
+    );
+
+  } finally {
+
+    setEGISaveLoading(false);
+
+  }
+}
+
+
+function getEGIFormValue(id) {
+
+  const element =
+    document.getElementById(id);
+
+  return element
+    ? cleanPopulationValue(
+        element.value
+      )
+    : "";
+}
+
+
+function showEGIFormMessage(
+  message,
+  type
+) {
+
+  const element =
+    document.getElementById(
+      "egiFormMessage"
+    );
+
+  if (!element) {
+    return;
+  }
+
+  element.hidden = false;
+  element.textContent = message;
+
+  element.className =
+    "population-form-message " +
+    (
+      type === "error"
+        ? "error"
+        : "success"
+    );
+}
+
+
+function clearEGIFormMessage() {
+
+  const element =
+    document.getElementById(
+      "egiFormMessage"
+    );
+
+  if (!element) {
+    return;
+  }
+
+  element.hidden = true;
+  element.textContent = "";
+  element.className =
+    "population-form-message";
+}
+
+
+function setEGISaveLoading(
+  loading
+) {
+
+  const button =
+    document.getElementById(
+      "egiSaveButton"
+    );
+
+  const text =
+    document.getElementById(
+      "egiSaveButtonText"
+    );
+
+  if (button) {
+    button.disabled = loading;
+  }
+
+  if (text) {
+    text.textContent =
+      loading
+        ? "Saving..."
+        : (
+            egiFormMode === "edit"
+              ? "Save Changes"
+              : "Save EGI"
+          );
+  }
+}
+
+
