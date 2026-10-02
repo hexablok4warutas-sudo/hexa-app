@@ -7,16 +7,6 @@ document.addEventListener("DOMContentLoaded", initializeProfile);
 
 let currentProfileUser = null;
 
-let profileSavedSignatureUrl = "";
-let profilePendingSignatureDataUrl = "";
-let profileSignatureDrawing = false;
-let profileSignatureHasInk = false;
-let profileSignatureLastPoint = null;
-
-/* =========================================================
-   INITIALIZE PROFILE
-========================================================= */
-
 async function initializeProfile() {
   const user = getProfileSessionUser();
   if (!user) return;
@@ -83,10 +73,6 @@ async function syncProfileFromDatabase() {
   }
 }
 
-/* =========================================================
-   SESSION
-========================================================= */
-
 function getProfileSessionUser() {
   const loggedIn = sessionStorage.getItem("hexaLoggedIn");
   const rawUser = sessionStorage.getItem("hexaUser");
@@ -109,10 +95,8 @@ function getProfileSessionUser() {
 
   } catch (error) {
     console.error("HEXA Profile: session user tidak valid.", error);
-
     clearProfileSession();
     redirectProfileToLogin();
-
     return null;
   }
 }
@@ -138,97 +122,30 @@ function cleanProfileValue(value) {
   return String(value).trim();
 }
 
-function clearProfileSession() {
-  sessionStorage.removeItem("hexaLoggedIn");
-  sessionStorage.removeItem("hexaUser");
-}
-
-function redirectProfileToLogin() {
-  window.location.href = "index.html";
-}
-
-/* =========================================================
-   THEME
-========================================================= */
-
 function applyProfileTheme(kode) {
   const numericKode = Number(kode);
 
-  document.body.classList.remove(
-    "theme-blue",
-    "theme-orange"
-  );
+  document.body.classList.remove("theme-blue", "theme-orange");
 
-  if (
-    Number.isFinite(numericKode) &&
-    numericKode >= 1 &&
-    numericKode <= 3
-  ) {
+  if (Number.isFinite(numericKode) && numericKode >= 1 && numericKode <= 3) {
     document.body.classList.add("theme-blue");
   } else {
     document.body.classList.add("theme-orange");
   }
 }
 
-/* =========================================================
-   RENDER PROFILE
-========================================================= */
-
 function renderProfile(user) {
-  setProfileText(
-    "profileHeroName",
-    user.nama || "User"
-  );
-
-  setProfileText(
-    "profileHeroUserId",
-    user.userId || "-"
-  );
-
-  setProfileText(
-    "profileHeroLevel",
-    user.kode ? `Level ${user.kode}` : "-"
-  );
-
-  setProfileText(
-    "profileRoleBadge",
-    (user.level || "User").toUpperCase()
-  );
-
-  setProfileText(
-    "profileName",
-    user.nama || "-"
-  );
-
-  setProfileText(
-    "profilePhone",
-    user.noHp || "-"
-  );
-
-  setProfileText(
-    "profileEmail",
-    user.email || "-"
-  );
-
-  setProfileText(
-    "profileQuote",
-    user.kutipan || "-"
-  );
-
-  setProfileText(
-    "profileUserId",
-    user.userId || "-"
-  );
-
-  setProfileText(
-    "profileLevel",
-    user.level || "-"
-  );
-
-  setProfileText(
-    "profileKode",
-    user.kode || "-"
-  );
+  setProfileText("profileHeroName", user.nama || "User");
+  setProfileText("profileHeroUserId", user.userId || "-");
+  setProfileText("profileHeroLevel", user.kode ? `Level ${user.kode}` : "-");
+  setProfileText("profileRoleBadge", (user.level || "User").toUpperCase());
+  setProfileText("profileName", user.nama || "-");
+  setProfileText("profilePhone", user.noHp || "-");
+  setProfileText("profileEmail", user.email || "-");
+  setProfileText("profileQuote", user.kutipan || "-");
+  setProfileText("profileUserId", user.userId || "-");
+  setProfileText("profileLevel", user.level || "-");
+  setProfileText("profileKode", user.kode || "-");
 
   renderProfileStatus(user.status);
   renderProfileMotto(user.kutipan);
@@ -238,61 +155,33 @@ function renderProfile(user) {
 
 function setProfileText(id, value) {
   const element = document.getElementById(id);
-
-  if (element) {
-    element.textContent = value;
-  }
+  if (element) element.textContent = value;
 }
 
-/* =========================================================
-   STATUS
-========================================================= */
-
 function renderProfileStatus(status) {
-  const element =
-    document.getElementById("profileStatus");
-
-  const activeMark =
-    document.getElementById("profileActiveMark");
-
+  const element = document.getElementById("profileStatus");
+  const activeMark = document.getElementById("profileActiveMark");
   if (!element) return;
 
-  const cleanStatus =
-    cleanProfileValue(status);
-
-  const normalizedStatus =
-    cleanStatus.toLowerCase();
+  const cleanStatus = cleanProfileValue(status);
+  const normalizedStatus = cleanStatus.toLowerCase();
 
   const isInactive =
     normalizedStatus === "inactive" ||
     normalizedStatus === "nonaktif" ||
     normalizedStatus === "non-active";
 
-  element.textContent =
-    cleanStatus || "-";
+  element.textContent = cleanStatus || "-";
+  element.classList.toggle("is-inactive", isInactive);
 
-  element.classList.toggle(
-    "is-inactive",
-    isInactive
-  );
-
-  if (activeMark) {
-    activeMark.hidden = isInactive;
-  }
+  if (activeMark) activeMark.hidden = isInactive;
 }
 
-/* =========================================================
-   MOTTO
-========================================================= */
-
 function renderProfileMotto(motto) {
-  const element =
-    document.getElementById("profileMotto");
-
+  const element = document.getElementById("profileMotto");
   if (!element) return;
 
-  const cleanMotto =
-    cleanProfileValue(motto);
+  const cleanMotto = cleanProfileValue(motto);
 
   if (!cleanMotto) {
     element.textContent = "";
@@ -300,27 +189,16 @@ function renderProfileMotto(motto) {
     return;
   }
 
-  element.textContent =
-    `“${cleanMotto}”`;
-
+  element.textContent = `“${cleanMotto}”`;
   element.hidden = false;
 }
 
-/* =========================================================
-   PROFILE PHOTO
-========================================================= */
-
 function renderProfilePhoto(name, photoUrl) {
-  const photo =
-    document.getElementById("profilePhoto");
-
-  const initial =
-    document.getElementById("profileInitial");
+  const photo = document.getElementById("profilePhoto");
+  const initial = document.getElementById("profileInitial");
 
   if (initial) {
-    initial.textContent =
-      getProfileInitials(name);
-
+    initial.textContent = getProfileInitials(name);
     initial.style.display = "";
   }
 
@@ -328,12 +206,10 @@ function renderProfilePhoto(name, photoUrl) {
 
   photo.onload = null;
   photo.onerror = null;
-
   photo.style.display = "none";
   photo.removeAttribute("src");
 
-  const url =
-    getProfilePhotoDisplayUrl(photoUrl);
+  const url = getProfilePhotoDisplayUrl(photoUrl);
 
   if (!url) return;
 
@@ -354,250 +230,127 @@ function renderProfilePhoto(name, photoUrl) {
     }
   };
 
-  photo.alt =
-    `Foto profil ${name || "User"}`;
-
+  photo.alt = `Foto profil ${name || "User"}`;
   photo.src = url;
 }
 
 function getProfilePhotoDisplayUrl(photoUrl) {
-  const url =
-    cleanProfileValue(photoUrl);
+  const url = cleanProfileValue(photoUrl);
 
   if (!url) return "";
 
-  const fileMatch =
-    url.match(
-      /\/file\/d\/([a-zA-Z0-9_-]+)/
-    );
+  // Google Drive URL:
+  // https://drive.google.com/file/d/FILE_ID/view
+  const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
 
   if (fileMatch && fileMatch[1]) {
-    return (
-      "https://drive.google.com/thumbnail?id=" +
-      fileMatch[1] +
-      "&sz=w1000"
-    );
+    return `https://drive.google.com/thumbnail?id=${fileMatch[1]}&sz=w1000`;
   }
 
-  const idMatch =
-    url.match(
-      /[?&]id=([a-zA-Z0-9_-]+)/
-    );
+  // Google Drive open?id=FILE_ID
+  const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
 
   if (idMatch && idMatch[1]) {
-    return (
-      "https://drive.google.com/thumbnail?id=" +
-      idMatch[1] +
-      "&sz=w1000"
-    );
+    return `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
   }
 
+  // Kalau bukan Google Drive, gunakan URL asli.
   return url;
 }
 
-function getProfileInitials(name) {
-  const words =
-    String(name || "User")
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-  if (!words.length) {
-    return "US";
-  }
-
-  if (words.length === 1) {
-    return words[0]
-      .substring(0, 2)
-      .toUpperCase();
-  }
-
-  return (
-    words[0][0] +
-    words[words.length - 1][0]
-  ).toUpperCase();
-}
-
-/* =========================================================
-   SIGNATURE RENDER
-========================================================= */
-
 function renderProfileSignature(signatureUrl) {
-  profileSavedSignatureUrl =
-    cleanProfileValue(signatureUrl);
-
+  profileSavedSignatureUrl = cleanProfileValue(signatureUrl);
   profilePendingSignatureDataUrl = "";
 
-  const image =
-    document.getElementById(
-      "profileSignatureImage"
-    );
-
-  const empty =
-    document.getElementById(
-      "profileSignatureEmpty"
-    );
-
-  const buttonText =
-    document.getElementById(
-      "profileSignatureButtonText"
-    );
-
-  const signatureButton =
-    document.getElementById(
-      "profileSignatureButton"
-    );
-
-  const pendingActions =
-    document.getElementById(
-      "profileSignaturePendingActions"
-    );
+  const image = document.getElementById("profileSignatureImage");
+  const empty = document.getElementById("profileSignatureEmpty");
+  const buttonText = document.getElementById("profileSignatureButtonText");
+  const signatureButton = document.getElementById("profileSignatureButton");
+  const pendingActions = document.getElementById("profileSignaturePendingActions");
 
   if (!image || !empty) return;
 
-  if (signatureButton) {
-    signatureButton.hidden = false;
-  }
-
-  if (pendingActions) {
-    pendingActions.hidden = true;
-  }
+  if (signatureButton) signatureButton.hidden = false;
+  if (pendingActions) pendingActions.hidden = true;
 
   image.onload = null;
   image.onerror = null;
-
   image.hidden = true;
   image.removeAttribute("src");
-
   empty.hidden = false;
 
-  const url =
-    getProfilePhotoDisplayUrl(signatureUrl);
+  const url = getProfilePhotoDisplayUrl(signatureUrl);
 
   if (!url) {
-    if (buttonText) {
-      buttonText.textContent =
-        "Create Signature";
-    }
-
+    if (buttonText) buttonText.textContent = "Create Signature";
     return;
   }
 
   image.onload = function () {
     image.hidden = false;
     empty.hidden = true;
-
-    if (buttonText) {
-      buttonText.textContent =
-        "Change Signature";
-    }
+    if (buttonText) buttonText.textContent = "Change Signature";
   };
 
   image.onerror = function () {
     image.hidden = true;
     image.removeAttribute("src");
-
     empty.hidden = false;
-
-    if (buttonText) {
-      buttonText.textContent =
-        "Create Signature";
-    }
+    if (buttonText) buttonText.textContent = "Create Signature";
   };
 
   image.src = url;
 }
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+function getProfileInitials(name) {
+  const words = String(name || "User").trim().split(/\s+/).filter(Boolean);
+
+  if (!words.length) return "US";
+
+  if (words.length === 1) {
+    return words[0].substring(0, 2).toUpperCase();
+  }
+
+  return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+}
 
 function initializeProfileNavigation() {
-  const backButton =
-    document.getElementById(
-      "profileBackButton"
-    );
-
-  const editButton =
-    document.getElementById(
-      "profileEditButton"
-    );
-
-  const cancelButton =
-    document.getElementById(
-      "profileCancelButton"
-    );
-
-  const saveButton =
-    document.getElementById(
-      "profileSaveButton"
-    );
-
-  const photoButton =
-    document.getElementById(
-      "profilePhotoAction"
-    );
-
-  const passwordButton =
-    document.getElementById(
-      "profilePasswordButton"
-    );
-
-  const signatureButton =
-    document.getElementById(
-      "profileSignatureButton"
-    );
+  const backButton = document.getElementById("profileBackButton");
+  const editButton = document.getElementById("profileEditButton");
+  const cancelButton = document.getElementById("profileCancelButton");
+  const saveButton = document.getElementById("profileSaveButton");
+  const photoButton = document.getElementById("profilePhotoAction");
+  const passwordButton = document.getElementById("profilePasswordButton");
+  const signatureButton = document.getElementById("profileSignatureButton");
 
   if (backButton) {
-    backButton.addEventListener(
-      "click",
-      function () {
-        window.location.href =
-          "settings.html";
-      }
-    );
+    backButton.addEventListener("click", function () {
+      window.location.href = "settings.html";
+    });
   }
 
   if (editButton) {
-    editButton.addEventListener(
-      "click",
-      enterProfileEditMode
-    );
+    editButton.addEventListener("click", enterProfileEditMode);
   }
 
   if (cancelButton) {
-    cancelButton.addEventListener(
-      "click",
-      cancelProfileEdit
-    );
+    cancelButton.addEventListener("click", cancelProfileEdit);
   }
 
   if (saveButton) {
-    saveButton.addEventListener(
-      "click",
-      previewProfileChanges
-    );
+    saveButton.addEventListener("click", previewProfileChanges);
   }
 
   if (photoButton) {
-    photoButton.addEventListener(
-      "click",
-      openProfilePhotoSheet
-    );
+    photoButton.addEventListener("click", openProfilePhotoSheet);
   }
 
   if (passwordButton) {
-    passwordButton.addEventListener(
-      "click",
-      openProfilePasswordModal
-    );
+    passwordButton.addEventListener("click", openProfilePasswordModal);
   }
 
   if (signatureButton) {
-    signatureButton.addEventListener(
-      "click",
-      openProfileSignatureSheet
-    );
+    signatureButton.addEventListener("click", openProfileSignatureSheet);
   }
 
   initializeProfileSignatureControls();
@@ -605,88 +358,46 @@ function initializeProfileNavigation() {
   initializeProfilePasswordControls();
 }
 
-/* =========================================================
-   PROFILE EDIT
-========================================================= */
-
 function enterProfileEditMode() {
   if (!currentProfileUser) return;
 
-  createProfileEditor(
-    "profileName",
-    "text",
-    currentProfileUser.nama
-  );
+  createProfileEditor("profileName", "text", currentProfileUser.nama);
+  createProfileEditor("profilePhone", "tel", currentProfileUser.noHp);
+  createProfileEditor("profileEmail", "email", currentProfileUser.email);
+  createProfileEditor("profileQuote", "textarea", currentProfileUser.kutipan);
 
-  createProfileEditor(
-    "profilePhone",
-    "tel",
-    currentProfileUser.noHp
-  );
+  const viewActions = document.getElementById("profileViewActions");
+  const editActions = document.getElementById("profileEditActions");
 
-  createProfileEditor(
-    "profileEmail",
-    "email",
-    currentProfileUser.email
-  );
-
-  createProfileEditor(
-    "profileQuote",
-    "text",
-    currentProfileUser.kutipan
-  );
-
-  const editButton =
-    document.getElementById(
-      "profileEditButton"
-    );
-
-  const actionButtons =
-    document.getElementById(
-      "profileEditActions"
-    );
-
-  if (editButton) {
-    editButton.hidden = true;
-  }
-
-  if (actionButtons) {
-    actionButtons.hidden = false;
-  }
+  if (viewActions) viewActions.hidden = true;
+  if (editActions) editActions.hidden = false;
 }
 
-function createProfileEditor(
-  elementId,
-  type,
-  value
-) {
-  const element =
-    document.getElementById(elementId);
+function createProfileEditor(id, type, value) {
+  const container = document.getElementById(id);
+  if (!container) return;
 
-  if (!element) return;
+  const field = container.closest(".profile-field");
+  if (field) field.classList.add("is-editing");
 
-  if (
-    element.querySelector(
-      ".profile-inline-editor"
-    )
-  ) {
-    return;
+  let input;
+
+  if (type === "textarea") {
+    input = document.createElement("textarea");
+  } else {
+    input = document.createElement("input");
+    input.type = type;
   }
 
-  const input =
-    document.createElement("input");
-
-  input.type = type;
+  input.className = "profile-edit-input";
   input.value = value || "";
+  input.dataset.profileEditor = id;
 
-  input.className =
-    "profile-inline-editor";
+  if (id === "profilePhone") {
+    input.inputMode = "tel";
+  }
 
-  input.dataset.originalValue =
-    value || "";
-
-  element.textContent = "";
-  element.appendChild(input);
+  container.replaceChildren(input);
 }
 
 function cancelProfileEdit() {
@@ -696,896 +407,899 @@ function cancelProfileEdit() {
   exitProfileEditMode();
 }
 
-function exitProfileEditMode() {
-  const editButton =
-    document.getElementById(
-      "profileEditButton"
-    );
+async function previewProfileChanges() {
+  if (!currentProfileUser) return;
 
-  const actionButtons =
-    document.getElementById(
-      "profileEditActions"
-    );
+  const nama = getProfileEditorValue("profileName");
+  const noHp = getProfileEditorValue("profilePhone");
+  const email = getProfileEditorValue("profileEmail");
+  const kutipan = getProfileEditorValue("profileQuote");
 
-  if (editButton) {
-    editButton.hidden = false;
+  if (!nama) {
+    alert("Name tidak boleh kosong.");
+    return;
   }
 
-  if (actionButtons) {
-    actionButtons.hidden = true;
+  const saveButton = document.getElementById("profileSaveButton");
+  const cancelButton = document.getElementById("profileCancelButton");
+
+  const originalSaveText = saveButton ? saveButton.textContent : "Save Changes";
+
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+  }
+
+  if (cancelButton) {
+    cancelButton.disabled = true;
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateMyProfile",
+        uniqId: currentProfileUser.uniqId,
+        nama: nama,
+        noHp: noHp,
+        photo: currentProfileUser.photo || "",
+        email: email,
+        kutipan: kutipan
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result || result.success !== true || !result.user) {
+      throw new Error(
+        result && result.message
+          ? result.message
+          : "Response update profile tidak valid."
+      );
+    }
+
+    currentProfileUser = normalizeProfileUser(result.user);
+
+    sessionStorage.setItem(
+      "hexaUser",
+      JSON.stringify(currentProfileUser)
+    );
+
+    renderProfile(currentProfileUser);
+    exitProfileEditMode();
+
+    alert("Profile berhasil diperbarui.");
+
+  } catch (error) {
+    console.error("HEXA Profile: gagal menyimpan profile.", error);
+
+    alert(
+      "Profile gagal diperbarui.\n\n" +
+      (error.message || "Terjadi kesalahan saat menghubungi HEXA API.")
+    );
+
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalSaveText;
+    }
+
+    if (cancelButton) {
+      cancelButton.disabled = false;
+    }
   }
 }
 
 function getProfileEditorValue(id) {
-  const element =
-    document.getElementById(id);
+  const container = document.getElementById(id);
+  const input = container?.querySelector("[data-profile-editor]");
+  return cleanProfileValue(input?.value);
+}
 
-  if (!element) return "";
+function exitProfileEditMode() {
+  document.querySelectorAll(".profile-field.is-editing").forEach(function (field) {
+    field.classList.remove("is-editing");
+  });
 
-  const input =
-    element.querySelector(
-      ".profile-inline-editor"
-    );
+  const viewActions = document.getElementById("profileViewActions");
+  const editActions = document.getElementById("profileEditActions");
 
-  if (!input) {
-    return cleanProfileValue(
-      element.textContent
-    );
+  if (viewActions) viewActions.hidden = false;
+  if (editActions) editActions.hidden = true;
+}
+
+function clearProfileSession() {
+  sessionStorage.removeItem("hexaLoggedIn");
+  sessionStorage.removeItem("hexaUser");
+}
+
+function redirectProfileToLogin() {
+  window.location.replace("index.html");
+}
+
+
+// =====================================================
+// CHANGE PROFILE PHOTO
+// =====================================================
+
+function initializeProfilePhotoControls() {
+  const cameraInput = document.getElementById("profileCameraInput");
+  const galleryInput = document.getElementById("profileGalleryInput");
+  const takePhotoButton = document.getElementById("profileTakePhotoButton");
+  const chooseGalleryButton = document.getElementById("profileChooseGalleryButton");
+  const cancelButton = document.getElementById("profilePhotoSheetCancel");
+  const backdrop = document.getElementById("profilePhotoSheetBackdrop");
+
+  if (takePhotoButton && cameraInput) {
+    takePhotoButton.addEventListener("click", function () {
+      closeProfilePhotoSheet();
+      cameraInput.value = "";
+      cameraInput.click();
+    });
   }
 
-  return cleanProfileValue(
-    input.value
-  );
+  if (chooseGalleryButton && galleryInput) {
+    chooseGalleryButton.addEventListener("click", function () {
+      closeProfilePhotoSheet();
+      galleryInput.value = "";
+      galleryInput.click();
+    });
+  }
+
+  if (cancelButton) {
+    cancelButton.addEventListener("click", closeProfilePhotoSheet);
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener("click", closeProfilePhotoSheet);
+  }
+
+  if (cameraInput) {
+    cameraInput.addEventListener("change", handleProfilePhotoSelection);
+  }
+
+  if (galleryInput) {
+    galleryInput.addEventListener("change", handleProfilePhotoSelection);
+  }
 }
 
-function previewProfileChanges() {
-  if (!currentProfileUser) return;
+function openProfilePhotoSheet() {
+  const sheet = document.getElementById("profilePhotoSheet");
+  const backdrop = document.getElementById("profilePhotoSheetBackdrop");
 
-  const updatedData = {
-    nama:
-      getProfileEditorValue(
-        "profileName"
-      ),
+  if (!sheet || !backdrop) return;
 
-    noHp:
-      getProfileEditorValue(
-        "profilePhone"
-      ),
+  backdrop.hidden = false;
+  sheet.setAttribute("aria-hidden", "false");
+  document.body.classList.add("profile-photo-sheet-open");
 
-    email:
-      getProfileEditorValue(
-        "profileEmail"
-      ),
-
-    kutipan:
-      getProfileEditorValue(
-        "profileQuote"
-      )
-  };
-
-  saveProfileChanges(updatedData);
+  requestAnimationFrame(function () {
+    sheet.classList.add("is-open");
+  });
 }
 
-async function saveProfileChanges(
-  updatedData
-) {
-  if (
-    !currentProfileUser ||
-    !currentProfileUser.uniqId
-  ) {
-    alert(
-      "Data user tidak ditemukan."
-    );
+function closeProfilePhotoSheet() {
+  const sheet = document.getElementById("profilePhotoSheet");
+  const backdrop = document.getElementById("profilePhotoSheetBackdrop");
+
+  if (!sheet || !backdrop) return;
+
+  sheet.classList.remove("is-open");
+  sheet.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("profile-photo-sheet-open");
+
+  setTimeout(function () {
+    if (!sheet.classList.contains("is-open")) {
+      backdrop.hidden = true;
+    }
+  }, 240);
+}
+
+async function handleProfilePhotoSelection(event) {
+  const input = event.currentTarget;
+  const file = input.files && input.files[0];
+
+  if (!file) return;
+
+  if (!file.type || !file.type.startsWith("image/")) {
+    alert("File yang dipilih harus berupa gambar.");
+    input.value = "";
     return;
   }
 
   try {
-    const response =
-      await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-        body: JSON.stringify({
-          action:
-            "updateMyProfile",
+    setProfilePhotoUploading(true);
 
-          uniqId:
-            currentProfileUser.uniqId,
+    const compressedPhoto = await compressProfilePhoto(file);
 
-          nama:
-            updatedData.nama,
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateProfilePhoto",
+        uniqId: currentProfileUser.uniqId,
+        photoBase64: compressedPhoto.base64,
+        photoMimeType: compressedPhoto.mimeType
+      })
+    });
 
-          noHp:
-            updatedData.noHp,
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
 
-          email:
-            updatedData.email,
+    const result = await response.json();
 
-          kutipan:
-            updatedData.kutipan
-        })
-      });
-
-    const result =
-      await response.json();
-
-    if (
-      !result ||
-      result.success !== true ||
-      !result.user
-    ) {
+    if (!result || result.success !== true || !result.user) {
       throw new Error(
-        result?.message ||
-        "Gagal menyimpan profile."
+        result && result.message
+          ? result.message
+          : "Response update Photo Profile tidak valid."
       );
     }
 
-    currentProfileUser =
-      normalizeProfileUser(
-        result.user
-      );
+    currentProfileUser = normalizeProfileUser(result.user);
 
     sessionStorage.setItem(
       "hexaUser",
-      JSON.stringify(
-        currentProfileUser
-      )
+      JSON.stringify(currentProfileUser)
     );
 
-    renderProfile(
-      currentProfileUser
-    );
+    renderProfile(currentProfileUser);
 
-    exitProfileEditMode();
-
-    alert(
-      "Profile berhasil diperbarui."
-    );
+    alert("Photo Profile berhasil diperbarui.");
 
   } catch (error) {
-    console.error(error);
+    console.error("HEXA Profile: gagal update Photo Profile.", error);
 
     alert(
-      "Profile gagal diperbarui.\n\n" +
-      (
-        error.message ||
-        "Terjadi kesalahan."
-      )
+      "Photo Profile gagal diperbarui.\\n\\n" +
+      (error.message || "Terjadi kesalahan saat menghubungi HEXA API.")
     );
+
+  } finally {
+    setProfilePhotoUploading(false);
+    input.value = "";
   }
 }
 
-/* =========================================================
-   SIGNATURE CONTROLS
-========================================================= */
+function compressProfilePhoto(file) {
+  return new Promise(function (resolve, reject) {
+    const reader = new FileReader();
 
-function initializeProfileSignatureControls() {
-  const closeSheetButton =
-    document.getElementById(
-      "profileSignatureSheetClose"
-    );
+    reader.onerror = function () {
+      reject(new Error("Gagal membaca file gambar."));
+    };
 
-  const sheetBackdrop =
-    document.getElementById(
-      "profileSignatureSheetBackdrop"
-    );
+    reader.onload = function () {
+      const image = new Image();
 
-  const drawButton =
-    document.getElementById(
-      "profileSignatureDraw"
-    );
+      image.onerror = function () {
+        reject(new Error("Gambar tidak dapat diproses."));
+      };
 
-  const scanButton =
-    document.getElementById(
-      "profileSignatureScan"
-    );
+      image.onload = function () {
+        const maxSize = 1200;
 
-  const drawCloseButton =
-    document.getElementById(
-      "profileDrawSignatureClose"
-    );
+        let width = image.naturalWidth || image.width;
+        let height = image.naturalHeight || image.height;
 
-  const drawBackdrop =
-    document.getElementById(
-      "profileDrawSignatureBackdrop"
-    );
+        if (!width || !height) {
+          reject(new Error("Ukuran gambar tidak valid."));
+          return;
+        }
 
-  const clearButton =
-    document.getElementById(
-      "profileSignatureClear"
-    );
+        if (width > maxSize || height > maxSize) {
+          const ratio = Math.min(maxSize / width, maxSize / height);
 
-  const useButton =
-    document.getElementById(
-      "profileSignatureUse"
-    );
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
 
-  const canvas =
-    document.getElementById(
-      "profileSignatureCanvas"
-    );
+        const canvas = document.createElement("canvas");
 
-  const cancelPreviewButton =
-    document.getElementById(
-      "profileSignatureCancelPreview"
-    );
+        canvas.width = width;
+        canvas.height = height;
 
-  const saveSignatureButton =
-    document.getElementById(
-      "profileSignatureSave"
-    );
+        const context = canvas.getContext("2d");
 
-  if (closeSheetButton) {
-    closeSheetButton.addEventListener(
-      "click",
-      closeProfileSignatureSheet
-    );
-  }
+        if (!context) {
+          reject(new Error("Browser tidak dapat memproses gambar."));
+          return;
+        }
 
-  if (sheetBackdrop) {
-    sheetBackdrop.addEventListener(
-      "click",
-      closeProfileSignatureSheet
-    );
-  }
+        context.drawImage(image, 0, 0, width, height);
 
-  if (drawButton) {
-    drawButton.addEventListener(
-      "click",
-      function () {
-        closeProfileSignatureSheet();
+        const mimeType = "image/jpeg";
+        const dataUrl = canvas.toDataURL(mimeType, 0.82);
 
-        setTimeout(
-          openProfileDrawSignature,
-          180
-        );
-      }
-    );
-  }
+        resolve({
+          base64: dataUrl.split(",")[1],
+          mimeType: mimeType
+        });
+      };
 
-  if (scanButton) {
-    scanButton.addEventListener(
-      "click",
-      openProfileSignatureScanChooser
-    );
-  }
+      image.src = reader.result;
+    };
 
-  if (drawCloseButton) {
-    drawCloseButton.addEventListener(
-      "click",
-      closeProfileDrawSignature
-    );
-  }
-
-  if (drawBackdrop) {
-    drawBackdrop.addEventListener(
-      "click",
-      closeProfileDrawSignature
-    );
-  }
-
-  if (clearButton) {
-    clearButton.addEventListener(
-      "click",
-      clearProfileSignatureCanvas
-    );
-  }
-
-  if (useButton) {
-    useButton.addEventListener(
-      "click",
-      useProfileDrawnSignaturePreview
-    );
-  }
-
-  if (canvas) {
-    canvas.addEventListener(
-      "pointerdown",
-      startProfileSignatureDrawing
-    );
-
-    canvas.addEventListener(
-      "pointermove",
-      moveProfileSignatureDrawing
-    );
-
-    canvas.addEventListener(
-      "pointerup",
-      endProfileSignatureDrawing
-    );
-
-    canvas.addEventListener(
-      "pointercancel",
-      endProfileSignatureDrawing
-    );
-
-    canvas.addEventListener(
-      "pointerleave",
-      endProfileSignatureDrawing
-    );
-  }
-
-  if (cancelPreviewButton) {
-    cancelPreviewButton.addEventListener(
-      "click",
-      cancelProfileSignaturePreview
-    );
-  }
-
-  if (saveSignatureButton) {
-    saveSignatureButton.addEventListener(
-      "click",
-      saveProfileSignature
-    );
-  }
-
-  ensureProfileSignatureScanInputs();
+    reader.readAsDataURL(file);
+  });
 }
 
-/* =========================================================
-   CAMERA / GALLERY INPUTS
-========================================================= */
+function setProfilePhotoUploading(isUploading) {
+  const overlay = document.getElementById("profilePhotoUploading");
+  const photoButton = document.getElementById("profilePhotoAction");
 
-function ensureProfileSignatureScanInputs() {
-  if (
-    document.getElementById(
-      "profileSignatureCameraInput"
-    )
-  ) {
+  if (overlay) {
+    overlay.hidden = !isUploading;
+  }
+
+  if (photoButton) {
+    photoButton.disabled = isUploading;
+  }
+}
+
+// =====================================================
+// CHANGE PASSWORD
+// =====================================================
+
+function initializeProfilePasswordControls() {
+  const form = document.getElementById("profilePasswordForm");
+  const closeButton = document.getElementById("profilePasswordClose");
+  const cancelButton = document.getElementById("profilePasswordCancel");
+  const backdrop = document.getElementById("profilePasswordBackdrop");
+  const toggles = document.querySelectorAll(".profile-password-toggle");
+
+  if (form) {
+    form.addEventListener("submit", submitProfilePasswordChange);
+  }
+
+  if (closeButton) closeButton.addEventListener("click", closeProfilePasswordModal);
+  if (cancelButton) cancelButton.addEventListener("click", closeProfilePasswordModal);
+  if (backdrop) backdrop.addEventListener("click", closeProfilePasswordModal);
+
+  toggles.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const targetId = button.dataset.passwordTarget;
+      const input = document.getElementById(targetId);
+      if (!input) return;
+
+      const show = input.type === "password";
+      input.type = show ? "text" : "password";
+      button.textContent = show ? "🙈" : "👁";
+      button.setAttribute("aria-label", show ? "Hide password" : "Show password");
+    });
+  });
+}
+
+function openProfilePasswordModal() {
+  const modal = document.getElementById("profilePasswordModal");
+  const backdrop = document.getElementById("profilePasswordBackdrop");
+  const currentInput = document.getElementById("profileCurrentPassword");
+
+  resetProfilePasswordForm();
+
+  if (backdrop) backdrop.hidden = false;
+
+  if (modal) {
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+  }
+
+  document.body.classList.add("profile-password-open");
+
+  window.setTimeout(function () {
+    if (currentInput) currentInput.focus();
+  }, 80);
+}
+
+function closeProfilePasswordModal() {
+  const modal = document.getElementById("profilePasswordModal");
+  const backdrop = document.getElementById("profilePasswordBackdrop");
+
+  if (modal) {
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  if (backdrop) backdrop.hidden = true;
+
+  document.body.classList.remove("profile-password-open");
+  resetProfilePasswordForm();
+}
+
+function resetProfilePasswordForm() {
+  const form = document.getElementById("profilePasswordForm");
+  const message = document.getElementById("profilePasswordMessage");
+  const toggles = document.querySelectorAll(".profile-password-toggle");
+
+  if (form) form.reset();
+
+  if (message) {
+    message.hidden = true;
+    message.textContent = "";
+    message.classList.remove("is-error", "is-success");
+  }
+
+  toggles.forEach(function (button) {
+    const targetId = button.dataset.passwordTarget;
+    const input = document.getElementById(targetId);
+    if (input) input.type = "password";
+    button.textContent = "👁";
+    button.setAttribute("aria-label", "Show password");
+  });
+}
+
+function showProfilePasswordMessage(message, type) {
+  const element = document.getElementById("profilePasswordMessage");
+  if (!element) return;
+
+  element.textContent = message || "";
+  element.classList.remove("is-error", "is-success");
+  element.classList.add(type === "success" ? "is-success" : "is-error");
+  element.hidden = false;
+}
+
+async function submitProfilePasswordChange(event) {
+  event.preventDefault();
+
+  if (!currentProfileUser || !currentProfileUser.uniqId) {
+    showProfilePasswordMessage("Session user tidak ditemukan.", "error");
     return;
   }
 
-  const cameraInput =
-    document.createElement("input");
-
-  cameraInput.type = "file";
-
-  cameraInput.id =
-    "profileSignatureCameraInput";
-
-  cameraInput.accept =
-    "image/*";
-
-  /*
-    Camera input sengaja menggunakan
-    capture environment.
-    Di HP ini akan meminta kamera belakang.
-  */
-  cameraInput.capture =
-    "environment";
-
-  cameraInput.hidden = true;
-
-  const galleryInput =
-    document.createElement("input");
-
-  galleryInput.type = "file";
-
-  galleryInput.id =
-    "profileSignatureGalleryInput";
-
-  galleryInput.accept =
-    "image/*";
-
-  /*
-    Gallery TIDAK memakai capture.
-    Ini penting supaya HP membuka
-    file/gallery picker.
-  */
-  galleryInput.hidden = true;
-
-  cameraInput.addEventListener(
-    "change",
-    handleProfileSignatureScanFile
+  const currentPassword = cleanProfileValue(
+    document.getElementById("profileCurrentPassword")?.value
   );
 
-  galleryInput.addEventListener(
-    "change",
-    handleProfileSignatureScanFile
+  const newPassword = cleanProfileValue(
+    document.getElementById("profileNewPassword")?.value
   );
 
-  document.body.appendChild(
-    cameraInput
+  const confirmPassword = cleanProfileValue(
+    document.getElementById("profileConfirmPassword")?.value
   );
 
-  document.body.appendChild(
-    galleryInput
-  );
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    showProfilePasswordMessage("Semua field password wajib diisi.", "error");
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    showProfilePasswordMessage("New Password minimal 6 karakter.", "error");
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    showProfilePasswordMessage("Confirm New Password tidak sesuai.", "error");
+    return;
+  }
+
+  if (currentPassword === newPassword) {
+    showProfilePasswordMessage(
+      "New Password harus berbeda dari Current Password.",
+      "error"
+    );
+    return;
+  }
+
+  const saveButton = document.getElementById("profilePasswordSave");
+  const originalText = saveButton ? saveButton.textContent : "";
+
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Updating...";
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "changePassword",
+        uniqId: currentProfileUser.uniqId,
+        currentPassword: currentPassword,
+        newPassword: newPassword
+      })
+    });
+
+    const result = await response.json();
+
+    if (!result || result.success !== true) {
+      showProfilePasswordMessage(
+        result?.message || "Gagal mengubah Password.",
+        "error"
+      );
+      return;
+    }
+
+    showProfilePasswordMessage(
+      result.message || "Password berhasil diubah.",
+      "success"
+    );
+
+    const currentInput = document.getElementById("profileCurrentPassword");
+    const newInput = document.getElementById("profileNewPassword");
+    const confirmInput = document.getElementById("profileConfirmPassword");
+
+    if (currentInput) currentInput.value = "";
+    if (newInput) newInput.value = "";
+    if (confirmInput) confirmInput.value = "";
+
+    window.setTimeout(function () {
+      closeProfilePasswordModal();
+      alert("Password berhasil diubah. Gunakan password baru pada login berikutnya.");
+    }, 700);
+
+  } catch (error) {
+    console.error("HEXA Profile: change password gagal.", error);
+    showProfilePasswordMessage(
+      "Tidak dapat terhubung ke HEXA API.",
+      "error"
+    );
+
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalText || "Change Password";
+    }
+  }
 }
 
-/* =========================================================
-   CAMERA / GALLERY SOURCE CHOOSER
-========================================================= */
+
+// =====================================================
+// DIGITAL SIGNATURE - STAGE 2
+// Method chooser + local Draw Signature preview only
+// =====================================================
+
+let profileSignatureDrawing = false;
+let profileSignatureHasInk = false;
+let profileSignatureLastPoint = null;
+let profilePendingSignatureDataUrl = "";
+let profileSavedSignatureUrl = "";
+
+function initializeProfileSignatureControls() {
+  const sheetBackdrop = document.getElementById("profileSignatureSheetBackdrop");
+  const sheetCancel = document.getElementById("profileSignatureSheetCancel");
+  const drawButton = document.getElementById("profileDrawSignatureButton");
+  const scanButton = document.getElementById("profileScanSignatureButton");
+
+  const drawBackdrop = document.getElementById("profileDrawSignatureBackdrop");
+  const drawClose = document.getElementById("profileDrawSignatureClose");
+  const clearButton = document.getElementById("profileSignatureClear");
+  const useButton = document.getElementById("profileSignatureUse");
+  const saveButton = document.getElementById("profileSignatureSave");
+  const cancelPreviewButton = document.getElementById("profileSignatureCancelPreview");
+  const canvas = document.getElementById("profileSignatureCanvas");
+
+  if (sheetBackdrop) {
+    sheetBackdrop.addEventListener("click", closeProfileSignatureSheet);
+  }
+
+  if (sheetCancel) {
+    sheetCancel.addEventListener("click", closeProfileSignatureSheet);
+  }
+
+  if (drawButton) {
+    drawButton.addEventListener("click", function () {
+      closeProfileSignatureSheet();
+      openProfileDrawSignature();
+    });
+  }
+
+  if (scanButton) {
+    scanButton.addEventListener("click", openProfileSignatureScanChooser);
+  }
+
+  ensureProfileSignatureScanInputs();
+
+  if (drawBackdrop) {
+    drawBackdrop.addEventListener("click", closeProfileDrawSignature);
+  }
+
+  if (drawClose) {
+    drawClose.addEventListener("click", closeProfileDrawSignature);
+  }
+
+  if (clearButton) {
+    clearButton.addEventListener("click", clearProfileSignatureCanvas);
+  }
+
+  if (useButton) {
+    useButton.addEventListener("click", useProfileDrawnSignaturePreview);
+  }
+
+  if (saveButton) {
+    saveButton.addEventListener("click", saveProfileSignature);
+  }
+
+  if (cancelPreviewButton) {
+    cancelPreviewButton.addEventListener("click", cancelProfileSignaturePreview);
+  }
+
+  if (!canvas) return;
+
+  canvas.addEventListener("pointerdown", startProfileSignatureDrawing);
+  canvas.addEventListener("pointermove", moveProfileSignatureDrawing);
+  canvas.addEventListener("pointerup", endProfileSignatureDrawing);
+  canvas.addEventListener("pointercancel", endProfileSignatureDrawing);
+  canvas.addEventListener("pointerleave", function (event) {
+    if (profileSignatureDrawing) {
+      endProfileSignatureDrawing(event);
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    const modal = document.getElementById("profileDrawSignatureModal");
+    if (modal && modal.classList.contains("is-open") && !profileSignatureHasInk) {
+      prepareProfileSignatureCanvas();
+    }
+  });
+}
+
+
+function ensureProfileSignatureScanInputs() {
+  if (document.getElementById("profileSignatureCameraInput")) return;
+
+  const cameraInput = document.createElement("input");
+  cameraInput.type = "file";
+  cameraInput.id = "profileSignatureCameraInput";
+  cameraInput.accept = "image/*";
+  cameraInput.capture = "environment";
+  cameraInput.hidden = true;
+
+  const galleryInput = document.createElement("input");
+  galleryInput.type = "file";
+  galleryInput.id = "profileSignatureGalleryInput";
+  galleryInput.accept = "image/*";
+  galleryInput.hidden = true;
+
+  cameraInput.addEventListener("change", handleProfileSignatureScanFile);
+  galleryInput.addEventListener("change", handleProfileSignatureScanFile);
+
+  document.body.appendChild(cameraInput);
+  document.body.appendChild(galleryInput);
+}
 
 function openProfileSignatureScanChooser() {
   closeProfileSignatureSheet();
 
-  ensureProfileSignatureSourceSheet();
-
-  const overlay =
-    document.getElementById(
-      "profileSignatureSourceOverlay"
-    );
-
-  if (!overlay) return;
-
-  overlay.hidden = false;
-
-  document.body.style.overflow =
-    "hidden";
+  window.setTimeout(function () {
+    showProfileSignatureSourceChooser();
+  }, 280);
 }
 
-function ensureProfileSignatureSourceSheet() {
-  if (
-    document.getElementById(
-      "profileSignatureSourceOverlay"
-    )
-  ) {
-    return;
-  }
+function showProfileSignatureSourceChooser() {
+  let overlay = document.getElementById("profileSignatureSourceChooser");
 
-  const overlay =
-    document.createElement("div");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "profileSignatureSourceChooser";
 
-  overlay.id =
-    "profileSignatureSourceOverlay";
+    overlay.innerHTML = `
+      <div class="signature-source-backdrop"></div>
 
-  overlay.hidden = true;
+      <div class="signature-source-sheet">
+        <div class="signature-source-handle"></div>
 
-  overlay.innerHTML = `
-    <div
-      class="profile-signature-source-backdrop"
-      data-signature-source-close>
-    </div>
-
-    <section
-      class="profile-signature-source-sheet"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Choose signature source">
-
-      <div
-        class="profile-signature-source-handle">
-      </div>
-
-      <div
-        class="profile-signature-source-heading">
-
-        <strong>
+        <div class="signature-source-title">
           Scan / Upload Signature
-        </strong>
+        </div>
 
-        <span>
+        <div class="signature-source-subtitle">
           Choose image source
-        </span>
+        </div>
 
+        <button type="button" id="signatureSourceCamera" class="signature-source-option">
+          <span class="signature-source-icon">📷</span>
+          <span class="signature-source-text">
+            <strong>Camera</strong>
+            <small>Take a new photo of your signature</small>
+          </span>
+        </button>
+
+        <button type="button" id="signatureSourceGallery" class="signature-source-option">
+          <span class="signature-source-icon">🖼️</span>
+          <span class="signature-source-text">
+            <strong>Gallery</strong>
+            <small>Choose an existing signature photo</small>
+          </span>
+        </button>
+
+        <button type="button" id="signatureSourceCancel" class="signature-source-cancel">
+          Cancel
+        </button>
       </div>
+    `;
 
-      <button
-        type="button"
-        class="profile-signature-source-option"
-        id="profileSignatureSourceCamera">
+    document.body.appendChild(overlay);
 
-        <span
-          class="profile-signature-source-icon">
-          📷
-        </span>
-
-        <span>
-          <strong>
-            Camera
-          </strong>
-
-          <small>
-            Take a new photo of your signature
-          </small>
-        </span>
-
-      </button>
-
-      <button
-        type="button"
-        class="profile-signature-source-option"
-        id="profileSignatureSourceGallery">
-
-        <span
-          class="profile-signature-source-icon">
-          🖼️
-        </span>
-
-        <span>
-          <strong>
-            Gallery
-          </strong>
-
-          <small>
-            Choose an existing signature photo
-          </small>
-        </span>
-
-      </button>
-
-      <button
-        type="button"
-        class="profile-signature-source-cancel"
-        data-signature-source-close>
-        Cancel
-      </button>
-
-    </section>
-  `;
-
-  document.body.appendChild(
-    overlay
-  );
-
-  /*
-    CSS bottom sheet dibuat dari JS
-    supaya HTML dan profile.css
-    yang sudah stabil tidak perlu disentuh.
-  */
-
-  if (
-    !document.getElementById(
-      "profileSignatureSourceStyle"
-    )
-  ) {
-    const style =
-      document.createElement("style");
-
-    style.id =
-      "profileSignatureSourceStyle";
-
+    const style = document.createElement("style");
+    style.id = "profileSignatureSourceChooserStyle";
     style.textContent = `
-      #profileSignatureSourceOverlay[hidden] {
-        display: none !important;
-      }
-
-      #profileSignatureSourceOverlay {
+      #profileSignatureSourceChooser {
         position: fixed;
         inset: 0;
-        z-index: 9999;
+        z-index: 99999;
         display: flex;
         align-items: flex-end;
         justify-content: center;
       }
 
-      .profile-signature-source-backdrop {
+      #profileSignatureSourceChooser[hidden] {
+        display: none !important;
+      }
+
+      .signature-source-backdrop {
         position: absolute;
         inset: 0;
-        background: rgba(
-          15,
-          23,
-          42,
-          0.42
-        );
+        background: rgba(15, 23, 42, 0.48);
         backdrop-filter: blur(2px);
         -webkit-backdrop-filter: blur(2px);
       }
 
-      .profile-signature-source-sheet {
+      .signature-source-sheet {
         position: relative;
-        width: min(
-          100%,
-          520px
-        );
-
-        box-sizing:
-          border-box;
-
-        padding:
-          10px
-          18px
-          calc(
-            18px +
-            env(
-              safe-area-inset-bottom
-            )
-          );
-
-        border-radius:
-          24px
-          24px
-          0
-          0;
-
-        background:
-          #ffffff;
-
-        box-shadow:
-          0
-          -14px
-          40px
-          rgba(
-            15,
-            23,
-            42,
-            0.16
-          );
-
-        animation:
-          profileSignatureSourceUp
-          0.22s
-          ease-out;
+        z-index: 2;
+        width: min(100%, 520px);
+        box-sizing: border-box;
+        padding: 10px 20px calc(20px + env(safe-area-inset-bottom));
+        background: #ffffff;
+        border-radius: 24px 24px 0 0;
+        box-shadow: 0 -12px 40px rgba(15, 23, 42, 0.18);
+        animation: signatureSourceSlideUp 0.22s ease-out;
       }
 
-      @keyframes
-      profileSignatureSourceUp {
-
-        from {
-          transform:
-            translateY(100%);
-        }
-
-        to {
-          transform:
-            translateY(0);
-        }
+      @keyframes signatureSourceSlideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
       }
 
-      .profile-signature-source-handle {
-        width: 42px;
-        height: 4px;
-
-        margin:
-          0
-          auto
-          16px;
-
-        border-radius:
-          999px;
-
-        background:
-          #d7dce2;
+      .signature-source-handle {
+        width: 44px;
+        height: 5px;
+        margin: 0 auto 18px;
+        border-radius: 999px;
+        background: #d5dbe2;
       }
 
-      .profile-signature-source-heading {
-        display: grid;
-        gap: 4px;
-        margin-bottom: 14px;
-      }
-
-      .profile-signature-source-heading strong {
-        font-size: 17px;
+      .signature-source-title {
+        font-size: 18px;
+        font-weight: 800;
         color: #172033;
       }
 
-      .profile-signature-source-heading span {
+      .signature-source-subtitle {
+        margin-top: 4px;
+        margin-bottom: 15px;
         font-size: 13px;
-        color: #7b8494;
+        color: #7a8492;
       }
 
-      .profile-signature-source-option {
+      .signature-source-option {
         width: 100%;
-
         display: flex;
         align-items: center;
-
         gap: 13px;
-
-        margin:
-          9px
-          0;
-
-        padding:
-          14px;
-
-        border:
-          1px
-          solid
-          #e4e8ee;
-
-        border-radius:
-          15px;
-
-        background:
-          #ffffff;
-
-        color:
-          #172033;
-
-        text-align:
-          left;
-
-        cursor:
-          pointer;
+        margin: 9px 0;
+        padding: 14px;
+        border: 1px solid #e0e6ed;
+        border-radius: 15px;
+        background: #ffffff;
+        color: #172033;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
       }
 
-      .profile-signature-source-option:active {
-        transform:
-          scale(0.99);
-
-        background:
-          #f7f8fa;
+      .signature-source-option:active {
+        transform: scale(0.99);
+        background: #f7f9fb;
       }
 
-      .profile-signature-source-icon {
-        width: 42px;
-        height: 42px;
-
-        flex:
-          0
-          0
-          42px;
-
+      .signature-source-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
         display: grid;
         place-items: center;
-
-        border-radius:
-          12px;
-
-        background:
-          #f2f4f7;
-
-        font-size:
-          20px;
+        border-radius: 13px;
+        background: #eef6fd;
+        font-size: 21px;
       }
 
-      .profile-signature-source-option
-      > span:last-child {
+      .signature-source-text {
         display: grid;
         gap: 3px;
+        min-width: 0;
       }
 
-      .profile-signature-source-option strong {
+      .signature-source-text strong {
         font-size: 14px;
       }
 
-      .profile-signature-source-option small {
-        color: #7b8494;
+      .signature-source-text small {
         font-size: 12px;
+        color: #7a8492;
       }
 
-      .profile-signature-source-cancel {
+      .signature-source-cancel {
         width: 100%;
-
-        margin-top:
-          10px;
-
-        padding:
-          13px;
-
-        border:
-          0;
-
-        border-radius:
-          14px;
-
-        background:
-          #f2f4f7;
-
-        color:
-          #394150;
-
-        font-weight:
-          700;
-
-        cursor:
-          pointer;
+        margin-top: 10px;
+        padding: 13px;
+        border: 0;
+        border-radius: 14px;
+        background: #f0f2f4;
+        color: #59616d;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
       }
     `;
 
-    document.head.appendChild(
-      style
-    );
+    document.head.appendChild(style);
+
+    const cameraButton = document.getElementById("signatureSourceCamera");
+    const galleryButton = document.getElementById("signatureSourceGallery");
+    const cancelButton = document.getElementById("signatureSourceCancel");
+    const backdrop = overlay.querySelector(".signature-source-backdrop");
+
+    cameraButton.addEventListener("click", function () {
+      closeProfileSignatureSourceChooser();
+
+      const input = document.getElementById("profileSignatureCameraInput");
+      if (!input) return;
+
+      input.value = "";
+      input.click();
+    });
+
+    galleryButton.addEventListener("click", function () {
+      closeProfileSignatureSourceChooser();
+
+      const input = document.getElementById("profileSignatureGalleryInput");
+      if (!input) return;
+
+      input.value = "";
+      input.click();
+    });
+
+    cancelButton.addEventListener("click", closeProfileSignatureSourceChooser);
+    backdrop.addEventListener("click", closeProfileSignatureSourceChooser);
   }
 
-  const cameraButton =
-    document.getElementById(
-      "profileSignatureSourceCamera"
-    );
-
-  const galleryButton =
-    document.getElementById(
-      "profileSignatureSourceGallery"
-    );
-
-  if (cameraButton) {
-    cameraButton.addEventListener(
-      "click",
-      function () {
-        closeProfileSignatureSourceSheet();
-
-        const input =
-          document.getElementById(
-            "profileSignatureCameraInput"
-          );
-
-        if (!input) return;
-
-        input.value = "";
-        input.click();
-      }
-    );
-  }
-
-  if (galleryButton) {
-    galleryButton.addEventListener(
-      "click",
-      function () {
-        closeProfileSignatureSourceSheet();
-
-        const input =
-          document.getElementById(
-            "profileSignatureGalleryInput"
-          );
-
-        if (!input) return;
-
-        input.value = "";
-        input.click();
-      }
-    );
-  }
-
-  overlay
-    .querySelectorAll(
-      "[data-signature-source-close]"
-    )
-    .forEach(
-      function (element) {
-        element.addEventListener(
-          "click",
-          closeProfileSignatureSourceSheet
-        );
-      }
-    );
+  overlay.hidden = false;
 }
 
-function closeProfileSignatureSourceSheet() {
-  const overlay =
-    document.getElementById(
-      "profileSignatureSourceOverlay"
-    );
-
-  if (overlay) {
-    overlay.hidden = true;
-  }
-
-  document.body.style.overflow =
-    "";
+function closeProfileSignatureSourceChooser() {
+  const overlay = document.getElementById("profileSignatureSourceChooser");
+  if (overlay) overlay.hidden = true;
 }
 
-/* =========================================================
-   READ CAMERA / GALLERY FILE
-========================================================= */
-
-async function handleProfileSignatureScanFile(
-  event
-) {
-  const file =
-    event.target.files &&
-    event.target.files[0];
-
+async function handleProfileSignatureScanFile(event) {
+  const file = event.target.files && event.target.files[0];
   if (!file) return;
 
-  if (
-    !file.type ||
-    !file.type.startsWith("image/")
-  ) {
-    alert(
-      "File harus berupa gambar."
-    );
-
+  if (!file.type || !file.type.startsWith("image/")) {
+    alert("File harus berupa gambar.");
     return;
   }
 
   try {
-    const dataUrl =
-      await readProfileSignatureFile(
-        file
-      );
+    const dataUrl = await readProfileSignatureFile(file);
+    const processedDataUrl = await processProfileSignatureImage(dataUrl);
 
-    const processedDataUrl =
-      await processProfileSignatureImage(
-        dataUrl
-      );
-
-    showProfileSignatureProcessedPreview(
-      processedDataUrl
-    );
+    showProfileSignatureProcessedPreview(processedDataUrl);
 
   } catch (error) {
     console.error(
@@ -1594,264 +1308,118 @@ async function handleProfileSignatureScanFile(
     );
 
     alert(
-      "Gambar signature gagal diproses.\n\n" +
-      (
-        error.message ||
-        "Silakan coba foto atau gambar lain."
-      )
+      "Gambar signature gagal diproses.\\n\\n" +
+      (error.message || "Silakan coba foto atau gambar lain.")
     );
   }
 }
 
 function readProfileSignatureFile(file) {
-  return new Promise(
-    function (resolve, reject) {
-      const reader =
-        new FileReader();
+  return new Promise(function (resolve, reject) {
+    const reader = new FileReader();
 
-      reader.onload =
-        function () {
-          resolve(
-            reader.result
-          );
-        };
+    reader.onload = function () {
+      resolve(reader.result);
+    };
 
-      reader.onerror =
-        function () {
-          reject(
-            new Error(
-              "Gagal membaca file gambar."
-            )
-          );
-        };
+    reader.onerror = function () {
+      reject(new Error("Gagal membaca file gambar."));
+    };
 
-      reader.readAsDataURL(
-        file
-      );
-    }
-  );
+    reader.readAsDataURL(file);
+  });
 }
 
-function loadProfileSignatureImage(
-  dataUrl
-) {
-  return new Promise(
-    function (resolve, reject) {
-      const image =
-        new Image();
+function loadProfileSignatureImage(dataUrl) {
+  return new Promise(function (resolve, reject) {
+    const image = new Image();
 
-      image.onload =
-        function () {
-          resolve(image);
-        };
+    image.onload = function () {
+      resolve(image);
+    };
 
-      image.onerror =
-        function () {
-          reject(
-            new Error(
-              "Gambar tidak dapat dibuka."
-            )
-          );
-        };
+    image.onerror = function () {
+      reject(new Error("Gambar tidak dapat dibuka."));
+    };
 
-      image.src =
-        dataUrl;
-    }
-  );
+    image.src = dataUrl;
+  });
 }
 
-/* =========================================================
-   SIGNATURE IMAGE PROCESSING
-========================================================= */
-
-async function processProfileSignatureImage(
-  dataUrl
-) {
-  const image =
-    await loadProfileSignatureImage(
-      dataUrl
-    );
+async function processProfileSignatureImage(dataUrl) {
+  const image = await loadProfileSignatureImage(dataUrl);
 
   const maxWidth = 1400;
   const maxHeight = 900;
-
-  const scale =
-    Math.min(
-      1,
-      maxWidth /
-        image.naturalWidth,
-      maxHeight /
-        image.naturalHeight
-    );
-
-  const width =
-    Math.max(
-      1,
-      Math.round(
-        image.naturalWidth *
-        scale
-      )
-    );
-
-  const height =
-    Math.max(
-      1,
-      Math.round(
-        image.naturalHeight *
-        scale
-      )
-    );
-
-  const workCanvas =
-    document.createElement(
-      "canvas"
-    );
-
-  workCanvas.width =
-    width;
-
-  workCanvas.height =
-    height;
-
-  const context =
-    workCanvas.getContext(
-      "2d",
-      {
-        willReadFrequently:
-          true
-      }
-    );
-
-  context.drawImage(
-    image,
-    0,
-    0,
-    width,
-    height
+  const scale = Math.min(
+    1,
+    maxWidth / image.naturalWidth,
+    maxHeight / image.naturalHeight
   );
 
-  const imageData =
-    context.getImageData(
-      0,
-      0,
-      width,
-      height
-    );
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
 
-  const pixels =
-    imageData.data;
+  const workCanvas = document.createElement("canvas");
+  workCanvas.width = width;
+  workCanvas.height = height;
 
-  /*
-    Estimasi tingkat terang
-    background kertas.
-  */
+  const context = workCanvas.getContext("2d", {
+    willReadFrequently: true
+  });
 
+  context.drawImage(image, 0, 0, width, height);
+
+  const imageData = context.getImageData(0, 0, width, height);
+  const pixels = imageData.data;
+
+  // Estimate paper brightness from the image itself.
+  // This keeps processing usable across white/off-white paper and lighting.
   let luminanceTotal = 0;
   let luminanceSamples = 0;
+  const sampleStep = Math.max(1, Math.floor((width * height) / 30000));
 
-  const sampleStep =
-    Math.max(
-      1,
-      Math.floor(
-        (width * height) /
-        30000
-      )
-    );
-
-  for (
-    let i = 0;
-    i < pixels.length;
-    i += 4 * sampleStep
-  ) {
+  for (let i = 0; i < pixels.length; i += 4 * sampleStep) {
     const r = pixels[i];
     const g = pixels[i + 1];
     const b = pixels[i + 2];
-
-    luminanceTotal +=
-      (0.299 * r) +
-      (0.587 * g) +
-      (0.114 * b);
-
+    luminanceTotal += (0.299 * r) + (0.587 * g) + (0.114 * b);
     luminanceSamples++;
   }
 
   const averageLum =
     luminanceSamples > 0
-      ? luminanceTotal /
-        luminanceSamples
+      ? luminanceTotal / luminanceSamples
       : 230;
 
-  /*
-    Adaptive threshold.
-    Background terang dihapus,
-    tinta gelap dipertahankan.
-  */
+  // Adaptive threshold: enough to remove paper while preserving dark ink.
+  const threshold = Math.max(135, Math.min(215, averageLum - 28));
 
-  const threshold =
-    Math.max(
-      135,
-      Math.min(
-        215,
-        averageLum - 28
-      )
-    );
-
-  for (
-    let i = 0;
-    i < pixels.length;
-    i += 4
-  ) {
+  for (let i = 0; i < pixels.length; i += 4) {
     const r = pixels[i];
     const g = pixels[i + 1];
     const b = pixels[i + 2];
 
-    const gray =
-      (0.299 * r) +
-      (0.587 * g) +
-      (0.114 * b);
+    const gray = (0.299 * r) + (0.587 * g) + (0.114 * b);
 
     if (gray >= threshold) {
       pixels[i] = 0;
       pixels[i + 1] = 0;
       pixels[i + 2] = 0;
       pixels[i + 3] = 0;
-
       continue;
     }
 
-    const darkness =
-      Math.max(
-        0,
-        Math.min(
-          1,
-          (
-            threshold -
-            gray
-          ) /
-          Math.max(
-            1,
-            threshold - 45
-          )
-        )
-      );
+    // Darker pixels become more opaque; light paper/noise fades out.
+    const darkness = Math.max(
+      0,
+      Math.min(1, (threshold - gray) / Math.max(1, threshold - 45))
+    );
 
-    let alpha =
-      Math.round(
-        255 *
-        Math.pow(
-          darkness,
-          0.72
-        )
-      );
+    let alpha = Math.round(255 * Math.pow(darkness, 0.72));
 
-    /*
-      Buang noise kamera
-      yang sangat tipis.
-    */
-
-    if (alpha < 34) {
-      alpha = 0;
-    }
+    // Remove very faint camera noise.
+    if (alpha < 34) alpha = 0;
 
     pixels[i] = 17;
     pixels[i + 1] = 17;
@@ -1859,20 +1427,10 @@ async function processProfileSignatureImage(
     pixels[i + 3] = alpha;
   }
 
-  context.putImageData(
-    imageData,
-    0,
-    0
-  );
+  context.putImageData(imageData, 0, 0);
 
-  /*
-    Cari area tinta.
-  */
-
-  const bounds =
-    getProfileSignatureInkBounds(
-      workCanvas
-    );
+  // Crop transparent margins around the detected signature.
+  const bounds = getProfileSignatureInkBounds(workCanvas);
 
   if (!bounds) {
     throw new Error(
@@ -1880,172 +1438,67 @@ async function processProfileSignatureImage(
     );
   }
 
-  /*
-    Crop margin kosong.
-  */
+  const padding = Math.max(
+    18,
+    Math.round(Math.min(width, height) * 0.035)
+  );
 
-  const padding =
-    Math.max(
-      18,
-      Math.round(
-        Math.min(
-          width,
-          height
-        ) *
-        0.035
-      )
-    );
+  const sx = Math.max(0, bounds.left - padding);
+  const sy = Math.max(0, bounds.top - padding);
+  const ex = Math.min(width, bounds.right + padding);
+  const ey = Math.min(height, bounds.bottom + padding);
 
-  const sx =
-    Math.max(
-      0,
-      bounds.left -
-      padding
-    );
+  const cropWidth = Math.max(1, ex - sx);
+  const cropHeight = Math.max(1, ey - sy);
 
-  const sy =
-    Math.max(
-      0,
-      bounds.top -
-      padding
-    );
+  const outputCanvas = document.createElement("canvas");
+  outputCanvas.width = cropWidth;
+  outputCanvas.height = cropHeight;
 
-  const ex =
-    Math.min(
-      width,
-      bounds.right +
-      padding
-    );
-
-  const ey =
-    Math.min(
-      height,
-      bounds.bottom +
-      padding
-    );
-
-  const cropWidth =
-    Math.max(
-      1,
-      ex - sx
-    );
-
-  const cropHeight =
-    Math.max(
-      1,
-      ey - sy
-    );
-
-  const outputCanvas =
-    document.createElement(
-      "canvas"
-    );
-
-  outputCanvas.width =
-    cropWidth;
-
-  outputCanvas.height =
-    cropHeight;
-
-  const outputContext =
-    outputCanvas.getContext(
-      "2d"
-    );
-
+  const outputContext = outputCanvas.getContext("2d");
   outputContext.drawImage(
     workCanvas,
-
     sx,
     sy,
     cropWidth,
     cropHeight,
-
     0,
     0,
     cropWidth,
     cropHeight
   );
 
-  return outputCanvas.toDataURL(
-    "image/png"
-  );
+  return outputCanvas.toDataURL("image/png");
 }
 
-function getProfileSignatureInkBounds(
-  canvas
-) {
-  const context =
-    canvas.getContext(
-      "2d",
-      {
-        willReadFrequently:
-          true
-      }
-    );
+function getProfileSignatureInkBounds(canvas) {
+  const context = canvas.getContext("2d", {
+    willReadFrequently: true
+  });
 
-  const width =
-    canvas.width;
-
-  const height =
-    canvas.height;
-
-  const data =
-    context.getImageData(
-      0,
-      0,
-      width,
-      height
-    ).data;
+  const width = canvas.width;
+  const height = canvas.height;
+  const data = context.getImageData(0, 0, width, height).data;
 
   let left = width;
   let top = height;
   let right = -1;
   let bottom = -1;
 
-  for (
-    let y = 0;
-    y < height;
-    y++
-  ) {
-    for (
-      let x = 0;
-      x < width;
-      x++
-    ) {
-      const alpha =
-        data[
-          (
-            (y * width) +
-            x
-          ) *
-          4 +
-          3
-        ];
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const alpha = data[((y * width) + x) * 4 + 3];
 
       if (alpha > 45) {
-        if (x < left) {
-          left = x;
-        }
-
-        if (x > right) {
-          right = x;
-        }
-
-        if (y < top) {
-          top = y;
-        }
-
-        if (y > bottom) {
-          bottom = y;
-        }
+        if (x < left) left = x;
+        if (x > right) right = x;
+        if (y < top) top = y;
+        if (y > bottom) bottom = y;
       }
     }
   }
 
-  if (
-    right < left ||
-    bottom < top
-  ) {
+  if (right < left || bottom < top) {
     return null;
   }
 
@@ -2057,365 +1510,154 @@ function getProfileSignatureInkBounds(
   };
 }
 
-/* =========================================================
-   SCAN PREVIEW
-========================================================= */
+function showProfileSignatureProcessedPreview(dataUrl) {
+  const image = document.getElementById("profileSignatureImage");
+  const empty = document.getElementById("profileSignatureEmpty");
+  const signatureButton = document.getElementById("profileSignatureButton");
+  const pendingActions = document.getElementById(
+    "profileSignaturePendingActions"
+  );
 
-function showProfileSignatureProcessedPreview(
-  dataUrl
-) {
-  const image =
-    document.getElementById(
-      "profileSignatureImage"
-    );
+  if (!image || !empty) return;
 
-  const empty =
-    document.getElementById(
-      "profileSignatureEmpty"
-    );
+  profilePendingSignatureDataUrl = dataUrl;
 
-  const signatureButton =
-    document.getElementById(
-      "profileSignatureButton"
-    );
+  image.onload = function () {
+    image.hidden = false;
+    empty.hidden = true;
+  };
 
-  const pendingActions =
-    document.getElementById(
-      "profileSignaturePendingActions"
-    );
+  image.onerror = function () {
+    alert("Preview signature tidak dapat ditampilkan.");
+  };
 
-  if (!image || !empty) {
-    return;
-  }
+  image.src = profilePendingSignatureDataUrl;
 
-  profilePendingSignatureDataUrl =
-    dataUrl;
-
-  image.onload =
-    function () {
-      image.hidden = false;
-      empty.hidden = true;
-    };
-
-  image.onerror =
-    function () {
-      alert(
-        "Preview signature tidak dapat ditampilkan."
-      );
-    };
-
-  image.src =
-    profilePendingSignatureDataUrl;
-
-  if (signatureButton) {
-    signatureButton.hidden = true;
-  }
-
-  if (pendingActions) {
-    pendingActions.hidden = false;
-  }
+  if (signatureButton) signatureButton.hidden = true;
+  if (pendingActions) pendingActions.hidden = false;
 }
 
-/* =========================================================
-   SIGNATURE MAIN SHEET
-========================================================= */
-
 function openProfileSignatureSheet() {
-  const sheet =
-    document.getElementById(
-      "profileSignatureSheet"
-    );
+  const sheet = document.getElementById("profileSignatureSheet");
+  const backdrop = document.getElementById("profileSignatureSheetBackdrop");
 
-  const backdrop =
-    document.getElementById(
-      "profileSignatureSheetBackdrop"
-    );
-
-  if (!sheet || !backdrop) {
-    return;
-  }
+  if (!sheet || !backdrop) return;
 
   backdrop.hidden = false;
+  sheet.setAttribute("aria-hidden", "false");
+  document.body.classList.add("profile-signature-overlay-open");
 
-  sheet.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.classList.add(
-    "profile-signature-overlay-open"
-  );
-
-  requestAnimationFrame(
-    function () {
-      sheet.classList.add(
-        "is-open"
-      );
-    }
-  );
+  requestAnimationFrame(function () {
+    sheet.classList.add("is-open");
+  });
 }
 
 function closeProfileSignatureSheet() {
-  const sheet =
-    document.getElementById(
-      "profileSignatureSheet"
-    );
+  const sheet = document.getElementById("profileSignatureSheet");
+  const backdrop = document.getElementById("profileSignatureSheetBackdrop");
 
-  const backdrop =
-    document.getElementById(
-      "profileSignatureSheetBackdrop"
-    );
+  if (!sheet || !backdrop) return;
 
-  if (!sheet || !backdrop) {
-    return;
-  }
+  sheet.classList.remove("is-open");
+  sheet.setAttribute("aria-hidden", "true");
 
-  sheet.classList.remove(
-    "is-open"
-  );
+  setTimeout(function () {
+    if (!sheet.classList.contains("is-open")) {
+      backdrop.hidden = true;
 
-  sheet.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  setTimeout(
-    function () {
-      if (
-        !sheet.classList.contains(
-          "is-open"
-        )
-      ) {
-        backdrop.hidden = true;
-
-        const drawModal =
-          document.getElementById(
-            "profileDrawSignatureModal"
-          );
-
-        if (
-          !drawModal ||
-          !drawModal.classList.contains(
-            "is-open"
-          )
-        ) {
-          document.body.classList.remove(
-            "profile-signature-overlay-open"
-          );
-        }
+      const drawModal = document.getElementById("profileDrawSignatureModal");
+      if (!drawModal || !drawModal.classList.contains("is-open")) {
+        document.body.classList.remove("profile-signature-overlay-open");
       }
-    },
-    240
-  );
+    }
+  }, 240);
 }
 
-/* =========================================================
-   DRAW SIGNATURE
-========================================================= */
-
 function openProfileDrawSignature() {
-  const modal =
-    document.getElementById(
-      "profileDrawSignatureModal"
-    );
+  const modal = document.getElementById("profileDrawSignatureModal");
+  const backdrop = document.getElementById("profileDrawSignatureBackdrop");
 
-  const backdrop =
-    document.getElementById(
-      "profileDrawSignatureBackdrop"
-    );
-
-  if (!modal || !backdrop) {
-    return;
-  }
+  if (!modal || !backdrop) return;
 
   backdrop.hidden = false;
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("profile-signature-overlay-open");
 
-  modal.setAttribute(
-    "aria-hidden",
-    "false"
-  );
+  requestAnimationFrame(function () {
+    modal.classList.add("is-open");
 
-  document.body.classList.add(
-    "profile-signature-overlay-open"
-  );
-
-  requestAnimationFrame(
-    function () {
-      modal.classList.add(
-        "is-open"
-      );
-
-      requestAnimationFrame(
-        function () {
-          prepareProfileSignatureCanvas();
-        }
-      );
-    }
-  );
+    requestAnimationFrame(function () {
+      prepareProfileSignatureCanvas();
+    });
+  });
 }
 
 function closeProfileDrawSignature() {
-  const modal =
-    document.getElementById(
-      "profileDrawSignatureModal"
-    );
+  const modal = document.getElementById("profileDrawSignatureModal");
+  const backdrop = document.getElementById("profileDrawSignatureBackdrop");
 
-  const backdrop =
-    document.getElementById(
-      "profileDrawSignatureBackdrop"
-    );
+  if (!modal || !backdrop) return;
 
-  if (!modal || !backdrop) {
-    return;
-  }
-
-  modal.classList.remove(
-    "is-open"
-  );
-
-  modal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden", "true");
   backdrop.hidden = true;
-
-  document.body.classList.remove(
-    "profile-signature-overlay-open"
-  );
+  document.body.classList.remove("profile-signature-overlay-open");
 
   profileSignatureDrawing = false;
   profileSignatureLastPoint = null;
 }
 
 function prepareProfileSignatureCanvas() {
-  const canvas =
-    document.getElementById(
-      "profileSignatureCanvas"
-    );
+  const canvas = document.getElementById("profileSignatureCanvas");
+  const wrap = canvas?.parentElement;
 
-  const wrap =
-    canvas?.parentElement;
+  if (!canvas || !wrap) return;
 
-  if (!canvas || !wrap) {
-    return;
-  }
+  const rect = wrap.getBoundingClientRect();
+  const dpr = Math.max(window.devicePixelRatio || 1, 1);
 
-  const rect =
-    wrap.getBoundingClientRect();
+  canvas.width = Math.max(1, Math.round(rect.width * dpr));
+  canvas.height = Math.max(1, Math.round(rect.height * dpr));
 
-  const dpr =
-    Math.max(
-      window.devicePixelRatio ||
-      1,
-      1
-    );
+  const context = canvas.getContext("2d");
+  context.setTransform(dpr, 0, 0, dpr, 0, 0);
+  context.lineCap = "round";
+  context.lineJoin = "round";
+  context.strokeStyle = "#111111";
+  context.lineWidth = 2.4;
 
-  canvas.width =
-    Math.max(
-      1,
-      Math.round(
-        rect.width *
-        dpr
-      )
-    );
-
-  canvas.height =
-    Math.max(
-      1,
-      Math.round(
-        rect.height *
-        dpr
-      )
-    );
-
-  const context =
-    canvas.getContext("2d");
-
-  context.setTransform(
-    dpr,
-    0,
-    0,
-    dpr,
-    0,
-    0
-  );
-
-  context.lineCap =
-    "round";
-
-  context.lineJoin =
-    "round";
-
-  context.strokeStyle =
-    "#111111";
-
-  context.lineWidth =
-    2.4;
-
-  profileSignatureHasInk =
-    false;
-
-  profileSignatureDrawing =
-    false;
-
-  profileSignatureLastPoint =
-    null;
-
+  profileSignatureHasInk = false;
+  profileSignatureDrawing = false;
+  profileSignatureLastPoint = null;
   updateProfileSignatureUseButton();
 }
 
-function getProfileSignaturePoint(
-  event
-) {
-  const canvas =
-    document.getElementById(
-      "profileSignatureCanvas"
-    );
-
-  const rect =
-    canvas.getBoundingClientRect();
+function getProfileSignaturePoint(event) {
+  const canvas = document.getElementById("profileSignatureCanvas");
+  const rect = canvas.getBoundingClientRect();
 
   return {
-    x:
-      event.clientX -
-      rect.left,
-
-    y:
-      event.clientY -
-      rect.top
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
   };
 }
 
-function startProfileSignatureDrawing(
-  event
-) {
-  const canvas =
-    event.currentTarget;
+function startProfileSignatureDrawing(event) {
+  const canvas = event.currentTarget;
 
   event.preventDefault();
 
   try {
-    canvas.setPointerCapture(
-      event.pointerId
-    );
+    canvas.setPointerCapture(event.pointerId);
   } catch (error) {
-    // optional
+    // Pointer capture is optional.
   }
 
-  profileSignatureDrawing =
-    true;
+  profileSignatureDrawing = true;
+  profileSignatureLastPoint = getProfileSignaturePoint(event);
 
-  profileSignatureLastPoint =
-    getProfileSignaturePoint(
-      event
-    );
-
-  const context =
-    canvas.getContext("2d");
-
+  const context = canvas.getContext("2d");
   context.beginPath();
-
   context.arc(
     profileSignatureLastPoint.x,
     profileSignatureLastPoint.y,
@@ -2423,263 +1665,125 @@ function startProfileSignatureDrawing(
     0,
     Math.PI * 2
   );
-
-  context.fillStyle =
-    "#111111";
-
+  context.fillStyle = "#111111";
   context.fill();
 
-  profileSignatureHasInk =
-    true;
-
+  profileSignatureHasInk = true;
   updateProfileSignatureUseButton();
 }
 
-function moveProfileSignatureDrawing(
-  event
-) {
-  if (
-    !profileSignatureDrawing ||
-    !profileSignatureLastPoint
-  ) {
-    return;
-  }
+function moveProfileSignatureDrawing(event) {
+  if (!profileSignatureDrawing || !profileSignatureLastPoint) return;
 
   event.preventDefault();
 
-  const canvas =
-    event.currentTarget;
-
-  const point =
-    getProfileSignaturePoint(
-      event
-    );
-
-  const context =
-    canvas.getContext("2d");
+  const canvas = event.currentTarget;
+  const point = getProfileSignaturePoint(event);
+  const context = canvas.getContext("2d");
 
   context.beginPath();
-
-  context.moveTo(
-    profileSignatureLastPoint.x,
-    profileSignatureLastPoint.y
-  );
-
-  context.lineTo(
-    point.x,
-    point.y
-  );
-
+  context.moveTo(profileSignatureLastPoint.x, profileSignatureLastPoint.y);
+  context.lineTo(point.x, point.y);
   context.stroke();
 
-  profileSignatureLastPoint =
-    point;
-
-  profileSignatureHasInk =
-    true;
-
+  profileSignatureLastPoint = point;
+  profileSignatureHasInk = true;
   updateProfileSignatureUseButton();
 }
 
-function endProfileSignatureDrawing(
-  event
-) {
-  if (!profileSignatureDrawing) {
-    return;
-  }
+function endProfileSignatureDrawing(event) {
+  if (!profileSignatureDrawing) return;
 
-  profileSignatureDrawing =
-    false;
-
-  profileSignatureLastPoint =
-    null;
+  profileSignatureDrawing = false;
+  profileSignatureLastPoint = null;
 
   try {
-    event.currentTarget
-      .releasePointerCapture(
-        event.pointerId
-      );
+    event.currentTarget.releasePointerCapture(event.pointerId);
   } catch (error) {
-    // optional
+    // Pointer capture may already be released.
   }
 }
 
 function clearProfileSignatureCanvas() {
-  const canvas =
-    document.getElementById(
-      "profileSignatureCanvas"
-    );
+  const canvas = document.getElementById("profileSignatureCanvas");
 
   if (!canvas) return;
 
-  const context =
-    canvas.getContext("2d");
+  const context = canvas.getContext("2d");
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
-  context.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-  );
-
-  profileSignatureHasInk =
-    false;
-
-  profileSignatureDrawing =
-    false;
-
-  profileSignatureLastPoint =
-    null;
-
+  profileSignatureHasInk = false;
+  profileSignatureDrawing = false;
+  profileSignatureLastPoint = null;
   updateProfileSignatureUseButton();
 }
 
 function updateProfileSignatureUseButton() {
-  const button =
-    document.getElementById(
-      "profileSignatureUse"
-    );
+  const button = document.getElementById("profileSignatureUse");
 
   if (button) {
-    button.disabled =
-      !profileSignatureHasInk;
+    button.disabled = !profileSignatureHasInk;
   }
 }
 
 function useProfileDrawnSignaturePreview() {
   if (!profileSignatureHasInk) {
-    alert(
-      "Silakan gambar tanda tangan terlebih dahulu."
-    );
-
+    alert("Silakan gambar tanda tangan terlebih dahulu.");
     return;
   }
 
-  const canvas =
-    document.getElementById(
-      "profileSignatureCanvas"
-    );
+  const canvas = document.getElementById("profileSignatureCanvas");
+  const image = document.getElementById("profileSignatureImage");
+  const empty = document.getElementById("profileSignatureEmpty");
+  const signatureButton = document.getElementById("profileSignatureButton");
+  const pendingActions = document.getElementById("profileSignaturePendingActions");
 
-  const image =
-    document.getElementById(
-      "profileSignatureImage"
-    );
+  if (!canvas || !image || !empty) return;
 
-  const empty =
-    document.getElementById(
-      "profileSignatureEmpty"
-    );
+  profilePendingSignatureDataUrl = canvas.toDataURL("image/png");
 
-  const signatureButton =
-    document.getElementById(
-      "profileSignatureButton"
-    );
-
-  const pendingActions =
-    document.getElementById(
-      "profileSignaturePendingActions"
-    );
-
-  if (
-    !canvas ||
-    !image ||
-    !empty
-  ) {
-    return;
-  }
-
-  profilePendingSignatureDataUrl =
-    canvas.toDataURL(
-      "image/png"
-    );
-
-  image.onload =
-    function () {
-      image.hidden = false;
-      empty.hidden = true;
-    };
+  image.onload = function () {
+    image.hidden = false;
+    empty.hidden = true;
+  };
 
   image.onerror = null;
+  image.src = profilePendingSignatureDataUrl;
 
-  image.src =
-    profilePendingSignatureDataUrl;
-
-  if (signatureButton) {
-    signatureButton.hidden = true;
-  }
-
-  if (pendingActions) {
-    pendingActions.hidden = false;
-  }
+  if (signatureButton) signatureButton.hidden = true;
+  if (pendingActions) pendingActions.hidden = false;
 
   closeProfileDrawSignature();
 }
-
-/* =========================================================
-   CANCEL SIGNATURE PREVIEW
-========================================================= */
 
 function cancelProfileSignaturePreview() {
   profilePendingSignatureDataUrl = "";
 
   if (currentProfileUser) {
-    renderProfileSignature(
-      currentProfileUser.signature ||
-      profileSavedSignatureUrl ||
-      ""
-    );
+    renderProfileSignature(currentProfileUser.signature || profileSavedSignatureUrl || "");
   } else {
-    renderProfileSignature(
-      profileSavedSignatureUrl
-    );
+    renderProfileSignature(profileSavedSignatureUrl);
   }
 }
 
-/* =========================================================
-   SAVE SIGNATURE
-========================================================= */
-
 async function saveProfileSignature() {
-  if (
-    !profilePendingSignatureDataUrl
-  ) {
-    alert(
-      "Tidak ada signature baru untuk disimpan."
-    );
-
+  if (!profilePendingSignatureDataUrl) {
+    alert("Tidak ada signature baru untuk disimpan.");
     return;
   }
 
-  if (
-    !currentProfileUser ||
-    !currentProfileUser.uniqId
-  ) {
-    alert(
-      "Data user tidak ditemukan. Silakan login ulang."
-    );
-
+  if (!currentProfileUser || !currentProfileUser.uniqId) {
+    alert("Data user tidak ditemukan. Silakan login ulang.");
     return;
   }
 
-  const saveButton =
-    document.getElementById(
-      "profileSignatureSave"
-    );
-
-  const cancelButton =
-    document.getElementById(
-      "profileSignatureCancelPreview"
-    );
-
-  const originalText =
-    saveButton
-      ? saveButton.textContent
-      : "Save Signature";
+  const saveButton = document.getElementById("profileSignatureSave");
+  const cancelButton = document.getElementById("profileSignatureCancelPreview");
+  const originalText = saveButton ? saveButton.textContent : "Save Signature";
 
   if (saveButton) {
     saveButton.disabled = true;
-    saveButton.textContent =
-      "Saving...";
+    saveButton.textContent = "Saving...";
   }
 
   if (cancelButton) {
@@ -2687,619 +1791,66 @@ async function saveProfileSignature() {
   }
 
   try {
-    const base64 =
-      profilePendingSignatureDataUrl
-        .split(",")[1] || "";
+    const base64 = profilePendingSignatureDataUrl.split(",")[1] || "";
 
     if (!base64) {
-      throw new Error(
-        "Data signature PNG tidak valid."
-      );
+      throw new Error("Data signature PNG tidak valid.");
     }
 
-    const response =
-      await fetch(
-        API_URL,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
-
-          body: JSON.stringify({
-            action:
-              "updateUserSignature",
-
-            uniqId:
-              currentProfileUser.uniqId,
-
-            signatureBase64:
-              base64,
-
-            signatureMimeType:
-              "image/png"
-          })
-        }
-      );
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify({
+        action: "updateUserSignature",
+        uniqId: currentProfileUser.uniqId,
+        signatureBase64: base64,
+        signatureMimeType: "image/png"
+      })
+    });
 
     if (!response.ok) {
-      throw new Error(
-        `HTTP ${response.status}`
-      );
+      throw new Error(`HTTP ${response.status}`);
     }
 
-    const result =
-      await response.json();
+    const result = await response.json();
 
-    if (
-      !result ||
-      result.success !== true ||
-      !result.user
-    ) {
+    if (!result || result.success !== true || !result.user) {
       throw new Error(
-        result &&
-        result.message
+        result && result.message
           ? result.message
           : "Response update Digital Signature tidak valid."
       );
     }
 
-    currentProfileUser =
-      normalizeProfileUser(
-        result.user
-      );
+    currentProfileUser = normalizeProfileUser(result.user);
 
     sessionStorage.setItem(
       "hexaUser",
-      JSON.stringify(
-        currentProfileUser
-      )
+      JSON.stringify(currentProfileUser)
     );
 
-    renderProfile(
-      currentProfileUser
-    );
+    renderProfile(currentProfileUser);
 
-    alert(
-      "Digital Signature berhasil disimpan."
-    );
+    alert("Digital Signature berhasil disimpan.");
 
   } catch (error) {
-    console.error(
-      "HEXA Profile: gagal menyimpan Digital Signature.",
-      error
-    );
+    console.error("HEXA Profile: gagal menyimpan Digital Signature.", error);
 
     alert(
       "Digital Signature gagal disimpan.\n\n" +
-      (
-        error.message ||
-        "Terjadi kesalahan saat menghubungi HEXA API."
-      )
+      (error.message || "Terjadi kesalahan saat menghubungi HEXA API.")
     );
 
   } finally {
     if (saveButton) {
-      saveButton.disabled =
-        false;
-
-      saveButton.textContent =
-        originalText;
+      saveButton.disabled = false;
+      saveButton.textContent = originalText;
     }
 
     if (cancelButton) {
-      cancelButton.disabled =
-        false;
+      cancelButton.disabled = false;
     }
-  }
-}
-
-/* =========================================================
-   PHOTO CONTROLS
-   Mempertahankan kompatibilitas dengan HTML profile.
-========================================================= */
-
-function initializeProfilePhotoControls() {
-  const closeButton =
-    document.getElementById(
-      "profilePhotoSheetClose"
-    );
-
-  const backdrop =
-    document.getElementById(
-      "profilePhotoSheetBackdrop"
-    );
-
-  const cameraButton =
-    document.getElementById(
-      "profilePhotoCamera"
-    );
-
-  const galleryButton =
-    document.getElementById(
-      "profilePhotoGallery"
-    );
-
-  if (closeButton) {
-    closeButton.addEventListener(
-      "click",
-      closeProfilePhotoSheet
-    );
-  }
-
-  if (backdrop) {
-    backdrop.addEventListener(
-      "click",
-      closeProfilePhotoSheet
-    );
-  }
-
-  if (cameraButton) {
-    cameraButton.addEventListener(
-      "click",
-      function () {
-        triggerProfilePhotoInput(
-          true
-        );
-      }
-    );
-  }
-
-  if (galleryButton) {
-    galleryButton.addEventListener(
-      "click",
-      function () {
-        triggerProfilePhotoInput(
-          false
-        );
-      }
-    );
-  }
-}
-
-function openProfilePhotoSheet() {
-  const sheet =
-    document.getElementById(
-      "profilePhotoSheet"
-    );
-
-  const backdrop =
-    document.getElementById(
-      "profilePhotoSheetBackdrop"
-    );
-
-  if (!sheet || !backdrop) {
-    return;
-  }
-
-  backdrop.hidden = false;
-
-  sheet.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  requestAnimationFrame(
-    function () {
-      sheet.classList.add(
-        "is-open"
-      );
-    }
-  );
-}
-
-function closeProfilePhotoSheet() {
-  const sheet =
-    document.getElementById(
-      "profilePhotoSheet"
-    );
-
-  const backdrop =
-    document.getElementById(
-      "profilePhotoSheetBackdrop"
-    );
-
-  if (!sheet || !backdrop) {
-    return;
-  }
-
-  sheet.classList.remove(
-    "is-open"
-  );
-
-  sheet.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  setTimeout(
-    function () {
-      if (
-        !sheet.classList.contains(
-          "is-open"
-        )
-      ) {
-        backdrop.hidden = true;
-      }
-    },
-    220
-  );
-}
-
-function triggerProfilePhotoInput(
-  useCamera
-) {
-  let input =
-    document.getElementById(
-      "profileDynamicPhotoInput"
-    );
-
-  if (input) {
-    input.remove();
-  }
-
-  input =
-    document.createElement(
-      "input"
-    );
-
-  input.type = "file";
-  input.accept = "image/*";
-
-  input.id =
-    "profileDynamicPhotoInput";
-
-  if (useCamera) {
-    input.capture =
-      "environment";
-  }
-
-  input.hidden = true;
-
-  input.addEventListener(
-    "change",
-    handleProfilePhotoFile
-  );
-
-  document.body.appendChild(
-    input
-  );
-
-  closeProfilePhotoSheet();
-
-  input.click();
-}
-
-async function handleProfilePhotoFile(
-  event
-) {
-  const file =
-    event.target.files &&
-    event.target.files[0];
-
-  if (!file) return;
-
-  try {
-    const dataUrl =
-      await readProfileSignatureFile(
-        file
-      );
-
-    await saveProfilePhoto(
-      dataUrl,
-      file.type ||
-      "image/jpeg"
-    );
-
-  } catch (error) {
-    console.error(error);
-
-    alert(
-      "Foto profil gagal diproses.\n\n" +
-      (
-        error.message ||
-        "Terjadi kesalahan."
-      )
-    );
-  }
-}
-
-async function saveProfilePhoto(
-  dataUrl,
-  mimeType
-) {
-  if (
-    !currentProfileUser ||
-    !currentProfileUser.uniqId
-  ) {
-    return;
-  }
-
-  const base64 =
-    String(dataUrl)
-      .split(",")[1] || "";
-
-  if (!base64) {
-    throw new Error(
-      "Data foto tidak valid."
-    );
-  }
-
-  const response =
-    await fetch(
-      API_URL,
-      {
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "text/plain;charset=utf-8"
-        },
-
-        body: JSON.stringify({
-          action:
-            "updateProfilePhoto",
-
-          uniqId:
-            currentProfileUser.uniqId,
-
-          photoBase64:
-            base64,
-
-          photoMimeType:
-            mimeType
-        })
-      }
-    );
-
-  const result =
-    await response.json();
-
-  if (
-    !result ||
-    result.success !== true ||
-    !result.user
-  ) {
-    throw new Error(
-      result?.message ||
-      "Gagal menyimpan foto."
-    );
-  }
-
-  currentProfileUser =
-    normalizeProfileUser(
-      result.user
-    );
-
-  sessionStorage.setItem(
-    "hexaUser",
-    JSON.stringify(
-      currentProfileUser
-    )
-  );
-
-  renderProfile(
-    currentProfileUser
-  );
-
-  alert(
-    "Foto profil berhasil diperbarui."
-  );
-}
-
-/* =========================================================
-   PASSWORD
-========================================================= */
-
-function initializeProfilePasswordControls() {
-  const closeButton =
-    document.getElementById(
-      "profilePasswordClose"
-    );
-
-  const cancelButton =
-    document.getElementById(
-      "profilePasswordCancel"
-    );
-
-  const saveButton =
-    document.getElementById(
-      "profilePasswordSave"
-    );
-
-  const backdrop =
-    document.getElementById(
-      "profilePasswordBackdrop"
-    );
-
-  if (closeButton) {
-    closeButton.addEventListener(
-      "click",
-      closeProfilePasswordModal
-    );
-  }
-
-  if (cancelButton) {
-    cancelButton.addEventListener(
-      "click",
-      closeProfilePasswordModal
-    );
-  }
-
-  if (backdrop) {
-    backdrop.addEventListener(
-      "click",
-      closeProfilePasswordModal
-    );
-  }
-
-  if (saveButton) {
-    saveButton.addEventListener(
-      "click",
-      saveProfilePassword
-    );
-  }
-}
-
-function openProfilePasswordModal() {
-  const modal =
-    document.getElementById(
-      "profilePasswordModal"
-    );
-
-  const backdrop =
-    document.getElementById(
-      "profilePasswordBackdrop"
-    );
-
-  if (!modal || !backdrop) {
-    return;
-  }
-
-  backdrop.hidden = false;
-
-  modal.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  requestAnimationFrame(
-    function () {
-      modal.classList.add(
-        "is-open"
-      );
-    }
-  );
-}
-
-function closeProfilePasswordModal() {
-  const modal =
-    document.getElementById(
-      "profilePasswordModal"
-    );
-
-  const backdrop =
-    document.getElementById(
-      "profilePasswordBackdrop"
-    );
-
-  if (!modal || !backdrop) {
-    return;
-  }
-
-  modal.classList.remove(
-    "is-open"
-  );
-
-  modal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  backdrop.hidden = true;
-}
-
-async function saveProfilePassword() {
-  const oldPassword =
-    document.getElementById(
-      "profileCurrentPassword"
-    )?.value || "";
-
-  const newPassword =
-    document.getElementById(
-      "profileNewPassword"
-    )?.value || "";
-
-  const confirmPassword =
-    document.getElementById(
-      "profileConfirmPassword"
-    )?.value || "";
-
-  if (
-    !oldPassword ||
-    !newPassword ||
-    !confirmPassword
-  ) {
-    alert(
-      "Lengkapi seluruh data password."
-    );
-
-    return;
-  }
-
-  if (
-    newPassword !==
-    confirmPassword
-  ) {
-    alert(
-      "Konfirmasi password tidak sama."
-    );
-
-    return;
-  }
-
-  if (!currentProfileUser) {
-    return;
-  }
-
-  try {
-    const response =
-      await fetch(
-        API_URL,
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "text/plain;charset=utf-8"
-          },
-
-          body: JSON.stringify({
-            action:
-              "changePassword",
-
-            uniqId:
-              currentProfileUser.uniqId,
-
-            oldPassword:
-              oldPassword,
-
-            newPassword:
-              newPassword
-          })
-        }
-      );
-
-    const result =
-      await response.json();
-
-    if (
-      !result ||
-      result.success !== true
-    ) {
-      throw new Error(
-        result?.message ||
-        "Password gagal diperbarui."
-      );
-    }
-
-    closeProfilePasswordModal();
-
-    alert(
-      "Password berhasil diperbarui."
-    );
-
-  } catch (error) {
-    console.error(error);
-
-    alert(
-      "Password gagal diperbarui.\n\n" +
-      (
-        error.message ||
-        "Terjadi kesalahan."
-      )
-    );
   }
 }
