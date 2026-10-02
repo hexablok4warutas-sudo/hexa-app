@@ -1022,19 +1022,34 @@ function getPopulationStatusClass(
 
 function populateEGIDatalist() {
 
-  const datalist =
+  const select =
     document.getElementById(
-      "populationEGIList"
+      "populationEGI"
     );
 
-
-  if (!datalist) {
+  if (!select) {
     return;
   }
 
+  const currentValue =
+    cleanPopulationValue(
+      select.value
+    );
 
-  datalist.innerHTML = "";
+  select.innerHTML = "";
 
+  const placeholder =
+    document.createElement(
+      "option"
+    );
+
+  placeholder.value = "";
+  placeholder.textContent =
+    "Select EGI";
+
+  select.appendChild(
+    placeholder
+  );
 
   populationEGIData.forEach(
     function(item) {
@@ -1044,27 +1059,29 @@ function populateEGIDatalist() {
           item.egi
         );
 
-
       if (!egi) {
         return;
       }
-
 
       const option =
         document.createElement(
           "option"
         );
 
-      option.value =
-        egi;
+      option.value = egi;
+      option.textContent = egi;
 
-
-      datalist.appendChild(
+      select.appendChild(
         option
       );
 
     }
   );
+
+  if (currentValue) {
+    select.value =
+      currentValue;
+  }
 
 }
 
