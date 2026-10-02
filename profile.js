@@ -59,6 +59,7 @@ function normalizeProfileUser(user) {
     status: cleanProfileValue(user.status),
     kutipan: cleanProfileValue(user.kutipan),
     signature: cleanProfileValue(user.signature)
+    signature: cleanProfileValue(user.signature)
   };
 }
 
