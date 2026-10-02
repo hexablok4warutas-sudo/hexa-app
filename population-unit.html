@@ -573,27 +573,18 @@
             EGI
           </label>
 
-          <input
-            type="text"
+          <select
             id="populationEGI"
             name="egi"
-            list="populationEGIList"
-            placeholder="Select or type new EGI"
             required
           >
-
-
-          <!--
-            Diisi dari sheet EGI melalui backend.
-            Input tetap editable sehingga user bisa
-            mengetik EGI baru.
-          -->
-
-          <datalist id="populationEGIList"></datalist>
-
+            <option value="">
+              Select EGI
+            </option>
+          </select>
 
           <small class="population-field-help">
-            Select an existing EGI or type a new EGI.
+            Select an EGI registered in Manage EGI.
           </small>
 
         </div>
