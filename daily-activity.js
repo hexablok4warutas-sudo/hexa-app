@@ -130,6 +130,16 @@ function renderDailyActivitySchedules() {
 }
 
 function renderLubeTruckSchedule(truckNumber, schedule) {
+  const editButton =
+    document.getElementById(`lubeTruck${truckNumber}EditButton`);
+
+  // Sementara untuk pengujian:
+  // jika card memiliki schedule, tombol Edit langsung tampil.
+  // Nanti ditambah filter permission Scheduler / Edit Schedule.
+  if (editButton) {
+    editButton.hidden = false;
+  }
+
   setDailyActivityText(
     `lubeTruck${truckNumber}ScheduleStatus`,
     cleanDailyActivityValue(schedule?.status) || "-"
@@ -247,6 +257,14 @@ function resetLubeTruckCard(truckNumber) {
 
   const empty = document.getElementById(`lubeTruck${truckNumber}Empty`);
   if (empty) empty.hidden = false;
+
+  const editButton =
+    document.getElementById(`lubeTruck${truckNumber}EditButton`);
+
+  // Card tanpa schedule tidak menampilkan Edit.
+  if (editButton) {
+    editButton.hidden = true;
+  }
 }
 
 function normalizeDailyActivityStatus(status) {
