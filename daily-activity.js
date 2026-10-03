@@ -24,6 +24,7 @@ async function initializeDailyActivity() {
   document.getElementById("activityDate")
     ?.addEventListener("change", loadDailyActivitySchedule);
   initializeSchedulerPanel();
+  initializeDailyActivityUnitCardDelegation();
 
   await loadDailyActivitySchedule();
 }
@@ -202,6 +203,40 @@ function renderLubeTruckUnits(truckNumber, units) {
   });
 }
 
+function initializeDailyActivityUnitCardDelegation() {
+  document.addEventListener("click", function (event) {
+    const card = event.target.closest(".daily-unit-card");
+    if (!card) return;
+
+    const scheduleUnitId =
+      cleanDailyActivityValue(card.dataset.scheduleUnitId);
+
+    let selectedUnit = null;
+
+    dailyActivitySchedules.some(schedule => {
+      const units = Array.isArray(schedule?.units) ? schedule.units : [];
+
+      selectedUnit =
+        units.find(unit =>
+          cleanDailyActivityValue(unit?.scheduleUnitId) === scheduleUnitId
+        ) || null;
+
+      return Boolean(selectedUnit);
+    });
+
+    if (!selectedUnit) {
+      console.error(
+        "HEXA Daily Activity: data Unit Card tidak ditemukan.",
+        scheduleUnitId
+      );
+      return;
+    }
+
+    openDailyActivityInspection(selectedUnit);
+  });
+}
+
+
 function createDailyActivityUnitCard(unit) {
   const card = document.createElement("button");
   card.type = "button";
@@ -219,9 +254,7 @@ function createDailyActivityUnitCard(unit) {
 
   card.append(unitCode);
 
-  card.addEventListener("click", () => {
-    openDailyActivityInspection(unit);
-  });
+
 
   return card;
 }
@@ -1296,10 +1329,6 @@ async function openEditSchedulePanel(truckNumber) {
 
 async function openDailyActivityInspection(unit) {
   const unitCode = cleanDailyActivityValue(unit?.unitCode);
-  const unitId = cleanDailyActivityValue(
-    unit?.unitId || unit?.uniqId || unit?.id
-  );
-  const scheduleUnitId = cleanDailyActivityValue(unit?.scheduleUnitId);
 
   if (!unitCode) {
     alert("Unit Code tidak ditemukan.");
@@ -1321,50 +1350,34 @@ async function openDailyActivityInspection(unit) {
     const checklist = extractDailyActivityChecklist(result);
 
     showDailyActivityInspectionPreview({
-      unitId: unitId,
-      scheduleUnitId: scheduleUnitId,
       unitCode: unitCode,
-      egi: cleanDailyActivityValue(
-        result?.egi ||
-        result?.unit?.egi ||
-        unit?.egi
-      ),
+      egi: cleanDailyActivityValue(result?.egi || result?.unit?.egi || unit?.egi),
       type: cleanDailyActivityValue(
-        result?.type ||
-        result?.equipmentType ||
-        result?.unit?.type ||
-        unit?.type
+        result?.type || result?.equipmentType || result?.unit?.type || unit?.type
       ),
       checklist: checklist
     });
 
   } catch (error) {
     console.error("HEXA Daily Activity checklist error:", error);
-    alert(
-      error.message ||
-      "Checklist Daily Activity gagal dimuat."
-    );
+    alert(error.message || "Checklist Daily Activity gagal dimuat.");
   }
 }
 
 function extractDailyActivityChecklist(result) {
-  const candidates = [
+  for (const value of [
     result?.checklist,
     result?.items,
     result?.data,
     result?.checklists
-  ];
-
-  for (const value of candidates) {
+  ]) {
     if (Array.isArray(value)) return value;
   }
-
   return [];
 }
 
 function showDailyActivityInspectionPreview(data) {
-  let backdrop =
-    document.getElementById("dailyActivityInspectionBackdrop");
+  let backdrop = document.getElementById("dailyActivityInspectionBackdrop");
 
   if (!backdrop) {
     backdrop = document.createElement("div");
@@ -1373,34 +1386,22 @@ function showDailyActivityInspectionPreview(data) {
     backdrop.hidden = true;
 
     backdrop.innerHTML = `
-      <section class="daily-activity-inspection-panel"
-               role="dialog"
-               aria-modal="true"
-               aria-labelledby="dailyActivityInspectionTitle">
+      <section class="daily-activity-inspection-panel" role="dialog" aria-modal="true">
         <header class="daily-activity-inspection-header">
           <div>
             <p class="daily-activity-inspection-eyebrow">Daily Activity Inspection</p>
             <h2 id="dailyActivityInspectionTitle">-</h2>
-            <p id="dailyActivityInspectionMeta"
-               class="daily-activity-inspection-meta">-</p>
+            <p id="dailyActivityInspectionMeta" class="daily-activity-inspection-meta">-</p>
           </div>
-
-          <button type="button"
-                  id="closeDailyActivityInspection"
-                  class="daily-activity-inspection-close"
-                  aria-label="Close">×</button>
+          <button type="button" id="closeDailyActivityInspection"
+                  class="daily-activity-inspection-close" aria-label="Close">×</button>
         </header>
-
         <div id="dailyActivityInspectionBody"
              class="daily-activity-inspection-body"></div>
-
         <footer class="daily-activity-inspection-footer">
           <span id="dailyActivityInspectionCount">0 Checklist</span>
-          <button type="button"
-                  id="closeDailyActivityInspectionFooter"
-                  class="daily-activity-inspection-done">
-            Close
-          </button>
+          <button type="button" id="closeDailyActivityInspectionFooter"
+                  class="daily-activity-inspection-done">Close</button>
         </footer>
       </section>
     `;
@@ -1414,43 +1415,30 @@ function showDailyActivityInspectionPreview(data) {
 
     document.getElementById("closeDailyActivityInspection")
       ?.addEventListener("click", close);
-
     document.getElementById("closeDailyActivityInspectionFooter")
       ?.addEventListener("click", close);
-
     backdrop.addEventListener("click", event => {
       if (event.target === backdrop) close();
     });
   }
 
-  setDailyActivityText(
-    "dailyActivityInspectionTitle",
-    data.unitCode
-  );
-
+  setDailyActivityText("dailyActivityInspectionTitle", data.unitCode);
   setDailyActivityText(
     "dailyActivityInspectionMeta",
     `${data.egi || "-"} • ${data.type || "-"}`
   );
 
-  const body =
-    document.getElementById("dailyActivityInspectionBody");
-
-  const count =
-    document.getElementById("dailyActivityInspectionCount");
-
+  const body = document.getElementById("dailyActivityInspectionBody");
+  const count = document.getElementById("dailyActivityInspectionCount");
   if (!body) return;
 
   body.innerHTML = "";
-
   const groups = new Map();
 
   data.checklist.forEach(item => {
-    const group =
-      cleanDailyActivityValue(item?.group) || "CHECKLIST";
-
-    if (!groups.has(group)) groups.set(group, []);
-    groups.get(group).push(item);
+    const groupName = cleanDailyActivityValue(item?.group) || "CHECKLIST";
+    if (!groups.has(groupName)) groups.set(groupName, []);
+    groups.get(groupName).push(item);
   });
 
   groups.forEach((items, groupName) => {
@@ -1461,51 +1449,42 @@ function showDailyActivityInspectionPreview(data) {
     title.textContent = groupName;
     group.appendChild(title);
 
-    items
-      .sort(
-        (a, b) =>
-          (Number(a?.sequence) || 0) -
-          (Number(b?.sequence) || 0)
-      )
-      .forEach(item => {
-        const row = document.createElement("div");
-        row.className = "daily-activity-inspection-item";
+    items.sort((a, b) =>
+      (Number(a?.sequence) || 0) - (Number(b?.sequence) || 0)
+    ).forEach(item => {
+      const row = document.createElement("div");
+      row.className = "daily-activity-inspection-item";
 
-        const itemText = document.createElement("span");
-        itemText.className = "daily-activity-inspection-item-text";
-        itemText.textContent =
-          cleanDailyActivityValue(item?.item) || "-";
+      const itemText = document.createElement("span");
+      itemText.className = "daily-activity-inspection-item-text";
+      itemText.textContent = cleanDailyActivityValue(item?.item) || "-";
 
-        const options = document.createElement("div");
-        options.className = "daily-activity-inspection-options";
+      const options = document.createElement("div");
+      options.className = "daily-activity-inspection-options";
 
-        [
-          ["GOOD", "✓", "Good Condition"],
-          ["BAD", "X", "Bad Condition"],
-          ["REPAIRED", "ⓧ", "Good Condition After Repair / Action"]
-        ].forEach(([value, symbol, label]) => {
-          const option = document.createElement("button");
-          option.type = "button";
-          option.className = "daily-activity-inspection-option";
-          option.dataset.value = value;
-          option.title = label;
-          option.setAttribute("aria-label", label);
-          option.textContent = symbol;
-
-          option.addEventListener("click", () => {
-            options
-              .querySelectorAll(".daily-activity-inspection-option")
-              .forEach(button => button.classList.remove("is-selected"));
-
-            option.classList.add("is-selected");
-          });
-
-          options.appendChild(option);
+      [
+        ["GOOD", "✓", "Good Condition"],
+        ["BAD", "X", "Bad Condition"],
+        ["REPAIRED", "ⓧ", "Good Condition After Repair / Action"]
+      ].forEach(([value, symbol, label]) => {
+        const option = document.createElement("button");
+        option.type = "button";
+        option.className = "daily-activity-inspection-option";
+        option.dataset.value = value;
+        option.title = label;
+        option.setAttribute("aria-label", label);
+        option.textContent = symbol;
+        option.addEventListener("click", () => {
+          options.querySelectorAll(".daily-activity-inspection-option")
+            .forEach(button => button.classList.remove("is-selected"));
+          option.classList.add("is-selected");
         });
-
-        row.append(itemText, options);
-        group.appendChild(row);
+        options.appendChild(option);
       });
+
+      row.append(itemText, options);
+      group.appendChild(row);
+    });
 
     body.appendChild(group);
   });
@@ -1513,15 +1492,11 @@ function showDailyActivityInspectionPreview(data) {
   if (!data.checklist.length) {
     const empty = document.createElement("div");
     empty.className = "daily-activity-inspection-empty";
-    empty.textContent =
-      "Checklist tidak ditemukan untuk unit ini.";
+    empty.textContent = "Checklist tidak ditemukan untuk unit ini.";
     body.appendChild(empty);
   }
 
-  if (count) {
-    count.textContent =
-      `${data.checklist.length} Checklist`;
-  }
+  if (count) count.textContent = `${data.checklist.length} Checklist`;
 
   backdrop.hidden = false;
   document.body.classList.add("daily-activity-inspection-open");
