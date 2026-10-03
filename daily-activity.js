@@ -25,6 +25,7 @@
             ?.addEventListener("change", loadDailyActivitySchedule);
           initializeSchedulerPanel();
           initializeDailyActivityClosing();
+          initializeDailyActivityApprovalReview();
 
           await loadDailyActivitySchedule();
         }
@@ -117,6 +118,7 @@
 
           if (!dailyActivitySchedules.length) {
             if (empty) empty.hidden = false;
+            renderDailyActivityApprovalReview();
             return;
           }
 
@@ -128,6 +130,8 @@
               renderLubeTruckSchedule(truckNumber, schedule);
             }
           });
+
+          renderDailyActivityApprovalReview();
         }
 
         function renderLubeTruckSchedule(truckNumber, schedule) {
@@ -2543,3 +2547,332 @@
 
       return text.replace(/["\\]/g, "\\$&");
     }
+
+
+        // =========================================================
+        // STAGE 4B-1 — APPROVAL REVIEW
+        // UI + Review Resume only.
+        // Approve / Issue Resume / PDF remain disabled until next stage.
+        // =========================================================
+
+        function initializeDailyActivityApprovalReview() {
+          const section = document.getElementById("dailyActivityApprovalReview");
+          const user = getDailyActivitySessionUser();
+
+          if (section) {
+            section.hidden = !hasDailyActivityApprovalAccess(user);
+          }
+
+          [15, 16].forEach(truckNumber => {
+            document
+              .getElementById(`approvalReviewButton${truckNumber}`)
+              ?.addEventListener("click", () => openDailyActivityApprovalResume(truckNumber));
+          });
+
+          document
+            .getElementById("approvalResumeCloseButton")
+            ?.addEventListener("click", closeDailyActivityApprovalResume);
+
+          document
+            .getElementById("approvalResumeDoneButton")
+            ?.addEventListener("click", closeDailyActivityApprovalResume);
+
+          document
+            .getElementById("approvalResumeBackdrop")
+            ?.addEventListener("click", event => {
+              if (event.target?.id === "approvalResumeBackdrop") {
+                closeDailyActivityApprovalResume();
+              }
+            });
+        }
+
+        function hasDailyActivityApprovalAccess(user) {
+          const kode = cleanDailyActivityValue(user?.kode);
+
+          // Temporary role gate until Access Settings permission is connected:
+          // 1 MASTER, 2 SECTION HEAD, 3 GROUP LEADER, 4 ADMIN.
+          // Mechanic (5) and Visitor (6) do not see Approval Review.
+          return ["1", "2", "3", "4"].includes(kode);
+        }
+
+        function renderDailyActivityApprovalReview() {
+          const section = document.getElementById("dailyActivityApprovalReview");
+          const user = getDailyActivitySessionUser();
+
+          if (!section) return;
+
+          const allowed = hasDailyActivityApprovalAccess(user);
+          section.hidden = !allowed;
+          if (!allowed) return;
+
+          const activityDate =
+            document.getElementById("activityDate")?.value?.trim() || "-";
+
+          setDailyActivityText(
+            "approvalReviewDate",
+            activityDate === "-" ? "-" : formatDailyActivityDisplayDate(activityDate)
+          );
+
+          [15, 16].forEach(truckNumber => {
+            const schedule = dailyActivitySchedules.find(item =>
+              getLubeTruckNumber(item?.lubeTruck) === truckNumber
+            );
+
+            renderDailyActivityApprovalRow(truckNumber, schedule);
+          });
+        }
+
+        function renderDailyActivityApprovalRow(truckNumber, schedule) {
+          const row = document.getElementById(`approvalReviewRow${truckNumber}`);
+          const statusEl = document.getElementById(`approvalReviewStatus${truckNumber}`);
+          const reviewButton = document.getElementById(`approvalReviewButton${truckNumber}`);
+          const approveButton = document.getElementById(`approvalApproveButton${truckNumber}`);
+          const issueButton = document.getElementById(`approvalIssueButton${truckNumber}`);
+          const pdfButton = document.getElementById(`approvalPdfButton${truckNumber}`);
+
+          const status = normalizeDailyActivityStatus(schedule?.status);
+          const canReview =
+            Boolean(schedule) &&
+            ["APPROVAL", "APPROVED", "RESUME ISSUED"].includes(status);
+
+          row?.classList.toggle("is-ready", status === "APPROVAL");
+          row?.classList.toggle(
+            "is-approved",
+            status === "APPROVED" || status === "RESUME ISSUED"
+          );
+
+          if (statusEl) {
+            statusEl.textContent = schedule ? (status || "-") : "NO SCHEDULE";
+            statusEl.classList.toggle("is-ready", status === "APPROVAL");
+            statusEl.classList.toggle(
+              "is-approved",
+              status === "APPROVED" || status === "RESUME ISSUED"
+            );
+          }
+
+          if (reviewButton) reviewButton.disabled = !canReview;
+
+          // Stage 4B-1: visible but intentionally inactive.
+          if (approveButton) approveButton.disabled = true;
+          if (issueButton) issueButton.disabled = true;
+          if (pdfButton) pdfButton.disabled = true;
+
+          setDailyActivityText(`approvalApprovedId${truckNumber}`, "-");
+          setDailyActivityText(`approvalApprovedName${truckNumber}`, "-");
+        }
+
+        async function openDailyActivityApprovalResume(truckNumber) {
+          const schedule = dailyActivitySchedules.find(item =>
+            getLubeTruckNumber(item?.lubeTruck) === truckNumber
+          );
+
+          if (!schedule) return;
+
+          const status = normalizeDailyActivityStatus(schedule?.status);
+          if (!["APPROVAL", "APPROVED", "RESUME ISSUED"].includes(status)) return;
+
+          const backdrop = document.getElementById("approvalResumeBackdrop");
+          const loading = document.getElementById("approvalResumeLoading");
+          const content = document.getElementById("approvalResumeContent");
+
+          if (backdrop) backdrop.hidden = false;
+          if (loading) loading.hidden = false;
+          if (content) content.hidden = true;
+
+          setDailyActivityText("approvalResumeTitle", `Review Resume — Lube Truck ${truckNumber}`);
+          setDailyActivityText(
+            "approvalResumeSubtitle",
+            `${formatDailyActivityDisplayDate(schedule?.activityDate || document.getElementById("activityDate")?.value || "")} · ${status}`
+          );
+
+          const units = Array.isArray(schedule?.units) ? schedule.units : [];
+          const completedUnits = units.filter(unit =>
+            normalizeDailyActivityStatus(unit?.status) === "COMPLETED"
+          );
+          const notInspectedUnits = units.filter(unit =>
+            normalizeDailyActivityStatus(unit?.status) !== "COMPLETED"
+          );
+
+          setDailyActivityText("approvalResumeTarget", String(units.length));
+          setDailyActivityText("approvalResumeInspected", String(completedUnits.length));
+          setDailyActivityText("approvalResumeNotInspected", String(notInspectedUnits.length));
+
+          const achievement =
+            units.length > 0
+              ? ((completedUnits.length / units.length) * 100).toFixed(1)
+              : "0.0";
+
+          setDailyActivityText("approvalResumeAchievement", `${achievement}%`);
+          setDailyActivityText("approvalResumeMechanic1", getMechanicName(schedule?.mechanic1));
+          setDailyActivityText("approvalResumeMechanic2", getMechanicName(schedule?.mechanic2));
+
+          renderApprovalNotInspected(notInspectedUnits);
+
+          try {
+            const inspectionResults = await Promise.all(
+              completedUnits.map(async unit => {
+                const scheduleUnitId =
+                  cleanDailyActivityValue(
+                    unit?.scheduleUnitId ||
+                    unit?.scheduleUnitID ||
+                    unit?.id
+                  );
+
+                if (!scheduleUnitId) {
+                  return { unit, inspection: null };
+                }
+
+                const result = await dailyActivityApiRequest({
+                  action: "getDMInspectionDraft",
+                  scheduleUnitId
+                });
+
+                return {
+                  unit,
+                  inspection:
+                    result?.success === true && result?.found
+                      ? result.inspection
+                      : null
+                };
+              })
+            );
+
+            renderApprovalInspectionFindings(inspectionResults);
+          } catch (error) {
+            console.error("HEXA Approval Resume load error:", error);
+            renderApprovalResumeError(
+              error.message || "Unable to load inspection resume."
+            );
+          } finally {
+            if (loading) loading.hidden = true;
+            if (content) content.hidden = false;
+          }
+        }
+
+        function closeDailyActivityApprovalResume() {
+          const backdrop = document.getElementById("approvalResumeBackdrop");
+          if (backdrop) backdrop.hidden = true;
+        }
+
+        function renderApprovalInspectionFindings(results) {
+          const findings = [];
+          const repaired = [];
+
+          results.forEach(entry => {
+            const unitCode =
+              cleanDailyActivityValue(entry?.inspection?.unitCode) ||
+              cleanDailyActivityValue(entry?.unit?.unitCode) ||
+              "-";
+
+            const answers = Array.isArray(entry?.inspection?.answers)
+              ? entry.inspection.answers
+              : [];
+
+            answers.forEach(answer => {
+              const result = normalizeDailyActivityStatus(answer?.result);
+              const item = {
+                unitCode,
+                group: cleanDailyActivityValue(answer?.group),
+                item: cleanDailyActivityValue(answer?.item),
+                result
+              };
+
+              if (result === "BAD" || result === "X") {
+                findings.push(item);
+              }
+
+              if (result === "REPAIRED") {
+                repaired.push(item);
+              }
+            });
+          });
+
+          renderApprovalFindingList("approvalResumeFindings", findings, "No BAD / X finding.");
+          renderApprovalFindingList("approvalResumeRepaired", repaired, "No repaired finding.");
+        }
+
+        function renderApprovalFindingList(elementId, items, emptyText) {
+          const container = document.getElementById(elementId);
+          if (!container) return;
+
+          container.innerHTML = "";
+
+          if (!items.length) {
+            container.innerHTML =
+              `<div class="approval-resume-empty">${escapeDailyActivityHtml(emptyText)}</div>`;
+            return;
+          }
+
+          items.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "approval-resume-item";
+            div.innerHTML = `
+              <strong>${escapeDailyActivityHtml(item.unitCode)} — ${escapeDailyActivityHtml(item.item || "-")}</strong>
+              <span>${escapeDailyActivityHtml(item.group || "-")} · ${escapeDailyActivityHtml(item.result || "-")}</span>
+            `;
+            container.appendChild(div);
+          });
+        }
+
+        function renderApprovalNotInspected(units) {
+          const container = document.getElementById("approvalResumeNotInspectedList");
+          if (!container) return;
+
+          container.innerHTML = "";
+
+          if (!units.length) {
+            container.innerHTML =
+              '<div class="approval-resume-empty">All target units were inspected.</div>';
+            return;
+          }
+
+          units.forEach(unit => {
+            const unitCode = cleanDailyActivityValue(unit?.unitCode) || "-";
+            const reason =
+              cleanDailyActivityValue(
+                unit?.notCompletedReason ||
+                unit?.notInspectedReason ||
+                unit?.reason
+              ) || "-";
+            const note =
+              cleanDailyActivityValue(unit?.note || unit?.notes) || "";
+
+            const div = document.createElement("div");
+            div.className = "approval-resume-item";
+            div.innerHTML = `
+              <strong>${escapeDailyActivityHtml(unitCode)}</strong>
+              <span>${escapeDailyActivityHtml(reason)}${note ? " · " + escapeDailyActivityHtml(note) : ""}</span>
+            `;
+            container.appendChild(div);
+          });
+        }
+
+        function renderApprovalResumeError(message) {
+          const findings = document.getElementById("approvalResumeFindings");
+          const repaired = document.getElementById("approvalResumeRepaired");
+
+          const html =
+            `<div class="approval-resume-empty">${escapeDailyActivityHtml(message)}</div>`;
+
+          if (findings) findings.innerHTML = html;
+          if (repaired) repaired.innerHTML = html;
+        }
+
+        function formatDailyActivityDisplayDate(value) {
+          const clean = cleanDailyActivityValue(value);
+          if (!clean) return "-";
+
+          const parts = clean.split("-");
+          if (parts.length !== 3) return clean;
+
+          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function escapeDailyActivityHtml(value) {
+          return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
