@@ -220,7 +220,7 @@ function createDailyActivityUnitCard(unit) {
   card.append(unitCode);
 
   card.addEventListener("click", () => {
-    console.log("HEXA Daily Activity selected unit:", unit);
+    openDailyActivityInspection(unit);
   });
 
   return card;
@@ -1285,4 +1285,244 @@ async function openEditSchedulePanel(truckNumber) {
     );
     closeSchedulerPanel();
   }
+}
+
+
+/* =====================================================
+   DAILY ACTIVITY INSPECTION - STAGE 3A
+   UNIT CARD -> LOAD CHECKLIST BY UNIT
+   Read-only preview. Belum menyimpan hasil inspeksi.
+===================================================== */
+
+async function openDailyActivityInspection(unit) {
+  const unitCode = cleanDailyActivityValue(unit?.unitCode);
+  const unitId = cleanDailyActivityValue(
+    unit?.unitId || unit?.uniqId || unit?.id
+  );
+  const scheduleUnitId = cleanDailyActivityValue(unit?.scheduleUnitId);
+
+  if (!unitCode) {
+    alert("Unit Code tidak ditemukan.");
+    return;
+  }
+
+  try {
+    const result = await dailyActivityApiRequest({
+      action: "getDMChecklistByUnit",
+      unitCode: unitCode
+    });
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message || "Checklist Daily Activity gagal dimuat."
+      );
+    }
+
+    const checklist = extractDailyActivityChecklist(result);
+
+    showDailyActivityInspectionPreview({
+      unitId: unitId,
+      scheduleUnitId: scheduleUnitId,
+      unitCode: unitCode,
+      egi: cleanDailyActivityValue(
+        result?.egi ||
+        result?.unit?.egi ||
+        unit?.egi
+      ),
+      type: cleanDailyActivityValue(
+        result?.type ||
+        result?.equipmentType ||
+        result?.unit?.type ||
+        unit?.type
+      ),
+      checklist: checklist
+    });
+
+  } catch (error) {
+    console.error("HEXA Daily Activity checklist error:", error);
+    alert(
+      error.message ||
+      "Checklist Daily Activity gagal dimuat."
+    );
+  }
+}
+
+function extractDailyActivityChecklist(result) {
+  const candidates = [
+    result?.checklist,
+    result?.items,
+    result?.data,
+    result?.checklists
+  ];
+
+  for (const value of candidates) {
+    if (Array.isArray(value)) return value;
+  }
+
+  return [];
+}
+
+function showDailyActivityInspectionPreview(data) {
+  let backdrop =
+    document.getElementById("dailyActivityInspectionBackdrop");
+
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.id = "dailyActivityInspectionBackdrop";
+    backdrop.className = "daily-activity-inspection-backdrop";
+    backdrop.hidden = true;
+
+    backdrop.innerHTML = `
+      <section class="daily-activity-inspection-panel"
+               role="dialog"
+               aria-modal="true"
+               aria-labelledby="dailyActivityInspectionTitle">
+        <header class="daily-activity-inspection-header">
+          <div>
+            <p class="daily-activity-inspection-eyebrow">Daily Activity Inspection</p>
+            <h2 id="dailyActivityInspectionTitle">-</h2>
+            <p id="dailyActivityInspectionMeta"
+               class="daily-activity-inspection-meta">-</p>
+          </div>
+
+          <button type="button"
+                  id="closeDailyActivityInspection"
+                  class="daily-activity-inspection-close"
+                  aria-label="Close">×</button>
+        </header>
+
+        <div id="dailyActivityInspectionBody"
+             class="daily-activity-inspection-body"></div>
+
+        <footer class="daily-activity-inspection-footer">
+          <span id="dailyActivityInspectionCount">0 Checklist</span>
+          <button type="button"
+                  id="closeDailyActivityInspectionFooter"
+                  class="daily-activity-inspection-done">
+            Close
+          </button>
+        </footer>
+      </section>
+    `;
+
+    document.body.appendChild(backdrop);
+
+    const close = () => {
+      backdrop.hidden = true;
+      document.body.classList.remove("daily-activity-inspection-open");
+    };
+
+    document.getElementById("closeDailyActivityInspection")
+      ?.addEventListener("click", close);
+
+    document.getElementById("closeDailyActivityInspectionFooter")
+      ?.addEventListener("click", close);
+
+    backdrop.addEventListener("click", event => {
+      if (event.target === backdrop) close();
+    });
+  }
+
+  setDailyActivityText(
+    "dailyActivityInspectionTitle",
+    data.unitCode
+  );
+
+  setDailyActivityText(
+    "dailyActivityInspectionMeta",
+    `${data.egi || "-"} • ${data.type || "-"}`
+  );
+
+  const body =
+    document.getElementById("dailyActivityInspectionBody");
+
+  const count =
+    document.getElementById("dailyActivityInspectionCount");
+
+  if (!body) return;
+
+  body.innerHTML = "";
+
+  const groups = new Map();
+
+  data.checklist.forEach(item => {
+    const group =
+      cleanDailyActivityValue(item?.group) || "CHECKLIST";
+
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group).push(item);
+  });
+
+  groups.forEach((items, groupName) => {
+    const group = document.createElement("section");
+    group.className = "daily-activity-inspection-group";
+
+    const title = document.createElement("h3");
+    title.textContent = groupName;
+    group.appendChild(title);
+
+    items
+      .sort(
+        (a, b) =>
+          (Number(a?.sequence) || 0) -
+          (Number(b?.sequence) || 0)
+      )
+      .forEach(item => {
+        const row = document.createElement("div");
+        row.className = "daily-activity-inspection-item";
+
+        const itemText = document.createElement("span");
+        itemText.className = "daily-activity-inspection-item-text";
+        itemText.textContent =
+          cleanDailyActivityValue(item?.item) || "-";
+
+        const options = document.createElement("div");
+        options.className = "daily-activity-inspection-options";
+
+        [
+          ["GOOD", "✓", "Good Condition"],
+          ["BAD", "X", "Bad Condition"],
+          ["REPAIRED", "ⓧ", "Good Condition After Repair / Action"]
+        ].forEach(([value, symbol, label]) => {
+          const option = document.createElement("button");
+          option.type = "button";
+          option.className = "daily-activity-inspection-option";
+          option.dataset.value = value;
+          option.title = label;
+          option.setAttribute("aria-label", label);
+          option.textContent = symbol;
+
+          option.addEventListener("click", () => {
+            options
+              .querySelectorAll(".daily-activity-inspection-option")
+              .forEach(button => button.classList.remove("is-selected"));
+
+            option.classList.add("is-selected");
+          });
+
+          options.appendChild(option);
+        });
+
+        row.append(itemText, options);
+        group.appendChild(row);
+      });
+
+    body.appendChild(group);
+  });
+
+  if (!data.checklist.length) {
+    const empty = document.createElement("div");
+    empty.className = "daily-activity-inspection-empty";
+    empty.textContent =
+      "Checklist tidak ditemukan untuk unit ini.";
+    body.appendChild(empty);
+  }
+
+  if (count) {
+    count.textContent =
+      `${data.checklist.length} Checklist`;
+  }
+
+  backdrop.hidden = false;
+  document.body.classList.add("daily-activity-inspection-open");
 }
