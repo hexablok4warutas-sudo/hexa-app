@@ -5,6 +5,10 @@ const DAILY_ACTIVITY_API_URL =
 
 let dailyActivitySchedules = [];
 
+let schedulerActiveMechanics = [];
+let schedulerAvailableUnits = [];
+let schedulerSelectedUnitIds = new Set();
+
 document.addEventListener("DOMContentLoaded", initializeDailyActivity);
 
 async function initializeDailyActivity() {
@@ -367,6 +371,8 @@ function initializeSchedulerPanel() {
 
     backdrop.hidden = false;
     document.body.classList.add("scheduler-panel-open");
+
+    loadSchedulerReferenceData();
   }
 
   function closePanel() {
@@ -391,7 +397,346 @@ function initializeSchedulerPanel() {
     }
   });
 
+  const mechanic1 = document.getElementById("schedulerMechanic1");
+  const mechanic2 = document.getElementById("schedulerMechanic2");
+  const unitSearch = document.getElementById("schedulerUnitSearch");
+
+  mechanic1?.addEventListener("change", updateSchedulerMechanicOptions);
+  mechanic2?.addEventListener("change", updateSchedulerMechanicOptions);
+
+  unitSearch?.addEventListener("input", renderSchedulerUnitList);
+
   saveButton?.addEventListener("click", function () {
     alert("Save Schedule akan diaktifkan pada Stage 2C.");
   });
+}
+
+
+/* =====================================================
+   SCHEDULER REFERENCE DATA
+   STAGE 2B
+===================================================== */
+
+async function loadSchedulerReferenceData() {
+  setSchedulerReferenceLoading(true);
+
+  try {
+    const [mechanicResult, unitResult] = await Promise.all([
+      dailyActivityApiRequest({
+        action: "getActiveMechanics"
+      }),
+      dailyActivityApiRequest({
+        action: "getAvailableDMScheduleUnits"
+      })
+    ]);
+
+    if (!mechanicResult || mechanicResult.success !== true) {
+      throw new Error(
+        mechanicResult?.message ||
+        "Unable to load active mechanics."
+      );
+    }
+
+    if (!unitResult || unitResult.success !== true) {
+      throw new Error(
+        unitResult?.message ||
+        "Unable to load available units."
+      );
+    }
+
+    schedulerActiveMechanics =
+      extractSchedulerArray(
+        mechanicResult,
+        ["mechanics", "data", "users"]
+      );
+
+    schedulerAvailableUnits =
+      extractSchedulerArray(
+        unitResult,
+        ["units", "data"]
+      );
+
+    schedulerSelectedUnitIds.clear();
+
+    renderSchedulerMechanicOptions();
+    renderSchedulerUnitList();
+    updateSchedulerSelectedCount();
+
+  } catch (error) {
+    console.error("HEXA Scheduler reference data error:", error);
+
+    schedulerActiveMechanics = [];
+    schedulerAvailableUnits = [];
+    schedulerSelectedUnitIds.clear();
+
+    renderSchedulerMechanicOptions();
+    renderSchedulerUnitError(
+      error.message || "Unable to load Scheduler data."
+    );
+    updateSchedulerSelectedCount();
+  } finally {
+    setSchedulerReferenceLoading(false);
+  }
+}
+
+function extractSchedulerArray(result, keys) {
+  for (const key of keys) {
+    if (Array.isArray(result?.[key])) {
+      return result[key];
+    }
+  }
+  return [];
+}
+
+
+/* =====================================================
+   SCHEDULER MECHANICS
+===================================================== */
+
+function renderSchedulerMechanicOptions() {
+  const mechanic1 = document.getElementById("schedulerMechanic1");
+  const mechanic2 = document.getElementById("schedulerMechanic2");
+
+  if (!mechanic1 || !mechanic2) return;
+
+  const selected1 = mechanic1.value;
+  const selected2 = mechanic2.value;
+
+  fillSchedulerMechanicSelect(
+    mechanic1,
+    "Select Mechanic 1",
+    selected1,
+    selected2
+  );
+
+  fillSchedulerMechanicSelect(
+    mechanic2,
+    "Select Mechanic 2",
+    selected2,
+    selected1
+  );
+}
+
+function updateSchedulerMechanicOptions() {
+  renderSchedulerMechanicOptions();
+}
+
+function fillSchedulerMechanicSelect(
+  select,
+  placeholder,
+  selectedValue,
+  excludedValue
+) {
+  select.innerHTML = "";
+
+  const placeholderOption = document.createElement("option");
+  placeholderOption.value = "";
+  placeholderOption.textContent = placeholder;
+  select.appendChild(placeholderOption);
+
+  schedulerActiveMechanics.forEach(mechanic => {
+    const id =
+      cleanDailyActivityValue(
+        mechanic?.uniqId ||
+        mechanic?.id ||
+        mechanic?.userId
+      );
+
+    const name =
+      cleanDailyActivityValue(
+        mechanic?.nama ||
+        mechanic?.name ||
+        mechanic?.userName
+      );
+
+    if (!id || !name) return;
+
+    if (id === excludedValue && id !== selectedValue) {
+      return;
+    }
+
+    const option = document.createElement("option");
+    option.value = id;
+    option.textContent = name;
+
+    if (id === selectedValue) {
+      option.selected = true;
+    }
+
+    select.appendChild(option);
+  });
+
+  if (
+    selectedValue &&
+    !Array.from(select.options).some(
+      option => option.value === selectedValue
+    )
+  ) {
+    select.value = "";
+  }
+}
+
+
+/* =====================================================
+   SCHEDULER UNIT LIST
+===================================================== */
+
+function renderSchedulerUnitList() {
+  const container = document.getElementById("schedulerUnitList");
+  const search = document.getElementById("schedulerUnitSearch");
+
+  if (!container) return;
+
+  const keyword =
+    cleanDailyActivityValue(search?.value).toLowerCase();
+
+  const filteredUnits = schedulerAvailableUnits.filter(unit => {
+    const haystack = [
+      unit?.unitCode,
+      unit?.egi,
+      unit?.type,
+      unit?.status
+    ]
+      .map(cleanDailyActivityValue)
+      .join(" ")
+      .toLowerCase();
+
+    return !keyword || haystack.includes(keyword);
+  });
+
+  container.innerHTML = "";
+
+  if (!filteredUnits.length) {
+    const empty = document.createElement("div");
+    empty.className = "scheduler-unit-placeholder";
+    empty.textContent =
+      schedulerAvailableUnits.length
+        ? "Unit tidak ditemukan."
+        : "Tidak ada unit Running / Stand By yang tersedia.";
+
+    container.appendChild(empty);
+    return;
+  }
+
+  filteredUnits.forEach(unit => {
+    container.appendChild(
+      createSchedulerUnitOption(unit)
+    );
+  });
+}
+
+function createSchedulerUnitOption(unit) {
+  const unitId =
+    cleanDailyActivityValue(
+      unit?.unitId ||
+      unit?.uniqId ||
+      unit?.id
+    );
+
+  const label = document.createElement("label");
+  label.className = "scheduler-unit-option";
+
+  if (schedulerSelectedUnitIds.has(unitId)) {
+    label.classList.add("is-selected");
+  }
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.value = unitId;
+  checkbox.checked = schedulerSelectedUnitIds.has(unitId);
+
+  const content = document.createElement("span");
+  content.className = "scheduler-unit-option-content";
+
+  const top = document.createElement("span");
+  top.className = "scheduler-unit-option-top";
+
+  const unitCode = document.createElement("strong");
+  unitCode.textContent =
+    cleanDailyActivityValue(unit?.unitCode) || "-";
+
+  const status = document.createElement("span");
+  status.className = "scheduler-unit-option-status";
+  status.textContent =
+    cleanDailyActivityValue(unit?.status) || "-";
+
+  top.append(unitCode, status);
+
+  const meta = document.createElement("span");
+  meta.className = "scheduler-unit-option-meta";
+
+  const egi =
+    cleanDailyActivityValue(unit?.egi) || "-";
+
+  const type =
+    cleanDailyActivityValue(unit?.type) || "-";
+
+  meta.textContent = `${egi} • ${type}`;
+
+  content.append(top, meta);
+  label.append(checkbox, content);
+
+  checkbox.addEventListener("change", function () {
+    if (!unitId) return;
+
+    if (checkbox.checked) {
+      schedulerSelectedUnitIds.add(unitId);
+      label.classList.add("is-selected");
+    } else {
+      schedulerSelectedUnitIds.delete(unitId);
+      label.classList.remove("is-selected");
+    }
+
+    updateSchedulerSelectedCount();
+  });
+
+  return label;
+}
+
+function updateSchedulerSelectedCount() {
+  const element =
+    document.getElementById("schedulerSelectedUnitCount");
+
+  if (!element) return;
+
+  const count = schedulerSelectedUnitIds.size;
+  element.textContent =
+    `${count} Selected`;
+}
+
+
+/* =====================================================
+   SCHEDULER LOADING / ERROR
+===================================================== */
+
+function setSchedulerReferenceLoading(isLoading) {
+  const mechanic1 = document.getElementById("schedulerMechanic1");
+  const mechanic2 = document.getElementById("schedulerMechanic2");
+  const search = document.getElementById("schedulerUnitSearch");
+  const container = document.getElementById("schedulerUnitList");
+
+  if (mechanic1) mechanic1.disabled = isLoading;
+  if (mechanic2) mechanic2.disabled = isLoading;
+  if (search) search.disabled = isLoading;
+
+  if (isLoading && container) {
+    container.innerHTML =
+      '<div class="scheduler-unit-placeholder">Loading mechanics & unit...</div>';
+  }
+}
+
+function renderSchedulerUnitError(message) {
+  const container =
+    document.getElementById("schedulerUnitList");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  const error = document.createElement("div");
+  error.className =
+    "scheduler-unit-placeholder scheduler-unit-error";
+  error.textContent = cleanDailyActivityValue(message);
+
+  container.appendChild(error);
 }
