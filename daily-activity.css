@@ -1309,3 +1309,26 @@ body.scheduler-panel-open {
   }
 
 }
+
+
+/* =========================================
+   SCHEDULER UNIT STATUS COLORS
+   Running = Green
+   Stand By = Orange
+   Lay Off = Red
+   ========================================= */
+
+.scheduler-unit-option-status.status-running {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.scheduler-unit-option-status.status-standby {
+  background: #fff3e0;
+  color: #ef6c00;
+}
+
+.scheduler-unit-option-status.status-layoff {
+  background: #ffebee;
+  color: #c62828;
+}
