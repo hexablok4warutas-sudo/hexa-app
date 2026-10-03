@@ -16,10 +16,7 @@ async function initializeDailyActivity() {
     ?.addEventListener("click", loadDailyActivitySchedule);
   document.getElementById("activityDate")
     ?.addEventListener("change", loadDailyActivitySchedule);
-  document.getElementById("openSchedulerButton")
-    ?.addEventListener("click", () => {
-      alert("Scheduler akan diaktifkan pada tahap berikutnya.");
-    });
+  initializeSchedulerPanel();
 
   await loadDailyActivitySchedule();
 }
@@ -344,4 +341,57 @@ function setDailyActivityText(id, value) {
 
 function cleanDailyActivityValue(value) {
   return value == null ? "" : String(value).trim();
+}
+
+
+/* =====================================================
+   SCHEDULER PANEL
+   STAGE 2A - OPEN / CLOSE ONLY
+===================================================== */
+
+function initializeSchedulerPanel() {
+  const openButton = document.getElementById("openSchedulerButton");
+  const backdrop = document.getElementById("schedulerPanelBackdrop");
+  const closeButton = document.getElementById("closeSchedulerPanel");
+  const cancelButton = document.getElementById("cancelSchedulerPanel");
+  const saveButton = document.getElementById("saveSchedulerButton");
+  const activityDate = document.getElementById("activityDate");
+  const schedulerDate = document.getElementById("schedulerActivityDate");
+
+  function openPanel() {
+    if (!backdrop) return;
+
+    if (schedulerDate && activityDate?.value) {
+      schedulerDate.value = activityDate.value;
+    }
+
+    backdrop.hidden = false;
+    document.body.classList.add("scheduler-panel-open");
+  }
+
+  function closePanel() {
+    if (!backdrop) return;
+    backdrop.hidden = true;
+    document.body.classList.remove("scheduler-panel-open");
+  }
+
+  openButton?.addEventListener("click", openPanel);
+  closeButton?.addEventListener("click", closePanel);
+  cancelButton?.addEventListener("click", closePanel);
+
+  backdrop?.addEventListener("click", function (event) {
+    if (event.target === backdrop) {
+      closePanel();
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && backdrop && !backdrop.hidden) {
+      closePanel();
+    }
+  });
+
+  saveButton?.addEventListener("click", function () {
+    alert("Save Schedule akan diaktifkan pada Stage 2C.");
+  });
 }
