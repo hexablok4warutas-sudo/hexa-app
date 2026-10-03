@@ -2555,6 +2555,10 @@
         // Approve / Issue Resume / PDF remain disabled until next stage.
         // =========================================================
 
+        const dailyActivityReviewedSchedules = new Set();
+        let currentApprovalReviewScheduleId = "";
+        let currentApprovalReviewTruckNumber = null;
+
         function initializeDailyActivityApprovalReview() {
           const section = document.getElementById("dailyActivityApprovalReview");
           const user = getDailyActivitySessionUser();
@@ -2575,7 +2579,7 @@
 
           document
             .getElementById("approvalResumeDoneButton")
-            ?.addEventListener("click", closeDailyActivityApprovalResume);
+            ?.addEventListener("click", completeDailyActivityReview);
 
           document
             .getElementById("approvalResumeBackdrop")
@@ -2650,7 +2654,16 @@
             );
           }
 
-          if (reviewButton) reviewButton.disabled = !canReview;
+          if (reviewButton) {
+            const scheduleId =
+              cleanDailyActivityValue(schedule?.scheduleId || schedule?.scheduleID || schedule?.id);
+            const reviewed =
+              Boolean(scheduleId) && dailyActivityReviewedSchedules.has(scheduleId);
+
+            reviewButton.disabled = !canReview;
+            reviewButton.textContent = reviewed ? "Reviewed" : "Review Resume";
+            reviewButton.classList.toggle("is-reviewed", reviewed);
+          }
 
           // Stage 4B-1: visible but intentionally inactive.
           if (approveButton) approveButton.disabled = true;
@@ -2667,6 +2680,10 @@
           );
 
           if (!schedule) return;
+
+          currentApprovalReviewScheduleId =
+            cleanDailyActivityValue(schedule?.scheduleId || schedule?.scheduleID || schedule?.id);
+          currentApprovalReviewTruckNumber = truckNumber;
 
           const status = normalizeDailyActivityStatus(schedule?.status);
           if (!["APPROVAL", "APPROVED", "RESUME ISSUED"].includes(status)) return;
@@ -2747,6 +2764,21 @@
             if (loading) loading.hidden = true;
             if (content) content.hidden = false;
           }
+        }
+
+        function completeDailyActivityReview() {
+          if (currentApprovalReviewScheduleId) {
+            dailyActivityReviewedSchedules.add(currentApprovalReviewScheduleId);
+          }
+
+          if (currentApprovalReviewTruckNumber === 15 || currentApprovalReviewTruckNumber === 16) {
+            const schedule = dailyActivitySchedules.find(item =>
+              getLubeTruckNumber(item?.lubeTruck) === currentApprovalReviewTruckNumber
+            );
+            renderDailyActivityApprovalRow(currentApprovalReviewTruckNumber, schedule);
+          }
+
+          closeDailyActivityApprovalResume();
         }
 
         function closeDailyActivityApprovalResume() {
