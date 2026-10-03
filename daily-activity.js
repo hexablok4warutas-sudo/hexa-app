@@ -831,14 +831,12 @@ async function saveSchedulerSchedule() {
     const result =
       await dailyActivityApiRequest({
         action: "saveDMSchedule",
-        data: {
-          activityDate: activityDate,
-          lubeTruck: lubeTruck,
-          mechanic1Id: mechanic1Id,
-          mechanic2Id: mechanic2Id,
-          createdById: createdById,
-          unitIds: unitIds
-        }
+        activityDate: activityDate,
+        lubeTruck: lubeTruck,
+        mechanic1Id: mechanic1Id,
+        mechanic2Id: mechanic2Id,
+        createdById: createdById,
+        unitIds: unitIds
       });
 
     if (!result || result.success !== true) {
