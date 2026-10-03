@@ -406,9 +406,7 @@ function initializeSchedulerPanel() {
 
   unitSearch?.addEventListener("input", renderSchedulerUnitList);
 
-  saveButton?.addEventListener("click", function () {
-    alert("Save Schedule akan diaktifkan pada Stage 2C.");
-  });
+  saveButton?.addEventListener("click", saveSchedulerSchedule);
 }
 
 
@@ -739,4 +737,194 @@ function renderSchedulerUnitError(message) {
   error.textContent = cleanDailyActivityValue(message);
 
   container.appendChild(error);
+}
+
+
+/* =====================================================
+   SAVE SCHEDULER
+   STAGE 2C
+===================================================== */
+
+async function saveSchedulerSchedule() {
+  const saveButton = document.getElementById("saveSchedulerButton");
+  const backdrop = document.getElementById("schedulerPanelBackdrop");
+
+  const activityDate =
+    cleanDailyActivityValue(
+      document.getElementById("schedulerActivityDate")?.value
+    );
+
+  const lubeTruck =
+    cleanDailyActivityValue(
+      document.getElementById("schedulerLubeTruck")?.value
+    );
+
+  const mechanic1Id =
+    cleanDailyActivityValue(
+      document.getElementById("schedulerMechanic1")?.value
+    );
+
+  const mechanic2Id =
+    cleanDailyActivityValue(
+      document.getElementById("schedulerMechanic2")?.value
+    );
+
+  const unitIds =
+    Array.from(schedulerSelectedUnitIds);
+
+  if (!activityDate) {
+    alert("Pilih Activity Date.");
+    return;
+  }
+
+  if (!lubeTruck) {
+    alert("Pilih Lube Truck.");
+    return;
+  }
+
+  if (!mechanic1Id) {
+    alert("Pilih Mechanic 1.");
+    return;
+  }
+
+  if (!mechanic2Id) {
+    alert("Pilih Mechanic 2.");
+    return;
+  }
+
+  if (mechanic1Id === mechanic2Id) {
+    alert("Mechanic 1 dan Mechanic 2 harus berbeda.");
+    return;
+  }
+
+  if (!unitIds.length) {
+    alert("Pilih minimal 1 Target Unit.");
+    return;
+  }
+
+  const currentUser =
+    getDailyActivitySessionUser();
+
+  if (!currentUser) {
+    return;
+  }
+
+  const createdById =
+    cleanDailyActivityValue(
+      currentUser.uniqId
+    );
+
+  if (!createdById) {
+    alert("Session user tidak valid.");
+    return;
+  }
+
+  const originalText =
+    saveButton?.textContent || "Save Schedule";
+
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+  }
+
+  try {
+    const result =
+      await dailyActivityApiRequest({
+        action: "saveDMSchedule",
+        data: {
+          activityDate: activityDate,
+          lubeTruck: lubeTruck,
+          mechanic1Id: mechanic1Id,
+          mechanic2Id: mechanic2Id,
+          createdById: createdById,
+          unitIds: unitIds
+        }
+      });
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message ||
+        "Schedule gagal disimpan."
+      );
+    }
+
+    alert("Schedule berhasil disimpan.");
+
+    if (backdrop) {
+      backdrop.hidden = true;
+    }
+
+    document.body.classList.remove(
+      "scheduler-panel-open"
+    );
+
+    const mainDate =
+      document.getElementById("activityDate");
+
+    if (mainDate) {
+      mainDate.value = activityDate;
+    }
+
+    resetSchedulerForm();
+
+    await loadDailyActivitySchedule();
+
+  } catch (error) {
+    console.error(
+      "HEXA Scheduler save error:",
+      error
+    );
+
+    alert(
+      error.message ||
+      "Schedule gagal disimpan."
+    );
+
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalText;
+    }
+  }
+}
+
+
+/* =====================================================
+   RESET SCHEDULER FORM AFTER SAVE
+===================================================== */
+
+function resetSchedulerForm() {
+  const lubeTruck =
+    document.getElementById("schedulerLubeTruck");
+
+  const mechanic1 =
+    document.getElementById("schedulerMechanic1");
+
+  const mechanic2 =
+    document.getElementById("schedulerMechanic2");
+
+  const search =
+    document.getElementById("schedulerUnitSearch");
+
+  if (lubeTruck) {
+    lubeTruck.value = "";
+  }
+
+  if (mechanic1) {
+    mechanic1.value = "";
+  }
+
+  if (mechanic2) {
+    mechanic2.value = "";
+  }
+
+  if (search) {
+    search.value = "";
+  }
+
+  schedulerSelectedUnitIds.clear();
+
+  renderSchedulerMechanicOptions();
+  renderSchedulerUnitList();
+  updateSchedulerSelectedCount();
 }
