@@ -397,10 +397,13 @@ function initializeSchedulerPanel() {
   mechanic2?.addEventListener("change", updateSchedulerMechanicOptions);
 
   unitSearch?.addEventListener("input", renderSchedulerUnitList);
-  document.getElementById("schedulerActivityDate")?.addEventListener("change", syncSchedulerCreateEditMode);
-  document.getElementById("schedulerLubeTruck")?.addEventListener("change", syncSchedulerCreateEditMode);
-
   saveButton?.addEventListener("click", saveSchedulerSchedule);
+
+  document.getElementById("lubeTruck15EditButton")
+    ?.addEventListener("click", () => openEditSchedulePanel("15"));
+
+  document.getElementById("lubeTruck16EditButton")
+    ?.addEventListener("click", () => openEditSchedulePanel("16"));
 }
 
 
@@ -448,7 +451,14 @@ async function loadSchedulerReferenceData() {
         ["units", "data"]
       );
 
-    await syncSchedulerCreateEditMode();
+    schedulerSelectedUnitIds.clear();
+    schedulerEditingScheduleId = "";
+    schedulerEditingLockedUnitIds.clear();
+    schedulerEditingExistingUnits = [];
+
+    renderSchedulerMechanicOptions();
+    renderSchedulerUnitList();
+    updateSchedulerSelectedCount();
 
   } catch (error) {
     console.error("HEXA Scheduler reference data error:", error);
@@ -846,6 +856,32 @@ async function saveSchedulerSchedule() {
   }
 
   try {
+    if (!isEditMode) {
+      const existingResult =
+        await dailyActivityApiRequest({
+          action: "getDMScheduleByDate",
+          activityDate: activityDate
+        });
+
+      if (existingResult?.success === true) {
+        const targetTruckNumber = getLubeTruckNumber(lubeTruck);
+        const duplicate =
+          (Array.isArray(existingResult.schedules)
+            ? existingResult.schedules
+            : []
+          ).find(schedule =>
+            getLubeTruckNumber(schedule?.lubeTruck) === targetTruckNumber
+          );
+
+        if (duplicate) {
+          alert(
+            "Jadwal sudah terisi. Silakan update melalui fitur Edit."
+          );
+          return;
+        }
+      }
+    }
+
     const payload = isEditMode
       ? {
           action: "updateDMSchedule",
@@ -962,6 +998,14 @@ function resetSchedulerForm() {
   const saveButton = document.getElementById("saveSchedulerButton");
   if (saveButton) saveButton.textContent = "Save Schedule";
 
+  const dateInput = document.getElementById("schedulerActivityDate");
+  const lubeTruckSelect = document.getElementById("schedulerLubeTruck");
+  const panelTitle = document.getElementById("schedulerPanelTitle");
+
+  if (dateInput) dateInput.disabled = false;
+  if (lubeTruckSelect) lubeTruckSelect.disabled = false;
+  if (panelTitle) panelTitle.textContent = "Scheduler";
+
   renderSchedulerMechanicOptions();
   renderSchedulerUnitList();
   updateSchedulerSelectedCount();
@@ -1066,4 +1110,161 @@ function getSchedulerMechanicId(mechanic) {
   return cleanDailyActivityValue(
     mechanic?.uniqId || mechanic?.id || mechanic?.userId
   );
+}
+
+
+/* =====================================================
+   OPEN EDIT FROM LUBE TRUCK CARD
+   Scheduler = CREATE only
+   Card Edit = UPDATE only
+===================================================== */
+
+async function openEditSchedulePanel(truckNumber) {
+  const activityDate =
+    cleanDailyActivityValue(
+      document.getElementById("activityDate")?.value
+    );
+
+  if (!activityDate) {
+    alert("Pilih Activity Date terlebih dahulu.");
+    return;
+  }
+
+  const lubeTruck = `LUBE TRUCK ${truckNumber}`;
+
+  try {
+    const backdrop =
+      document.getElementById("schedulerPanelBackdrop");
+
+    if (!backdrop) {
+      throw new Error("Scheduler panel tidak ditemukan.");
+    }
+
+    backdrop.style.removeProperty("display");
+    backdrop.hidden = false;
+    document.body.classList.add("scheduler-panel-open");
+
+    const dateInput =
+      document.getElementById("schedulerActivityDate");
+
+    const lubeTruckSelect =
+      document.getElementById("schedulerLubeTruck");
+
+    const panelTitle =
+      document.getElementById("schedulerPanelTitle");
+
+    const saveButton =
+      document.getElementById("saveSchedulerButton");
+
+    if (panelTitle) {
+      panelTitle.textContent = "Edit Schedule";
+    }
+
+    if (dateInput) {
+      dateInput.value = activityDate;
+      dateInput.disabled = true;
+    }
+
+    if (lubeTruckSelect) {
+      lubeTruckSelect.value = lubeTruck;
+      lubeTruckSelect.disabled = true;
+    }
+
+    schedulerEditingScheduleId = "";
+    schedulerEditingLockedUnitIds.clear();
+    schedulerEditingExistingUnits = [];
+    schedulerSelectedUnitIds.clear();
+
+    if (saveButton) {
+      saveButton.disabled = true;
+      saveButton.textContent = "Loading...";
+    }
+
+    await loadSchedulerReferenceData();
+
+    const result =
+      await dailyActivityApiRequest({
+        action: "getDMScheduleByDate",
+        activityDate: activityDate
+      });
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message ||
+        "Gagal membaca schedule existing."
+      );
+    }
+
+    const existing =
+      (Array.isArray(result.schedules)
+        ? result.schedules
+        : []
+      ).find(schedule =>
+        getLubeTruckNumber(schedule?.lubeTruck) ===
+        getLubeTruckNumber(lubeTruck)
+      );
+
+    if (!existing) {
+      throw new Error(
+        "Schedule tidak ditemukan. Gunakan Scheduler untuk membuat jadwal baru."
+      );
+    }
+
+    schedulerEditingScheduleId =
+      cleanDailyActivityValue(existing.scheduleId);
+
+    schedulerEditingExistingUnits =
+      Array.isArray(existing.units)
+        ? [...existing.units]
+        : [];
+
+    schedulerEditingExistingUnits.forEach(unit => {
+      const unitId =
+        cleanDailyActivityValue(unit?.unitId);
+
+      if (!unitId) return;
+
+      schedulerSelectedUnitIds.add(unitId);
+
+      if (
+        normalizeDailyActivityStatus(unit?.status) !==
+        "NOT STARTED"
+      ) {
+        schedulerEditingLockedUnitIds.add(unitId);
+      }
+    });
+
+    const mechanic1 =
+      document.getElementById("schedulerMechanic1");
+
+    const mechanic2 =
+      document.getElementById("schedulerMechanic2");
+
+    const mechanic1Id =
+      getSchedulerMechanicId(existing.mechanic1);
+
+    const mechanic2Id =
+      getSchedulerMechanicId(existing.mechanic2);
+
+    renderSchedulerMechanicOptions();
+
+    if (mechanic1) mechanic1.value = mechanic1Id;
+    if (mechanic2) mechanic2.value = mechanic2Id;
+
+    renderSchedulerUnitList();
+    updateSchedulerSelectedCount();
+
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = "Update Schedule";
+    }
+
+  } catch (error) {
+    console.error("HEXA open Edit Schedule error:", error);
+    alert(
+      error.message ||
+      "Gagal membuka Edit Schedule."
+    );
+    closeSchedulerPanel();
+  }
 }
