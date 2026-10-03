@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Daily Activity | HEXA</title>
+
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER CSS
+       ===================================== -->
+
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- =====================================
+       DAILY ACTIVITY CSS
+       ===================================== -->
+
+  <link
+    rel="stylesheet"
+    href="daily-activity.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER
+       ===================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="daily-maintenance"
+  ></header>
+
+
+
+  <!-- =====================================
+       DAILY ACTIVITY MAIN
+       ===================================== -->
+
+  <main class="daily-activity-main">
+
+    <section class="daily-activity-section">
+
+
+      <!-- =================================
+           PAGE HEADING
+           ================================= -->
+
+      <div class="daily-activity-heading">
+
+        <div class="daily-activity-heading-text">
+
+          <h1>
+            Daily Activity
+          </h1>
+
+          <p>
+            Schedule dan monitoring aktivitas Daily Maintenance
+            Lube Truck 15 dan Lube Truck 16.
+          </p>
+
+        </div>
+
+
+        <!-- Scheduler hanya akan ditampilkan
+             kepada user yang memiliki permission
+             Scheduler pada tahap JS/permission. -->
+
+        <button
+          type="button"
+          id="openSchedulerButton"
+          class="daily-activity-scheduler-button"
+        >
+          Scheduler
+        </button>
+
+      </div>
+
+
+
+      <!-- =================================
+           ACTIVITY DATE
+           ================================= -->
+
+      <div class="daily-activity-toolbar">
+
+        <div class="activity-date-field">
+
+          <label for="activityDate">
+            Activity Date
+          </label>
+
+          <input
+            type="date"
+            id="activityDate"
+            name="activityDate"
+          >
+
+        </div>
+
+
+        <button
+          type="button"
+          id="refreshDailyActivityButton"
+          class="daily-activity-refresh-button"
+          aria-label="Refresh Daily Activity"
+          title="Refresh Daily Activity"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+
+
+      <!-- =================================
+           PAGE MESSAGE
+           ================================= -->
+
+      <div
+        id="dailyActivityMessage"
+        class="daily-activity-message"
+        hidden
+      ></div>
+
+
+
+      <!-- =================================
+           LOADING STATE
+           ================================= -->
+
+      <div
+        id="dailyActivityLoading"
+        class="daily-activity-loading"
+        hidden
+      >
+        Loading Daily Activity...
+      </div>
+
+
+
+      <!-- =================================
+           EMPTY STATE
+           ================================= -->
+
+      <div
+        id="dailyActivityEmpty"
+        class="daily-activity-empty"
+        hidden
+      >
+
+        <strong>
+          Schedule belum tersedia.
+        </strong>
+
+        <span>
+          Belum ada Daily Maintenance Schedule
+          pada tanggal yang dipilih.
+        </span>
+
+      </div>
+
+
+
+      <!-- =================================
+           LUBE TRUCK SCHEDULE AREA
+           ================================= -->
+
+      <div
+        id="dailyActivityScheduleGrid"
+        class="daily-activity-schedule-grid"
+      >
+
+
+        <!-- ===============================
+             LUBE TRUCK 15
+             =============================== -->
+
+        <article
+          id="lubeTruck15Card"
+          class="lube-truck-card"
+          data-lube-truck="LUBE TRUCK 15"
+        >
+
+          <div class="lube-truck-header">
+
+            <div>
+
+              <span class="lube-truck-kicker">
+                Daily Maintenance Team
+              </span>
+
+              <h2>
+                Lube Truck 15
+              </h2>
+
+            </div>
+
+
+            <span
+              id="lubeTruck15ScheduleStatus"
+              class="lube-truck-schedule-status"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <!-- =============================
+               MECHANICS
+               ============================= -->
+
+          <div class="lube-truck-mechanics">
+
+            <div class="mechanic-slot">
+
+              <span class="mechanic-label">
+                Mechanic 1
+              </span>
+
+              <strong
+                id="lubeTruck15Mechanic1"
+                class="mechanic-name"
+              >
+                -
+              </strong>
+
+            </div>
+
+
+            <div class="mechanic-slot">
+
+              <span class="mechanic-label">
+                Mechanic 2
+              </span>
+
+              <strong
+                id="lubeTruck15Mechanic2"
+                class="mechanic-name"
+              >
+                -
+              </strong>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =============================
+               PROGRESS
+               ============================= -->
+
+          <div class="lube-truck-progress">
+
+            <div class="progress-summary">
+
+              <span>
+                Progress
+              </span>
+
+              <strong
+                id="lubeTruck15ProgressText"
+              >
+                0 / 0
+              </strong>
+
+            </div>
+
+
+            <div class="progress-track">
+
+              <div
+                id="lubeTruck15ProgressBar"
+                class="progress-bar"
+                style="width: 0%;"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =============================
+               UNIT LIST
+               ============================= -->
+
+          <div
+            id="lubeTruck15Units"
+            class="daily-unit-grid"
+          ></div>
+
+
+          <div
+            id="lubeTruck15Empty"
+            class="lube-truck-empty"
+          >
+            Belum ada unit schedule.
+          </div>
+
+        </article>
+
+
+
+        <!-- ===============================
+             LUBE TRUCK 16
+             =============================== -->
+
+        <article
+          id="lubeTruck16Card"
+          class="lube-truck-card"
+          data-lube-truck="LUBE TRUCK 16"
+        >
+
+          <div class="lube-truck-header">
+
+            <div>
+
+              <span class="lube-truck-kicker">
+                Daily Maintenance Team
+              </span>
+
+              <h2>
+                Lube Truck 16
+              </h2>
+
+            </div>
+
+
+            <span
+              id="lubeTruck16ScheduleStatus"
+              class="lube-truck-schedule-status"
+            >
+              -
+            </span>
+
+          </div>
+
+
+
+          <!-- =============================
+               MECHANICS
+               ============================= -->
+
+          <div class="lube-truck-mechanics">
+
+            <div class="mechanic-slot">
+
+              <span class="mechanic-label">
+                Mechanic 1
+              </span>
+
+              <strong
+                id="lubeTruck16Mechanic1"
+                class="mechanic-name"
+              >
+                -
+              </strong>
+
+            </div>
+
+
+            <div class="mechanic-slot">
+
+              <span class="mechanic-label">
+                Mechanic 2
+              </span>
+
+              <strong
+                id="lubeTruck16Mechanic2"
+                class="mechanic-name"
+              >
+                -
+              </strong>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =============================
+               PROGRESS
+               ============================= -->
+
+          <div class="lube-truck-progress">
+
+            <div class="progress-summary">
+
+              <span>
+                Progress
+              </span>
+
+              <strong
+                id="lubeTruck16ProgressText"
+              >
+                0 / 0
+              </strong>
+
+            </div>
+
+
+            <div class="progress-track">
+
+              <div
+                id="lubeTruck16ProgressBar"
+                class="progress-bar"
+                style="width: 0%;"
+              ></div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- =============================
+               UNIT LIST
+               ============================= -->
+
+          <div
+            id="lubeTruck16Units"
+            class="daily-unit-grid"
+          ></div>
+
+
+          <div
+            id="lubeTruck16Empty"
+            class="lube-truck-empty"
+          >
+            Belum ada unit schedule.
+          </div>
+
+        </article>
+
+
+      </div>
+
+
+
+      <!-- =================================
+           STATUS LEGEND
+           ================================= -->
+
+      <div class="daily-activity-status-legend">
+
+        <div class="status-legend-item">
+          <span
+            class="status-dot status-not-started"
+          ></span>
+          Not Started
+        </div>
+
+        <div class="status-legend-item">
+          <span
+            class="status-dot status-in-progress"
+          ></span>
+          In Progress
+        </div>
+
+        <div class="status-legend-item">
+          <span
+            class="status-dot status-completed"
+          ></span>
+          Completed
+        </div>
+
+        <div class="status-legend-item">
+          <span
+            class="status-dot status-not-completed"
+          ></span>
+          Not Completed
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================
+       GLOBAL HEXA SYSTEM
+       ===================================== -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
+
+  <script src="daily-activity.js"></script>
+
+
+</body>
+
+</html>
