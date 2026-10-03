@@ -1817,10 +1817,120 @@
         return;
       }
 
-      // Stage berikutnya akan memanggil submit final ke Apps Script.
-      alert("Checklist sudah lengkap dan siap di-Submit.");
+      // Semua checklist sudah lengkap.
+      // Lanjutkan ke Submit Final.
+      submitDailyActivityInspection();
+    }
 
-      // submitDailyActivityInspection();
+
+    async function submitDailyActivityInspection() {
+      const backdrop =
+        document.getElementById("dailyActivityInspectionBackdrop");
+
+      const submitButton =
+        document.getElementById("submitDailyActivityInspection");
+
+      const saveButton =
+        document.getElementById("saveDailyActivityInspectionDraft");
+
+      const scheduleUnitId =
+        cleanDailyActivityValue(backdrop?.dataset.scheduleUnitId);
+
+      if (!scheduleUnitId) {
+        alert("Schedule Unit ID tidak ditemukan.");
+        return;
+      }
+
+      const user = getDailyActivitySessionUser();
+      if (!user) return;
+
+      const inspectorId =
+        cleanDailyActivityValue(user?.uniqId);
+
+      if (!inspectorId) {
+        alert("Session user tidak valid.");
+        return;
+      }
+
+      const hourMeter =
+        cleanDailyActivityValue(
+          document.getElementById("dailyActivityInspectionHourMeter")?.value
+        );
+
+      const activityNotes =
+        cleanDailyActivityValue(
+          document.getElementById("dailyActivityInspectionNotes")?.value
+        );
+
+      const answers =
+        collectDailyActivityInspectionAnswers();
+
+      const originalSubmitText =
+        submitButton?.textContent || "Submit";
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting...";
+      }
+
+      if (saveButton) {
+        saveButton.disabled = true;
+      }
+
+      try {
+        const result =
+          await dailyActivityApiRequest({
+            action: "submitDMInspection",
+            scheduleUnitId: scheduleUnitId,
+            inspectedById: inspectorId,
+            hourMeter: hourMeter,
+            activityNotes: activityNotes,
+            photo: "",
+            answers: answers
+          });
+
+        if (!result || result.success !== true) {
+          throw new Error(
+            result?.message ||
+            "Daily Activity gagal di-Submit."
+          );
+        }
+
+        // Refresh data terlebih dahulu agar card/progress mengambil
+        // status terbaru dari database.
+        await loadDailyActivitySchedule();
+
+        // Tutup modal hanya setelah backend benar-benar sukses.
+        if (backdrop) {
+          backdrop.hidden = true;
+        }
+
+        alert(
+          result?.message ||
+          "Daily Activity berhasil di-Submit."
+        );
+
+      } catch (error) {
+        console.error(
+          "HEXA Daily Activity Submit error:",
+          error
+        );
+
+        alert(
+          error?.message ||
+          "Daily Activity gagal di-Submit."
+        );
+
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalSubmitText;
+        }
+
+        if (saveButton) {
+          saveButton.disabled = false;
+        }
+      }
     }
 
 
