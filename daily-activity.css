@@ -1388,3 +1388,60 @@ body.scheduler-panel-open {
   font-weight: 700;
   text-align: center;
 }
+
+
+/* =========================================
+   DAILY ACTIVITY - EDIT SCHEDULE
+   STAGE 2F-B REVISED
+   ========================================= */
+
+.lube-truck-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.lube-truck-edit-button {
+  min-height: 28px;
+  padding: 5px 10px;
+  border: 1px solid #ff9800;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #e88900;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lube-truck-edit-button:hover {
+  background: #fff7eb;
+}
+
+.scheduler-field input:disabled,
+.scheduler-field select:disabled {
+  background: #f3f3f3;
+  color: #777777;
+  cursor: not-allowed;
+}
+
+.scheduler-unit-option.is-locked {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.scheduler-unit-option.is-locked input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+@media (max-width: 430px) {
+  .lube-truck-header-actions {
+    gap: 5px;
+  }
+
+  .lube-truck-edit-button,
+  .lube-truck-schedule-status {
+    min-height: 26px;
+  }
+}
