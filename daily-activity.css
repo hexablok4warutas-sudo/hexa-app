@@ -2062,3 +2062,24 @@ button[id^="lubeTruck"][id$="EditButton"].is-locked {
   color: #16863d;
   cursor: default;
 }
+
+
+/* STAGE 4B-1 REV2 — compact Approval Review */
+.daily-activity-approval-review {
+  width: calc(100% - 300px);
+  max-width: 1470px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 1200px) {
+  .daily-activity-approval-review {
+    width: calc(100% - 48px);
+  }
+}
+
+@media (max-width: 720px) {
+  .daily-activity-approval-review {
+    width: calc(100% - 24px);
+  }
+}
