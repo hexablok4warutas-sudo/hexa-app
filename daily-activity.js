@@ -24,6 +24,7 @@
           document.getElementById("activityDate")
             ?.addEventListener("change", loadDailyActivitySchedule);
           initializeSchedulerPanel();
+          initializeDailyActivityClosing();
 
           await loadDailyActivitySchedule();
         }
@@ -169,6 +170,7 @@
 
           renderLubeTruckUnits(truckNumber, units);
           renderLubeTruckProgress(truckNumber, units);
+          renderLubeTruckClosingState(truckNumber, schedule);
         }
 
         function getMechanicName(mechanic) {
@@ -267,6 +269,16 @@
           if (editButton) {
             editButton.hidden = true;
           }
+
+          const completeButton =
+            document.getElementById(`lubeTruck${truckNumber}CompleteButton`);
+
+          if (completeButton) {
+            completeButton.hidden = true;
+            completeButton.disabled = false;
+            completeButton.classList.remove("is-completed");
+            completeButton.textContent = "COMPLETE DAILY ACTIVITY";
+          }
         }
 
         function normalizeDailyActivityStatus(status) {
@@ -356,6 +368,365 @@
 
         function cleanDailyActivityValue(value) {
           return value == null ? "" : String(value).trim();
+        }
+
+
+
+
+        /* =====================================================
+           DAILY ACTIVITY CLOSING
+           STAGE 4A
+        ===================================================== */
+
+        const DAILY_ACTIVITY_NOT_INSPECTED_REASONS = [
+          "Rain",
+          "Unit BD",
+          "Unit Not Operating",
+          "Unit Not Found / Other Area",
+          "Time Not Sufficient",
+          "Schedule Changed",
+          "Others"
+        ];
+
+        let dailyActivityClosingSchedule = null;
+
+        function initializeDailyActivityClosing() {
+          document.getElementById("lubeTruck15CompleteButton")
+            ?.addEventListener("click", () => openDailyActivityClosing(15));
+
+          document.getElementById("lubeTruck16CompleteButton")
+            ?.addEventListener("click", () => openDailyActivityClosing(16));
+
+          document.getElementById("closeDailyActivityClosing")
+            ?.addEventListener("click", closeDailyActivityClosing);
+
+          document.getElementById("cancelDailyActivityClosing")
+            ?.addEventListener("click", closeDailyActivityClosing);
+
+          document.getElementById("completeDailyActivityNow")
+            ?.addEventListener("click", completeDailyActivityNow);
+
+          document.getElementById("dailyActivityClosingBackdrop")
+            ?.addEventListener("click", event => {
+              if (event.target?.id === "dailyActivityClosingBackdrop") {
+                closeDailyActivityClosing();
+              }
+            });
+        }
+
+        function renderLubeTruckClosingState(truckNumber, schedule) {
+          const button =
+            document.getElementById(`lubeTruck${truckNumber}CompleteButton`);
+
+          const statusElement =
+            document.getElementById(`lubeTruck${truckNumber}ScheduleStatus`);
+
+          if (!button) return;
+
+          const status =
+            normalizeDailyActivityStatus(schedule?.status);
+
+          button.hidden = false;
+
+          if (status === "APPROVAL" || status === "APPROVED") {
+            button.disabled = true;
+            button.classList.add("is-completed");
+            button.textContent = "✓ COMPLETED";
+          } else {
+            button.disabled = false;
+            button.classList.remove("is-completed");
+            button.textContent = "COMPLETE DAILY ACTIVITY";
+          }
+
+          if (statusElement) {
+            statusElement.classList.toggle(
+              "is-approval",
+              status === "APPROVAL"
+            );
+          }
+        }
+
+        function openDailyActivityClosing(truckNumber) {
+          const schedule =
+            dailyActivitySchedules.find(item =>
+              getLubeTruckNumber(item?.lubeTruck) === truckNumber
+            );
+
+          if (!schedule) {
+            alert(`Schedule Lube Truck ${truckNumber} tidak ditemukan.`);
+            return;
+          }
+
+          const status =
+            normalizeDailyActivityStatus(schedule?.status);
+
+          if (status === "APPROVAL" || status === "APPROVED") {
+            return;
+          }
+
+          dailyActivityClosingSchedule = schedule;
+
+          const units =
+            Array.isArray(schedule?.units) ? schedule.units : [];
+
+          const completedUnits =
+            units.filter(unit =>
+              normalizeDailyActivityStatus(unit?.status) === "COMPLETED"
+            );
+
+          const notInspectedUnits =
+            units.filter(unit =>
+              normalizeDailyActivityStatus(unit?.status) !== "COMPLETED"
+            );
+
+          const achievement =
+            units.length
+              ? ((completedUnits.length / units.length) * 100).toFixed(1)
+              : "0.0";
+
+          setDailyActivityText("closingTargetCount", units.length);
+          setDailyActivityText("closingInspectedCount", completedUnits.length);
+          setDailyActivityText("closingNotInspectedCount", notInspectedUnits.length);
+          setDailyActivityText("closingAchievement", `${achievement}%`);
+
+          const subtitle =
+            document.getElementById("dailyActivityClosingSubtitle");
+
+          if (subtitle) {
+            subtitle.textContent =
+              `${cleanDailyActivityValue(schedule?.lubeTruck)} • ` +
+              `${cleanDailyActivityValue(schedule?.activityDate)}`;
+          }
+
+          renderDailyActivityClosingUnits(notInspectedUnits);
+
+          const backdrop =
+            document.getElementById("dailyActivityClosingBackdrop");
+
+          if (backdrop) {
+            backdrop.hidden = false;
+          }
+        }
+
+        function renderDailyActivityClosingUnits(units) {
+          const list =
+            document.getElementById("dailyActivityClosingUnitList");
+
+          const section =
+            document.getElementById(
+              "dailyActivityClosingNotInspectedSection"
+            );
+
+          const allCompleted =
+            document.getElementById(
+              "dailyActivityClosingAllCompleted"
+            );
+
+          if (!list) return;
+
+          list.innerHTML = "";
+
+          if (!units.length) {
+            if (section) section.hidden = true;
+            if (allCompleted) allCompleted.hidden = false;
+            return;
+          }
+
+          if (section) section.hidden = false;
+          if (allCompleted) allCompleted.hidden = true;
+
+          units.forEach(unit => {
+            const row = document.createElement("div");
+            row.className = "daily-activity-closing-unit";
+            row.dataset.scheduleUnitId =
+              cleanDailyActivityValue(unit?.scheduleUnitId);
+
+            const code = document.createElement("div");
+            code.className = "closing-unit-code";
+            code.textContent =
+              cleanDailyActivityValue(unit?.unitCode) || "-";
+
+            const select = document.createElement("select");
+            select.className = "closing-reason-select";
+            select.dataset.role = "reason";
+
+            const placeholder = document.createElement("option");
+            placeholder.value = "";
+            placeholder.textContent = "Select Reason";
+            select.appendChild(placeholder);
+
+            DAILY_ACTIVITY_NOT_INSPECTED_REASONS.forEach(reason => {
+              const option = document.createElement("option");
+              option.value = reason;
+              option.textContent = reason;
+              select.appendChild(option);
+            });
+
+            const note = document.createElement("input");
+            note.type = "text";
+            note.className = "closing-note-input";
+            note.dataset.role = "note";
+            note.placeholder = "Notes (required for Others)";
+
+            select.addEventListener("change", () => {
+              select.classList.remove("is-invalid");
+
+              if (select.value !== "Others") {
+                note.classList.remove("is-invalid");
+              }
+            });
+
+            note.addEventListener("input", () => {
+              note.classList.remove("is-invalid");
+            });
+
+            row.append(code, select, note);
+            list.appendChild(row);
+          });
+        }
+
+        function closeDailyActivityClosing() {
+          const backdrop =
+            document.getElementById("dailyActivityClosingBackdrop");
+
+          if (backdrop) {
+            backdrop.hidden = true;
+          }
+
+          dailyActivityClosingSchedule = null;
+        }
+
+        function collectDailyActivityClosingReasons() {
+          const rows =
+            Array.from(
+              document.querySelectorAll(
+                "#dailyActivityClosingUnitList " +
+                ".daily-activity-closing-unit"
+              )
+            );
+
+          const items = [];
+          let firstInvalid = null;
+
+          rows.forEach(row => {
+            const scheduleUnitId =
+              cleanDailyActivityValue(row.dataset.scheduleUnitId);
+
+            const select =
+              row.querySelector('[data-role="reason"]');
+
+            const note =
+              row.querySelector('[data-role="note"]');
+
+            const reason =
+              cleanDailyActivityValue(select?.value);
+
+            const noteValue =
+              cleanDailyActivityValue(note?.value);
+
+            if (!reason) {
+              select?.classList.add("is-invalid");
+              firstInvalid = firstInvalid || select;
+              return;
+            }
+
+            if (reason === "Others" && !noteValue) {
+              note?.classList.add("is-invalid");
+              firstInvalid = firstInvalid || note;
+              return;
+            }
+
+            items.push({
+              scheduleUnitId: scheduleUnitId,
+              reason: reason,
+              note: noteValue
+            });
+          });
+
+          return {
+            valid: !firstInvalid && items.length === rows.length,
+            firstInvalid: firstInvalid,
+            items: items
+          };
+        }
+
+        async function completeDailyActivityNow() {
+          const schedule = dailyActivityClosingSchedule;
+
+          if (!schedule) {
+            alert("Schedule closing tidak ditemukan.");
+            return;
+          }
+
+          const validation =
+            collectDailyActivityClosingReasons();
+
+          if (!validation.valid) {
+            validation.firstInvalid?.focus();
+            alert(
+              "Lengkapi Reason untuk seluruh unit yang tidak dilakukan inspeksi."
+            );
+            return;
+          }
+
+          const user = getDailyActivitySessionUser();
+          if (!user) return;
+
+          const button =
+            document.getElementById("completeDailyActivityNow");
+
+          const originalText =
+            button?.textContent || "Complete Now";
+
+          if (button) {
+            button.disabled = true;
+            button.textContent = "Completing...";
+          }
+
+          try {
+            const result =
+              await dailyActivityApiRequest({
+                action: "completeDMSchedule",
+                scheduleId:
+                  cleanDailyActivityValue(schedule?.scheduleId),
+                completedById:
+                  cleanDailyActivityValue(user?.uniqId),
+                notInspectedUnits:
+                  validation.items
+              });
+
+            if (!result || result.success !== true) {
+              throw new Error(
+                result?.message ||
+                "Daily Activity gagal di-Complete."
+              );
+            }
+
+            closeDailyActivityClosing();
+            await loadDailyActivitySchedule();
+
+            alert(
+              result?.message ||
+              "Daily Activity berhasil di-Complete dan menunggu Approval."
+            );
+
+          } catch (error) {
+            console.error(
+              "HEXA Daily Activity Closing error:",
+              error
+            );
+
+            alert(
+              error?.message ||
+              "Daily Activity gagal di-Complete."
+            );
+
+          } finally {
+            if (button) {
+              button.disabled = false;
+              button.textContent = originalText;
+            }
+          }
         }
 
 
