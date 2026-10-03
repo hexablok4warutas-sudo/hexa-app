@@ -1501,11 +1501,10 @@
         document.getElementById("saveDailyActivityInspectionDraft")
           ?.addEventListener("click", saveDailyActivityInspectionDraft);
 
-        // Stage 3C-2: Submit sengaja belum diaktifkan.
+        // Stage 3C-2: Validasi Submit.
+        // Submit final ke backend belum diaktifkan pada stage ini.
         document.getElementById("submitDailyActivityInspection")
-          ?.addEventListener("click", () => {
-            alert("Submit belum diaktifkan. Kita tes Save Draft + Resume Draft terlebih dahulu.");
-          });
+          ?.addEventListener("click", validateDailyActivityInspectionBeforeSubmit);
       }
 
       backdrop.dataset.scheduleUnitId =
@@ -1594,6 +1593,7 @@
             });
 
             const itemText = document.createElement("span");
+            itemText.className = "daily-activity-checklist-item-text";
             itemText.textContent =
               cleanDailyActivityValue(item?.item) || "-";
 
@@ -1677,6 +1677,23 @@
       selectedButton.style.color = activeColor;
       selectedButton.style.borderColor = activeColor;
       selectedButton.style.outline = `2px solid ${activeColor}`;
+
+      // Jika sebelumnya item ditandai merah karena belum diisi,
+      // hapus warning segera setelah user memilih salah satu hasil.
+      const row =
+        options.closest("[data-checklist-id]");
+
+      if (row) {
+        const itemText =
+          row.querySelector(".daily-activity-checklist-item-text");
+
+        if (itemText) {
+          itemText.style.color = "";
+          itemText.style.fontWeight = "";
+        }
+
+        row.style.background = "";
+      }
     }
 
 
@@ -1711,6 +1728,99 @@
           };
         })
         .filter(Boolean);
+    }
+
+
+    function validateDailyActivityInspectionBeforeSubmit() {
+      const body =
+        document.getElementById("dailyActivityInspectionBody");
+
+      const hourMeter =
+        document.getElementById("dailyActivityInspectionHourMeter");
+
+      if (!body) return;
+
+      const rows =
+        Array.from(
+          body.querySelectorAll("[data-checklist-id]")
+        );
+
+      // Bersihkan warning checklist dari validasi sebelumnya.
+      rows.forEach(row => {
+        const itemText =
+          row.querySelector(".daily-activity-checklist-item-text");
+
+        if (itemText) {
+          itemText.style.color = "";
+          itemText.style.fontWeight = "";
+        }
+
+        row.style.background = "";
+      });
+
+      // Hour Meter wajib untuk Submit final.
+      const hourMeterValue =
+        cleanDailyActivityValue(hourMeter?.value);
+
+      if (!hourMeterValue) {
+        if (hourMeter) {
+          hourMeter.style.borderColor = "#c62828";
+          hourMeter.style.outline =
+            "2px solid rgba(198,40,40,.15)";
+          hourMeter.focus();
+        }
+
+        alert("Hour Meter wajib diisi sebelum Submit.");
+        return;
+      }
+
+      if (hourMeter) {
+        hourMeter.style.borderColor = "#d9d9d9";
+        hourMeter.style.outline = "";
+      }
+
+      // Cari semua checklist yang belum memiliki pilihan.
+      const incompleteRows = [];
+
+      rows.forEach(row => {
+        const selected =
+          row.querySelector(
+            '.daily-activity-result-options button[data-selected="true"]'
+          );
+
+        if (selected) return;
+
+        incompleteRows.push(row);
+
+        const itemText =
+          row.querySelector(".daily-activity-checklist-item-text");
+
+        if (itemText) {
+          itemText.style.color = "#c62828";
+          itemText.style.fontWeight = "700";
+        }
+
+        row.style.background = "#fff8f8";
+      });
+
+      if (incompleteRows.length) {
+        incompleteRows[0].scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        alert(
+          `${incompleteRows.length} checklist belum diisi. ` +
+          "Lengkapi seluruh checklist sebelum Submit."
+        );
+
+        return;
+      }
+
+      // Stage berikutnya akan memanggil submit final ke Apps Script.
+      alert("Checklist sudah lengkap dan siap di-Submit.");
+
+      // submitDailyActivityInspection();
     }
 
 
