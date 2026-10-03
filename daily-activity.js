@@ -385,6 +385,9 @@
           "Unit Not Found / Other Area",
           "Time Not Sufficient",
           "Schedule Changed",
+          "Lube Truck Breakdown",
+          "No Access",
+          "Man Power Crowded",
           "Others"
         ];
 
@@ -425,6 +428,21 @@
 
           const status =
             normalizeDailyActivityStatus(schedule?.status);
+
+          const editButton =
+            document.getElementById(`lubeTruck${truckNumber}EditButton`);
+
+          const scheduleLocked =
+            status === "APPROVAL" || status === "APPROVED";
+
+          if (editButton) {
+            editButton.disabled = scheduleLocked;
+            editButton.classList.toggle("is-locked", scheduleLocked);
+            editButton.title =
+              scheduleLocked
+                ? "Schedule sudah Complete dan menunggu/selesai Approval."
+                : "";
+          }
 
           button.hidden = false;
 
