@@ -2078,3 +2078,14 @@ button[id^="lubeTruck"][id$="EditButton"].is-locked {
   margin-right: 0 !important;
   box-sizing: border-box !important;
 }
+
+
+/* =========================================================
+   STAGE 4B-1 REV4 — EXACT SAME WIDTH AS ACTIVITY DATE
+   ========================================================= */
+.daily-activity-approval-review {
+  width: min(1180px, 100%) !important;
+  max-width: none !important;
+  margin: 22px auto 24px !important;
+  box-sizing: border-box !important;
+}
