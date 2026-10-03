@@ -1714,3 +1714,318 @@ body.scheduler-panel-open {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+
+/* =========================================================
+   STAGE 4B-1 — APPROVAL REVIEW
+   ========================================================= */
+.daily-activity-approval-review {
+  margin: 22px 0;
+  padding: 22px;
+  border: 1px solid #e7e7e7;
+  border-radius: 22px;
+  background: rgba(255,255,255,.96);
+  box-shadow: 0 10px 28px rgba(0,0,0,.05);
+}
+
+.approval-review-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.approval-review-kicker {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.approval-review-heading h2,
+.approval-resume-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.approval-review-date {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+}
+
+.approval-review-table-wrap {
+  overflow-x: auto;
+}
+
+.approval-review-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+}
+
+.approval-review-table th {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: #777;
+  background: #f7f7f7;
+  border-bottom: 1px solid #e9e9e9;
+}
+
+.approval-review-table td {
+  padding: 14px;
+  border-bottom: 1px solid #eeeeee;
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+.approval-review-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.approval-review-table tbody tr.is-ready {
+  background: #fffaf2;
+}
+
+.approval-review-table tbody tr.is-approved {
+  background: #f1fbf4;
+}
+
+.approval-row-status {
+  display: block;
+  width: max-content;
+  margin-top: 5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #efefef;
+  color: #777;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.approval-row-status.is-ready {
+  background: #fff0dc;
+  color: #d76a00;
+}
+
+.approval-row-status.is-approved {
+  background: #e3f7e8;
+  color: #16813a;
+}
+
+.approval-action-button {
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid #ff9800;
+  border-radius: 10px;
+  background: #fff;
+  color: #e97800;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.approval-action-button:not(:disabled):hover {
+  background: #fff6e9;
+}
+
+.approval-action-button:disabled {
+  border-color: #dedede;
+  background: #f2f2f2;
+  color: #a7a7a7;
+  cursor: not-allowed;
+}
+
+.approval-action-primary:not(:disabled) {
+  background: #ff9800;
+  color: #fff;
+}
+
+.approval-resume-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0,0,0,.45);
+}
+
+.approval-resume-backdrop[hidden] {
+  display: none;
+}
+
+.approval-resume-modal {
+  width: min(980px, 96vw);
+  max-height: 92vh;
+  overflow: auto;
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0,0,0,.24);
+}
+
+.approval-resume-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 22px 24px 18px;
+  border-bottom: 1px solid #ededed;
+  background: #fff;
+}
+
+.approval-resume-header p {
+  margin: 5px 0 0;
+  color: #666;
+}
+
+.approval-resume-close {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: #f2f2f2;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.approval-resume-loading {
+  padding: 32px;
+  text-align: center;
+  font-weight: 800;
+}
+
+.approval-resume-content {
+  padding: 22px 24px;
+}
+
+.approval-resume-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.approval-resume-summary > div,
+.approval-resume-meta > div {
+  padding: 14px;
+  border: 1px solid #e8e8e8;
+  border-radius: 14px;
+  background: #fafafa;
+}
+
+.approval-resume-summary span,
+.approval-resume-meta span {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.approval-resume-summary strong {
+  font-size: 20px;
+}
+
+.approval-resume-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.approval-resume-section {
+  margin-top: 24px;
+}
+
+.approval-resume-section h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.approval-resume-list {
+  display: grid;
+  gap: 9px;
+}
+
+.approval-resume-item {
+  padding: 12px 14px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.approval-resume-item strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.approval-resume-item span {
+  font-size: 12px;
+  color: #666;
+}
+
+.approval-resume-empty {
+  padding: 14px;
+  border: 1px dashed #d7d7d7;
+  border-radius: 12px;
+  color: #888;
+  text-align: center;
+}
+
+.approval-resume-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  border-top: 1px solid #ededed;
+  background: #fff;
+}
+
+.approval-resume-footer span {
+  color: #777;
+  font-size: 12px;
+}
+
+.approval-resume-done {
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 11px;
+  background: #ff9800;
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .approval-review-heading,
+  .approval-resume-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .approval-resume-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .approval-resume-meta {
+    grid-template-columns: 1fr;
+  }
+}
