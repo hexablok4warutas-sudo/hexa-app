@@ -2029,3 +2029,36 @@ body.scheduler-panel-open {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================================================
+   STAGE 4B-1 REV1 — Approval Review alignment + reviewed state
+   ========================================================= */
+.daily-activity-approval-review {
+  width: auto;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  box-sizing: border-box;
+}
+
+/* Make locked Edit visually obvious */
+.lube-truck-edit-button:disabled,
+.lube-truck-edit-button.is-locked,
+button[id^="lubeTruck"][id$="EditButton"]:disabled,
+button[id^="lubeTruck"][id$="EditButton"].is-locked {
+  border-color: #d8d8d8 !important;
+  background: #f1f1f1 !important;
+  color: #a4a4a4 !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+/* Reviewed state */
+.approval-action-button.is-reviewed,
+.approval-action-button.is-reviewed:disabled {
+  border-color: #1ca64c;
+  background: #e7f7ec;
+  color: #16863d;
+  cursor: default;
+}
