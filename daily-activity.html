@@ -66,6 +66,62 @@
 
       </div>
 
+      <section
+        id="dailyActivityApprovalReview"
+        class="daily-activity-approval-review"
+        hidden
+      >
+        <div class="approval-review-heading">
+          <div>
+            <span class="approval-review-kicker">Authorization Area</span>
+            <h2>APPROVAL REVIEW</h2>
+          </div>
+          <span class="approval-review-date" id="approvalReviewDate">-</span>
+        </div>
+
+        <div class="approval-review-table-wrap">
+          <table class="approval-review-table">
+            <thead>
+              <tr>
+                <th>Daily Maintenance Team</th>
+                <th>Review Resume</th>
+                <th>Approval</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Issued Resume</th>
+                <th>Print / Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="approvalReviewRow15">
+                <td>
+                  <strong>Lube Truck 15</strong>
+                  <span id="approvalReviewStatus15" class="approval-row-status">NO SCHEDULE</span>
+                </td>
+                <td><button type="button" id="approvalReviewButton15" class="approval-action-button" disabled>Review Resume</button></td>
+                <td><button type="button" id="approvalApproveButton15" class="approval-action-button approval-action-primary" disabled>Approve</button></td>
+                <td id="approvalApprovedId15">-</td>
+                <td id="approvalApprovedName15">-</td>
+                <td><button type="button" id="approvalIssueButton15" class="approval-action-button" disabled>Issue Resume</button></td>
+                <td><button type="button" id="approvalPdfButton15" class="approval-action-button" disabled>Print / Download</button></td>
+              </tr>
+              <tr id="approvalReviewRow16">
+                <td>
+                  <strong>Lube Truck 16</strong>
+                  <span id="approvalReviewStatus16" class="approval-row-status">NO SCHEDULE</span>
+                </td>
+                <td><button type="button" id="approvalReviewButton16" class="approval-action-button" disabled>Review Resume</button></td>
+                <td><button type="button" id="approvalApproveButton16" class="approval-action-button approval-action-primary" disabled>Approve</button></td>
+                <td id="approvalApprovedId16">-</td>
+                <td id="approvalApprovedName16">-</td>
+                <td><button type="button" id="approvalIssueButton16" class="approval-action-button" disabled>Issue Resume</button></td>
+                <td><button type="button" id="approvalPdfButton16" class="approval-action-button" disabled>Print / Download</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <div
         id="dailyActivityMessage"
         class="daily-activity-message"
@@ -592,6 +648,58 @@
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
   <script src="daily-activity.js"></script>
+
+
+  <div id="approvalResumeBackdrop" class="approval-resume-backdrop" hidden>
+    <section class="approval-resume-modal" role="dialog" aria-modal="true" aria-labelledby="approvalResumeTitle">
+      <div class="approval-resume-header">
+        <div>
+          <span class="approval-review-kicker">Daily Activity Result</span>
+          <h2 id="approvalResumeTitle">Review Resume</h2>
+          <p id="approvalResumeSubtitle">-</p>
+        </div>
+        <button type="button" id="approvalResumeCloseButton" class="approval-resume-close" aria-label="Close">×</button>
+      </div>
+
+      <div id="approvalResumeLoading" class="approval-resume-loading" hidden>
+        Loading Resume...
+      </div>
+
+      <div id="approvalResumeContent" class="approval-resume-content">
+        <div class="approval-resume-summary">
+          <div><span>Target</span><strong id="approvalResumeTarget">0</strong></div>
+          <div><span>Inspected</span><strong id="approvalResumeInspected">0</strong></div>
+          <div><span>Not Inspected</span><strong id="approvalResumeNotInspected">0</strong></div>
+          <div><span>Achievement</span><strong id="approvalResumeAchievement">0%</strong></div>
+        </div>
+
+        <div class="approval-resume-meta">
+          <div><span>Mechanic 1</span><strong id="approvalResumeMechanic1">-</strong></div>
+          <div><span>Mechanic 2</span><strong id="approvalResumeMechanic2">-</strong></div>
+        </div>
+
+        <section class="approval-resume-section">
+          <h3>Inspection Findings</h3>
+          <div id="approvalResumeFindings" class="approval-resume-list"></div>
+        </section>
+
+        <section class="approval-resume-section">
+          <h3>Repaired Findings</h3>
+          <div id="approvalResumeRepaired" class="approval-resume-list"></div>
+        </section>
+
+        <section class="approval-resume-section">
+          <h3>Not Inspected</h3>
+          <div id="approvalResumeNotInspectedList" class="approval-resume-list"></div>
+        </section>
+      </div>
+
+      <div class="approval-resume-footer">
+        <span>Review only — Approval action will be activated in Stage 4B-2.</span>
+        <button type="button" id="approvalResumeDoneButton" class="approval-resume-done">Done Review</button>
+      </div>
+    </section>
+  </div>
 
 </body>
 
