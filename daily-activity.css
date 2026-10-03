@@ -2064,22 +2064,17 @@ button[id^="lubeTruck"][id$="EditButton"].is-locked {
 }
 
 
-/* STAGE 4B-1 REV2 — compact Approval Review */
+
+
+/* =========================================================
+   STAGE 4B-1 REV3 — FIX WIDTH
+   Approval Review must use the exact width of its parent content,
+   identical to Activity Date area. No independent width calculation.
+   ========================================================= */
 .daily-activity-approval-review {
-  width: calc(100% - 300px);
-  max-width: 1470px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (max-width: 1200px) {
-  .daily-activity-approval-review {
-    width: calc(100% - 48px);
-  }
-}
-
-@media (max-width: 720px) {
-  .daily-activity-approval-review {
-    width: calc(100% - 24px);
-  }
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
 }
