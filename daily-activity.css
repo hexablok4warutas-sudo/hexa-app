@@ -1,0 +1,787 @@
+/* =========================================
+   HEXA - DAILY ACTIVITY
+   STAGE 1B
+   ========================================= */
+
+
+/* =========================================
+   GLOBAL
+   ========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #171717;
+  overflow-x: hidden;
+}
+
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+.daily-activity-main {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 88px;
+}
+
+.daily-activity-section {
+  width: 100%;
+  min-height: calc(100vh - 88px);
+
+  padding:
+    32px
+    42px
+    90px;
+
+  background-color: #ffffff;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0.72)
+    ),
+    url("hexa-doodle.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+}
+
+
+/* =========================================
+   PAGE HEADING
+   ========================================= */
+
+.daily-activity-heading {
+  width: min(1180px, 100%);
+  margin: 0 auto 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.daily-activity-heading-text h1 {
+  margin: 0 0 7px;
+
+  font-size: 28px;
+  line-height: 1.15;
+  font-weight: 700;
+
+  color: #171717;
+}
+
+.daily-activity-heading-text p {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.5;
+
+  color: #666666;
+}
+
+.daily-activity-scheduler-button {
+  min-width: 132px;
+  min-height: 44px;
+
+  padding: 10px 22px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #ff9800;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px
+    rgba(0, 0, 0, 0.14);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.daily-activity-scheduler-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(0, 0, 0, 0.18);
+}
+
+.daily-activity-scheduler-button:active {
+  transform: scale(0.97);
+}
+
+
+/* =========================================
+   TOOLBAR
+   ========================================= */
+
+.daily-activity-toolbar {
+  width: min(1180px, 100%);
+  margin: 0 auto 24px;
+
+  padding: 16px 18px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+
+  background:
+    rgba(255, 255, 255, 0.92);
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.08);
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.08);
+}
+
+.activity-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.activity-date-field label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #555555;
+}
+
+.activity-date-field input {
+  min-width: 190px;
+  height: 42px;
+
+  padding: 0 12px;
+
+  border:
+    1px solid
+    #d8d8d8;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  font-size: 14px;
+  color: #222222;
+
+  outline: none;
+}
+
+.activity-date-field input:focus {
+  border-color: #ff9800;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(255, 152, 0, 0.12);
+}
+
+.daily-activity-refresh-button {
+  height: 42px;
+
+  padding: 0 18px;
+
+  border:
+    1px solid
+    #dedede;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #333333;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.daily-activity-refresh-button:hover {
+  border-color: #ff9800;
+  color: #e88900;
+}
+
+
+/* =========================================
+   PAGE MESSAGE / LOADING / EMPTY
+   ========================================= */
+
+.daily-activity-message,
+.daily-activity-loading,
+.daily-activity-empty {
+  width: min(1180px, 100%);
+  margin: 0 auto 20px;
+
+  padding: 16px 18px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.08);
+
+  box-shadow:
+    0 5px 16px
+    rgba(0, 0, 0, 0.07);
+}
+
+.daily-activity-loading {
+  text-align: center;
+
+  font-size: 14px;
+  color: #666666;
+}
+
+.daily-activity-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  text-align: center;
+}
+
+.daily-activity-empty strong {
+  font-size: 15px;
+  color: #333333;
+}
+
+.daily-activity-empty span {
+  font-size: 13px;
+  color: #777777;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* =========================================
+   LUBE TRUCK GRID
+   ========================================= */
+
+.daily-activity-schedule-grid {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 22px;
+
+  align-items: start;
+}
+
+
+/* =========================================
+   LUBE TRUCK CARD
+   ========================================= */
+
+.lube-truck-card {
+  min-width: 0;
+
+  padding: 22px;
+
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.08);
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 8px 24px
+    rgba(0, 0, 0, 0.10);
+}
+
+.lube-truck-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 18px;
+}
+
+.lube-truck-kicker {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  color: #999999;
+}
+
+.lube-truck-header h2 {
+  margin: 0;
+
+  font-size: 21px;
+  line-height: 1.2;
+
+  color: #1e1e1e;
+}
+
+.lube-truck-schedule-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 74px;
+  min-height: 28px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  background: #f2f2f2;
+  color: #666666;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================
+   MECHANICS
+   ========================================= */
+
+.lube-truck-mechanics {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+.mechanic-slot {
+  min-width: 0;
+
+  padding: 12px 13px;
+
+  border-radius: 12px;
+
+  background: #f7f7f7;
+
+  border:
+    1px solid
+    #eeeeee;
+}
+
+.mechanic-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  color: #8a8a8a;
+
+  text-transform: uppercase;
+}
+
+.mechanic-name {
+  display: block;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  font-size: 13px;
+  color: #222222;
+}
+
+
+/* =========================================
+   PROGRESS
+   ========================================= */
+
+.lube-truck-progress {
+  margin-bottom: 18px;
+}
+
+.progress-summary {
+  margin-bottom: 7px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 12px;
+  color: #666666;
+}
+
+.progress-summary strong {
+  color: #222222;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: #eeeeee;
+}
+
+.progress-bar {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #ff9800;
+
+  transition:
+    width 0.25s ease;
+}
+
+
+/* =========================================
+   UNIT GRID
+   ========================================= */
+
+.daily-unit-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+.daily-unit-card {
+  min-width: 0;
+
+  padding: 12px;
+
+  border:
+    1px solid
+    #e8e8e8;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.daily-unit-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 15px
+    rgba(0, 0, 0, 0.10);
+}
+
+.lube-truck-empty {
+  padding: 22px 12px;
+
+  border:
+    1px dashed
+    #d8d8d8;
+
+  border-radius: 13px;
+
+  text-align: center;
+
+  font-size: 12px;
+  color: #999999;
+}
+
+
+/* =========================================
+   STATUS LEGEND
+   ========================================= */
+
+.daily-activity-status-legend {
+  width: min(1180px, 100%);
+
+  margin:
+    22px
+    auto
+    0;
+
+  padding: 14px 16px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  gap:
+    10px
+    22px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.90);
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.07);
+}
+
+.status-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #555555;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+
+  flex: 0 0 10px;
+
+  border-radius: 50%;
+}
+
+.status-not-started {
+  background: #e53935;
+}
+
+.status-in-progress {
+  background: #fb8c00;
+}
+
+.status-completed {
+  background: #43a047;
+}
+
+.status-not-completed {
+  background: #757575;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1000px) {
+
+  .daily-activity-section {
+    padding-left: 26px;
+    padding-right: 26px;
+  }
+
+  .daily-unit-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 700px) {
+
+  .daily-activity-main {
+    padding-top: 72px;
+  }
+
+  .daily-activity-section {
+    min-height:
+      calc(100vh - 72px);
+
+    padding:
+      22px
+      16px
+      80px;
+
+    background-size:
+      auto 100%;
+  }
+
+
+  /* =======================================
+     HEADING
+     ======================================= */
+
+  .daily-activity-heading {
+    margin-bottom: 18px;
+
+    align-items: flex-start;
+  }
+
+  .daily-activity-heading-text h1 {
+    font-size: 23px;
+  }
+
+  .daily-activity-heading-text p {
+    font-size: 12px;
+  }
+
+  .daily-activity-scheduler-button {
+    min-width: auto;
+    min-height: 40px;
+
+    padding:
+      9px
+      14px;
+
+    font-size: 12px;
+  }
+
+
+  /* =======================================
+     TOOLBAR
+     ======================================= */
+
+  .daily-activity-toolbar {
+    padding: 13px;
+
+    align-items: flex-end;
+  }
+
+  .activity-date-field {
+    flex: 1;
+  }
+
+  .activity-date-field input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .daily-activity-refresh-button {
+    padding:
+      0
+      13px;
+  }
+
+
+  /* =======================================
+     LUBE TRUCK
+     ======================================= */
+
+  .daily-activity-schedule-grid {
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+  .lube-truck-card {
+    padding: 17px;
+
+    border-radius: 17px;
+  }
+
+  .lube-truck-header h2 {
+    font-size: 19px;
+  }
+
+
+  /* =======================================
+     UNITS
+     ======================================= */
+
+  .daily-unit-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+
+  /* =======================================
+     LEGEND
+     ======================================= */
+
+  .daily-activity-status-legend {
+    justify-content: flex-start;
+
+    gap:
+      9px
+      16px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 430px) {
+
+  .daily-activity-heading {
+    gap: 12px;
+  }
+
+  .daily-activity-heading-text p {
+    max-width: 210px;
+  }
+
+  .daily-activity-scheduler-button {
+    padding:
+      8px
+      11px;
+  }
+
+  .lube-truck-mechanics {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-unit-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
