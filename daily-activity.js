@@ -2669,9 +2669,6 @@
           if (approveButton) approveButton.disabled = true;
           if (issueButton) issueButton.disabled = true;
           if (pdfButton) pdfButton.disabled = true;
-
-          setDailyActivityText(`approvalApprovedId${truckNumber}`, "-");
-          setDailyActivityText(`approvalApprovedName${truckNumber}`, "-");
         }
 
         async function openDailyActivityApprovalResume(truckNumber) {
