@@ -204,19 +204,7 @@ function createDailyActivityUnitCard(unit) {
   unitCode.className = "daily-unit-code";
   unitCode.textContent = cleanDailyActivityValue(unit?.unitCode) || "-";
 
-  const egi = document.createElement("span");
-  egi.className = "daily-unit-egi";
-  egi.textContent = cleanDailyActivityValue(unit?.egi) || "-";
-
-  const type = document.createElement("span");
-  type.className = "daily-unit-type";
-  type.textContent = cleanDailyActivityValue(unit?.type) || "-";
-
-  const statusElement = document.createElement("span");
-  statusElement.className = "daily-unit-status";
-  statusElement.textContent = formatDailyActivityStatus(status);
-
-  card.append(unitCode, egi, type, statusElement);
+  card.append(unitCode);
 
   card.addEventListener("click", () => {
     console.log("HEXA Daily Activity selected unit:", unit);
