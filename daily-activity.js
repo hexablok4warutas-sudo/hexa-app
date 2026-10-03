@@ -357,6 +357,7 @@ function initializeSchedulerPanel() {
       schedulerDate.value = activityDate.value;
     }
 
+    backdrop.style.removeProperty("display");
     backdrop.hidden = false;
     document.body.classList.add("scheduler-panel-open");
 
@@ -834,16 +835,6 @@ async function saveSchedulerSchedule() {
       );
     }
 
-    alert("Schedule berhasil disimpan.");
-
-    if (backdrop) {
-      backdrop.hidden = true;
-    }
-
-    document.body.classList.remove(
-      "scheduler-panel-open"
-    );
-
     const mainDate =
       document.getElementById("activityDate");
 
@@ -851,9 +842,20 @@ async function saveSchedulerSchedule() {
       mainDate.value = activityDate;
     }
 
+    if (backdrop) {
+      backdrop.hidden = true;
+      backdrop.style.display = "none";
+    }
+
+    document.body.classList.remove(
+      "scheduler-panel-open"
+    );
+
     resetSchedulerForm();
 
     await loadDailyActivitySchedule();
+
+    alert("Schedule berhasil disimpan.");
 
   } catch (error) {
     console.error(
