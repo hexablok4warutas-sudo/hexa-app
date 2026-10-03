@@ -182,6 +182,18 @@
             Belum ada unit schedule.
           </div>
 
+          <div class="lube-truck-closing-action">
+            <button
+              type="button"
+              id="lubeTruck15CompleteButton"
+              class="lube-truck-complete-button"
+              data-lube-truck="15"
+              hidden
+            >
+              COMPLETE DAILY ACTIVITY
+            </button>
+          </div>
+
         </article>
 
         <article
@@ -267,6 +279,18 @@
             class="lube-truck-empty"
           >
             Belum ada unit schedule.
+          </div>
+
+          <div class="lube-truck-closing-action">
+            <button
+              type="button"
+              id="lubeTruck16CompleteButton"
+              class="lube-truck-complete-button"
+              data-lube-truck="16"
+              hidden
+            >
+              COMPLETE DAILY ACTIVITY
+            </button>
           </div>
 
         </article>
@@ -463,6 +487,107 @@
 
   </div>
 
+
+
+  <!-- =====================================
+       COMPLETE DAILY ACTIVITY - STAGE 4A
+       ===================================== -->
+  <div
+    id="dailyActivityClosingBackdrop"
+    class="daily-activity-closing-backdrop"
+    hidden
+  >
+    <section
+      class="daily-activity-closing-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="dailyActivityClosingTitle"
+    >
+      <div class="daily-activity-closing-header">
+        <div>
+          <span class="daily-activity-closing-kicker">
+            Daily Maintenance Closing
+          </span>
+          <h2 id="dailyActivityClosingTitle">
+            Complete Daily Activity
+          </h2>
+          <p id="dailyActivityClosingSubtitle">
+            -
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="closeDailyActivityClosing"
+          class="daily-activity-closing-close"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="daily-activity-closing-body">
+        <div class="daily-activity-closing-summary">
+          <div class="closing-summary-item">
+            <span>Target</span>
+            <strong id="closingTargetCount">0</strong>
+          </div>
+          <div class="closing-summary-item">
+            <span>Inspected</span>
+            <strong id="closingInspectedCount">0</strong>
+          </div>
+          <div class="closing-summary-item">
+            <span>Not Inspected</span>
+            <strong id="closingNotInspectedCount">0</strong>
+          </div>
+          <div class="closing-summary-item">
+            <span>Achievement</span>
+            <strong id="closingAchievement">0%</strong>
+          </div>
+        </div>
+
+        <div
+          id="dailyActivityClosingAllCompleted"
+          class="daily-activity-closing-all-completed"
+          hidden
+        >
+          Semua target unit sudah selesai dilakukan inspeksi.
+        </div>
+
+        <div
+          id="dailyActivityClosingNotInspectedSection"
+          class="daily-activity-closing-not-inspected"
+        >
+          <div class="closing-section-heading">
+            <strong>Unit Not Inspected</strong>
+            <span>
+              Reason wajib diisi untuk setiap unit yang tidak dilakukan inspeksi.
+            </span>
+          </div>
+
+          <div id="dailyActivityClosingUnitList"></div>
+        </div>
+      </div>
+
+      <div class="daily-activity-closing-footer">
+        <button
+          type="button"
+          id="cancelDailyActivityClosing"
+          class="daily-activity-closing-cancel"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          id="completeDailyActivityNow"
+          class="daily-activity-closing-submit"
+        >
+          Complete Now
+        </button>
+      </div>
+    </section>
+  </div>
 
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
