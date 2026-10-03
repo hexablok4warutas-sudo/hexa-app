@@ -3,43 +3,15 @@
 
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Daily Activity | HEXA</title>
 
-
-  <!-- =====================================
-       GLOBAL HEXA HEADER CSS
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="hexa-header.css"
-  >
-
-
-  <!-- =====================================
-       DAILY ACTIVITY CSS
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="daily-activity.css"
-  >
-
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="daily-activity.css">
 </head>
 
-
 <body>
-
-
-  <!-- =====================================
-       GLOBAL HEXA HEADER
-       ===================================== -->
 
   <header
     id="hexaHeader"
@@ -47,40 +19,19 @@
     data-page="daily-maintenance"
   ></header>
 
-
-
-  <!-- =====================================
-       DAILY ACTIVITY MAIN
-       ===================================== -->
-
   <main class="daily-activity-main">
 
     <section class="daily-activity-section">
 
-
-      <!-- =================================
-           PAGE HEADING
-           ================================= -->
-
       <div class="daily-activity-heading">
 
         <div class="daily-activity-heading-text">
-
-          <h1>
-            Daily Activity
-          </h1>
-
+          <h1>Daily Activity</h1>
           <p>
             Schedule dan monitoring aktivitas Daily Maintenance
             Lube Truck 15 dan Lube Truck 16.
           </p>
-
         </div>
-
-
-        <!-- Scheduler hanya akan ditampilkan
-             kepada user yang memiliki permission
-             Scheduler pada tahap JS/permission. -->
 
         <button
           type="button"
@@ -92,28 +43,16 @@
 
       </div>
 
-
-
-      <!-- =================================
-           ACTIVITY DATE
-           ================================= -->
-
       <div class="daily-activity-toolbar">
 
         <div class="activity-date-field">
-
-          <label for="activityDate">
-            Activity Date
-          </label>
-
+          <label for="activityDate">Activity Date</label>
           <input
             type="date"
             id="activityDate"
             name="activityDate"
           >
-
         </div>
-
 
         <button
           type="button"
@@ -127,23 +66,11 @@
 
       </div>
 
-
-
-      <!-- =================================
-           PAGE MESSAGE
-           ================================= -->
-
       <div
         id="dailyActivityMessage"
         class="daily-activity-message"
         hidden
       ></div>
-
-
-
-      <!-- =================================
-           LOADING STATE
-           ================================= -->
 
       <div
         id="dailyActivityLoading"
@@ -153,44 +80,22 @@
         Loading Daily Activity...
       </div>
 
-
-
-      <!-- =================================
-           EMPTY STATE
-           ================================= -->
-
       <div
         id="dailyActivityEmpty"
         class="daily-activity-empty"
         hidden
       >
-
-        <strong>
-          Schedule belum tersedia.
-        </strong>
-
+        <strong>Schedule belum tersedia.</strong>
         <span>
           Belum ada Daily Maintenance Schedule
           pada tanggal yang dipilih.
         </span>
-
       </div>
-
-
-
-      <!-- =================================
-           LUBE TRUCK SCHEDULE AREA
-           ================================= -->
 
       <div
         id="dailyActivityScheduleGrid"
         class="daily-activity-schedule-grid"
       >
-
-
-        <!-- ===============================
-             LUBE TRUCK 15
-             =============================== -->
 
         <article
           id="lubeTruck15Card"
@@ -199,19 +104,10 @@
         >
 
           <div class="lube-truck-header">
-
             <div>
-
-              <span class="lube-truck-kicker">
-                Daily Maintenance Team
-              </span>
-
-              <h2>
-                Lube Truck 15
-              </h2>
-
+              <span class="lube-truck-kicker">Daily Maintenance Team</span>
+              <h2>Lube Truck 15</h2>
             </div>
-
 
             <span
               id="lubeTruck15ScheduleStatus"
@@ -219,96 +115,53 @@
             >
               -
             </span>
-
           </div>
-
-
-
-          <!-- =============================
-               MECHANICS
-               ============================= -->
 
           <div class="lube-truck-mechanics">
 
             <div class="mechanic-slot">
-
-              <span class="mechanic-label">
-                Mechanic 1
-              </span>
-
+              <span class="mechanic-label">Mechanic 1</span>
               <strong
                 id="lubeTruck15Mechanic1"
                 class="mechanic-name"
               >
                 -
               </strong>
-
             </div>
 
-
             <div class="mechanic-slot">
-
-              <span class="mechanic-label">
-                Mechanic 2
-              </span>
-
+              <span class="mechanic-label">Mechanic 2</span>
               <strong
                 id="lubeTruck15Mechanic2"
                 class="mechanic-name"
               >
                 -
               </strong>
-
             </div>
 
           </div>
 
-
-
-          <!-- =============================
-               PROGRESS
-               ============================= -->
-
           <div class="lube-truck-progress">
 
             <div class="progress-summary">
-
-              <span>
-                Progress
-              </span>
-
-              <strong
-                id="lubeTruck15ProgressText"
-              >
-                0 / 0
-              </strong>
-
+              <span>Progress</span>
+              <strong id="lubeTruck15ProgressText">0 / 0</strong>
             </div>
 
-
             <div class="progress-track">
-
               <div
                 id="lubeTruck15ProgressBar"
                 class="progress-bar"
                 style="width: 0%;"
               ></div>
-
             </div>
 
           </div>
-
-
-
-          <!-- =============================
-               UNIT LIST
-               ============================= -->
 
           <div
             id="lubeTruck15Units"
             class="daily-unit-grid"
           ></div>
-
 
           <div
             id="lubeTruck15Empty"
@@ -319,12 +172,6 @@
 
         </article>
 
-
-
-        <!-- ===============================
-             LUBE TRUCK 16
-             =============================== -->
-
         <article
           id="lubeTruck16Card"
           class="lube-truck-card"
@@ -332,19 +179,10 @@
         >
 
           <div class="lube-truck-header">
-
             <div>
-
-              <span class="lube-truck-kicker">
-                Daily Maintenance Team
-              </span>
-
-              <h2>
-                Lube Truck 16
-              </h2>
-
+              <span class="lube-truck-kicker">Daily Maintenance Team</span>
+              <h2>Lube Truck 16</h2>
             </div>
-
 
             <span
               id="lubeTruck16ScheduleStatus"
@@ -352,96 +190,53 @@
             >
               -
             </span>
-
           </div>
-
-
-
-          <!-- =============================
-               MECHANICS
-               ============================= -->
 
           <div class="lube-truck-mechanics">
 
             <div class="mechanic-slot">
-
-              <span class="mechanic-label">
-                Mechanic 1
-              </span>
-
+              <span class="mechanic-label">Mechanic 1</span>
               <strong
                 id="lubeTruck16Mechanic1"
                 class="mechanic-name"
               >
                 -
               </strong>
-
             </div>
 
-
             <div class="mechanic-slot">
-
-              <span class="mechanic-label">
-                Mechanic 2
-              </span>
-
+              <span class="mechanic-label">Mechanic 2</span>
               <strong
                 id="lubeTruck16Mechanic2"
                 class="mechanic-name"
               >
                 -
               </strong>
-
             </div>
 
           </div>
 
-
-
-          <!-- =============================
-               PROGRESS
-               ============================= -->
-
           <div class="lube-truck-progress">
 
             <div class="progress-summary">
-
-              <span>
-                Progress
-              </span>
-
-              <strong
-                id="lubeTruck16ProgressText"
-              >
-                0 / 0
-              </strong>
-
+              <span>Progress</span>
+              <strong id="lubeTruck16ProgressText">0 / 0</strong>
             </div>
 
-
             <div class="progress-track">
-
               <div
                 id="lubeTruck16ProgressBar"
                 class="progress-bar"
                 style="width: 0%;"
               ></div>
-
             </div>
 
           </div>
-
-
-
-          <!-- =============================
-               UNIT LIST
-               ============================= -->
 
           <div
             id="lubeTruck16Units"
             class="daily-unit-grid"
           ></div>
-
 
           <div
             id="lubeTruck16Empty"
@@ -452,64 +247,202 @@
 
         </article>
 
-
       </div>
-
-
-
-      <!-- =================================
-           STATUS LEGEND
-           ================================= -->
 
       <div class="daily-activity-status-legend">
 
         <div class="status-legend-item">
-          <span
-            class="status-dot status-not-started"
-          ></span>
+          <span class="status-dot status-not-started"></span>
           Not Started
         </div>
 
         <div class="status-legend-item">
-          <span
-            class="status-dot status-in-progress"
-          ></span>
+          <span class="status-dot status-in-progress"></span>
           In Progress
         </div>
 
         <div class="status-legend-item">
-          <span
-            class="status-dot status-completed"
-          ></span>
+          <span class="status-dot status-completed"></span>
           Completed
         </div>
 
         <div class="status-legend-item">
-          <span
-            class="status-dot status-not-completed"
-          ></span>
+          <span class="status-dot status-not-completed"></span>
           Not Completed
         </div>
 
       </div>
-
 
     </section>
 
   </main>
 
 
-
   <!-- =====================================
-       GLOBAL HEXA SYSTEM
+       SCHEDULER PANEL - STAGE 2A
+       UI ONLY, BELUM SAVE KE DATABASE
        ===================================== -->
 
+  <div
+    id="schedulerPanelBackdrop"
+    class="scheduler-panel-backdrop"
+    hidden
+  >
+
+    <section
+      class="scheduler-panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="schedulerPanelTitle"
+    >
+
+      <div class="scheduler-panel-header">
+
+        <div>
+          <span class="scheduler-panel-kicker">
+            Daily Maintenance
+          </span>
+
+          <h2 id="schedulerPanelTitle">
+            Scheduler
+          </h2>
+
+          <p>
+            Tentukan Lube Truck, mekanik dan unit target Daily Maintenance.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          id="closeSchedulerPanel"
+          class="scheduler-panel-close"
+          aria-label="Close Scheduler"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="scheduler-panel-body">
+
+        <div class="scheduler-field">
+          <label for="schedulerActivityDate">
+            Activity Date
+          </label>
+
+          <input
+            type="date"
+            id="schedulerActivityDate"
+          >
+        </div>
+
+        <div class="scheduler-field">
+          <label for="schedulerLubeTruck">
+            Lube Truck
+          </label>
+
+          <select id="schedulerLubeTruck">
+            <option value="">Select Lube Truck</option>
+            <option value="LUBE TRUCK 15">Lube Truck 15</option>
+            <option value="LUBE TRUCK 16">Lube Truck 16</option>
+          </select>
+        </div>
+
+        <div class="scheduler-mechanic-grid">
+
+          <div class="scheduler-field">
+            <label for="schedulerMechanic1">
+              Mechanic 1
+            </label>
+
+            <select id="schedulerMechanic1">
+              <option value="">Select Mechanic 1</option>
+            </select>
+          </div>
+
+          <div class="scheduler-field">
+            <label for="schedulerMechanic2">
+              Mechanic 2
+            </label>
+
+            <select id="schedulerMechanic2">
+              <option value="">Select Mechanic 2</option>
+            </select>
+          </div>
+
+        </div>
+
+        <div class="scheduler-unit-section">
+
+          <div class="scheduler-unit-heading">
+            <div>
+              <strong>Target Unit</strong>
+              <span>
+                Pilih unit yang akan dilakukan Daily Maintenance.
+              </span>
+            </div>
+
+            <span
+              id="schedulerSelectedUnitCount"
+              class="scheduler-selected-count"
+            >
+              0 Selected
+            </span>
+          </div>
+
+          <div class="scheduler-unit-search-wrap">
+            <input
+              type="search"
+              id="schedulerUnitSearch"
+              class="scheduler-unit-search"
+              placeholder="Search Unit Code / EGI"
+              autocomplete="off"
+            >
+          </div>
+
+          <div
+            id="schedulerUnitList"
+            class="scheduler-unit-list"
+          >
+
+            <div class="scheduler-unit-placeholder">
+              Unit akan dimuat dari Population Unit pada Stage 2B.
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="scheduler-panel-footer">
+
+        <button
+          type="button"
+          id="cancelSchedulerPanel"
+          class="scheduler-cancel-button"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          id="saveSchedulerButton"
+          class="scheduler-save-button"
+        >
+          Save Schedule
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
   <script src="hexa-menu.js"></script>
-
   <script src="hexa-header.js"></script>
-
   <script src="daily-activity.js"></script>
-
 
 </body>
 
