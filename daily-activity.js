@@ -1318,7 +1318,8 @@
 
         const checklist = getDailyActivityChecklistArray(result);
 
-        openDailyActivityInspectionModal({
+        await openDailyActivityInspectionModal({
+          scheduleUnitId: cleanDailyActivityValue(unit?.scheduleUnitId),
           unitCode,
           egi: cleanDailyActivityValue(
             result?.egi || result?.unit?.egi || unit?.egi
@@ -1360,290 +1361,577 @@
       return [];
     }
 
-    function openDailyActivityInspectionModal(data) {
-      let backdrop =
-        document.getElementById("dailyActivityInspectionBackdrop");
+    async function openDailyActivityInspectionModal(data) {
+  let backdrop =
+    document.getElementById("dailyActivityInspectionBackdrop");
 
-      if (!backdrop) {
-        backdrop = document.createElement("div");
-        backdrop.id = "dailyActivityInspectionBackdrop";
-        backdrop.className = "daily-activity-inspection-backdrop";
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.id = "dailyActivityInspectionBackdrop";
+    backdrop.className = "daily-activity-inspection-backdrop";
 
-        Object.assign(backdrop.style, {
-          position: "fixed",
-          inset: "0",
-          zIndex: "99999",
-          background: "rgba(0,0,0,.55)",
-          padding: "20px",
-          overflowY: "auto"
-        });
+    Object.assign(backdrop.style, {
+      position: "fixed",
+      inset: "0",
+      zIndex: "99999",
+      background: "rgba(0,0,0,.55)",
+      padding: "20px",
+      overflowY: "auto"
+    });
 
-        const panel = document.createElement("section");
-        panel.className = "daily-activity-inspection-panel";
+    const panel = document.createElement("section");
+    panel.className = "daily-activity-inspection-panel";
 
-        Object.assign(panel.style, {
-          width: "min(900px, 100%)",
-          margin: "20px auto",
-          background: "#fff",
-          borderRadius: "18px",
-          overflow: "hidden"
-        });
+    Object.assign(panel.style, {
+      width: "min(900px, 100%)",
+      margin: "20px auto",
+      background: "#fff",
+      borderRadius: "18px",
+      overflow: "hidden"
+    });
 
-        panel.innerHTML = `
-          <header style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px;border-bottom:1px solid #eee;">
-            <div>
-              <div style="font-size:12px;font-weight:700;color:#777;">DAILY ACTIVITY INSPECTION</div>
-              <h2 id="dailyActivityInspectionTitle" style="margin:5px 0 3px;">-</h2>
-              <div id="dailyActivityInspectionMeta" style="font-size:13px;color:#777;">-</div>
-            </div>
-            <button type="button" id="closeDailyActivityInspection"
-                    style="border:0;background:transparent;font-size:30px;cursor:pointer;">×</button>
-          </header>
+    panel.innerHTML = `
+      <header style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px;border-bottom:1px solid #eee;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#777;">DAILY ACTIVITY INSPECTION</div>
+          <h2 id="dailyActivityInspectionTitle" style="margin:5px 0 3px;">-</h2>
+          <div id="dailyActivityInspectionMeta" style="font-size:13px;color:#777;">-</div>
+        </div>
+        <button type="button" id="closeDailyActivityInspection"
+                style="border:0;background:transparent;font-size:30px;cursor:pointer;">×</button>
+      </header>
 
-          <div style="padding:20px 20px 0;">
-            <label for="dailyActivityInspectionHourMeter"
-                   style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
-              Hour Meter <span style="color:#c62828;">*</span>
-            </label>
-            <input id="dailyActivityInspectionHourMeter"
-                   type="number"
-                   inputmode="decimal"
-                   min="0"
-                   step="0.1"
-                   placeholder="Input Hour Meter"
-                   style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+      <div style="padding:20px 20px 0;">
+        <label for="dailyActivityInspectionHourMeter"
+               style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
+          Hour Meter <span style="color:#c62828;">*</span>
+        </label>
+        <input id="dailyActivityInspectionHourMeter"
+               type="number"
+               inputmode="decimal"
+               min="0"
+               step="0.1"
+               placeholder="Input Hour Meter"
+               style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+      </div>
+
+      <div id="dailyActivityInspectionBody" style="padding:20px;"></div>
+
+      <div style="padding:0 20px 20px;">
+        <label for="dailyActivityInspectionNotes"
+               style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
+          Activity Notes
+        </label>
+        <textarea id="dailyActivityInspectionNotes"
+                  rows="4"
+                  placeholder="Catatan aktivitas (opsional)"
+                  style="width:100%;box-sizing:border-box;resize:vertical;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;"></textarea>
+
+        <div style="margin-top:16px;">
+          <div style="font-size:13px;font-weight:700;margin-bottom:7px;">Photo</div>
+          <input id="dailyActivityInspectionPhoto"
+                 type="file"
+                 accept="image/*"
+                 style="display:none;">
+          <button type="button"
+                  id="dailyActivityInspectionAddPhoto"
+                  style="padding:10px 14px;border:1px solid #d9d9d9;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;">
+            + Add Photo
+          </button>
+          <div id="dailyActivityInspectionPhotoName"
+               style="margin-top:7px;font-size:12px;color:#777;">
+            No photo selected
           </div>
+        </div>
+      </div>
 
-          <div id="dailyActivityInspectionBody" style="padding:20px;"></div>
+      <footer style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 20px;border-top:1px solid #eee;">
+        <strong id="dailyActivityInspectionCount">0 Checklist</strong>
 
-          <div style="padding:0 20px 20px;">
-            <label for="dailyActivityInspectionNotes"
-                   style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
-              Activity Notes
-            </label>
-            <textarea id="dailyActivityInspectionNotes"
-                      rows="4"
-                      placeholder="Catatan aktivitas (opsional)"
-                      style="width:100%;box-sizing:border-box;resize:vertical;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;"></textarea>
+        <div style="display:flex;gap:10px;margin-left:auto;">
+          <button type="button"
+                  id="saveDailyActivityInspectionDraft"
+                  style="padding:11px 16px;border:1px solid #d9d9d9;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;">
+            Save Draft
+          </button>
 
-            <div style="margin-top:16px;">
-              <div style="font-size:13px;font-weight:700;margin-bottom:7px;">Photo</div>
-              <input id="dailyActivityInspectionPhoto"
-                     type="file"
-                     accept="image/*"
-                     style="display:none;">
-              <button type="button"
-                      id="dailyActivityInspectionAddPhoto"
-                      style="padding:10px 14px;border:1px solid #d9d9d9;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;">
-                + Add Photo
-              </button>
-              <div id="dailyActivityInspectionPhotoName"
-                   style="margin-top:7px;font-size:12px;color:#777;">
-                No photo selected
-              </div>
-            </div>
-          </div>
+          <button type="button"
+                  id="submitDailyActivityInspection"
+                  style="padding:11px 18px;border:0;border-radius:10px;background:#111;color:#fff;cursor:pointer;font-weight:700;">
+            Submit
+          </button>
+        </div>
+      </footer>
+    `;
 
-          <footer style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 20px;border-top:1px solid #eee;">
-            <strong id="dailyActivityInspectionCount">0 Checklist</strong>
+    backdrop.appendChild(panel);
+    document.body.appendChild(backdrop);
 
-            <div style="display:flex;gap:10px;margin-left:auto;">
-              <button type="button"
-                      id="saveDailyActivityInspectionDraft"
-                      style="padding:11px 16px;border:1px solid #d9d9d9;border-radius:10px;background:#fff;cursor:pointer;font-weight:700;">
-                Save Draft
-              </button>
+    const closeModal = () => {
+      backdrop.hidden = true;
+    };
 
-              <button type="button"
-                      id="submitDailyActivityInspection"
-                      style="padding:11px 18px;border:0;border-radius:10px;background:#111;color:#fff;cursor:pointer;font-weight:700;">
-                Submit
-              </button>
-            </div>
-          </footer>
-        `;
+    document.getElementById("closeDailyActivityInspection")
+      ?.addEventListener("click", closeModal);
 
-        backdrop.appendChild(panel);
-        document.body.appendChild(backdrop);
+    backdrop.addEventListener("click", event => {
+      if (event.target === backdrop) closeModal();
+    });
 
-        const closeModal = () => {
-          backdrop.hidden = true;
-        };
+    const photoInput =
+      document.getElementById("dailyActivityInspectionPhoto");
 
-        document.getElementById("closeDailyActivityInspection")
-          ?.addEventListener("click", closeModal);
+    document.getElementById("dailyActivityInspectionAddPhoto")
+      ?.addEventListener("click", () => {
+        photoInput?.click();
+      });
 
-        backdrop.addEventListener("click", event => {
-          if (event.target === backdrop) closeModal();
-        });
-
-        const photoInput =
-          document.getElementById("dailyActivityInspectionPhoto");
-
-        document.getElementById("dailyActivityInspectionAddPhoto")
-          ?.addEventListener("click", () => {
-            photoInput?.click();
-          });
-
-        photoInput?.addEventListener("change", () => {
-          const name =
-            document.getElementById("dailyActivityInspectionPhotoName");
-          const file = photoInput.files?.[0];
-
-          if (name) {
-            name.textContent = file
-              ? file.name
-              : "No photo selected";
-          }
-        });
-
-        // Stage 3C-1:
-        // Tombol baru UI only. Integrasi backend dilakukan di Stage 3C-2.
-        document.getElementById("saveDailyActivityInspectionDraft")
-          ?.addEventListener("click", () => {
-            alert("Stage 3C-1: Save Draft UI sudah siap. Backend disambungkan pada Stage 3C-2.");
-          });
-
-        document.getElementById("submitDailyActivityInspection")
-          ?.addEventListener("click", () => {
-            alert("Stage 3C-1: Submit UI sudah siap. Backend disambungkan pada Stage 3C-2.");
-          });
-      }
-
-      document.getElementById("dailyActivityInspectionTitle").textContent =
-        data.unitCode || "-";
-
-      document.getElementById("dailyActivityInspectionMeta").textContent =
-        `${data.egi || "-"} • ${data.type || "-"}`;
-
-      const hourMeter =
-        document.getElementById("dailyActivityInspectionHourMeter");
-      const notes =
-        document.getElementById("dailyActivityInspectionNotes");
-      const photo =
-        document.getElementById("dailyActivityInspectionPhoto");
-      const photoName =
+    photoInput?.addEventListener("change", () => {
+      const name =
         document.getElementById("dailyActivityInspectionPhotoName");
+      const file = photoInput.files?.[0];
 
-      if (hourMeter) hourMeter.value = "";
-      if (notes) notes.value = "";
-      if (photo) photo.value = "";
-      if (photoName) photoName.textContent = "No photo selected";
+      if (name) {
+        name.textContent = file
+          ? file.name
+          : "No photo selected";
+      }
+    });
 
-      const body =
-        document.getElementById("dailyActivityInspectionBody");
+    document.getElementById("saveDailyActivityInspectionDraft")
+      ?.addEventListener("click", saveDailyActivityInspectionDraft);
 
-      const count =
-        document.getElementById("dailyActivityInspectionCount");
-
-      body.innerHTML = "";
-
-      const groups = new Map();
-
-      data.checklist.forEach(item => {
-        const groupName =
-          cleanDailyActivityValue(item?.group) || "CHECKLIST";
-
-        if (!groups.has(groupName)) {
-          groups.set(groupName, []);
-        }
-
-        groups.get(groupName).push(item);
+    // Stage 3C-2: Submit sengaja belum diaktifkan.
+    document.getElementById("submitDailyActivityInspection")
+      ?.addEventListener("click", () => {
+        alert("Submit belum diaktifkan. Kita tes Save Draft + Resume Draft terlebih dahulu.");
       });
+  }
 
-      groups.forEach((items, groupName) => {
-        const section = document.createElement("section");
-        section.style.marginBottom = "22px";
+  backdrop.dataset.scheduleUnitId =
+    cleanDailyActivityValue(data?.scheduleUnitId);
+  backdrop.dataset.unitCode =
+    cleanDailyActivityValue(data?.unitCode);
 
-        const heading = document.createElement("h3");
-        heading.textContent = groupName;
-        heading.style.margin = "0 0 10px";
-        section.appendChild(heading);
+  document.getElementById("dailyActivityInspectionTitle").textContent =
+    data.unitCode || "-";
 
-        items
-          .sort(
-            (a, b) =>
-              (Number(a?.sequence) || 0) -
-              (Number(b?.sequence) || 0)
-          )
-          .forEach(item => {
-            const row = document.createElement("div");
+  document.getElementById("dailyActivityInspectionMeta").textContent =
+    `${data.egi || "-"} • ${data.type || "-"}`;
 
-            Object.assign(row.style, {
-              display: "grid",
-              gridTemplateColumns: "minmax(0,1fr) auto",
-              alignItems: "center",
-              gap: "12px",
-              padding: "11px 0",
-              borderBottom: "1px solid #eee"
-            });
+  const hourMeter =
+    document.getElementById("dailyActivityInspectionHourMeter");
+  const notes =
+    document.getElementById("dailyActivityInspectionNotes");
+  const photo =
+    document.getElementById("dailyActivityInspectionPhoto");
+  const photoName =
+    document.getElementById("dailyActivityInspectionPhotoName");
 
-            const itemText = document.createElement("span");
-            itemText.textContent =
-              cleanDailyActivityValue(item?.item) || "-";
+  if (hourMeter) hourMeter.value = "";
+  if (notes) notes.value = "";
+  if (photo) photo.value = "";
+  if (photoName) photoName.textContent = "No photo selected";
 
-            const options = document.createElement("div");
-            options.style.display = "flex";
-            options.style.gap = "7px";
+  const body =
+    document.getElementById("dailyActivityInspectionBody");
 
-            [
-              ["GOOD", "✓", "Good Condition", "#2e7d32", "#e8f5e9"],
-              ["BAD", "X", "Bad Condition", "#c62828", "#ffebee"],
-              ["REPAIRED", "ⓧ", "Good Condition After Repair / Action", "#1565c0", "#e3f2fd"]
-            ].forEach(([value, symbol, label, activeColor, activeBackground]) => {
-              const button = document.createElement("button");
-              button.type = "button";
-              button.dataset.value = value;
-              button.dataset.selected = "false";
-              button.dataset.activeColor = activeColor;
-              button.dataset.activeBackground = activeBackground;
-              button.textContent = symbol;
-              button.title = label;
+  const count =
+    document.getElementById("dailyActivityInspectionCount");
 
-              Object.assign(button.style, {
-                minWidth: "42px",
-                minHeight: "42px",
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                background: "#fff",
-                color: "#333",
-                cursor: "pointer",
-                fontWeight: "700"
-              });
+  body.innerHTML = "";
 
-              button.addEventListener("click", () => {
-                Array.from(options.children).forEach(other => {
-                  other.dataset.selected = "false";
-                  other.style.background = "#fff";
-                  other.style.color = "#333";
-                  other.style.borderColor = "#ddd";
-                  other.style.outline = "";
-                });
+  const groups = new Map();
 
-                button.dataset.selected = "true";
-                button.style.background = activeBackground;
-                button.style.color = activeColor;
-                button.style.borderColor = activeColor;
-                button.style.outline = `2px solid ${activeColor}`;
-              });
+  data.checklist.forEach(item => {
+    const groupName =
+      cleanDailyActivityValue(item?.group) || "CHECKLIST";
 
-              options.appendChild(button);
-            });
+    if (!groups.has(groupName)) {
+      groups.set(groupName, []);
+    }
 
-            row.append(itemText, options);
-            section.appendChild(row);
+    groups.get(groupName).push(item);
+  });
+
+  groups.forEach((items, groupName) => {
+    const section = document.createElement("section");
+    section.style.marginBottom = "22px";
+
+    const heading = document.createElement("h3");
+    heading.textContent = groupName;
+    heading.style.margin = "0 0 10px";
+    section.appendChild(heading);
+
+    items
+      .sort(
+        (a, b) =>
+          (Number(a?.sequence) || 0) -
+          (Number(b?.sequence) || 0)
+      )
+      .forEach(item => {
+        const row = document.createElement("div");
+        row.dataset.checklistId =
+          cleanDailyActivityValue(
+            item?.checklistId ||
+            item?.id ||
+            item?.uniqId
+          );
+        row.dataset.group =
+          cleanDailyActivityValue(item?.group);
+        row.dataset.item =
+          cleanDailyActivityValue(item?.item);
+        row.dataset.sequence =
+          cleanDailyActivityValue(item?.sequence);
+
+        Object.assign(row.style, {
+          display: "grid",
+          gridTemplateColumns: "minmax(0,1fr) auto",
+          alignItems: "center",
+          gap: "12px",
+          padding: "11px 0",
+          borderBottom: "1px solid #eee"
+        });
+
+        const itemText = document.createElement("span");
+        itemText.textContent =
+          cleanDailyActivityValue(item?.item) || "-";
+
+        const options = document.createElement("div");
+        options.className = "daily-activity-result-options";
+        options.style.display = "flex";
+        options.style.gap = "7px";
+
+        [
+          ["GOOD", "✓", "Good Condition", "#2e7d32", "#e8f5e9"],
+          ["BAD", "X", "Bad Condition", "#c62828", "#ffebee"],
+          ["REPAIRED", "ⓧ", "Good Condition After Repair / Action", "#1565c0", "#e3f2fd"],
+          ["N/A", "N/A", "Not Applicable", "#616161", "#eeeeee"]
+        ].forEach(([value, symbol, label, activeColor, activeBackground]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.dataset.value = value;
+          button.dataset.selected = "false";
+          button.dataset.activeColor = activeColor;
+          button.dataset.activeBackground = activeBackground;
+          button.textContent = symbol;
+          button.title = label;
+
+          Object.assign(button.style, {
+            minWidth: value === "N/A" ? "48px" : "42px",
+            minHeight: "42px",
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+            background: "#fff",
+            color: "#333",
+            cursor: "pointer",
+            fontWeight: "700"
           });
 
-        body.appendChild(section);
+          button.addEventListener("click", () => {
+            selectDailyActivityResultButton(options, button);
+          });
+
+          options.appendChild(button);
+        });
+
+        row.append(itemText, options);
+        section.appendChild(row);
       });
 
-      if (!data.checklist.length) {
-        body.textContent =
-          "Checklist tidak ditemukan untuk unit ini.";
-      }
+    body.appendChild(section);
+  });
 
-      count.textContent =
-        `${data.checklist.length} Checklist`;
+  if (!data.checklist.length) {
+    body.textContent =
+      "Checklist tidak ditemukan untuk unit ini.";
+  }
 
-      backdrop.hidden = false;
+  count.textContent =
+    `${data.checklist.length} Checklist`;
+
+  backdrop.hidden = false;
+
+  await loadDailyActivityInspectionDraft(
+    cleanDailyActivityValue(data?.scheduleUnitId)
+  );
+}
+
+
+function selectDailyActivityResultButton(options, selectedButton) {
+  Array.from(options.children).forEach(other => {
+    other.dataset.selected = "false";
+    other.style.background = "#fff";
+    other.style.color = "#333";
+    other.style.borderColor = "#ddd";
+    other.style.outline = "";
+  });
+
+  const activeColor =
+    selectedButton.dataset.activeColor || "#333";
+  const activeBackground =
+    selectedButton.dataset.activeBackground || "#eee";
+
+  selectedButton.dataset.selected = "true";
+  selectedButton.style.background = activeBackground;
+  selectedButton.style.color = activeColor;
+  selectedButton.style.borderColor = activeColor;
+  selectedButton.style.outline = `2px solid ${activeColor}`;
+}
+
+
+function collectDailyActivityInspectionAnswers() {
+  const body =
+    document.getElementById("dailyActivityInspectionBody");
+
+  if (!body) return [];
+
+  return Array.from(
+    body.querySelectorAll("[data-checklist-id]")
+  )
+    .map(row => {
+      const selected =
+        row.querySelector(
+          '.daily-activity-result-options button[data-selected="true"]'
+        );
+
+      if (!selected) return null;
+
+      return {
+        checklistId:
+          cleanDailyActivityValue(row.dataset.checklistId),
+        group:
+          cleanDailyActivityValue(row.dataset.group),
+        item:
+          cleanDailyActivityValue(row.dataset.item),
+        sequence:
+          Number(row.dataset.sequence) || 0,
+        result:
+          cleanDailyActivityValue(selected.dataset.value)
+      };
+    })
+    .filter(Boolean);
+}
+
+
+async function saveDailyActivityInspectionDraft() {
+  const backdrop =
+    document.getElementById("dailyActivityInspectionBackdrop");
+
+  const saveButton =
+    document.getElementById("saveDailyActivityInspectionDraft");
+
+  const scheduleUnitId =
+    cleanDailyActivityValue(backdrop?.dataset.scheduleUnitId);
+
+  if (!scheduleUnitId) {
+    alert("Schedule Unit ID tidak ditemukan.");
+    return;
+  }
+
+  const user = getDailyActivitySessionUser();
+  if (!user) return;
+
+  const inspectorId =
+    cleanDailyActivityValue(user?.uniqId);
+
+  if (!inspectorId) {
+    alert("Session user tidak valid.");
+    return;
+  }
+
+  const hourMeter =
+    cleanDailyActivityValue(
+      document.getElementById("dailyActivityInspectionHourMeter")?.value
+    );
+
+  const activityNotes =
+    cleanDailyActivityValue(
+      document.getElementById("dailyActivityInspectionNotes")?.value
+    );
+
+  const answers =
+    collectDailyActivityInspectionAnswers();
+
+  const originalText =
+    saveButton?.textContent || "Save Draft";
+
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = "Saving...";
+  }
+
+  try {
+    const result = await dailyActivityApiRequest({
+      action: "saveDMInspectionDraft",
+      scheduleUnitId: scheduleUnitId,
+      inspectorId: inspectorId,
+      hourMeter: hourMeter,
+      activityNotes: activityNotes,
+      photo: "",
+      answers: answers
+    });
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message || "Draft gagal disimpan."
+      );
     }
+
+    await loadDailyActivitySchedule();
+
+    alert("Draft berhasil disimpan.");
+
+    if (backdrop) {
+      backdrop.hidden = true;
+    }
+
+  } catch (error) {
+    console.error(
+      "HEXA Daily Activity Save Draft error:",
+      error
+    );
+
+    alert(
+      error?.message || "Draft gagal disimpan."
+    );
+
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalText;
+    }
+  }
+}
+
+
+async function loadDailyActivityInspectionDraft(scheduleUnitId) {
+  if (!scheduleUnitId) return;
+
+  try {
+    const result = await dailyActivityApiRequest({
+      action: "getDMInspectionDraft",
+      scheduleUnitId: scheduleUnitId
+    });
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message || "Draft gagal dimuat."
+      );
+    }
+
+    const draft =
+      result?.inspection ||
+      result?.draft ||
+      result?.data ||
+      null;
+
+    if (!draft) return;
+
+    const hourMeter =
+      document.getElementById("dailyActivityInspectionHourMeter");
+
+    const notes =
+      document.getElementById("dailyActivityInspectionNotes");
+
+    if (hourMeter) {
+      hourMeter.value =
+        cleanDailyActivityValue(
+          draft?.hourMeter ??
+          draft?.hm ??
+          result?.hourMeter
+        );
+    }
+
+    if (notes) {
+      notes.value =
+        cleanDailyActivityValue(
+          draft?.activityNotes ??
+          draft?.notes ??
+          draft?.note ??
+          result?.activityNotes
+        );
+    }
+
+    const answers =
+      extractDailyActivityDraftAnswers(result, draft);
+
+    answers.forEach(answer => {
+      const checklistId =
+        cleanDailyActivityValue(
+          answer?.checklistId ||
+          answer?.id
+        );
+
+      const value =
+        cleanDailyActivityValue(
+          answer?.result ||
+          answer?.value
+        ).toUpperCase();
+
+      if (!checklistId || !value) return;
+
+      const row =
+        document.querySelector(
+          `#dailyActivityInspectionBody [data-checklist-id="${escapeDailyActivitySelector(checklistId)}"]`
+        );
+
+      const options =
+        row?.querySelector(".daily-activity-result-options");
+
+      const button =
+        options
+          ? Array.from(options.querySelectorAll("button"))
+              .find(item =>
+                cleanDailyActivityValue(item.dataset.value).toUpperCase() === value
+              )
+          : null;
+
+      if (options && button) {
+        selectDailyActivityResultButton(options, button);
+      }
+    });
+
+  } catch (error) {
+    console.error(
+      "HEXA Daily Activity Resume Draft error:",
+      error
+    );
+
+    alert(
+      error?.message || "Draft gagal dimuat."
+    );
+  }
+}
+
+
+function extractDailyActivityDraftAnswers(result, draft) {
+  const candidates = [
+    draft?.answers,
+    draft?.details,
+    draft?.checklist,
+    result?.answers,
+    result?.details,
+    result?.checklist
+  ];
+
+  for (const candidate of candidates) {
+    if (Array.isArray(candidate)) {
+      return candidate;
+    }
+  }
+
+  return [];
+}
+
+
+function escapeDailyActivitySelector(value) {
+  const text = cleanDailyActivityValue(value);
+
+  if (window.CSS && typeof window.CSS.escape === "function") {
+    return window.CSS.escape(text);
+  }
+
+  return text.replace(/["\\]/g, "\\$&");
+}
+
