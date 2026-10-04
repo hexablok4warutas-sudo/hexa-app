@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Activity Access | HEXA</title>
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="daily-activity-access.css">
+</head>
+<body>
+
+<header id="hexaHeader" data-header-type="standard" data-page="settings"></header>
+
+<main class="daa-page">
+
+  <section class="daa-heading-shell">
+    <div class="daa-heading">
+      <button type="button" id="daaBackButton" class="daa-back-button" aria-label="Back to System Settings">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
+      </button>
+
+      <span class="daa-heading-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 3L19 6V11C19 16 16 19 12 21C8 19 5 16 5 11V6Z"></path>
+          <path d="M9 12L11 14L15 10"></path>
+        </svg>
+      </span>
+
+      <div class="daa-heading-text">
+        <h1>Daily Activity Access</h1>
+        <p>Daily Activity visibility &amp; permission configuration</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="daa-container">
+
+    <div class="daa-info-card">
+      <strong>Permission Matrix</strong>
+      <span>
+        General access follows the user's Level. If an account is selected as Name ID 1, 2, or 3,
+        that special column replaces the user's Level permissions for Daily Activity.
+      </span>
+    </div>
+
+    <div id="daaMessage" class="daa-message" hidden></div>
+
+    <section class="daa-matrix-card">
+      <div class="daa-matrix-toolbar">
+        <div>
+          <h2>DAILY ACTIVITY</h2>
+          <p>Choose accounts for special access, then check the permissions that apply.</p>
+        </div>
+
+        <button type="button" id="daaSaveButton" class="daa-save-button">
+          Save Changes
+        </button>
+      </div>
+
+      <div class="daa-table-scroll">
+        <table class="daa-table">
+          <thead>
+            <tr>
+              <th class="daa-permission-column">Permission</th>
+              <th>Master</th>
+              <th>Section Head</th>
+              <th>Group Leader</th>
+              <th>Admin</th>
+              <th>Mechanic</th>
+              <th>Visitor</th>
+              <th class="daa-special-column">Name ID 1</th>
+              <th class="daa-special-column">Name ID 2</th>
+              <th class="daa-special-column">Name ID 3</th>
+            </tr>
+
+            <tr class="daa-account-row">
+              <th>Account</th>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>
+                <select id="daaNameId1" class="daa-account-select" aria-label="Name ID 1">
+                  <option value="">Select Account</option>
+                </select>
+              </td>
+              <td>
+                <select id="daaNameId2" class="daa-account-select" aria-label="Name ID 2">
+                  <option value="">Select Account</option>
+                </select>
+              </td>
+              <td>
+                <select id="daaNameId3" class="daa-account-select" aria-label="Name ID 3">
+                  <option value="">Select Account</option>
+                </select>
+              </td>
+            </tr>
+          </thead>
+
+          <tbody id="daaPermissionBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </section>
+</main>
+
+<script src="hexa-menu.js"></script>
+<script src="hexa-header.js"></script>
+<script src="daily-activity-access.js"></script>
+
+</body>
+</html>
