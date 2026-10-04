@@ -12,29 +12,12 @@
 
   <title>System Settings | HEXA</title>
 
-
-  <!-- GLOBAL HEXA HEADER -->
-  <link
-    rel="stylesheet"
-    href="hexa-header.css"
-  >
-
-
-  <!-- SYSTEM SETTINGS -->
-  <link
-    rel="stylesheet"
-    href="system-settings.css"
-  >
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="system-settings.css">
 
 </head>
 
-
 <body>
-
-
-  <!-- ==================================================
-       GLOBAL HEXA HEADER
-       ================================================== -->
 
   <header
     id="hexaHeader"
@@ -42,28 +25,14 @@
     data-page="settings"
   ></header>
 
-
-
-  <!-- ==================================================
-       SYSTEM SETTINGS PAGE
-       ================================================== -->
-
   <main
     id="systemSettingsPage"
     class="system-settings-page"
   >
 
-
-    <!-- =================================================
-         PAGE HEADING
-         ================================================= -->
-
     <section class="system-settings-heading-shell">
 
       <div class="system-settings-heading">
-
-
-        <!-- BACK -->
 
         <button
           type="button"
@@ -71,32 +40,17 @@
           class="system-settings-back-button"
           aria-label="Back to Settings"
         >
-
           <svg viewBox="0 0 24 24">
-
             <path d="M15 18l-6-6 6-6"></path>
-
           </svg>
-
         </button>
-
-
-
-        <!-- ICON -->
 
         <span
           class="system-settings-heading-icon"
           aria-hidden="true"
         >
-
           <svg viewBox="0 0 24 24">
-
-            <circle
-              cx="12"
-              cy="12"
-              r="3"
-            ></circle>
-
+            <circle cx="12" cy="12" r="3"></circle>
             <path
               d="
                 M19.4 15
@@ -147,62 +101,26 @@
                 Z
               "
             ></path>
-
           </svg>
-
         </span>
 
-
-
-        <!-- TITLE -->
-
         <div class="system-settings-heading-text">
-
-          <h1>
-            System Settings
-          </h1>
-
-          <p>
-            Master Data &amp; Application Configuration
-          </p>
-
+          <h1>System Settings</h1>
+          <p>Master Data &amp; Application Configuration</p>
         </div>
-
 
       </div>
 
     </section>
 
-
-
-    <!-- =================================================
-         CONTENT
-         ================================================= -->
-
     <section class="system-settings-container">
-
-
-      <!-- =================================================
-           MASTER DATA
-           ================================================= -->
 
       <section class="system-settings-section">
 
         <div class="system-settings-section-heading">
-
-          <span
-            class="system-settings-section-accent"
-          ></span>
-
-          <h2>
-            MASTER DATA
-          </h2>
-
+          <span class="system-settings-section-accent"></span>
+          <h2>MASTER DATA</h2>
         </div>
-
-
-
-        <!-- POPULATION UNIT -->
 
         <button
           type="button"
@@ -210,113 +128,70 @@
           class="system-settings-menu-card"
           data-system-page="population-unit"
         >
-
-
-          <!-- ICON -->
-
-          <span
-            class="
-              system-settings-menu-icon
-              population-unit-icon
-            "
-          >
-
+          <span class="system-settings-menu-icon population-unit-icon">
             <svg viewBox="0 0 24 24">
-
-              <path
-                d="
-                  M4 15
-                  V10
-                  L7 6
-                  H17
-                  L20 10
-                  V15
-                "
-              ></path>
-
-              <path
-                d="
-                  M3 15
-                  H21
-                  V18
-                  H3
-                  Z
-                "
-              ></path>
-
-              <circle
-                cx="7"
-                cy="18"
-                r="2"
-              ></circle>
-
-              <circle
-                cx="17"
-                cy="18"
-                r="2"
-              ></circle>
-
+              <path d="M4 15V10L7 6H17L20 10V15"></path>
+              <path d="M3 15H21V18H3Z"></path>
+              <circle cx="7" cy="18" r="2"></circle>
+              <circle cx="17" cy="18" r="2"></circle>
             </svg>
-
           </span>
-
-
-
-          <!-- CONTENT -->
 
           <span class="system-settings-menu-content">
-
-            <strong>
-              Population Unit
-            </strong>
-
-            <small>
-              Manage unit population, EGI and operational status
-            </small>
-
+            <strong>Population Unit</strong>
+            <small>Manage unit population, EGI and operational status</small>
           </span>
 
-
-
-          <!-- ARROW -->
-
-          <span
-            class="system-settings-card-arrow"
-            aria-hidden="true"
-          >
-
+          <span class="system-settings-card-arrow" aria-hidden="true">
             <svg viewBox="0 0 24 24">
-
               <path d="M9 18l6-6-6-6"></path>
-
             </svg>
-
           </span>
-
-
         </button>
-
 
       </section>
 
+      <section class="system-settings-section system-settings-section-spaced">
+
+        <div class="system-settings-section-heading">
+          <span class="system-settings-section-accent"></span>
+          <h2>APPLICATION CONFIGURATION</h2>
+        </div>
+
+        <button
+          type="button"
+          id="dailyActivityAccessCard"
+          class="system-settings-menu-card"
+          data-system-page="daily-activity-access"
+        >
+          <span class="system-settings-menu-icon daily-activity-access-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3L19 6V11C19 16 16 19 12 21C8 19 5 16 5 11V6Z"></path>
+              <path d="M9 12L11 14L15 10"></path>
+            </svg>
+          </span>
+
+          <span class="system-settings-menu-content">
+            <strong>Daily Activity Access</strong>
+            <small>Configure Daily Activity visibility &amp; permissions</small>
+          </span>
+
+          <span class="system-settings-card-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 18l6-6-6-6"></path>
+            </svg>
+          </span>
+        </button>
+
+      </section>
 
     </section>
 
   </main>
 
-
-
-  <!-- ==================================================
-       JAVASCRIPT
-       ================================================== -->
-
   <script src="hexa-menu.js"></script>
-
   <script src="hexa-header.js"></script>
-
   <script src="system-settings.js"></script>
 
-
 </body>
-
 </html>
