@@ -194,6 +194,7 @@
             dailyActivitySchedules =
               Array.isArray(result.schedules) ? result.schedules : [];
 
+            await loadDailyActivityApprovalStates();
             renderDailyActivitySchedules();
           } catch (error) {
             console.error("HEXA Daily Activity load error:", error);
@@ -202,6 +203,68 @@
             );
           }
         }
+
+        async function loadDailyActivityApprovalStates() {
+          dailyActivityApprovalStates.clear();
+          dailyActivityReviewedSchedules.clear();
+
+          const scheduleIds =
+            dailyActivitySchedules
+              .map(schedule =>
+                cleanDailyActivityValue(
+                  schedule?.scheduleId ||
+                  schedule?.scheduleID ||
+                  schedule?.id
+                )
+              )
+              .filter(Boolean);
+
+          if (!scheduleIds.length) return;
+
+          try {
+            const result = await dailyActivityApiRequest({
+              action: "getDMApprovalStates",
+              scheduleIds
+            });
+
+            if (!result || result.success !== true) {
+              throw new Error(
+                result?.message ||
+                "Unable to load approval states."
+              );
+            }
+
+            const states =
+              Array.isArray(result.approvals)
+                ? result.approvals
+                : [];
+
+            states.forEach(state => {
+              const scheduleId =
+                cleanDailyActivityValue(state?.scheduleId);
+
+              if (!scheduleId) return;
+
+              dailyActivityApprovalStates.set(
+                scheduleId,
+                state
+              );
+
+              if (state?.reviewed === true) {
+                dailyActivityReviewedSchedules.add(
+                  scheduleId
+                );
+              }
+            });
+
+          } catch (error) {
+            console.error(
+              "HEXA DM Approval state load error:",
+              error
+            );
+          }
+        }
+
 
         function renderDailyActivitySchedules() {
           hideDailyActivityLoading();
@@ -2672,6 +2735,7 @@
         // =========================================================
 
         const dailyActivityReviewedSchedules = new Set();
+        const dailyActivityApprovalStates = new Map();
         let currentApprovalReviewScheduleId = "";
         let currentApprovalReviewTruckNumber = null;
 
@@ -2687,6 +2751,10 @@
             document
               .getElementById(`approvalReviewButton${truckNumber}`)
               ?.addEventListener("click", () => openDailyActivityApprovalResume(truckNumber));
+
+            document
+              .getElementById(`approvalApproveButton${truckNumber}`)
+              ?.addEventListener("click", () => approveDailyActivitySchedule(truckNumber));
           });
 
           document
@@ -2765,19 +2833,48 @@
             );
           }
 
-          if (reviewButton) {
-            const scheduleId =
-              cleanDailyActivityValue(schedule?.scheduleId || schedule?.scheduleID || schedule?.id);
-            const reviewed =
-              Boolean(scheduleId) && dailyActivityReviewedSchedules.has(scheduleId);
+          const scheduleId =
+            cleanDailyActivityValue(
+              schedule?.scheduleId ||
+              schedule?.scheduleID ||
+              schedule?.id
+            );
 
-            reviewButton.disabled = !canReview;
-            reviewButton.textContent = reviewed ? "Reviewed" : "Review Resume";
-            reviewButton.classList.toggle("is-reviewed", reviewed);
+          const approvalState =
+            scheduleId
+              ? dailyActivityApprovalStates.get(scheduleId)
+              : null;
+
+          const reviewed =
+            Boolean(scheduleId) &&
+            (
+              dailyActivityReviewedSchedules.has(scheduleId) ||
+              approvalState?.reviewed === true
+            );
+
+          if (reviewButton) {
+            reviewButton.disabled =
+              !canReview ||
+              !hasDailyActivityPermission("REVIEW_RESUME");
+
+            reviewButton.textContent =
+              reviewed ? "Reviewed" : "Review Resume";
+
+            reviewButton.classList.toggle(
+              "is-reviewed",
+              reviewed
+            );
           }
 
-          // Stage 4B-1: visible but intentionally inactive.
-          if (approveButton) approveButton.disabled = true;
+          if (approveButton) {
+            approveButton.disabled =
+              !schedule ||
+              status !== "APPROVAL" ||
+              !reviewed ||
+              !hasDailyActivityPermission("APPROVE");
+          }
+
+          // Stage 4C.
           if (issueButton) issueButton.disabled = true;
           if (pdfButton) pdfButton.disabled = true;
         }
@@ -2879,20 +2976,177 @@
           }
         }
 
-        function completeDailyActivityReview() {
-          if (currentApprovalReviewScheduleId) {
-            dailyActivityReviewedSchedules.add(currentApprovalReviewScheduleId);
+        async function completeDailyActivityReview() {
+          if (!hasDailyActivityPermission("REVIEW_RESUME")) {
+            alert("Anda tidak memiliki akses Review Resume.");
+            return;
           }
 
-          if (currentApprovalReviewTruckNumber === 15 || currentApprovalReviewTruckNumber === 16) {
-            const schedule = dailyActivitySchedules.find(item =>
-              getLubeTruckNumber(item?.lubeTruck) === currentApprovalReviewTruckNumber
+          if (!currentApprovalReviewScheduleId) {
+            return;
+          }
+
+          const user =
+            getDailyActivitySessionUser();
+
+          const doneButton =
+            document.getElementById("approvalResumeDoneButton");
+
+          const originalText =
+            doneButton?.textContent || "Done Review";
+
+          if (doneButton) {
+            doneButton.disabled = true;
+            doneButton.textContent = "Saving...";
+          }
+
+          try {
+            const result = await dailyActivityApiRequest({
+              action: "markDMApprovalReviewed",
+              scheduleId: currentApprovalReviewScheduleId,
+              reviewedById: cleanDailyActivityValue(user?.uniqId)
+            });
+
+            if (!result || result.success !== true) {
+              throw new Error(
+                result?.message ||
+                "Review Resume gagal disimpan."
+              );
+            }
+
+            dailyActivityReviewedSchedules.add(
+              currentApprovalReviewScheduleId
             );
-            renderDailyActivityApprovalRow(currentApprovalReviewTruckNumber, schedule);
+
+            if (result.approval) {
+              dailyActivityApprovalStates.set(
+                currentApprovalReviewScheduleId,
+                result.approval
+              );
+            }
+
+            if (
+              currentApprovalReviewTruckNumber === 15 ||
+              currentApprovalReviewTruckNumber === 16
+            ) {
+              const schedule =
+                dailyActivitySchedules.find(item =>
+                  getLubeTruckNumber(item?.lubeTruck) ===
+                  currentApprovalReviewTruckNumber
+                );
+
+              renderDailyActivityApprovalRow(
+                currentApprovalReviewTruckNumber,
+                schedule
+              );
+            }
+
+            closeDailyActivityApprovalResume();
+
+          } catch (error) {
+            console.error(
+              "HEXA Review Resume save error:",
+              error
+            );
+            alert(
+              error?.message ||
+              "Review Resume gagal disimpan."
+            );
+          } finally {
+            if (doneButton) {
+              doneButton.disabled = false;
+              doneButton.textContent = originalText;
+            }
+          }
+        }
+
+        async function approveDailyActivitySchedule(truckNumber) {
+          if (!hasDailyActivityPermission("APPROVE")) {
+            alert("Anda tidak memiliki akses Approve.");
+            return;
           }
 
-          closeDailyActivityApprovalResume();
+          const schedule =
+            dailyActivitySchedules.find(item =>
+              getLubeTruckNumber(item?.lubeTruck) === truckNumber
+            );
+
+          if (!schedule) return;
+
+          const scheduleId =
+            cleanDailyActivityValue(
+              schedule?.scheduleId ||
+              schedule?.scheduleID ||
+              schedule?.id
+            );
+
+          if (!scheduleId) return;
+
+          const approvalState =
+            dailyActivityApprovalStates.get(scheduleId);
+
+          if (approvalState?.reviewed !== true) {
+            alert(
+              "Review Resume harus diselesaikan sebelum Approve."
+            );
+            return;
+          }
+
+          const approved =
+            window.confirm(
+              `Approve Daily Activity Lube Truck ${truckNumber}?`
+            );
+
+          if (!approved) return;
+
+          const button =
+            document.getElementById(
+              `approvalApproveButton${truckNumber}`
+            );
+
+          const originalText =
+            button?.textContent || "Approve";
+
+          if (button) {
+            button.disabled = true;
+            button.textContent = "Approving...";
+          }
+
+          try {
+            const user =
+              getDailyActivitySessionUser();
+
+            const result = await dailyActivityApiRequest({
+              action: "approveDMSchedule",
+              scheduleId,
+              approvedById: cleanDailyActivityValue(user?.uniqId)
+            });
+
+            if (!result || result.success !== true) {
+              throw new Error(
+                result?.message ||
+                "Daily Activity gagal di-approve."
+              );
+            }
+
+            await loadDailyActivitySchedule();
+
+          } catch (error) {
+            console.error(
+              "HEXA Daily Activity approve error:",
+              error
+            );
+            alert(
+              error?.message ||
+              "Daily Activity gagal di-approve."
+            );
+          } finally {
+            if (button) {
+              button.textContent = originalText;
+            }
+          }
         }
+
 
         function closeDailyActivityApprovalResume() {
           const backdrop = document.getElementById("approvalResumeBackdrop");
