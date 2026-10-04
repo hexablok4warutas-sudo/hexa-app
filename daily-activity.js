@@ -12,12 +12,33 @@
         let schedulerEditingLockedUnitIds = new Set();
         let schedulerEditingExistingUnits = [];
 
+        // =====================================================
+        // DAILY ACTIVITY LOCAL PERMISSIONS
+        // Special Name ID override berlaku HANYA di halaman ini.
+        // =====================================================
+        let dailyActivityPermissions = {};
+        let dailyActivityPermissionSource = "";
+
         document.addEventListener("DOMContentLoaded", initializeDailyActivity);
 
         async function initializeDailyActivity() {
           const user = getDailyActivitySessionUser();
           if (!user) return;
 
+          const permissionReady =
+            await loadDailyActivityPermissions(user);
+
+          if (!permissionReady) {
+            return;
+          }
+
+          if (!hasDailyActivityPermission("PAGE_ACCESS")) {
+            alert("You are not authorized to access Daily Activity.");
+            window.location.replace("daily-maintenance.html");
+            return;
+          }
+
+          applyDailyActivityPermissionUI();
           initializeDailyActivityDate();
           document.getElementById("refreshDailyActivityButton")
             ?.addEventListener("click", loadDailyActivitySchedule);
@@ -50,6 +71,80 @@
             return null;
           }
         }
+
+        async function loadDailyActivityPermissions(user) {
+          try {
+            const result = await dailyActivityApiRequest({
+              action: "resolveDailyActivityPermissions",
+              uniqId: cleanDailyActivityValue(user?.uniqId)
+            });
+
+            if (!result || result.success !== true) {
+              throw new Error(
+                result?.message ||
+                "Daily Activity permission tidak dapat dimuat."
+              );
+            }
+
+            dailyActivityPermissions =
+              result.permissions && typeof result.permissions === "object"
+                ? result.permissions
+                : {};
+
+            dailyActivityPermissionSource =
+              cleanDailyActivityValue(result.source);
+
+            return true;
+
+          } catch (error) {
+            console.error("HEXA Daily Activity permission error:", error);
+            alert(
+              error?.message ||
+              "Daily Activity permission tidak dapat dimuat."
+            );
+            return false;
+          }
+        }
+
+        function hasDailyActivityPermission(key) {
+          return dailyActivityPermissions?.[key] === true;
+        }
+
+        function applyDailyActivityPermissionUI() {
+          const schedulerButton =
+            document.getElementById("openSchedulerButton");
+
+          if (schedulerButton) {
+            schedulerButton.hidden =
+              !hasDailyActivityPermission("SCHEDULER");
+          }
+
+          const scheduleGrid =
+            document.getElementById("dailyActivityScheduleGrid");
+
+          const statusLegend =
+            document.querySelector(".daily-activity-status-legend");
+
+          const cardAllowed =
+            hasDailyActivityPermission("DAILY_ACTIVITY_CARD");
+
+          if (scheduleGrid) {
+            scheduleGrid.hidden = !cardAllowed;
+          }
+
+          if (statusLegend) {
+            statusLegend.hidden = !cardAllowed;
+          }
+
+          const approvalSection =
+            document.getElementById("dailyActivityApprovalReview");
+
+          if (approvalSection) {
+            approvalSection.hidden =
+              !hasDailyActivityPermission("APPROVAL_REVIEW");
+          }
+        }
+
 
         function initializeDailyActivityDate() {
           const input = document.getElementById("activityDate");
@@ -138,11 +233,9 @@
           const editButton =
             document.getElementById(`lubeTruck${truckNumber}EditButton`);
 
-          // Sementara untuk pengujian:
-          // jika card memiliki schedule, tombol Edit langsung tampil.
-          // Nanti ditambah filter permission Scheduler / Edit Schedule.
           if (editButton) {
-            editButton.hidden = false;
+            editButton.hidden =
+              !hasDailyActivityPermission("EDIT_SCHEDULE");
           }
 
           setDailyActivityText(
@@ -448,7 +541,8 @@
                 : "";
           }
 
-          button.hidden = false;
+          button.hidden =
+            !hasDailyActivityPermission("COMPLETE_ACTIVITY");
 
           if (status === "APPROVAL" || status === "APPROVED") {
             button.disabled = true;
@@ -767,6 +861,11 @@
           const schedulerDate = document.getElementById("schedulerActivityDate");
 
           function openPanel() {
+            if (!hasDailyActivityPermission("SCHEDULER")) {
+              alert("Anda tidak memiliki akses Scheduler.");
+              return;
+            }
+
             if (!backdrop) return;
 
             if (schedulerDate && activityDate?.value) {
@@ -1258,6 +1357,18 @@
 
           const isEditMode = Boolean(schedulerEditingScheduleId);
 
+          const requiredPermission =
+            isEditMode ? "EDIT_SCHEDULE" : "SCHEDULER";
+
+          if (!hasDailyActivityPermission(requiredPermission)) {
+            alert(
+              isEditMode
+                ? "Anda tidak memiliki akses Edit Schedule."
+                : "Anda tidak memiliki akses Scheduler."
+            );
+            return;
+          }
+
           const originalText =
             saveButton?.textContent ||
             (isEditMode ? "Update Schedule" : "Save Schedule");
@@ -1533,6 +1644,11 @@
         ===================================================== */
 
         async function openEditSchedulePanel(truckNumber) {
+          if (!hasDailyActivityPermission("EDIT_SCHEDULE")) {
+            alert("Anda tidak memiliki akses Edit Schedule.");
+            return;
+          }
+
           const activityDate =
             cleanDailyActivityValue(
               document.getElementById("activityDate")?.value
@@ -2591,12 +2707,7 @@
         }
 
         function hasDailyActivityApprovalAccess(user) {
-          const kode = cleanDailyActivityValue(user?.kode);
-
-          // Temporary role gate until Access Settings permission is connected:
-          // 1 MASTER, 2 SECTION HEAD, 3 GROUP LEADER, 4 ADMIN.
-          // Mechanic (5) and Visitor (6) do not see Approval Review.
-          return ["1", "2", "3", "4"].includes(kode);
+          return hasDailyActivityPermission("APPROVAL_REVIEW");
         }
 
         function renderDailyActivityApprovalReview() {
@@ -2672,6 +2783,11 @@
         }
 
         async function openDailyActivityApprovalResume(truckNumber) {
+          if (!hasDailyActivityPermission("REVIEW_RESUME")) {
+            alert("Anda tidak memiliki akses Review Resume.");
+            return;
+          }
+
           const schedule = dailyActivitySchedules.find(item =>
             getLubeTruckNumber(item?.lubeTruck) === truckNumber
           );
