@@ -1,0 +1,237 @@
+/* =====================================================
+   HEXA - DAILY ACTIVITY ACCESS
+   ===================================================== */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #252525;
+  background: #f5f7f8;
+}
+
+.daa-page {
+  min-height: 100vh;
+  padding-top: 88px;
+  background:
+    linear-gradient(rgba(255,255,255,.72), rgba(255,255,255,.72)),
+    url("hexa-doodleblue.png");
+  background-repeat: repeat, repeat;
+  background-size: auto, 760px auto;
+  background-position: center, top center;
+}
+
+.daa-heading-shell {
+  position: sticky;
+  top: 88px;
+  z-index: 500;
+  width: 100%;
+  background: rgba(248,251,252,.98);
+  border-bottom: 1px solid rgba(70,120,145,.16);
+  box-shadow: 0 5px 15px rgba(0,0,0,.035);
+}
+
+.daa-heading {
+  width: min(90%,1200px);
+  min-height: 104px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 0;
+}
+
+.daa-back-button {
+  width:46px;height:46px;flex:0 0 46px;
+  display:flex;align-items:center;justify-content:center;
+  padding:0;border:1px solid rgba(55,116,145,.15);border-radius:50%;
+  background:#fff;color:#347795;cursor:pointer;
+  box-shadow:0 5px 14px rgba(31,77,96,.08);
+}
+.daa-back-button:hover { transform:translateX(-2px);background:#edf8fc; }
+.daa-back-button svg { width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round; }
+
+.daa-heading-icon {
+  width:70px;height:70px;flex:0 0 70px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:20px;
+  background:linear-gradient(145deg,#ffad2f,#ff7a00);
+  color:#fff;
+  box-shadow:0 8px 20px rgba(255,122,0,.20);
+}
+.daa-heading-icon svg { width:40px;height:40px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round; }
+
+.daa-heading-text { min-width:0; }
+.daa-heading-text h1 { margin:0;color:#101010;font-size:clamp(30px,3vw,42px);line-height:1.05;font-weight:800;letter-spacing:-.8px; }
+.daa-heading-text p { margin:7px 0 0;color:#68727a;font-size:14px;font-weight:500; }
+
+.daa-container {
+  width:min(90%,1200px);
+  margin:0 auto;
+  padding:22px 0 55px;
+}
+
+.daa-info-card {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:14px;
+  padding:16px 18px;
+  border:1px solid rgba(55,116,145,.14);
+  border-radius:18px;
+  background:rgba(255,255,255,.97);
+  box-shadow:0 7px 20px rgba(31,77,96,.07);
+}
+.daa-info-card strong { color:#273038;font-size:16px;font-weight:800; }
+.daa-info-card span { color:#69747b;font-size:13px;line-height:1.45; }
+
+.daa-message {
+  margin-bottom:14px;
+  padding:12px 15px;
+  border-radius:14px;
+  font-size:13px;
+  font-weight:700;
+}
+.daa-message.is-success { background:#eaf9f0;color:#168449;border:1px solid #bfe9cf; }
+.daa-message.is-error { background:#fff0f0;color:#c33b3b;border:1px solid #f0c6c6; }
+
+.daa-matrix-card {
+  overflow:hidden;
+  border:1px solid rgba(55,116,145,.14);
+  border-radius:20px;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 8px 24px rgba(31,77,96,.08);
+}
+
+.daa-matrix-toolbar {
+  min-height:84px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  padding:16px 18px;
+  border-bottom:1px solid #e7edf0;
+}
+.daa-matrix-toolbar h2 { margin:0;color:#30383d;font-size:17px;font-weight:800; }
+.daa-matrix-toolbar p { margin:5px 0 0;color:#747c82;font-size:12px; }
+
+.daa-save-button {
+  min-width:140px;
+  min-height:42px;
+  padding:9px 18px;
+  border:0;
+  border-radius:12px;
+  background:#ff9500;
+  color:#fff;
+  font:inherit;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 6px 15px rgba(255,149,0,.22);
+}
+.daa-save-button:disabled { cursor:not-allowed;opacity:.55;box-shadow:none; }
+
+.daa-table-scroll { width:100%;overflow-x:auto; }
+
+.daa-table {
+  width:100%;
+  min-width:1120px;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+.daa-table th,
+.daa-table td {
+  border-right:1px solid #e8edef;
+  border-bottom:1px solid #e8edef;
+  padding:11px 8px;
+  text-align:center;
+  vertical-align:middle;
+  font-size:12px;
+}
+.daa-table tr > *:last-child { border-right:0; }
+.daa-table tbody tr:last-child > * { border-bottom:0; }
+
+.daa-table thead th {
+  background:#f3f8fa;
+  color:#455159;
+  font-weight:800;
+}
+.daa-table thead tr:first-child th {
+  height:58px;
+}
+.daa-table .daa-permission-column {
+  width:220px;
+  text-align:left;
+  padding-left:16px;
+}
+.daa-table tbody th {
+  width:220px;
+  text-align:left;
+  padding-left:16px;
+  background:#fbfcfd;
+  color:#343c41;
+  font-weight:750;
+}
+
+.daa-special-column { background:#fff7ea !important; }
+
+.daa-account-row th,
+.daa-account-row td {
+  background:#fbfcfd;
+}
+.daa-account-row td:nth-last-child(-n+3) {
+  background:#fffaf1;
+}
+
+.daa-account-select {
+  width:100%;
+  min-width:155px;
+  height:38px;
+  padding:0 8px;
+  border:1px solid #d7e0e4;
+  border-radius:10px;
+  background:#fff;
+  color:#343c41;
+  font:inherit;
+  font-size:11px;
+  font-weight:650;
+  outline:none;
+}
+.daa-account-select:focus {
+  border-color:#ffad2f;
+  box-shadow:0 0 0 3px rgba(255,173,47,.13);
+}
+
+.daa-check {
+  width:19px;
+  height:19px;
+  margin:0;
+  accent-color:#ff9500;
+  cursor:pointer;
+}
+
+.daa-loading-row td {
+  padding:30px 15px;
+  color:#7b858b;
+  font-size:13px;
+}
+
+@media (max-width:560px) {
+  .daa-page { background-size:auto,600px auto; }
+  .daa-heading { width:94%;min-height:78px;gap:10px;padding:7px 0; }
+  .daa-back-button { width:36px;height:36px;flex-basis:36px; }
+  .daa-back-button svg { width:20px;height:20px; }
+  .daa-heading-icon { width:52px;height:52px;flex-basis:52px;border-radius:15px; }
+  .daa-heading-icon svg { width:30px;height:30px; }
+  .daa-heading-text h1 { font-size:24px; }
+  .daa-heading-text p { margin-top:4px;font-size:10.5px; }
+  .daa-container { width:94%;padding:15px 0 35px; }
+  .daa-info-card { padding:13px 14px;border-radius:16px; }
+  .daa-info-card strong { font-size:14px; }
+  .daa-info-card span { font-size:11px; }
+  .daa-matrix-toolbar { align-items:flex-start;flex-direction:column;padding:14px; }
+  .daa-save-button { width:100%; }
+  .daa-table { min-width:1080px; }
+}
