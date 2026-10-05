@@ -2089,3 +2089,39 @@ button[id^="lubeTruck"][id$="EditButton"].is-locked {
   margin: 22px auto 24px !important;
   box-sizing: border-box !important;
 }
+
+/* =========================================================
+   STAGE 4B-2 — APPROVE ACTION COLOR HIERARCHY
+   Active Approve = green solid.
+   Disabled Approve keeps the existing neutral disabled style.
+   ========================================================= */
+button[id^="approvalApproveButton"]:not(:disabled) {
+  background: #18a84b !important;
+  border-color: #18a84b !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  opacity: 1 !important;
+  cursor: pointer !important;
+}
+
+button[id^="approvalApproveButton"]:not(:disabled):hover {
+  background: #138c3e !important;
+  border-color: #138c3e !important;
+  color: #ffffff !important;
+}
+
+button[id^="approvalApproveButton"]:not(:disabled):active {
+  background: #107a36 !important;
+  border-color: #107a36 !important;
+  color: #ffffff !important;
+  transform: translateY(1px);
+}
+
+button[id^="approvalApproveButton"]:disabled {
+  background: #f1f1f1 !important;
+  border-color: #d8d8d8 !important;
+  color: #a4a4a4 !important;
+  opacity: 1 !important;
+  cursor: not-allowed !important;
+}
+
