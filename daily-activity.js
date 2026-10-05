@@ -2767,6 +2767,10 @@
             document
               .getElementById(`approvalApproveButton${truckNumber}`)
               ?.addEventListener("click", () => approveDailyActivitySchedule(truckNumber));
+
+            document
+              .getElementById(`approvalIssueButton${truckNumber}`)
+              ?.addEventListener("click", () => issueDailyActivityResume(truckNumber));
           });
 
           document
@@ -2886,8 +2890,16 @@
               !hasDailyActivityPermission("APPROVE");
           }
 
-          // Stage 4C.
-          if (issueButton) issueButton.disabled = true;
+          // Stage 4C-1 — Issue Resume.
+          // Generate PDF first; backend changes status to RESUME ISSUED only after the PDF is saved.
+          if (issueButton) {
+            issueButton.disabled =
+              !schedule ||
+              status !== "APPROVED" ||
+              !hasDailyActivityPermission("ISSUE_RESUME");
+          }
+
+          // Print / Download remains locked for Stage 4C-2.
           if (pdfButton) pdfButton.disabled = true;
         }
 
@@ -3151,6 +3163,83 @@
             alert(
               error?.message ||
               "Daily Activity gagal di-approve."
+            );
+          } finally {
+            if (button) {
+              button.textContent = originalText;
+            }
+          }
+        }
+
+
+        async function issueDailyActivityResume(truckNumber) {
+          if (!hasDailyActivityPermission("ISSUE_RESUME")) {
+            alert("Anda tidak memiliki akses Issue Resume.");
+            return;
+          }
+
+          const schedule =
+            dailyActivitySchedules.find(item =>
+              getLubeTruckNumber(item?.lubeTruck) === truckNumber
+            );
+
+          if (!schedule) return;
+
+          const status = normalizeDailyActivityStatus(schedule?.status);
+          if (status !== "APPROVED") {
+            alert("Issue Resume hanya dapat dilakukan saat status APPROVED.");
+            return;
+          }
+
+          const scheduleId = cleanDailyActivityValue(
+            schedule?.scheduleId ||
+            schedule?.scheduleID ||
+            schedule?.id
+          );
+
+          if (!scheduleId) return;
+
+          const confirmed = window.confirm(
+            `Issue Resume Daily Activity Lube Truck ${truckNumber}?\
+\
+Sistem akan membuat PDF A4 Portrait dan menyimpannya sebagai snapshot permanen.`
+          );
+
+          if (!confirmed) return;
+
+          const button = document.getElementById(
+            `approvalIssueButton${truckNumber}`
+          );
+          const originalText = button?.textContent || "Issue Resume";
+
+          if (button) {
+            button.disabled = true;
+            button.textContent = "Generating PDF...";
+          }
+
+          try {
+            const user = getDailyActivitySessionUser();
+            const result = await dailyActivityApiRequest({
+              action: "issueDMResume",
+              scheduleId,
+              issuedById: cleanDailyActivityValue(user?.uniqId)
+            });
+
+            if (!result || result.success !== true) {
+              throw new Error(
+                result?.message ||
+                "Resume PDF gagal dibuat."
+              );
+            }
+
+            alert("Resume PDF berhasil dibuat. Status berubah menjadi RESUME ISSUED.");
+            await loadDailyActivitySchedule();
+
+          } catch (error) {
+            console.error("HEXA Daily Activity Issue Resume error:", error);
+            alert(
+              error?.message ||
+              "Resume PDF gagal dibuat. Status tetap APPROVED."
             );
           } finally {
             if (button) {
