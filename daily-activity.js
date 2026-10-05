@@ -194,8 +194,20 @@
             dailyActivitySchedules =
               Array.isArray(result.schedules) ? result.schedules : [];
 
-            await loadDailyActivityApprovalStates();
+            // Render schedule/card utama segera; Approval tidak boleh menahan halaman.
             renderDailyActivitySchedules();
+
+            loadDailyActivityApprovalStates()
+              .then(function() {
+                // Setelah approval state selesai, update hanya panel Approval Review.
+                renderDailyActivityApprovalReview();
+              })
+              .catch(function(error) {
+                console.error(
+                  "HEXA DM Approval background load error:",
+                  error
+                );
+              });
           } catch (error) {
             console.error("HEXA Daily Activity load error:", error);
             setDailyActivityErrorState(
