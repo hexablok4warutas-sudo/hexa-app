@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Registrasi Backlog | HEXA</title>
+
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="backlog-registration.css"
+  >
+</head>
+
+
+<body>
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER
+       ===================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="backlog-monitoring"
+  ></header>
+
+
+  <!-- =====================================
+       MAIN
+       ===================================== -->
+
+  <main class="registration-main">
+
+    <section class="registration-section">
+
+
+      <!-- =================================
+           PAGE HEADING
+           ================================= -->
+
+      <div class="registration-heading">
+
+        <div class="registration-heading-left">
+
+          <button
+            type="button"
+            id="registrationBackButton"
+            class="registration-back-button"
+            aria-label="Back to Backlog Monitoring"
+          >
+
+            <svg viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6"></path>
+            </svg>
+
+          </button>
+
+
+          <div class="registration-heading-text">
+
+            <h1>
+              Registrasi Backlog
+            </h1>
+
+            <p>
+              Create, review, update dan monitor
+              registrasi backlog.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           TOOLBAR
+           ================================= -->
+
+      <div class="registration-toolbar">
+
+
+        <!-- SEARCH -->
+
+        <div class="registration-search">
+
+          <svg viewBox="0 0 24 24">
+            <circle
+              cx="11"
+              cy="11"
+              r="7"
+            ></circle>
+
+            <path
+              d="M20 20L16.5 16.5"
+            ></path>
+          </svg>
+
+          <input
+            type="search"
+            id="registrationSearch"
+            placeholder="Search registration..."
+            autocomplete="off"
+          >
+
+        </div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="registration-toolbar-actions">
+
+
+          <button
+            type="button"
+            id="registrationFilterButton"
+            class="registration-filter-button"
+          >
+
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M4 6H20M7 12H17M10 18H14"
+              ></path>
+            </svg>
+
+            <span>
+              Filter
+            </span>
+
+          </button>
+
+
+
+          <button
+            type="button"
+            id="registrationAddButton"
+            class="registration-add-button"
+          >
+
+            <span class="registration-add-icon">
+              +
+            </span>
+
+            <span>
+              Add
+            </span>
+
+          </button>
+
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           FILTER PANEL
+           ================================= -->
+
+      <div
+        id="registrationFilterPanel"
+        class="registration-filter-panel"
+        hidden
+      >
+
+        <div class="registration-filter-field">
+
+          <label for="registrationStatusFilter">
+            Status
+          </label>
+
+          <select id="registrationStatusFilter">
+
+            <option value="">
+              All Status
+            </option>
+
+            <option value="DRAFT">
+              Draft
+            </option>
+
+            <option value="SUBMITTED">
+              Submitted
+            </option>
+
+            <option value="WAITING_GL_APPROVAL">
+              Waiting GL Approval
+            </option>
+
+            <option value="WAITING_SECTION_APPROVAL">
+              Waiting Section Approval
+            </option>
+
+            <option value="FULL_APPROVED">
+              Full Approved
+            </option>
+
+            <option value="REJECTED">
+              Revision Required
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <button
+          type="button"
+          id="registrationClearFilter"
+          class="registration-clear-filter"
+        >
+          Clear Filter
+        </button>
+
+      </div>
+
+
+
+      <!-- =================================
+           SUMMARY
+           ================================= -->
+
+      <div class="registration-summary">
+
+        <div>
+
+          <span>
+            Total Registration
+          </span>
+
+          <strong id="registrationTotal">
+            0
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Draft
+          </span>
+
+          <strong id="registrationDraft">
+            0
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Waiting Approval
+          </span>
+
+          <strong id="registrationWaiting">
+            0
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Full Approved
+          </span>
+
+          <strong id="registrationApproved">
+            0
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           REGISTRATION LIST
+           ================================= -->
+
+      <section class="registration-list-section">
+
+        <div class="registration-list-heading">
+
+          <h2>
+            Registration List
+          </h2>
+
+          <span id="registrationResultCount">
+            0 registration
+          </span>
+
+        </div>
+
+
+        <div
+          id="registrationList"
+          class="registration-list"
+        >
+
+          <!--
+            DATA REGISTRASI NANTI
+            DIRENDER OLEH JAVASCRIPT.
+          -->
+
+        </div>
+
+
+
+        <!-- EMPTY STATE -->
+
+        <div
+          id="registrationEmpty"
+          class="registration-empty"
+        >
+
+          <div class="registration-empty-icon">
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M5 4H15L19 8V20H5Z"
+              ></path>
+
+              <path
+                d="M15 4V8H19"
+              ></path>
+
+              <path
+                d="M8 12H16"
+              ></path>
+
+              <path
+                d="M8 16H13"
+              ></path>
+
+            </svg>
+
+          </div>
+
+
+          <strong>
+            Belum ada Registrasi Backlog
+          </strong>
+
+          <p>
+            Registrasi backlog yang dibuat akan
+            ditampilkan di halaman ini.
+          </p>
+
+
+          <button
+            type="button"
+            id="registrationEmptyAddButton"
+          >
+            + Add Registration
+          </button>
+
+        </div>
+
+      </section>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================
+       GLOBAL SYSTEM
+       ===================================== -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
+
+  <script src="backlog-registration.js"></script>
+
+</body>
+
+</html>
