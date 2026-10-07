@@ -1,37 +1,37 @@
 "use strict";
 
-
 // ======================================================
 // HEXA BACKLOG REGISTRATION FORM
 // ======================================================
 
+// ======================================================
+// 0. API
+// ======================================================
+
+// Gunakan URL deployment Apps Script HEXA yang sama
+// dengan modul HEXA lainnya.
+const HEXA_API_URL =
+  "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
+
+let backlogCandidates = [];
+let backlogUnits = [];
 
 // ======================================================
 // 1. SESSION
 // ======================================================
 
 const hexaLoggedIn =
-  sessionStorage.getItem(
-    "hexaLoggedIn"
-  );
+  sessionStorage.getItem("hexaLoggedIn");
 
 const hexaUserData =
-  sessionStorage.getItem(
-    "hexaUser"
-  );
-
+  sessionStorage.getItem("hexaUser");
 
 if (
   hexaLoggedIn !== "true" ||
   !hexaUserData
 ) {
-
-  window.location.replace(
-    "index.html"
-  );
-
+  window.location.replace("index.html");
 }
-
 
 // ======================================================
 // 2. CURRENT USER
@@ -39,106 +39,62 @@ if (
 
 let currentUser = null;
 
-
 try {
-
-  currentUser =
-    JSON.parse(
-      hexaUserData
-    );
-
+  currentUser = JSON.parse(hexaUserData);
 } catch (error) {
-
-  sessionStorage.removeItem(
-    "hexaLoggedIn"
-  );
-
-  sessionStorage.removeItem(
-    "hexaUser"
-  );
-
-  window.location.replace(
-    "index.html"
-  );
-
+  sessionStorage.removeItem("hexaLoggedIn");
+  sessionStorage.removeItem("hexaUser");
+  window.location.replace("index.html");
 }
-
 
 // ======================================================
 // 3. ELEMENTS
 // ======================================================
 
 const backButton =
-  document.getElementById(
-    "brfBackButton"
-  );
+  document.getElementById("brfBackButton");
 
 const cancelButton =
-  document.getElementById(
-    "brfCancelButton"
-  );
+  document.getElementById("brfCancelButton");
 
 const saveDraftButton =
-  document.getElementById(
-    "brfSaveDraftButton"
-  );
+  document.getElementById("brfSaveDraftButton");
 
 const addItemButton =
-  document.getElementById(
-    "brfAddItemButton"
-  );
+  document.getElementById("brfAddItemButton");
 
 const itemsContainer =
-  document.getElementById(
-    "brfItemsContainer"
-  );
+  document.getElementById("brfItemsContainer");
 
 const itemTemplate =
-  document.getElementById(
-    "brfItemTemplate"
-  );
+  document.getElementById("brfItemTemplate");
 
 const partTemplate =
-  document.getElementById(
-    "brfPartTemplate"
-  );
+  document.getElementById("brfPartTemplate");
 
 const itemCounter =
-  document.getElementById(
-    "brfItemCounter"
-  );
-
+  document.getElementById("brfItemCounter");
 
 // ======================================================
 // 4. USER INFORMATION
 // ======================================================
 
 function setRegistrationInformation() {
-
   const createdBy =
-    document.getElementById(
-      "brfCreatedBy"
-    );
+    document.getElementById("brfCreatedBy");
 
   const createdDate =
-    document.getElementById(
-      "brfCreatedDate"
-    );
-
+    document.getElementById("brfCreatedDate");
 
   if (createdBy) {
-
     createdBy.textContent =
       currentUser?.nama ||
       currentUser?.name ||
       currentUser?.userId ||
       "-";
-
   }
 
-
   if (createdDate) {
-
     createdDate.textContent =
       new Intl.DateTimeFormat(
         "id-ID",
@@ -147,254 +103,1095 @@ function setRegistrationInformation() {
           month: "short",
           year: "numeric"
         }
-      ).format(
-        new Date()
-      );
-
+      ).format(new Date());
   }
-
 }
 
+// ======================================================
+// 5. API - LOAD BACKLOG CANDIDATES
+// ======================================================
+
+async function loadBacklogCandidates() {
+  try {
+    setUnitSelectLoading(true);
+
+    const response = await fetch(
+      HEXA_API_URL,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({
+          action: "getBacklogRegistrationCandidates"
+        })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        "HTTP " + response.status
+      );
+    }
+
+    const result = await response.json();
+
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.message ||
+        "Gagal mengambil kandidat Registrasi Backlog."
+      );
+    }
+
+    backlogCandidates =
+      Array.isArray(result.data)
+        ? result.data
+        : [];
+
+    backlogUnits =
+      Array.isArray(result.units)
+        ? result.units
+        : [];
+
+    refreshAllUnitSelects();
+
+    console.log(
+      "HEXA: Backlog candidates loaded",
+      backlogCandidates.length
+    );
+
+  } catch (error) {
+    console.error(
+      "HEXA: Failed to load backlog candidates",
+      error
+    );
+
+    backlogCandidates = [];
+    backlogUnits = [];
+
+    refreshAllUnitSelects(
+      "Unable to load Unit Code"
+    );
+  } finally {
+    setUnitSelectLoading(false);
+  }
+}
+
+function setUnitSelectLoading(isLoading) {
+  if (!itemsContainer) {
+    return;
+  }
+
+  const selects =
+    itemsContainer.querySelectorAll(
+      ".brf-unit-select"
+    );
+
+  selects.forEach(function(select) {
+    if (isLoading) {
+      select.disabled = true;
+      select.innerHTML =
+        '<option value="">Loading Unit...</option>';
+    } else {
+      select.disabled = false;
+    }
+  });
+}
+
+function getUniqueUnitsFromCandidates() {
+  const unitMap = {};
+
+  backlogCandidates.forEach(function(item) {
+    const unitCode =
+      cleanText(item.unitCode);
+
+    if (!unitCode) {
+      return;
+    }
+
+    const key =
+      unitCode.toLowerCase();
+
+    if (!unitMap[key]) {
+      unitMap[key] = unitCode;
+    }
+  });
+
+  return Object.keys(unitMap)
+    .map(function(key) {
+      return {
+        unitCode: unitMap[key]
+      };
+    })
+    .sort(function(a, b) {
+      return a.unitCode.localeCompare(
+        b.unitCode,
+        undefined,
+        {
+          numeric: true,
+          sensitivity: "base"
+        }
+      );
+    });
+}
+
+function getAvailableUnitsForItem(itemCard) {
+  const currentSelect =
+    itemCard.querySelector(
+      ".brf-unit-select"
+    );
+
+  const currentUnit =
+    cleanText(
+      currentSelect?.value
+    );
+
+  const usedInspectionIds =
+    getSelectedInspectionIds(
+      itemCard
+    );
+
+  const availableCandidates =
+    backlogCandidates.filter(
+      function(candidate) {
+        const inspectionId =
+          cleanText(
+            candidate.inspectionId
+          );
+
+        if (
+          inspectionId &&
+          usedInspectionIds.has(
+            inspectionId
+          )
+        ) {
+          return false;
+        }
+
+        return true;
+      }
+    );
+
+  const map = {};
+
+  availableCandidates.forEach(
+    function(candidate) {
+      const unitCode =
+        cleanText(
+          candidate.unitCode
+        );
+
+      if (!unitCode) {
+        return;
+      }
+
+      map[
+        unitCode.toLowerCase()
+      ] = unitCode;
+    }
+  );
+
+  if (currentUnit) {
+    map[
+      currentUnit.toLowerCase()
+    ] = currentUnit;
+  }
+
+  return Object.keys(map)
+    .map(function(key) {
+      return {
+        unitCode: map[key]
+      };
+    })
+    .sort(function(a, b) {
+      return a.unitCode.localeCompare(
+        b.unitCode,
+        undefined,
+        {
+          numeric: true,
+          sensitivity: "base"
+        }
+      );
+    });
+}
+
+function populateUnitSelect(
+  itemCard,
+  errorText
+) {
+  if (!itemCard) {
+    return;
+  }
+
+  const select =
+    itemCard.querySelector(
+      ".brf-unit-select"
+    );
+
+  if (!select) {
+    return;
+  }
+
+  const previousValue =
+    cleanText(select.value);
+
+  select.innerHTML = "";
+
+  const placeholder =
+    document.createElement(
+      "option"
+    );
+
+  placeholder.value = "";
+  placeholder.textContent =
+    errorText ||
+    (
+      backlogCandidates.length
+        ? "Select Unit"
+        : "No Unit Available"
+    );
+
+  select.appendChild(
+    placeholder
+  );
+
+  if (errorText) {
+    select.disabled = true;
+    return;
+  }
+
+  const units =
+    getAvailableUnitsForItem(
+      itemCard
+    );
+
+  units.forEach(function(item) {
+    const option =
+      document.createElement(
+        "option"
+      );
+
+    option.value =
+      item.unitCode;
+
+    option.textContent =
+      item.unitCode;
+
+    select.appendChild(
+      option
+    );
+  });
+
+  select.disabled = false;
+
+  const stillAvailable =
+    Array.from(select.options)
+      .some(function(option) {
+        return (
+          option.value ===
+          previousValue
+        );
+      });
+
+  if (
+    previousValue &&
+    stillAvailable
+  ) {
+    select.value =
+      previousValue;
+  }
+}
+
+function refreshAllUnitSelects(
+  errorText
+) {
+  if (!itemsContainer) {
+    return;
+  }
+
+  const items =
+    itemsContainer.querySelectorAll(
+      ".brf-item-card"
+    );
+
+  items.forEach(function(itemCard) {
+    populateUnitSelect(
+      itemCard,
+      errorText
+    );
+  });
+}
 
 // ======================================================
-// 5. ADD ITEM
+// 6. ADD ITEM
 // ======================================================
 
 function addRegistrationItem() {
-
   if (
     !itemsContainer ||
     !itemTemplate
   ) {
-
     return;
-
   }
-
 
   const fragment =
     itemTemplate.content.cloneNode(
       true
     );
 
-
   const itemCard =
     fragment.querySelector(
       ".brf-item-card"
     );
 
-
   setupItemEvents(
     itemCard
   );
 
-
   itemsContainer.appendChild(
     fragment
   );
-
-
-  /*
-    Setiap item minimal mempunyai
-    satu baris Part Requirement.
-  */
 
   const addedItems =
     itemsContainer.querySelectorAll(
       ".brf-item-card"
     );
 
-
   const newItem =
     addedItems[
       addedItems.length - 1
     ];
 
-
   if (newItem) {
-
     addPartRow(
       newItem
     );
 
+    if (backlogCandidates.length) {
+      populateUnitSelect(
+        newItem
+      );
+    }
   }
 
-
   updateItemNumbers();
-
 }
 
-
 // ======================================================
-// 6. SETUP ITEM
+// 7. SETUP ITEM
 // ======================================================
 
 function setupItemEvents(itemCard) {
-
   if (!itemCard) {
     return;
   }
-
 
   const removeButton =
     itemCard.querySelector(
       ".brf-remove-item"
     );
 
-
   const addPartButton =
     itemCard.querySelector(
       ".brf-add-part-button"
     );
-
 
   const photoInput =
     itemCard.querySelector(
       ".brf-photo-input"
     );
 
+  const unitSelect =
+    itemCard.querySelector(
+      ".brf-unit-select"
+    );
+
+  const problemSelect =
+    itemCard.querySelector(
+      ".brf-problem-select"
+    );
 
   if (removeButton) {
-
     removeButton.addEventListener(
       "click",
-      function () {
-
+      function() {
         const totalItems =
           itemsContainer.querySelectorAll(
             ".brf-item-card"
           ).length;
 
-
-        /*
-          Minimal satu item tetap
-          berada di form.
-        */
-
         if (totalItems <= 1) {
-
           return;
-
         }
-
 
         itemCard.remove();
 
         updateItemNumbers();
-
+        refreshAllUnitSelects();
       }
     );
-
   }
 
-
   if (addPartButton) {
-
     addPartButton.addEventListener(
       "click",
-      function () {
-
+      function() {
         addPartRow(
           itemCard
         );
-
       }
     );
-
   }
 
-
   if (photoInput) {
-
     photoInput.addEventListener(
       "change",
-      function () {
-
+      function() {
         renderPhotoPreview(
           itemCard,
           photoInput.files
         );
-
       }
     );
-
   }
 
+  if (unitSelect) {
+    unitSelect.addEventListener(
+      "change",
+      function() {
+        resetSelectedFinding(
+          itemCard,
+          false
+        );
+
+        populateProblemSelect(
+          itemCard,
+          unitSelect.value
+        );
+
+        refreshAllUnitSelects();
+      }
+    );
+  }
+
+  if (problemSelect) {
+    problemSelect.addEventListener(
+      "change",
+      function() {
+        const inspectionId =
+          cleanText(
+            problemSelect.value
+          );
+
+        if (!inspectionId) {
+          resetSelectedFinding(
+            itemCard,
+            true
+          );
+
+          refreshAllUnitSelects();
+          return;
+        }
+
+        const candidate =
+          backlogCandidates.find(
+            function(item) {
+              return (
+                cleanText(
+                  item.inspectionId
+                ) === inspectionId
+              );
+            }
+          );
+
+        if (!candidate) {
+          resetSelectedFinding(
+            itemCard,
+            true
+          );
+
+          refreshAllUnitSelects();
+          return;
+        }
+
+        applyCandidateToItem(
+          itemCard,
+          candidate
+        );
+
+        refreshAllUnitSelects();
+      }
+    );
+  }
 }
 
+// ======================================================
+// 8. UNIT -> PROBLEM
+// ======================================================
+
+function populateProblemSelect(
+  itemCard,
+  unitCode
+) {
+  const select =
+    itemCard.querySelector(
+      ".brf-problem-select"
+    );
+
+  if (!select) {
+    return;
+  }
+
+  select.innerHTML =
+    '<option value="">Select Problem</option>';
+
+  const normalizedUnit =
+    cleanText(
+      unitCode
+    ).toLowerCase();
+
+  if (!normalizedUnit) {
+    select.disabled = true;
+    return;
+  }
+
+  const usedInspectionIds =
+    getSelectedInspectionIds(
+      itemCard
+    );
+
+  const findings =
+    backlogCandidates
+      .filter(function(item) {
+        const itemUnit =
+          cleanText(
+            item.unitCode
+          ).toLowerCase();
+
+        const inspectionId =
+          cleanText(
+            item.inspectionId
+          );
+
+        return (
+          itemUnit ===
+            normalizedUnit &&
+          !usedInspectionIds.has(
+            inspectionId
+          )
+        );
+      })
+      .sort(function(a, b) {
+        return String(
+          b.inspectionDate || ""
+        ).localeCompare(
+          String(
+            a.inspectionDate || ""
+          )
+        );
+      });
+
+  findings.forEach(
+    function(item) {
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      /*
+        Value = Inspection ID.
+        Bukan Problem Description.
+
+        Ini penting karena satu Unit
+        dapat memiliki Problem Description
+        yang sama pada Inspection ID berbeda.
+      */
+      option.value =
+        cleanText(
+          item.inspectionId
+        );
+
+      const problem =
+        cleanText(
+          item.problemDescription
+        ) || "No Problem Description";
+
+      const date =
+        formatDisplayDate(
+          item.inspectionDate
+        );
+
+      const id =
+        cleanText(
+          item.inspectionId
+        );
+
+      option.textContent =
+        problem +
+        (date ? " • " + date : "") +
+        (id ? " • " + id : "");
+
+      select.appendChild(
+        option
+      );
+    }
+  );
+
+  select.disabled =
+    findings.length === 0;
+
+  if (!findings.length) {
+    select.innerHTML =
+      '<option value="">No Problem Available</option>';
+  }
+}
 
 // ======================================================
-// 7. ADD PART
+// 9. APPLY SELECTED FINDING
 // ======================================================
 
-function addPartRow(itemCard) {
+function applyCandidateToItem(
+  itemCard,
+  candidate
+) {
+  if (
+    !itemCard ||
+    !candidate
+  ) {
+    return;
+  }
 
+  itemCard.dataset.inspectionId =
+    cleanText(
+      candidate.inspectionId
+    );
+
+  setText(
+    itemCard,
+    ".brf-inspection-id",
+    candidate.inspectionId
+  );
+
+  setText(
+    itemCard,
+    ".brf-group-component",
+    candidate.groupComponent
+  );
+
+  setText(
+    itemCard,
+    ".brf-rating",
+    candidate.rating
+  );
+
+  setText(
+    itemCard,
+    ".brf-inspection-date",
+    formatDisplayDate(
+      candidate.inspectionDate
+    )
+  );
+
+  renderInspectionPhoto(
+    itemCard,
+    candidate.photo
+  );
+
+  renderCandidateParts(
+    itemCard,
+    candidate.parts
+  );
+}
+
+function resetSelectedFinding(
+  itemCard,
+  keepProblemOptions
+) {
+  if (!itemCard) {
+    return;
+  }
+
+  itemCard.dataset.inspectionId =
+    "";
+
+  setText(
+    itemCard,
+    ".brf-inspection-id",
+    "-"
+  );
+
+  setText(
+    itemCard,
+    ".brf-group-component",
+    "-"
+  );
+
+  setText(
+    itemCard,
+    ".brf-rating",
+    "-"
+  );
+
+  setText(
+    itemCard,
+    ".brf-inspection-date",
+    "-"
+  );
+
+  renderInspectionPhoto(
+    itemCard,
+    ""
+  );
+
+  resetPartsToSingleBlankRow(
+    itemCard
+  );
+
+  if (!keepProblemOptions) {
+    const problemSelect =
+      itemCard.querySelector(
+        ".brf-problem-select"
+      );
+
+    if (problemSelect) {
+      problemSelect.innerHTML =
+        '<option value="">Select Problem</option>';
+
+      problemSelect.disabled =
+        true;
+    }
+  }
+}
+
+// ======================================================
+// 10. INSPECTION PHOTO
+// ======================================================
+
+function renderInspectionPhoto(
+  itemCard,
+  photoUrl
+) {
+  const container =
+    itemCard.querySelector(
+      ".brf-inspection-photo"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = "";
+
+  const url =
+    cleanText(
+      photoUrl
+    );
+
+  if (!url) {
+    const span =
+      document.createElement(
+        "span"
+      );
+
+    span.textContent =
+      "No inspection photo";
+
+    container.appendChild(
+      span
+    );
+
+    return;
+  }
+
+  const image =
+    document.createElement(
+      "img"
+    );
+
+  image.alt =
+    "Inspection photo";
+
+  image.loading =
+    "lazy";
+
+  image.src =
+    normalizeDriveImageUrl(
+      url
+    );
+
+  image.addEventListener(
+    "error",
+    function() {
+      container.innerHTML = "";
+
+      const link =
+        document.createElement(
+          "a"
+        );
+
+      link.href = url;
+      link.target = "_blank";
+      link.rel =
+        "noopener noreferrer";
+
+      link.textContent =
+        "Open inspection photo";
+
+      container.appendChild(
+        link
+      );
+    }
+  );
+
+  container.appendChild(
+    image
+  );
+}
+
+function normalizeDriveImageUrl(
+  url
+) {
+  const text =
+    cleanText(url);
+
+  if (!text) {
+    return "";
+  }
+
+  const fileMatch =
+    text.match(
+      /\/file\/d\/([^/]+)/
+    );
+
+  if (fileMatch) {
+    return (
+      "https://drive.google.com/thumbnail?id=" +
+      encodeURIComponent(
+        fileMatch[1]
+      ) +
+      "&sz=w1000"
+    );
+  }
+
+  const idMatch =
+    text.match(
+      /[?&]id=([^&]+)/
+    );
+
+  if (idMatch) {
+    return (
+      "https://drive.google.com/thumbnail?id=" +
+      encodeURIComponent(
+        idMatch[1]
+      ) +
+      "&sz=w1000"
+    );
+  }
+
+  return text;
+}
+
+// ======================================================
+// 11. PARTS FROM INSPECTION
+// ======================================================
+
+function renderCandidateParts(
+  itemCard,
+  parts
+) {
+  const container =
+    itemCard.querySelector(
+      ".brf-parts-container"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = "";
+
+  const list =
+    Array.isArray(parts)
+      ? parts
+      : [];
+
+  if (!list.length) {
+    addPartRow(
+      itemCard
+    );
+    return;
+  }
+
+  list.forEach(function(part) {
+    addPartRow(
+      itemCard,
+      part
+    );
+  });
+}
+
+function resetPartsToSingleBlankRow(
+  itemCard
+) {
+  const container =
+    itemCard.querySelector(
+      ".brf-parts-container"
+    );
+
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = "";
+
+  addPartRow(
+    itemCard
+  );
+}
+
+// ======================================================
+// 12. ADD PART
+// ======================================================
+
+function addPartRow(
+  itemCard,
+  partData
+) {
   if (
     !itemCard ||
     !partTemplate
   ) {
-
     return;
-
   }
-
 
   const partsContainer =
     itemCard.querySelector(
       ".brf-parts-container"
     );
 
-
   if (!partsContainer) {
     return;
   }
-
 
   const fragment =
     partTemplate.content.cloneNode(
       true
     );
 
-
   const partRow =
     fragment.querySelector(
       ".brf-part-row"
     );
-
 
   const removeButton =
     partRow.querySelector(
       ".brf-remove-part"
     );
 
-
-  if (removeButton) {
-
-    removeButton.addEventListener(
-      "click",
-      function () {
-
-        partRow.remove();
-
-      }
+  const partName =
+    partRow.querySelector(
+      ".brf-part-name"
     );
 
+  const partNo =
+    partRow.querySelector(
+      ".brf-part-no"
+    );
+
+  const quantity =
+    partRow.querySelector(
+      ".brf-part-qty"
+    );
+
+  if (partData) {
+    if (partName) {
+      partName.value =
+        cleanText(
+          partData.partName
+        );
+    }
+
+    if (partNo) {
+      partNo.value =
+        cleanText(
+          partData.partNo
+        );
+    }
+
+    if (quantity) {
+      const qty =
+        Number(
+          partData.quantity
+        );
+
+      quantity.value =
+        Number.isFinite(qty) &&
+        qty > 0
+          ? qty
+          : 1;
+    }
   }
 
+  if (removeButton) {
+    removeButton.addEventListener(
+      "click",
+      function() {
+        partRow.remove();
+      }
+    );
+  }
 
   partsContainer.appendChild(
     fragment
   );
-
 }
 
+// ======================================================
+// 13. DUPLICATE INSPECTION PROTECTION
+// ======================================================
+
+function getSelectedInspectionIds(
+  exceptItemCard
+) {
+  const selected =
+    new Set();
+
+  if (!itemsContainer) {
+    return selected;
+  }
+
+  const items =
+    itemsContainer.querySelectorAll(
+      ".brf-item-card"
+    );
+
+  items.forEach(function(itemCard) {
+    if (
+      itemCard ===
+      exceptItemCard
+    ) {
+      return;
+    }
+
+    const id =
+      cleanText(
+        itemCard.dataset
+          .inspectionId
+      );
+
+    if (id) {
+      selected.add(id);
+    }
+  });
+
+  return selected;
+}
 
 // ======================================================
-// 8. ITEM NUMBER
+// 14. ITEM NUMBER
 // ======================================================
 
 function updateItemNumbers() {
-
   const items =
     itemsContainer
       ? itemsContainer.querySelectorAll(
@@ -402,30 +1199,22 @@ function updateItemNumbers() {
         )
       : [];
 
-
   items.forEach(
-    function (item, index) {
-
+    function(item, index) {
       const number =
         item.querySelector(
           ".brf-item-number"
         );
 
-
       if (number) {
-
         number.textContent =
           "ITEM " +
           (index + 1);
-
       }
-
     }
   );
 
-
   if (itemCounter) {
-
     itemCounter.textContent =
       items.length +
       (
@@ -433,200 +1222,253 @@ function updateItemNumbers() {
           ? " Item"
           : " Items"
       );
-
   }
-
 }
 
-
 // ======================================================
-// 9. PHOTO PREVIEW
+// 15. ADDITIONAL PHOTO PREVIEW
 // ======================================================
 
 function renderPhotoPreview(
   itemCard,
   files
 ) {
-
   const preview =
     itemCard.querySelector(
       ".brf-photo-preview"
     );
 
-
   if (!preview) {
     return;
   }
 
-
   preview.innerHTML = "";
-
 
   Array.from(
     files || []
   ).forEach(
-    function (file) {
-
+    function(file) {
       if (
         !file.type.startsWith(
           "image/"
         )
       ) {
-
         return;
-
       }
-
 
       const reader =
         new FileReader();
 
-
       reader.onload =
-        function (event) {
-
+        function(event) {
           const wrapper =
             document.createElement(
               "div"
             );
 
-
           wrapper.className =
             "brf-photo-preview-item";
-
 
           const image =
             document.createElement(
               "img"
             );
 
-
           image.src =
             event.target.result;
 
-
           image.alt =
             "Registration evidence";
-
 
           wrapper.appendChild(
             image
           );
 
-
           preview.appendChild(
             wrapper
           );
-
         };
-
 
       reader.readAsDataURL(
         file
       );
-
     }
   );
-
 }
 
+// ======================================================
+// 16. HELPERS
+// ======================================================
+
+function cleanText(value) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
+    return "";
+  }
+
+  return String(value).trim();
+}
+
+function setText(
+  itemCard,
+  selector,
+  value
+) {
+  const element =
+    itemCard.querySelector(
+      selector
+    );
+
+  if (!element) {
+    return;
+  }
+
+  element.textContent =
+    cleanText(value) || "-";
+}
+
+function formatDisplayDate(
+  value
+) {
+  const text =
+    cleanText(value);
+
+  if (!text) {
+    return "";
+  }
+
+  let date = null;
+
+  if (
+    /^\d{4}-\d{2}-\d{2}$/.test(
+      text
+    )
+  ) {
+    const parts =
+      text.split("-");
+
+    date =
+      new Date(
+        Number(parts[0]),
+        Number(parts[1]) - 1,
+        Number(parts[2])
+      );
+  } else {
+    const parsed =
+      new Date(text);
+
+    if (
+      !Number.isNaN(
+        parsed.getTime()
+      )
+    ) {
+      date = parsed;
+    }
+  }
+
+  if (
+    !date ||
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return text;
+  }
+
+  return new Intl.DateTimeFormat(
+    "id-ID",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  ).format(date);
+}
 
 // ======================================================
-// 10. BACK / CANCEL
+// 17. BACK / CANCEL
 // ======================================================
 
 function backToRegistrationList() {
-
   window.location.href =
     "backlog-registration.html";
-
 }
 
-
 if (backButton) {
-
   backButton.addEventListener(
     "click",
     backToRegistrationList
   );
-
 }
 
-
 if (cancelButton) {
-
   cancelButton.addEventListener(
     "click",
     backToRegistrationList
   );
-
 }
 
-
 // ======================================================
-// 11. ADD ITEM BUTTON
+// 18. ADD ITEM BUTTON
 // ======================================================
 
 if (addItemButton) {
-
   addItemButton.addEventListener(
     "click",
     addRegistrationItem
   );
-
 }
 
-
 // ======================================================
-// 12. SAVE DRAFT
+// 19. SAVE DRAFT
 // ======================================================
 
 if (saveDraftButton) {
-
   saveDraftButton.addEventListener(
     "click",
-    function () {
-
+    function() {
       /*
-        API belum dipasang.
+        Tahap berikutnya:
+        validasi form + save draft
+        ke database Registrasi Backlog.
 
-        Tahap berikutnya kita akan
-        melakukan validasi dan
-        penyimpanan ke database.
+        Untuk tahap sekarang tombol
+        belum melakukan write agar
+        implementasi pembacaan kandidat
+        dapat dites secara terpisah.
       */
 
       console.log(
         "HEXA: Save Backlog Draft"
       );
-
     }
   );
-
 }
 
-
 // ======================================================
-// 13. INITIALIZE
+// 20. INITIALIZE
 // ======================================================
 
-function initializeBacklogForm() {
-
+async function initializeBacklogForm() {
   setRegistrationInformation();
-
 
   /*
     Form selalu mulai dengan
     satu Registration Item.
   */
-
   addRegistrationItem();
 
+  /*
+    Ambil kandidat langsung dari
+    DM DATABASE melalui HEXA API.
+  */
+  await loadBacklogCandidates();
 
   console.log(
     "HEXA Backlog Registration Form Ready"
   );
-
 }
-
 
 initializeBacklogForm();
