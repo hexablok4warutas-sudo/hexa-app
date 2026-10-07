@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Create Backlog Registration | HEXA</title>
+
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="backlog-registration-form.css"
+  >
+</head>
+
+
+<body>
+
+  <!-- =====================================
+       GLOBAL HEADER
+       ===================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="backlog-monitoring"
+  ></header>
+
+
+  <!-- =====================================
+       MAIN
+       ===================================== -->
+
+  <main class="brf-main">
+
+    <section class="brf-section">
+
+
+      <!-- =================================
+           HEADING
+           ================================= -->
+
+      <div class="brf-heading">
+
+        <button
+          type="button"
+          id="brfBackButton"
+          class="brf-back-button"
+          aria-label="Back"
+        >
+
+          <svg viewBox="0 0 24 24">
+            <path d="M15 18l-6-6 6-6"></path>
+          </svg>
+
+        </button>
+
+
+        <div class="brf-heading-text">
+
+          <h1>
+            Create Backlog Registration
+          </h1>
+
+          <p>
+            Select inspection findings and prepare
+            backlog registration requirements.
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           REGISTRATION INFORMATION
+           ================================= -->
+
+      <section class="brf-info-card">
+
+        <div class="brf-section-title">
+
+          <div>
+
+            <h2>
+              Registration Information
+            </h2>
+
+            <p>
+              Informasi registrasi dibuat otomatis oleh sistem.
+            </p>
+
+          </div>
+
+          <span class="brf-status-badge">
+            DRAFT
+          </span>
+
+        </div>
+
+
+        <div class="brf-info-grid">
+
+
+          <div class="brf-info-field">
+
+            <span>
+              Registration No
+            </span>
+
+            <strong>
+              Auto Generated
+            </strong>
+
+          </div>
+
+
+          <div class="brf-info-field">
+
+            <span>
+              Created By
+            </span>
+
+            <strong id="brfCreatedBy">
+              -
+            </strong>
+
+          </div>
+
+
+          <div class="brf-info-field">
+
+            <span>
+              Created Date
+            </span>
+
+            <strong id="brfCreatedDate">
+              -
+            </strong>
+
+          </div>
+
+
+          <div class="brf-info-field">
+
+            <span>
+              Status
+            </span>
+
+            <strong>
+              Draft
+            </strong>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+
+      <!-- =================================
+           REGISTRATION ITEMS
+           ================================= -->
+
+      <section class="brf-items-section">
+
+
+        <div class="brf-items-heading">
+
+          <div>
+
+            <h2>
+              Registration Items
+            </h2>
+
+            <p>
+              Satu item mewakili satu Unit Code dan
+              satu Problem Description.
+            </p>
+
+          </div>
+
+
+          <span id="brfItemCounter">
+            1 Item
+          </span>
+
+        </div>
+
+
+
+        <!-- ITEM CONTAINER -->
+
+        <div
+          id="brfItemsContainer"
+          class="brf-items-container"
+        ></div>
+
+
+
+        <!-- ADD ITEM -->
+
+        <button
+          type="button"
+          id="brfAddItemButton"
+          class="brf-add-item-button"
+        >
+
+          <span>+</span>
+
+          Add Item
+
+        </button>
+
+
+      </section>
+
+
+
+      <!-- =================================
+           FORM ACTION
+           ================================= -->
+
+      <div class="brf-form-actions">
+
+        <button
+          type="button"
+          id="brfCancelButton"
+          class="brf-cancel-button"
+        >
+          Cancel
+        </button>
+
+
+        <button
+          type="button"
+          id="brfSaveDraftButton"
+          class="brf-save-button"
+        >
+          Save Draft
+        </button>
+
+      </div>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================
+       ITEM TEMPLATE
+       ===================================== -->
+
+  <template id="brfItemTemplate">
+
+    <article class="brf-item-card">
+
+
+      <!-- ITEM HEADER -->
+
+      <div class="brf-item-header">
+
+        <div>
+
+          <span class="brf-item-number">
+            ITEM 1
+          </span>
+
+          <h3>
+            Inspection Finding
+          </h3>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="brf-remove-item"
+          title="Remove Item"
+          aria-label="Remove Item"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+
+      <!-- FINDING -->
+
+      <div class="brf-finding-grid">
+
+
+        <!-- UNIT -->
+
+        <div class="brf-form-field">
+
+          <label>
+            Unit Code
+            <span>*</span>
+          </label>
+
+          <select class="brf-unit-select">
+
+            <option value="">
+              Select Unit
+            </option>
+
+            <!--
+              NANTI DIISI DARI UNIT HISTORY
+            -->
+
+          </select>
+
+        </div>
+
+
+
+        <!-- PROBLEM -->
+
+        <div class="brf-form-field">
+
+          <label>
+            Problem Description
+            <span>*</span>
+          </label>
+
+          <select
+            class="brf-problem-select"
+            disabled
+          >
+
+            <option value="">
+              Select Problem
+            </option>
+
+          </select>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- =================================
+           INSPECTION REFERENCE
+           ================================= -->
+
+      <div class="brf-reference-box">
+
+        <div>
+
+          <span>
+            Inspection ID
+          </span>
+
+          <strong class="brf-inspection-id">
+            -
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Group Component
+          </span>
+
+          <strong class="brf-group-component">
+            -
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Rating
+          </span>
+
+          <strong class="brf-rating">
+            -
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Inspection Date
+          </span>
+
+          <strong class="brf-inspection-date">
+            -
+          </strong>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- =================================
+           PART REQUIREMENT
+           ================================= -->
+
+      <section class="brf-part-section">
+
+        <div class="brf-subheading">
+
+          <div>
+
+            <h4>
+              Part Requirement
+            </h4>
+
+            <p>
+              Spare part dari temuan inspeksi akan
+              dimuat otomatis dan masih dapat ditambahkan.
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="brf-add-part-button"
+          >
+            + Add Part
+          </button>
+
+        </div>
+
+
+
+        <div class="brf-parts-container"></div>
+
+      </section>
+
+
+
+      <!-- =================================
+           PHOTO
+           ================================= -->
+
+      <section class="brf-photo-section">
+
+        <div class="brf-subheading">
+
+          <div>
+
+            <h4>
+              Evidence
+            </h4>
+
+            <p>
+              Foto inspeksi akan ditampilkan otomatis.
+              Kamu juga dapat menambahkan foto registrasi.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="brf-photo-area">
+
+
+          <!-- INSPECTION PHOTO -->
+
+          <div class="brf-photo-block">
+
+            <span class="brf-photo-label">
+              Inspection Photo
+            </span>
+
+            <div class="brf-inspection-photo">
+
+              <span>
+                No inspection photo
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- ADDITIONAL PHOTO -->
+
+          <div class="brf-photo-block">
+
+            <span class="brf-photo-label">
+              Additional Photo
+            </span>
+
+
+            <label class="brf-photo-upload">
+
+              <input
+                type="file"
+                class="brf-photo-input"
+                accept="image/*"
+                multiple
+              >
+
+              <span class="brf-photo-plus">
+                +
+              </span>
+
+              <span>
+                Add Photo
+              </span>
+
+            </label>
+
+
+            <div class="brf-photo-preview"></div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+    </article>
+
+  </template>
+
+
+
+  <!-- =====================================
+       PART TEMPLATE
+       ===================================== -->
+
+  <template id="brfPartTemplate">
+
+    <div class="brf-part-row">
+
+
+      <div class="brf-form-field">
+
+        <label>
+          Part Name
+        </label>
+
+        <input
+          type="text"
+          class="brf-part-name"
+          placeholder="Part name"
+        >
+
+      </div>
+
+
+      <div class="brf-form-field">
+
+        <label>
+          Part No
+        </label>
+
+        <input
+          type="text"
+          class="brf-part-no"
+          placeholder="Part number"
+        >
+
+      </div>
+
+
+      <div class="brf-form-field brf-qty-field">
+
+        <label>
+          Qty
+        </label>
+
+        <input
+          type="number"
+          class="brf-part-qty"
+          min="1"
+          value="1"
+        >
+
+      </div>
+
+
+      <button
+        type="button"
+        class="brf-remove-part"
+        title="Remove Part"
+        aria-label="Remove Part"
+      >
+        ×
+      </button>
+
+
+    </div>
+
+  </template>
+
+
+
+  <!-- =====================================
+       SCRIPT
+       ===================================== -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
+
+  <script src="backlog-registration-form.js"></script>
+
+</body>
+
+</html>
