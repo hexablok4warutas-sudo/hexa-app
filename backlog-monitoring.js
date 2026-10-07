@@ -67,7 +67,7 @@ const BACKLOG_PAGES = {
 
   "backlog-registration": {
     url: "backlog-registration.html",
-    enabled: false
+    enabled: true
   },
 
   "backlog-control": {
