@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Backlog Monitoring | HEXA</title>
+
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER CSS
+       ===================================== -->
+
+  <link
+    rel="stylesheet"
+    href="hexa-header.css"
+  >
+
+
+  <!-- =====================================
+       BACKLOG MONITORING CSS
+       ===================================== -->
+
+  <link
+    rel="stylesheet"
+    href="backlog-monitoring.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================
+       GLOBAL HEXA HEADER
+       ===================================== -->
+
+  <header
+    id="hexaHeader"
+    data-header-type="standard"
+    data-page="backlog-monitoring"
+  ></header>
+
+
+
+  <!-- =====================================
+       BACKLOG MONITORING CONTENT
+       ===================================== -->
+
+  <main class="backlog-main-content">
+
+    <section class="backlog-section">
+
+
+      <!-- =================================
+           DESCRIPTION
+           ================================= -->
+
+      <div class="backlog-description">
+
+        <p>
+          <strong>Backlog Monitoring</strong> merupakan sistem
+          pengelolaan temuan inspeksi yang membutuhkan tindak lanjut,
+          perencanaan spare part, registrasi backlog dan monitoring
+          progres pekerjaan.
+        </p>
+
+        <p>
+          Gunakan <strong>Registrasi Backlog</strong> untuk membuat
+          registrasi dari temuan inspeksi, melakukan proses approval
+          hingga penerbitan dokumen registrasi. Gunakan
+          <strong>Backlog Control</strong> untuk memonitor backlog,
+          reservasi dan status kebutuhan spare part.
+        </p>
+
+      </div>
+
+
+
+      <!-- =================================
+           BACKLOG MENU
+           ================================= -->
+
+      <div
+        class="backlog-menu-grid"
+        id="backlogMenuGrid"
+      >
+
+
+        <!-- ===============================
+             REGISTRASI BACKLOG
+             =============================== -->
+
+        <button
+          type="button"
+          class="backlog-menu-item"
+          data-menu="backlog-registration"
+        >
+
+          <div class="backlog-icon-card">
+
+            <img
+              src="hexa-icon-backlogregistration.svg"
+              alt="Registrasi Backlog"
+            >
+
+          </div>
+
+          <span>
+            Registrasi Backlog
+          </span>
+
+        </button>
+
+
+
+        <!-- ===============================
+             BACKLOG CONTROL
+             =============================== -->
+
+        <button
+          type="button"
+          class="backlog-menu-item"
+          data-menu="backlog-control"
+        >
+
+          <div class="backlog-icon-card">
+
+            <img
+              src="hexa-icon-backlogcontrol.svg"
+              alt="Backlog Control"
+            >
+
+          </div>
+
+          <span>
+            Backlog Control
+          </span>
+
+        </button>
+
+
+      </div>
+
+
+
+      <!-- =================================
+           BACKLOG KPI
+           ================================= -->
+
+      <section class="backlog-kpi-section">
+
+        <div class="backlog-kpi-heading">
+
+          <div>
+            <h2>Backlog KPI</h2>
+
+            <p>
+              Performance summary berdasarkan temuan inspeksi,
+              registrasi backlog dan status spare part.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="backlog-kpi-grid">
+
+
+          <!-- FINDINGS -->
+
+          <article class="backlog-kpi-card">
+
+            <span class="backlog-kpi-label">
+              Inspection Findings
+            </span>
+
+            <strong
+              class="backlog-kpi-value"
+              id="kpiInspectionFindings"
+            >
+              --
+            </strong>
+
+            <small>
+              Total temuan inspeksi
+            </small>
+
+          </article>
+
+
+
+          <!-- REGISTERED -->
+
+          <article class="backlog-kpi-card">
+
+            <span class="backlog-kpi-label">
+              Registered
+            </span>
+
+            <strong
+              class="backlog-kpi-value"
+              id="kpiRegistered"
+            >
+              --
+            </strong>
+
+            <small>
+              Temuan telah diregistrasi
+            </small>
+
+          </article>
+
+
+
+          <!-- APPROVED -->
+
+          <article class="backlog-kpi-card">
+
+            <span class="backlog-kpi-label">
+              Approved
+            </span>
+
+            <strong
+              class="backlog-kpi-value"
+              id="kpiApproved"
+            >
+              --
+            </strong>
+
+            <small>
+              Registrasi full approved
+            </small>
+
+          </article>
+
+
+
+          <!-- PART READY -->
+
+          <article class="backlog-kpi-card">
+
+            <span class="backlog-kpi-label">
+              Part Ready
+            </span>
+
+            <strong
+              class="backlog-kpi-value"
+              id="kpiPartReady"
+            >
+              --
+            </strong>
+
+            <small>
+              Spare part siap digunakan
+            </small>
+
+          </article>
+
+
+        </div>
+
+      </section>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================
+       FLOATING START INSPECTION
+       ===================================== -->
+
+  <button
+    type="button"
+    id="inspectionShortcut"
+    class="inspection-shortcut"
+    aria-label="Start Inspection"
+    title="Start Inspection"
+  >
+
+    <span>+</span>
+
+  </button>
+
+
+
+  <!-- =====================================
+       GLOBAL HEXA SYSTEM
+       ===================================== -->
+
+  <script src="hexa-menu.js"></script>
+
+  <script src="hexa-header.js"></script>
+
+  <script src="backlog-monitoring.js"></script>
+
+
+</body>
+
+</html>
