@@ -76,7 +76,7 @@ const HEXA_PAGES = {
 
   "backlog-monitoring": {
     url: "backlog-monitoring.html",
-    enabled: false
+    enabled: true
   },
 
   "fui": {
