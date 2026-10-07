@@ -160,18 +160,11 @@ if (backButton) {
 
 function openAddRegistration() {
 
-  /*
-    Halaman form belum kita buat.
-
-    Pada tahap berikutnya:
-    backlog-registration-form.html
-  */
-
-  console.log(
-    "HEXA: Add Backlog Registration"
-  );
+  window.location.href =
+    "backlog-registration-form.html";
 
 }
+
 
 
 if (addButton) {
