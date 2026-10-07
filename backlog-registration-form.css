@@ -1016,3 +1016,92 @@ body {
   }
 
 }
+
+/* =========================================
+   FIXED PHOTO DISPLAY
+   ========================================= */
+
+/* Frame foto inspeksi */
+.brf-inspection-photo {
+  width: 100%;
+  height: 220px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: #f4f6f8;
+  border-radius: 12px;
+}
+
+
+/* Foto inspeksi */
+.brf-inspection-photo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  display: block;
+}
+
+
+/* Preview foto tambahan */
+.brf-photo-preview {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(120px, 1fr));
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+
+/* Frame masing-masing foto tambahan */
+.brf-photo-preview-item {
+  width: 100%;
+  height: 140px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+  background: #f4f6f8;
+}
+
+
+/* Foto tambahan */
+.brf-photo-preview-item img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  display: block;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .brf-inspection-photo {
+    height: 190px;
+  }
+
+  .brf-photo-preview {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .brf-photo-preview-item {
+    height: 120px;
+  }
+
+}
