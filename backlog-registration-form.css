@@ -1,0 +1,1018 @@
+/* =========================================
+   HEXA - BACKLOG REGISTRATION FORM
+   ========================================= */
+
+
+/* =========================================
+   GLOBAL
+   ========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+
+/* =========================================
+   MAIN
+   ========================================= */
+
+.brf-main {
+  width: 100%;
+  min-height: 100vh;
+
+  padding-top: 88px;
+}
+
+
+/* =========================================
+   SECTION
+   ========================================= */
+
+.brf-section {
+  width: 100%;
+
+  min-height:
+    calc(100vh - 88px);
+
+  padding:
+    30px
+    45px
+    110px;
+
+  background-color: #ffffff;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.40),
+      rgba(255, 255, 255, 0.40)
+    ),
+    url("hexa-doodle.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+}
+
+
+/* =========================================
+   HEADING
+   ========================================= */
+
+.brf-heading {
+  width: min(1180px, 100%);
+
+  margin:
+    0 auto 25px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+.brf-back-button {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.10);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.92);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px
+    rgba(0, 0, 0, 0.07);
+}
+
+
+.brf-back-button svg {
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+
+  stroke: #174b92;
+  stroke-width: 2;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+.brf-heading-text h1 {
+  color: #171717;
+
+  font-size: 25px;
+  line-height: 1.2;
+}
+
+
+.brf-heading-text p {
+  margin-top: 5px;
+
+  color: #666666;
+
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   COMMON CARD
+   ========================================= */
+
+.brf-info-card,
+.brf-item-card {
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.08);
+
+  border-radius: 18px;
+
+  background:
+    rgba(255, 255, 255, 0.94);
+
+  box-shadow:
+    0 5px 18px
+    rgba(0, 0, 0, 0.07);
+}
+
+
+/* =========================================
+   REGISTRATION INFO
+   ========================================= */
+
+.brf-info-card {
+  width: min(1180px, 100%);
+
+  margin:
+    0 auto 25px;
+
+  padding: 20px;
+}
+
+
+.brf-section-title {
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.brf-section-title h2,
+.brf-items-heading h2 {
+  color: #222222;
+
+  font-size: 17px;
+}
+
+
+.brf-section-title p,
+.brf-items-heading p {
+  margin-top: 4px;
+
+  color: #777777;
+
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+
+.brf-status-badge {
+  padding:
+    7px 11px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 152, 0, 0.12);
+
+  color: #c26a00;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.4px;
+}
+
+
+/* =========================================
+   INFO GRID
+   ========================================= */
+
+.brf-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+}
+
+
+.brf-info-field {
+  min-height: 72px;
+
+  padding: 13px;
+
+  border:
+    1px solid
+    #ececec;
+
+  border-radius: 12px;
+
+  background: #fafafa;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+.brf-info-field span {
+  margin-bottom: 6px;
+
+  color: #777777;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.brf-info-field strong {
+  color: #222222;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   ITEMS SECTION
+   ========================================= */
+
+.brf-items-section {
+  width: min(1180px, 100%);
+
+  margin: 0 auto;
+}
+
+
+.brf-items-heading {
+  margin-bottom: 15px;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+#brfItemCounter {
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   ITEM CONTAINER
+   ========================================= */
+
+.brf-items-container {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   ITEM CARD
+   ========================================= */
+
+.brf-item-card {
+  padding: 20px;
+}
+
+
+.brf-item-header {
+  margin-bottom: 18px;
+
+  padding-bottom: 14px;
+
+  border-bottom:
+    1px solid
+    #eeeeee;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.brf-item-number {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #174b92;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+
+.brf-item-header h3 {
+  color: #222222;
+
+  font-size: 16px;
+}
+
+
+.brf-remove-item,
+.brf-remove-part {
+  border: none;
+
+  background: transparent;
+
+  color: #999999;
+
+  cursor: pointer;
+
+  line-height: 1;
+}
+
+
+.brf-remove-item {
+  width: 34px;
+  height: 34px;
+
+  font-size: 27px;
+}
+
+
+.brf-remove-item:hover,
+.brf-remove-part:hover {
+  color: #c62828;
+}
+
+
+/* =========================================
+   FORM
+   ========================================= */
+
+.brf-finding-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 15px;
+}
+
+
+.brf-form-field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+}
+
+
+.brf-form-field label {
+  color: #555555;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.brf-form-field label span {
+  color: #d32f2f;
+}
+
+
+.brf-form-field select,
+.brf-form-field input {
+  width: 100%;
+  height: 43px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid
+    #d8d8d8;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  font-size: 13px;
+
+  outline: none;
+}
+
+
+.brf-form-field select:focus,
+.brf-form-field input:focus {
+  border-color: #174b92;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(23, 75, 146, 0.07);
+}
+
+
+.brf-form-field select:disabled {
+  background: #f4f4f4;
+
+  color: #999999;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================
+   REFERENCE
+   ========================================= */
+
+.brf-reference-box {
+  margin-top: 15px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(23, 75, 146, 0.045);
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+}
+
+
+.brf-reference-box > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+
+.brf-reference-box span {
+  color: #777777;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.brf-reference-box strong {
+  color: #222222;
+
+  font-size: 12px;
+}
+
+
+/* =========================================
+   SUB SECTION
+   ========================================= */
+
+.brf-part-section,
+.brf-photo-section {
+  margin-top: 22px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid
+    #eeeeee;
+}
+
+
+.brf-subheading {
+  margin-bottom: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.brf-subheading h4 {
+  color: #222222;
+
+  font-size: 14px;
+}
+
+
+.brf-subheading p {
+  margin-top: 4px;
+
+  color: #777777;
+
+  font-size: 10px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   ADD PART
+   ========================================= */
+
+.brf-add-part-button {
+  min-height: 38px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid
+    #174b92;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #174b92;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   PARTS
+   ========================================= */
+
+.brf-parts-container {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.brf-part-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(180px, 1.4fr)
+    minmax(160px, 1fr)
+    90px
+    34px;
+
+  gap: 10px;
+
+  align-items: end;
+}
+
+
+.brf-remove-part {
+  width: 34px;
+  height: 43px;
+
+  font-size: 23px;
+}
+
+
+/* =========================================
+   PHOTO
+   ========================================= */
+
+.brf-photo-area {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 15px;
+}
+
+
+.brf-photo-block {
+  min-width: 0;
+}
+
+
+.brf-photo-label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #555555;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.brf-inspection-photo {
+  min-height: 110px;
+
+  padding: 15px;
+
+  border:
+    1px dashed
+    #d5d5d5;
+
+  border-radius: 12px;
+
+  background: #fafafa;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #999999;
+
+  font-size: 11px;
+}
+
+
+.brf-photo-upload {
+  min-height: 110px;
+
+  border:
+    1px dashed
+    #b9c9df;
+
+  border-radius: 12px;
+
+  background:
+    rgba(23, 75, 146, 0.035);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  color: #174b92;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.brf-photo-upload input {
+  display: none;
+}
+
+
+.brf-photo-plus {
+  font-size: 27px;
+  font-weight: 300;
+}
+
+
+.brf-photo-preview {
+  margin-top: 10px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 7px;
+}
+
+
+.brf-photo-preview-item {
+  position: relative;
+
+  aspect-ratio: 1 / 1;
+
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  background: #eeeeee;
+}
+
+
+.brf-photo-preview-item img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+
+/* =========================================
+   ADD ITEM
+   ========================================= */
+
+.brf-add-item-button {
+  width: 100%;
+
+  min-height: 50px;
+
+  margin-top: 16px;
+
+  border:
+    1px dashed
+    #174b92;
+
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.88);
+
+  color: #174b92;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.brf-add-item-button span {
+  margin-right: 5px;
+
+  font-size: 19px;
+
+  font-weight: 400;
+}
+
+
+/* =========================================
+   ACTIONS
+   ========================================= */
+
+.brf-form-actions {
+  width: min(1180px, 100%);
+
+  margin:
+    25px auto 0;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid
+    rgba(0, 0, 0, 0.10);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+}
+
+
+.brf-cancel-button,
+.brf-save-button {
+  min-width: 130px;
+  min-height: 44px;
+
+  padding:
+    0 18px;
+
+  border-radius: 11px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+
+.brf-cancel-button {
+  border:
+    1px solid
+    #d4d4d4;
+
+  background: #ffffff;
+
+  color: #444444;
+}
+
+
+.brf-save-button {
+  border: none;
+
+  background: #174b92;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 5px 14px
+    rgba(23, 75, 146, 0.22);
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 850px) {
+
+  .brf-info-grid,
+  .brf-reference-box {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .brf-part-row {
+    grid-template-columns:
+      1fr
+      1fr
+      80px
+      34px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .brf-main {
+    padding-top: 72px;
+  }
+
+
+  .brf-section {
+    min-height:
+      calc(100vh - 72px);
+
+    padding:
+      22px
+      15px
+      80px;
+
+    background-size:
+      auto 100%;
+  }
+
+
+  .brf-back-button {
+    width: 38px;
+    height: 38px;
+
+    flex-basis: 38px;
+  }
+
+
+  .brf-heading-text h1 {
+    font-size: 19px;
+  }
+
+
+  .brf-heading-text p {
+    font-size: 11px;
+  }
+
+
+  .brf-info-card,
+  .brf-item-card {
+    padding: 15px;
+
+    border-radius: 15px;
+  }
+
+
+  .brf-info-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 8px;
+  }
+
+
+  .brf-finding-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .brf-reference-box {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+
+  .brf-subheading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .brf-part-row {
+    padding:
+      12px;
+
+    border:
+      1px solid
+      #eeeeee;
+
+    border-radius: 11px;
+
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+
+  .brf-qty-field {
+    width: 100%;
+  }
+
+
+  .brf-remove-part {
+    align-self: end;
+
+    justify-self: end;
+  }
+
+
+  .brf-photo-area {
+    grid-template-columns: 1fr;
+  }
+
+
+  .brf-photo-preview {
+    grid-template-columns:
+      repeat(3, 1fr);
+  }
+
+
+  .brf-form-actions {
+    align-items: stretch;
+
+    flex-direction: column-reverse;
+  }
+
+
+  .brf-cancel-button,
+  .brf-save-button {
+    width: 100%;
+  }
+
+}
