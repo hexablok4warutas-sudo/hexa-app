@@ -1105,3 +1105,128 @@ body {
   }
 
 }
+
+/* =========================================
+   PHOTO LIGHTBOX
+   ========================================= */
+
+.brf-inspection-photo img,
+.brf-photo-preview-item img {
+  cursor: zoom-in;
+}
+
+
+/* Overlay */
+.brf-photo-lightbox {
+  position: fixed;
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background: rgba(0, 0, 0, 0.88);
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+
+/* Open */
+.brf-photo-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+
+/* Large photo */
+.brf-photo-lightbox-image {
+  display: block;
+
+  max-width: 92vw;
+  max-height: 88vh;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 12px 40px
+    rgba(0, 0, 0, 0.35);
+}
+
+
+/* Close button */
+.brf-photo-lightbox-close {
+  position: fixed;
+
+  top: 20px;
+  right: 24px;
+
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.16);
+
+  color: #ffffff;
+
+  font-size: 32px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  z-index: 2;
+}
+
+
+.brf-photo-lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .brf-photo-lightbox {
+    padding: 16px;
+  }
+
+  .brf-photo-lightbox-image {
+    max-width: 96vw;
+    max-height: 85vh;
+
+    border-radius: 8px;
+  }
+
+  .brf-photo-lightbox-close {
+    top: 12px;
+    right: 12px;
+
+    width: 42px;
+    height: 42px;
+  }
+
+}
