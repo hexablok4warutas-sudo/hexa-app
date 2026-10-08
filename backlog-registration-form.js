@@ -1560,27 +1560,117 @@ if (addItemButton) {
 // 20. SAVE DRAFT
 // ======================================================
 
-if (saveDraftButton) {
-  saveDraftButton.addEventListener(
-    "click",
-    function() {
-      /*
-        Tahap berikutnya:
-        validasi form + save draft
-        ke database Registrasi Backlog.
-
-        Untuk tahap sekarang tombol
-        belum melakukan write agar
-        implementasi pembacaan kandidat
-        dapat dites secara terpisah.
-      */
-
-      console.log(
-        "HEXA: Save Backlog Draft"
-      );
-    }
-  );
+let backlogSaving = false;
+let backlogRegistrationId = new URLSearchParams(location.search).get('registrationId') || '';
+function backlogUserId() {
+  return cleanText(currentUser?.uniqId || currentUser?.uniqID || currentUser?.UNIQ_ID || currentUser?.['UNIQ ID']);
 }
+async function backlogPost(payload) {
+  const response=await fetch(HEXA_API_URL,{
+    method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)
+  });
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  const result=await response.json();
+  if(!result || result.success!==true)throw new Error(result?.message||'Permintaan API gagal.');
+  return result;
+}
+function backlogFileToBase64(file) {
+  return new Promise(function(resolve,reject){
+    const reader=new FileReader();
+    reader.onload=function(){resolve(String(reader.result).split(',')[1]);};
+    reader.onerror=function(){reject(new Error('Gagal membaca foto '+file.name));};
+    reader.readAsDataURL(file);
+  });
+}
+async function backlogUploadPhotos(card,createdById) {
+  const input=card.querySelector('.brf-photo-input');
+  const existing=Array.isArray(card._backlogSavedPhotos)?card._backlogSavedPhotos.slice():[];
+  const files=Array.from(input?.files||[]);
+  for(const file of files) {
+    if(!['image/jpeg','image/png','image/webp'].includes(file.type))
+      throw new Error('Foto '+file.name+' harus JPG, PNG, atau WEBP.');
+    if(file.size>5*1024*1024)throw new Error('Foto '+file.name+' maksimal 5 MB.');
+    const result=await backlogPost({action:'uploadBacklogPhoto',createdById,
+      fileName:file.name,mimeType:file.type,base64:await backlogFileToBase64(file)});
+    existing.push({url:result.url,fileName:result.fileName});
+  }
+  card._backlogSavedPhotos=existing;
+  if(input)input.value='';
+  return existing;
+}
+async function saveBacklogFormDraft() {
+  if(backlogSaving)return;
+  const createdById=backlogUserId();
+  if(!createdById){alert('UNIQ ID akun tidak tersedia pada sesi login. Silakan login kembali.');return;}
+  const cards=Array.from(itemsContainer?.querySelectorAll('.brf-item-card')||[]);
+  if(!cards.length){alert('Tambahkan minimal satu item.');return;}
+  const ids=new Set(), items=[];
+  for(let i=0;i<cards.length;i++) {
+    const card=cards[i];
+    const inspectionId=cleanText(card.dataset.inspectionId||card.querySelector('.brf-problem-select')?.value);
+    if(!inspectionId){alert('Pilih Unit Code dan Problem Description pada ITEM '+(i+1)+'.');return;}
+    if(ids.has(inspectionId)){alert('Inspection ID '+inspectionId+' dipilih dua kali.');return;}
+    ids.add(inspectionId);
+    const parts=Array.from(card.querySelectorAll('.brf-part-row')).map(function(row){
+      return {partName:cleanText(row.querySelector('.brf-part-name')?.value),
+        partNo:cleanText(row.querySelector('.brf-part-no')?.value),
+        quantity:cleanText(row.querySelector('.brf-part-qty')?.value)};
+    }).filter(function(part){return part.partName||part.partNo;});
+    items.push({inspectionId,parts,notes:'',planRepairDate:''});
+  }
+  backlogSaving=true;
+  const oldText=saveDraftButton.textContent;
+  saveDraftButton.disabled=true;
+  saveDraftButton.textContent='Saving Draft...';
+  try {
+    for(let i=0;i<cards.length;i++){
+      saveDraftButton.textContent='Uploading photos '+(i+1)+'/'+cards.length+'...';
+      items[i].photos=await backlogUploadPhotos(cards[i],createdById);
+    }
+    saveDraftButton.textContent='Saving Draft...';
+    const result=await backlogPost({action:'saveBacklogDraft',createdById,
+      registrationId:backlogRegistrationId,items});
+    backlogRegistrationId=result.registrationId;
+    alert('Draft berhasil disimpan.\nRegistration ID: '+result.registrationId);
+    window.location.href='backlog-registration.html';
+  }catch(error){
+    console.error('HEXA: Save Backlog Draft failed',error);
+    alert('Gagal menyimpan Draft: '+error.message+'\nData form tetap terbuka.');
+  }finally{
+    backlogSaving=false;saveDraftButton.disabled=false;saveDraftButton.textContent=oldText;
+  }
+}
+async function restoreBacklogDraft() {
+  if(!backlogRegistrationId)return;
+  const createdById=backlogUserId();
+  if(!createdById)throw new Error('UNIQ ID akun tidak tersedia.');
+  const result=await backlogPost({action:'getBacklogDraft',registrationId:backlogRegistrationId,createdById});
+  if(result.status!=='DRAFT')throw new Error('Registrasi tidak berstatus DRAFT.');
+  itemsContainer.innerHTML='';
+  for(const item of result.items||[]){
+    addRegistrationItem();
+    const card=itemsContainer.lastElementChild;
+    const candidate=backlogCandidates.find(function(c){return cleanText(c.inspectionId)===item.inspectionId;});
+    if(!candidate)throw new Error('Inspection ID '+item.inspectionId+' tidak tersedia dalam kandidat MOL Belum.');
+    const unit=card.querySelector('.brf-unit-select');
+    populateUnitSelect(card);unit.value=candidate.unitCode;
+    populateProblemSelect(card,candidate.unitCode);
+    card.querySelector('.brf-problem-select').value=item.inspectionId;
+    applyCandidateToItem(card,candidate);
+    renderCandidateParts(card,item.parts||[]);
+    card._backlogSavedPhotos=item.photos||[];
+    const preview=card.querySelector('.brf-photo-preview');
+    if(preview){
+      (item.photos||[]).forEach(function(photo){
+        const wrapper=document.createElement('div');wrapper.className='brf-photo-preview-item';
+        const img=document.createElement('img');img.alt='Saved additional photo';
+        img.src=normalizeDriveImageUrl(photo.url);wrapper.appendChild(img);preview.appendChild(wrapper);
+      });
+    }
+  }
+  updateItemNumbers();refreshAllUnitSelects();
+}
+if(saveDraftButton)saveDraftButton.addEventListener('click',saveBacklogFormDraft);
 
 // ======================================================
 // 21. INITIALIZE
@@ -1600,6 +1690,7 @@ async function initializeBacklogForm() {
     DM DATABASE melalui HEXA API.
   */
   await loadBacklogCandidates();
+  try { await restoreBacklogDraft(); } catch(error) { console.error(error); alert("Gagal membuka Draft: "+error.message); }
 
   console.log(
     "HEXA Backlog Registration Form Ready"
