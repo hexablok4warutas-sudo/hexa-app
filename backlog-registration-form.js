@@ -75,6 +75,15 @@ const partTemplate =
 const itemCounter =
   document.getElementById("brfItemCounter");
 
+const photoLightbox =
+  document.getElementById("brfPhotoLightbox");
+
+const photoLightboxImage =
+  document.getElementById("brfPhotoLightboxImage");
+
+const photoLightboxClose =
+  document.getElementById("brfPhotoLightboxClose");
+
 // ======================================================
 // 4. USER INFORMATION
 // ======================================================
@@ -1297,7 +1306,133 @@ function renderPhotoPreview(
 }
 
 // ======================================================
-// 16. HELPERS
+// 16. PHOTO LIGHTBOX
+// ======================================================
+
+function openPhotoLightbox(imageSource) {
+  const src = cleanText(imageSource);
+
+  if (
+    !src ||
+    !photoLightbox ||
+    !photoLightboxImage
+  ) {
+    return;
+  }
+
+  photoLightboxImage.src = src;
+
+  photoLightbox.classList.add(
+    "is-open"
+  );
+
+  photoLightbox.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+}
+
+function closePhotoLightbox() {
+  if (!photoLightbox) {
+    return;
+  }
+
+  photoLightbox.classList.remove(
+    "is-open"
+  );
+
+  photoLightbox.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  if (photoLightboxImage) {
+    photoLightboxImage.src = "";
+  }
+
+  document.body.style.overflow = "";
+}
+
+/*
+  Event delegation dipakai agar foto yang
+  dibuat secara dinamis tetap otomatis
+  dapat membuka lightbox.
+
+  Berlaku untuk:
+  - Inspection Photo
+  - Additional Photo
+*/
+document.addEventListener(
+  "click",
+  function(event) {
+    const image =
+      event.target.closest(
+        ".brf-inspection-photo img, " +
+        ".brf-photo-preview-item img"
+      );
+
+    if (!image) {
+      return;
+    }
+
+    event.preventDefault();
+
+    openPhotoLightbox(
+      image.currentSrc ||
+      image.src
+    );
+  }
+);
+
+if (photoLightboxClose) {
+  photoLightboxClose.addEventListener(
+    "click",
+    function(event) {
+      event.stopPropagation();
+      closePhotoLightbox();
+    }
+  );
+}
+
+if (photoLightbox) {
+  photoLightbox.addEventListener(
+    "click",
+    function(event) {
+      /*
+        Tutup hanya jika user menekan
+        area overlay gelap.
+
+        Klik pada foto tidak menutup
+        preview.
+      */
+      if (event.target === photoLightbox) {
+        closePhotoLightbox();
+      }
+    }
+  );
+}
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+    if (
+      event.key === "Escape" &&
+      photoLightbox &&
+      photoLightbox.classList.contains(
+        "is-open"
+      )
+    ) {
+      closePhotoLightbox();
+    }
+  }
+);
+
+
+// ======================================================
+// 17. HELPERS
 // ======================================================
 
 function cleanText(value) {
@@ -1388,7 +1523,7 @@ function formatDisplayDate(
 }
 
 // ======================================================
-// 17. BACK / CANCEL
+// 18. BACK / CANCEL
 // ======================================================
 
 function backToRegistrationList() {
@@ -1411,7 +1546,7 @@ if (cancelButton) {
 }
 
 // ======================================================
-// 18. ADD ITEM BUTTON
+// 19. ADD ITEM BUTTON
 // ======================================================
 
 if (addItemButton) {
@@ -1422,7 +1557,7 @@ if (addItemButton) {
 }
 
 // ======================================================
-// 19. SAVE DRAFT
+// 20. SAVE DRAFT
 // ======================================================
 
 if (saveDraftButton) {
@@ -1448,7 +1583,7 @@ if (saveDraftButton) {
 }
 
 // ======================================================
-// 20. INITIALIZE
+// 21. INITIALIZE
 // ======================================================
 
 async function initializeBacklogForm() {
