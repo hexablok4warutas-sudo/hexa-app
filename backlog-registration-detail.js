@@ -90,8 +90,8 @@ async function loadDetail(){try{
   const forward=$('brdGLForward');
   if(forward){forward.hidden=!isGL;forward.disabled=false;}
   const final=$('brdFinalApprove');if(final)final.hidden=!isSection;
-  const revision=$('brdRequestRevision');if(revision)revision.hidden=true;
-  const title=$('brdApprovalTitle');if(title)title.textContent=isGL?'GL Approval Part':'Persiapan Approval Part';
+  const revision=$('brdRequestRevision');if(revision){revision.hidden=!isSection;revision.disabled=!isSection;revision.textContent='Request Revision to GL';}
+  const title=$('brdApprovalTitle');if(title)title.textContent=isGL?'GL Review & Correction':'Section Head — Final Decision';
  $("brdApprovalPanel").hidden=!eligible;
  $("brdItems").replaceChildren();brdSelectedParts.clear();brdPartIds.length=0;brdItemPartIds.clear();
  const seenIds=new Set();let missingIds=0;
@@ -156,6 +156,23 @@ if(brdForwardButton)brdForwardButton.addEventListener('click',async function(){
   alert('GL Approval berhasil. Registrasi diteruskan ke Section Head.');
   location.reload();
  }catch(e){alert('Gagal: '+e.message);brdForwardButton.disabled=false;brdForwardButton.textContent='Approve & Forward to Section';}
+});
+
+// Section Head: mengembalikan ke GL untuk koreksi, tanpa PDF/MOL.
+const brdSectionRevisionButton=$('brdRequestRevision');
+if(brdSectionRevisionButton)brdSectionRevisionButton.addEventListener('click',async()=>{
+  const reason=prompt('Tuliskan alasan revisi untuk Group Leader (wajib, minimal 5 karakter):');
+  if(reason===null)return;
+  const note=reason.trim();
+  if(note.length<5||note.length>2000){alert('Catatan revisi wajib 5-2000 karakter.');return;}
+  if(!confirm('Kembalikan registrasi kepada GL untuk dikoreksi?\nTidak ada PDF atau perubahan MOL.'))return;
+  brdSectionRevisionButton.disabled=true;
+  try{
+    const response=await fetch(BRD_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'requestBacklogSectionRevision',registrationId:brdId,requesterId:brdRequester,reason:note})});
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const result=await response.json();if(!result.success)throw Error(result.message||'Request Revision gagal.');
+    alert('Revisi dikirim ke GL.');location.reload();
+  }catch(error){alert('Gagal: '+error.message);brdSectionRevisionButton.disabled=false;}
 });
 
 // GL correction modal dibuat dinamis agar HTML lama tetap kompatibel.
