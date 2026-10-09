@@ -12,7 +12,38 @@ $("brdBack").addEventListener("click",()=>location.href="backlog-registration.ht
 $("brdLightboxClose").addEventListener("click",()=>$("brdLightbox").hidden=true);
 $("brdLightbox").addEventListener("click",e=>{if(e.target===$("brdLightbox"))$("brdLightbox").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("brdLightbox").hidden=true});
-function addPhotos(container,items){const wrap=document.createElement("div");wrap.className="brd-photos";for(const item of items){if(!item.url)continue;const img=document.createElement("img");img.className="brd-photo";img.src=item.url;img.alt=item.name||"Foto";img.loading="lazy";img.referrerPolicy="no-referrer";img.addEventListener("click",()=>{$("brdLightboxImage").src=item.url;$("brdLightbox").hidden=false});wrap.append(img)}container.append(wrap)}
+// Ubah link berbagi Google Drive menjadi URL gambar thumbnail.
+function normalizeDriveImageUrl(value) {
+  const url = String(value || "").trim();
+  if (!url) return "";
+  const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  const queryMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  const thumbnailMatch = url.match(/\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+  const fileId = (fileMatch || queryMatch || thumbnailMatch || [])[1];
+  return fileId
+    ? "https://drive.google.com/thumbnail?id=" + encodeURIComponent(fileId) + "&sz=w1000"
+    : url;
+}
+function addPhotos(container,items) {
+  const wrap = document.createElement("div");
+  wrap.className = "brd-photos";
+  for (const item of items) {
+    const photoUrl = normalizeDriveImageUrl(item.url);
+    if (!photoUrl) continue;
+    const img = document.createElement("img");
+    img.className = "brd-photo";
+    img.src = photoUrl;
+    img.alt = item.name || "Foto";
+    img.loading = "lazy";
+    img.referrerPolicy = "no-referrer";
+    img.addEventListener("click", () => {
+      $("brdLightboxImage").src = photoUrl;
+      $("brdLightbox").hidden = false;
+    });
+    wrap.append(img);
+  }
+  container.append(wrap);
+}
 // Pilihan approval bersifat lokal sampai API penyimpanan disiapkan.
 const brdSelectedParts=new Set();
 const brdPartIds=[];
