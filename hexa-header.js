@@ -826,11 +826,22 @@ function initializeHexaProfileAvatar() {
   let user = {};
   try { user = JSON.parse(sessionStorage.getItem("hexaUser") || "{}"); } catch (_) {}
   const raw = String(user.photo || user.PHOTO || user.photoUrl || user.profilePhoto || user.foto || "").trim();
-  if (!raw || !/^https:\/\//i.test(raw)) return;
+  if (!raw) return;
+  const fileMatch = raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  const idMatch = raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  const fileId = (fileMatch && fileMatch[1]) || (idMatch && idMatch[1]);
+  const url = fileId ? `https://drive.google.com/thumbnail?id=${fileId}&sz=w400` : raw;
+  if (!/^https:\/\//i.test(url) && !/^data:image\//i.test(url)) return;
   const img = document.createElement("img");
   img.alt = "Foto profil";
   img.referrerPolicy = "no-referrer";
+  img.style.display = "none";
+  img.addEventListener("load", function () {
+    img.style.display = "block";
+    const placeholder = avatar.querySelector("svg");
+    if (placeholder) placeholder.style.display = "none";
+  }, {once:true});
   img.addEventListener("error", function () { img.remove(); }, {once:true});
-  img.src = raw;
+  img.src = url;
   avatar.appendChild(img);
 }
