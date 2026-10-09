@@ -20,6 +20,20 @@
     rel="stylesheet"
     href="backlog-registration-form.css"
   >
+
+  <style>
+    /* Submit UI: scoped, does not change existing controls */
+    .brf-submit-button { min-height: 44px; padding: 0 22px; border: 0; border-radius: 12px; background: #174b92; color: white; font-weight: 700; cursor: pointer; }
+    .brf-submit-button:disabled { opacity: .5; cursor: not-allowed; }
+    .brf-submit-dialog[hidden] { display: none !important; }
+    .brf-submit-dialog { position: fixed; inset: 0; z-index: 10000; background: rgba(0,0,0,.55); display: flex; justify-content: center; align-items: center; padding: 20px; }
+    .brf-submit-dialog-panel { width: min(440px,100%); padding: 25px; background: white; border-radius: 18px; box-shadow: 0 15px 50px rgba(0,0,0,.2); }
+    .brf-submit-dialog-panel h2 { font-size: 19px; margin: 0 0 12px; }
+    .brf-submit-dialog-panel p { font-size: 14px; line-height: 1.6; color: #555; }
+    .brf-submit-dialog-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+    .brf-submit-dialog-actions button { border-radius: 10px; padding: 11px 16px; border: 1px solid #d1d5db; background: white; cursor: pointer; font-weight: 600; }
+    #brfSubmitDialogConfirm { background: #174b92; color: white; border-color: #174b92; }
+  </style>
 </head>
 
 
@@ -251,6 +265,9 @@
         >
           Save Draft
         </button>
+
+        <!-- Submit will be enabled after JS/API integration -->
+        <button type="button" id="brfSubmitButton" class="brf-submit-button" disabled title="Menunggu integrasi sistem">Submit</button>
 
       </div>
 
@@ -646,6 +663,22 @@
     >
   </div>
 
+
+
+  <!-- =====================================
+       SUBMIT CONFIRMATION DIALOG
+       Hidden until JS submit flow is implemented
+       ===================================== -->
+  <div id="brfSubmitDialog" class="brf-submit-dialog" hidden>
+    <div class="brf-submit-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="brfSubmitDialogTitle">
+      <h2 id="brfSubmitDialogTitle">Konfirmasi Submit Registrasi</h2>
+      <p>Setelah dikirim, registrasi akan terkunci dan tidak dapat diedit oleh semua level pengguna. Jika diperlukan perbaikan, registrasi harus dikembalikan melalui proses revisi.</p>
+      <div class="brf-submit-dialog-actions">
+        <button type="button" id="brfSubmitDialogCancel">Kembali</button>
+        <button type="button" id="brfSubmitDialogConfirm">Ya, Submit</button>
+      </div>
+    </div>
+  </div>
 
   <!-- =====================================
        SCRIPT
