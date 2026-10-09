@@ -21,6 +21,7 @@ clearFilterButton?.addEventListener("click",()=>{if(statusFilter)statusFilter.va
 searchInput?.addEventListener("input",renderRegistrationList);statusFilter?.addEventListener("change",renderRegistrationList);
 function getFilteredRegistrations(){const keyword=String(searchInput?.value||"").trim().toLowerCase(),selectedStatus=String(statusFilter?.value||"").trim().toUpperCase();return registrationData.filter(item=>[item.registrationNo,item.createdBy,item.status,item.notes].join(" ").toLowerCase().includes(keyword)&&(!selectedStatus||item.status===selectedStatus));}
 function getStatusLabel(s){return {DRAFT:"Draft",SUBMITTED:"Submitted",WAITING_GL_APPROVAL:"Waiting GL Approval",WAITING_SECTION_APPROVAL:"Waiting Section Approval",FULL_APPROVED:"Full Approved",REJECTED:"Rejected",REVISION_REQUIRED:"Revision Required"}[s]||s||"-";}
+function getStatusTheme(s){return {DRAFT:"draft",SUBMITTED:"gl",WAITING_GL_APPROVAL:"gl",WAITING_SECTION_APPROVAL:"section",FULL_APPROVED:"approved",REJECTED:"rejected",REVISION_REQUIRED:"revision"}[s]||"draft";}
 function escapeHtml(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
 function formatRegistrationDate(v){if(!v)return "-";const d=new Date(v);return Number.isNaN(d.getTime())?String(v):new Intl.DateTimeFormat("id-ID",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}).format(d);}
 function renderRegistrationList(){
