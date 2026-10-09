@@ -17,6 +17,10 @@ function addPhotos(container,items){const wrap=document.createElement("div");wra
 const brdSelectedParts=new Set();
 const brdPartIds=[];
 const brdItemPartIds=new Map();
+function brdIsGL(){
+ const level=String(brdUser.level||brdUser.LEVEL||brdUser.role||'').trim().toLowerCase().replace(/[_-]+/g,' ');
+ return level==='group leader'||level==='groupleader'||level==='gl'||level==='3';
+}
 function brdIsSectionHead(){
  const level=String(brdUser.level||brdUser.LEVEL||brdUser.role||"").trim().toLowerCase().replace(/[_-]+/g," ");
  return level==="section head"||level==="sectionhead";
@@ -47,7 +51,14 @@ async function loadDetail(){try{
  const r=data.registration||{};
  $("brdSummary").hidden=false;
  $("brdSummary").innerHTML=`<div class="brd-title">${esc(r.registrationId)}</div><span class="brd-status">${esc(labels[r.status]||r.status)}</span><div class="brd-grid">${field("Created By",r.createdBy)}${field("Created At",r.createdAt)}${field("Submitted At",r.submittedAt)}${field("Total Items",r.totalItems)}${field("Created Level",r.createdLevel)}${field("Notes",r.notes)}</div>`;
- const eligible=brdIsSectionHead()&&String(r.status).toUpperCase()==="WAITING_SECTION_APPROVAL";
+ const isGL=brdIsGL()&&String(r.status).toUpperCase()==='WAITING_GL_APPROVAL';
+  const isSection=brdIsSectionHead()&&String(r.status).toUpperCase()==='WAITING_SECTION_APPROVAL';
+  const eligible=isGL||isSection;
+  const forward=$('brdGLForward');
+  if(forward){forward.hidden=!isGL;forward.disabled=false;}
+  const final=$('brdFinalApprove');if(final)final.hidden=!isSection;
+  const revision=$('brdRequestRevision');if(revision)revision.hidden=true;
+  const title=$('brdApprovalTitle');if(title)title.textContent=isGL?'GL Approval Part':'Persiapan Approval Part';
  $("brdApprovalPanel").hidden=!eligible;
  $("brdItems").replaceChildren();brdSelectedParts.clear();brdPartIds.length=0;brdItemPartIds.clear();
  const seenIds=new Set();let missingIds=0;
@@ -87,3 +98,19 @@ async function loadDetail(){try{
  }catch(error){$("brdMessage").textContent="Gagal memuat detail: "+error.message;console.error(error)}
 }
 loadDetail();
+
+// GL Approval: hanya Forward aktif pada tahap ini.
+const brdForwardButton=$('brdGLForward');
+if(brdForwardButton)brdForwardButton.addEventListener('click',async function(){
+ const ids=Array.from(brdSelectedParts);
+ if(!ids.length){alert('Pilih minimal satu part untuk diteruskan.');return;}
+ if(!confirm('Teruskan '+ids.length+' part pilihan GL ke Section Head?\nPart lain tetap PENDING.'))return;
+ brdForwardButton.disabled=true;brdForwardButton.textContent='Menyimpan...';
+ try{
+  const res=await fetch(BRD_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'approveBacklogGL',registrationId:brdId,requesterId:brdRequester,selectedPartIds:ids})});
+  if(!res.ok)throw Error('HTTP '+res.status);
+  const data=await res.json();if(!data.success)throw Error(data.message||'GL Approval gagal.');
+  alert('GL Approval berhasil. Registrasi diteruskan ke Section Head.');
+  location.reload();
+ }catch(e){alert('Gagal: '+e.message);brdForwardButton.disabled=false;brdForwardButton.textContent='Approve & Forward to Section';}
+});
