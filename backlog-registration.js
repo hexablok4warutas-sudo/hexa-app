@@ -73,11 +73,10 @@ async function loadRegistrations() {
 }
 function openAddRegistration() { window.location.href = "backlog-registration-form.html"; }
 function openRegistration(registration) {
-  if (registration.status !== "DRAFT") {
-    alert("Registrasi berstatus " + getStatusLabel(registration.status) + ". Tampilan detail/approval akan dibuat pada tahap berikutnya.");
-    return;
-  }
-  window.location.href = "backlog-registration-form.html?registrationId=" + encodeURIComponent(registration.registrationId);
+  const target = registration.status === "DRAFT"
+    ? "backlog-registration-form.html"
+    : "backlog-registration-detail.html";
+  window.location.href = target + "?registrationId=" + encodeURIComponent(registration.registrationId);
 }
 if (backButton) backButton.addEventListener("click", function(){window.location.href="backlog-monitoring.html";});
 if (addButton) addButton.addEventListener("click",openAddRegistration);
@@ -138,14 +137,14 @@ function renderRegistrationList() {
   data.forEach(function(item){
     const card=document.createElement("article");
     card.className="registration-card";
-    card.style.cursor=item.status==="DRAFT"?"pointer":"default";
+    card.style.cursor="pointer";
     card.innerHTML=`<strong>${escapeHtml(item.registrationNo)}</strong>
       <div>${escapeHtml(getStatusLabel(item.status))}</div>
       <div style="margin-top:8px;font-size:0.9em;opacity:0.85">
         ${escapeHtml(item.createdBy)} · ${escapeHtml(formatRegistrationDate(item.createdAt))}
       </div>
       <div style="margin-top:4px;font-size:0.9em;opacity:0.85">${item.totalItems} Item${item.totalItems===1?"":"s"}</div>
-      <div style="margin-top:10px;font-weight:600">${item.status==="DRAFT"?"Buka / Edit Draft →":"Detail / Approval (segera hadir)"}</div>`;
+      <div style="margin-top:10px;font-weight:600">${item.status==="DRAFT"?"Buka / Edit Draft →":"Lihat Detail →"}</div>`;
     card.tabIndex=0;
     card.setAttribute("role","button");
     card.setAttribute("aria-label","Buka registrasi "+item.registrationNo);
