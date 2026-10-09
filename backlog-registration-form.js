@@ -1715,7 +1715,7 @@ function brfShowSubmitDialog(show) {
 if (brfSubmitButton && brfSubmitDialog && brfSubmitConfirm) {
   // Aktifkan tombol hanya ketika API submit sudah dipasang di GAS.
   // Saat ini masih dinonaktifkan untuk mencegah Submit semu.
-  const BRF_SUBMIT_API_READY = false;
+  const BRF_SUBMIT_API_READY = true;
   brfSubmitButton.disabled = !BRF_SUBMIT_API_READY;
   brfSubmitButton.title = BRF_SUBMIT_API_READY ? '' : 'Menunggu integrasi Apps Script API Submit';
   brfSubmitButton.addEventListener('click', function() {
