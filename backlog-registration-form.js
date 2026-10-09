@@ -1598,7 +1598,8 @@ async function backlogUploadPhotos(card,createdById) {
   if(input)input.value='';
   return existing;
 }
-async function saveBacklogFormDraft() {
+async function saveBacklogFormDraft(options = {}) {
+  const stayOnPage = options.stayOnPage === true;
   if(backlogSaving)return;
   const createdById=backlogUserId();
   if(!createdById){alert('UNIQ ID akun tidak tersedia pada sesi login. Silakan login kembali.');return;}
@@ -1631,11 +1632,15 @@ async function saveBacklogFormDraft() {
     const result=await backlogPost({action:'saveBacklogDraft',createdById,
       registrationId:backlogRegistrationId,items});
     backlogRegistrationId=result.registrationId;
-    alert('Draft berhasil disimpan.\nRegistration ID: '+result.registrationId);
-    window.location.href='backlog-registration.html';
+    if (!stayOnPage) {
+      alert('Draft berhasil disimpan.\nRegistration ID: '+result.registrationId);
+      window.location.href='backlog-registration.html';
+    }
+    return result;
   }catch(error){
     console.error('HEXA: Save Backlog Draft failed',error);
-    alert('Gagal menyimpan Draft: '+error.message+'\nData form tetap terbuka.');
+    if (!stayOnPage) alert('Gagal menyimpan Draft: '+error.message+'\nData form tetap terbuka.');
+    throw error;
   }finally{
     backlogSaving=false;saveDraftButton.disabled=false;saveDraftButton.textContent=oldText;
   }
@@ -1670,10 +1675,94 @@ async function restoreBacklogDraft() {
   }
   updateItemNumbers();refreshAllUnitSelects();
 }
-if(saveDraftButton)saveDraftButton.addEventListener('click',saveBacklogFormDraft);
+if(saveDraftButton)saveDraftButton.addEventListener('click',function(){saveBacklogFormDraft().catch(function(){/* sudah ditampilkan oleh handler */});});
 
 // ======================================================
-// 21. INITIALIZE
+// 21. SUBMIT REGISTRATION (requires backend submitBacklogRegistration)
+// ======================================================
+const brfSubmitButton = document.getElementById('brfSubmitButton');
+const brfSubmitDialog = document.getElementById('brfSubmitDialog');
+const brfSubmitCancel = document.getElementById('brfSubmitDialogCancel');
+const brfSubmitConfirm = document.getElementById('brfSubmitDialogConfirm');
+let brfSubmitting = false;
+
+function brfValidateSubmit() {
+  const cards = Array.from(itemsContainer?.querySelectorAll('.brf-item-card') || []);
+  if (!cards.length) throw new Error('Tambahkan minimal satu item.');
+  const ids = new Set();
+  for (let i = 0; i < cards.length; i++) {
+    const card = cards[i];
+    const id = cleanText(card.dataset.inspectionId);
+    if (!id || !cleanText(card.querySelector('.brf-unit-select')?.value)) {
+      throw new Error('ITEM ' + (i + 1) + ': pilih Unit Code dan Problem Description.');
+    }
+    if (ids.has(id)) throw new Error('Inspection ID ' + id + ' dipilih lebih dari sekali.');
+    ids.add(id);
+    for (const row of card.querySelectorAll('.brf-part-row')) {
+      const name = cleanText(row.querySelector('.brf-part-name')?.value);
+      const no = cleanText(row.querySelector('.brf-part-no')?.value);
+      const qty = Number(row.querySelector('.brf-part-qty')?.value);
+      if ((name || no) && (!Number.isFinite(qty) || qty <= 0 || !Number.isInteger(qty))) {
+        throw new Error('ITEM ' + (i + 1) + ': Qty part harus bilangan bulat lebih dari nol.');
+      }
+    }
+  }
+}
+function brfShowSubmitDialog(show) {
+  if (!brfSubmitDialog) return;
+  brfSubmitDialog.hidden = !show;
+}
+if (brfSubmitButton && brfSubmitDialog && brfSubmitConfirm) {
+  // Aktifkan tombol hanya ketika API submit sudah dipasang di GAS.
+  // Saat ini masih dinonaktifkan untuk mencegah Submit semu.
+  const BRF_SUBMIT_API_READY = false;
+  brfSubmitButton.disabled = !BRF_SUBMIT_API_READY;
+  brfSubmitButton.title = BRF_SUBMIT_API_READY ? '' : 'Menunggu integrasi Apps Script API Submit';
+  brfSubmitButton.addEventListener('click', function() {
+    try { brfValidateSubmit(); brfShowSubmitDialog(true); }
+    catch (error) { alert(error.message); }
+  });
+  brfSubmitCancel?.addEventListener('click', function() { brfShowSubmitDialog(false); });
+  brfSubmitDialog.addEventListener('click', function(event) {
+    if (event.target === brfSubmitDialog && !brfSubmitting) brfShowSubmitDialog(false);
+  });
+  brfSubmitConfirm.addEventListener('click', async function() {
+    if (brfSubmitting || backlogSaving) return;
+    brfSubmitting = true;
+    brfSubmitConfirm.disabled = true;
+    brfSubmitConfirm.textContent = 'Submitting...';
+    if (brfSubmitButton) brfSubmitButton.disabled = true;
+    try {
+      brfValidateSubmit();
+      // Simpan perubahan terakhir sebelum mengirim, tanpa redirect.
+      const saved = await saveBacklogFormDraft({stayOnPage:true});
+      if (!saved?.registrationId) throw new Error('Draft belum berhasil disimpan.');
+      const response = await backlogPost({
+        action:'submitBacklogRegistration',
+        registrationId:saved.registrationId,
+        createdById:backlogUserId()
+      });
+      // API wajib memvalidasi pemilik, status DRAFT, isi, serta mengunci data.
+      if (!response.status || response.status === 'DRAFT') {
+        throw new Error('API tidak mengonfirmasi status Submit.');
+      }
+      brfShowSubmitDialog(false);
+      alert('Registrasi berhasil di-submit.\nRegistration ID: ' + saved.registrationId);
+      window.location.href = 'backlog-registration.html';
+    } catch (error) {
+      console.error('HEXA: Submit failed', error);
+      alert('Submit belum berhasil: ' + error.message + '\nDraft yang berhasil disimpan tetap tersedia.');
+    } finally {
+      brfSubmitting = false;
+      brfSubmitConfirm.disabled = false;
+      brfSubmitConfirm.textContent = 'Ya, Submit';
+      if (brfSubmitButton) brfSubmitButton.disabled = !BRF_SUBMIT_API_READY;
+    }
+  });
+}
+
+// ======================================================
+// 22. INITIALIZE
 // ======================================================
 
 async function initializeBacklogForm() {
