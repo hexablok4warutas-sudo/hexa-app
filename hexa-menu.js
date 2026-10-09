@@ -68,7 +68,7 @@ window.HEXA_MENU = [
 
     order: 2,
 
-    enabled: false
+    enabled: true
   },
 
 
