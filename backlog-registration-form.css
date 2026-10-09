@@ -1250,3 +1250,26 @@ body {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* SUBMIT BUTTON + CONFIRMATION POPUP */
+#brfSubmitButton,
+#brfSubmitConfirmButton {
+  background: #f97316 !important;
+  border-color: #f97316 !important;
+  color: #ffffff !important;
+}
+
+#brfSubmitButton:hover:not(:disabled),
+#brfSubmitConfirmButton:hover:not(:disabled) {
+  background: #ea580c !important;
+  border-color: #ea580c !important;
+}
+
+/* Tetap oranye ketika Submitting... */
+#brfSubmitConfirmButton:disabled {
+  background: #f97316 !important;
+  border-color: #f97316 !important;
+  color: #ffffff !important;
+  opacity: 0.7;
+  cursor: wait;
+}
