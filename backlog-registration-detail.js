@@ -4,6 +4,42 @@ if(sessionStorage.getItem("hexaLoggedIn")!=="true"||!sessionStorage.getItem("hex
 let brdUser={};try{brdUser=JSON.parse(sessionStorage.getItem("hexaUser")||"{}")}catch(_){location.replace("index.html")}
 const brdId=new URLSearchParams(location.search).get("registrationId")||"";
 const brdRequester=String(brdUser.uniqId||brdUser.uniqID||brdUser.UNIQ_ID||brdUser["UNIQ ID"]||"").trim();
+const HEXA_DOWNLOAD_API = BRD_API;
+
+async function hexaDownloadBacklogPdf(registrationId, requesterId, button) {
+  if (button.dataset.downloading === "1") return;
+  button.dataset.downloading = "1";
+  const previous = button.textContent;
+  button.textContent = "Menyiapkan PDF...";
+  try {
+    const response = await fetch(HEXA_DOWNLOAD_API, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify({action:"getBacklogPdfDownload", registrationId, requesterId})
+    });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const result = await response.json();
+    if (!result.success || !result.base64) throw new Error(result.message || "File PDF tidak tersedia.");
+    const binary = atob(result.base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const blobUrl = URL.createObjectURL(new Blob([bytes], {type:"application/pdf"}));
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = result.fileName || ("HEXA-Register-Backlog-" + registrationId + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+  } catch (error) {
+    console.error("HEXA PDF download:", error);
+    alert("Download PDF gagal: " + (error.message || error));
+  } finally {
+    button.dataset.downloading = "0";
+    button.textContent = previous;
+  }
+}
+
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;");
 const field=(label,value)=>`<div class="brd-field"><span class="brd-label">${esc(label)}</span><div class="brd-value">${esc(value||"-")}</div></div>`;
@@ -98,11 +134,12 @@ async function loadDetail(){try{
     view.rel = "noopener noreferrer";
     view.textContent = "📄 View PDF";
     const download = document.createElement("a");
-    const fileIdMatch = pdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || pdfUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-    download.href = fileIdMatch ? "https://drive.google.com/uc?export=download&id=" + encodeURIComponent(fileIdMatch[1]) : pdfUrl;
-    download.target = "_blank";
-    download.rel = "noopener noreferrer";
+    download.href = "#";
     download.textContent = "⇩ Download";
+    download.addEventListener("click", event => {
+      event.preventDefault();
+      hexaDownloadBacklogPdf(r.registrationId, brdRequester, download);
+    });
     pdfActions.append(view, download);
     $("brdSummary").append(pdfActions);
   }
