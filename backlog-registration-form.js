@@ -132,7 +132,8 @@ async function loadBacklogCandidates() {
           "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify({
-          action: "getBacklogRegistrationCandidates"
+          action: "getBacklogRegistrationCandidates",
+          registrationId: backlogRegistrationId
         })
       }
     );
@@ -1766,6 +1767,12 @@ if (brfSubmitButton && brfSubmitDialog && brfSubmitConfirm) {
 // ======================================================
 
 async function initializeBacklogForm() {
+  const role = cleanText(currentUser?.level || currentUser?.LEVEL).toUpperCase().replace(/[\s_-]+/g, '');
+  if (role === 'VISITOR' || role === '6') {
+    alert('Visitor hanya dapat melihat registrasi, tidak dapat membuat atau mengedit.');
+    window.location.replace('backlog-registration.html');
+    return;
+  }
   setRegistrationInformation();
 
   /*
