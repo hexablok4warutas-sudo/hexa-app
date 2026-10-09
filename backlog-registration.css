@@ -913,3 +913,11 @@ body {
   }
 
 }
+
+/* =========================================
+   FIX: HIDE EMPTY STATE WHEN DATA EXISTS
+   Native hidden attribute must override flex display.
+   ========================================= */
+.registration-empty[hidden] {
+  display: none !important;
+}
