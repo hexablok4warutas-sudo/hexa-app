@@ -1,34 +1,168 @@
 "use strict";
-const BRD_API="https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
-if(sessionStorage.getItem("hexaLoggedIn")!=="true"||!sessionStorage.getItem("hexaUser"))location.replace("index.html");
-let brdUser={};try{brdUser=JSON.parse(sessionStorage.getItem("hexaUser")||"{}")}catch(_){location.replace("index.html")}
-const brdId=new URLSearchParams(location.search).get("registrationId")||"";
-const brdRequester=String(brdUser.uniqId||brdUser.uniqID||brdUser.UNIQ_ID||brdUser["UNIQ ID"]||"").trim();
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;");
-const field=(label,value)=>`<div class="brd-field"><span class="brd-label">${esc(label)}</span><div class="brd-value">${esc(value||"-")}</div></div>`;
-const labels={DRAFT:"Draft",WAITING_GL_APPROVAL:"Waiting GL Approval",WAITING_SECTION_APPROVAL:"Waiting Section Approval",FULL_APPROVED:"Full Approved",REJECTED:"Revision Required",REVISION_REQUIRED:"Revision Required",SUBMITTED:"Submitted"};
-$("brdBack").addEventListener("click",()=>location.href="backlog-registration.html");
-$("brdLightboxClose").addEventListener("click",()=>$("brdLightbox").hidden=true);
-$("brdLightbox").addEventListener("click",e=>{if(e.target===$("brdLightbox"))$("brdLightbox").hidden=true});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")$("brdLightbox").hidden=true});
-function addPhotos(container,items){const wrap=document.createElement("div");wrap.className="brd-photos";for(const item of items){if(!item.url)continue;const img=document.createElement("img");img.className="brd-photo";img.src=item.url;img.alt=item.name||"Foto";img.loading="lazy";img.referrerPolicy="no-referrer";img.addEventListener("click",()=>{$("brdLightboxImage").src=item.url;$("brdLightbox").hidden=false});wrap.append(img)}container.append(wrap)}
-async function loadDetail(){try{
- if(!brdId||!brdRequester)throw Error("Registration ID atau akun tidak ditemukan.");
- const response=await fetch(BRD_API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"getBacklogRegistrationDetail",registrationId:brdId,requesterId:brdRequester})});
- if(!response.ok)throw Error("HTTP "+response.status);
- const data=await response.json();if(!data.success)throw Error(data.message||"Gagal memuat detail.");
- const r=data.registration||{};$("brdSummary").hidden=false;
- $("brdSummary").innerHTML=`<div class="brd-title">${esc(r.registrationId)}</div><span class="brd-status">${esc(labels[r.status]||r.status)}</span><div class="brd-grid">${field("Created By",r.createdBy)}${field("Created At",r.createdAt)}${field("Submitted At",r.submittedAt)}${field("Total Items",r.totalItems)}${field("Created Level",r.createdLevel)}${field("Notes",r.notes)}</div>`;
- $("brdItems").innerHTML="";
- for(const [index,item] of (data.items||[]).entries()){
- const section=document.createElement("article");section.className="brd-item";
- const rows=(item.parts||[]).map(p=>`<tr><td>${esc(p.partName)}</td><td>${esc(p.partNo)}</td><td>${esc(p.quantity)}</td><td>${esc(p.partStatus)}</td></tr>`).join("");
- section.innerHTML=`<h2>Item ${index+1} — ${esc(item.unitCode)}</h2><div class="brd-grid">${field("Inspection ID",item.inspectionId)}${field("HM Inspection",item.hmInspection)}${field("Inspection Date",item.inspectionDate)}${field("Group Component",item.groupComponent)}${field("Rating",item.rating)}${field("Approval Status",labels[item.approvalStatus]||item.approvalStatus)}${field("Problem Description",item.problemDescription)}${field("Inspectors",item.inspectors)}${field("Plan Repair Date",item.planRepairDate)}${field("Notes",item.notes)}${field("Rejection Notes",item.rejectionNotes)}</div><h3>Part Requirement</h3>${rows?`<table class="brd-parts"><thead><tr><th>Part Name</th><th>Part No</th><th>Qty</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`:'<p class="brd-muted">Tidak ada part.</p>'}<h3>Photos / Evidence</h3>`;
- const photos=[];if(item.inspectionPhoto)photos.push({url:item.inspectionPhoto,name:"Inspection Photo"});for(const photo of item.photos||[])photos.push({url:photo.url,name:photo.fileName});
- if(photos.length)addPhotos(section,photos);else{const p=document.createElement("p");p.className="brd-muted";p.textContent="Tidak ada foto.";section.append(p)}
- $("brdItems").append(section);
- }
- $("brdMessage").textContent="";
- }catch(e){$("brdMessage").textContent="Gagal memuat detail: "+e.message;console.error(e)}}
-loadDetail();
+// HEXA - BACKLOG REGISTRATION LIST (DATABASE)
+// Sumber: HEXA API / REGISTRATION sheet.
+// Tidak mengubah Start Inspection atau form Save Draft.
+const HEXA_API_URL = "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
+const hexaLoggedIn = sessionStorage.getItem("hexaLoggedIn");
+const hexaUserData = sessionStorage.getItem("hexaUser");
+if (hexaLoggedIn !== "true" || !hexaUserData) window.location.replace("index.html");
+let currentUser = null;
+try { currentUser = JSON.parse(hexaUserData); }
+catch (error) {
+  sessionStorage.removeItem("hexaLoggedIn");
+  sessionStorage.removeItem("hexaUser");
+  window.location.replace("index.html");
+}
+const backButton = document.getElementById("registrationBackButton");
+const searchInput = document.getElementById("registrationSearch");
+const filterButton = document.getElementById("registrationFilterButton");
+const filterPanel = document.getElementById("registrationFilterPanel");
+const statusFilter = document.getElementById("registrationStatusFilter");
+const clearFilterButton = document.getElementById("registrationClearFilter");
+const addButton = document.getElementById("registrationAddButton");
+const emptyAddButton = document.getElementById("registrationEmptyAddButton");
+const registrationList = document.getElementById("registrationList");
+const emptyState = document.getElementById("registrationEmpty");
+const resultCount = document.getElementById("registrationResultCount");
+let registrationData = [];
+let registrationLoading = false;
+let registrationError = "";
+function registrationUserId() {
+  return String(currentUser?.uniqId || currentUser?.uniqID || currentUser?.UNIQ_ID || currentUser?.["UNIQ ID"] || "").trim();
+}
+async function registrationPost(payload) {
+  const response = await fetch(HEXA_API_URL, {
+    method: "POST",
+    headers: {"Content-Type": "text/plain;charset=utf-8"},
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) throw new Error("HTTP " + response.status);
+  const result = await response.json();
+  if (!result || result.success !== true) throw new Error(result?.message || "Gagal mengambil data registrasi.");
+  return result;
+}
+async function loadRegistrations() {
+  if (registrationLoading) return;
+  registrationLoading = true;
+  registrationError = "";
+  renderRegistrationList();
+  try {
+    const createdById = registrationUserId();
+    if (!createdById) throw new Error("UNIQ ID akun tidak ditemukan. Silakan login kembali.");
+    const result = await registrationPost({action: "getBacklogRegistrations", createdById});
+    registrationData = (Array.isArray(result.data) ? result.data : []).map(function(item) {
+      return {
+        registrationId: String(item.registrationId || item.registrationNo || ""),
+        registrationNo: String(item.registrationId || item.registrationNo || ""),
+        createdBy: String(item.createdBy || "-"),
+        createdAt: String(item.createdAt || ""),
+        updatedAt: String(item.updatedAt || ""),
+        totalItems: Number(item.totalItems) || 0,
+        status: String(item.status || "DRAFT").toUpperCase(),
+        notes: String(item.notes || "")
+      };
+    });
+    registrationData.sort(function(a,b){return b.updatedAt.localeCompare(a.updatedAt);});
+  } catch(error) {
+    registrationError = error.message || "Gagal memuat registrasi.";
+    console.error("HEXA Backlog Registration:", error);
+  } finally {
+    registrationLoading = false;
+    renderRegistrationList();
+  }
+}
+function openAddRegistration() { window.location.href = "backlog-registration-form.html"; }
+function openRegistration(registration) {
+  const target = registration.status === "DRAFT"
+    ? "backlog-registration-form.html"
+    : "backlog-registration-detail.html";
+  window.location.href = target + "?registrationId=" + encodeURIComponent(registration.registrationId);
+}
+if (backButton) backButton.addEventListener("click", function(){window.location.href="backlog-monitoring.html";});
+if (addButton) addButton.addEventListener("click",openAddRegistration);
+if (emptyAddButton) emptyAddButton.addEventListener("click",openAddRegistration);
+if (filterButton && filterPanel) filterButton.addEventListener("click",function(){filterPanel.hidden=!filterPanel.hidden;});
+if (clearFilterButton) clearFilterButton.addEventListener("click",function(){
+  if (statusFilter) statusFilter.value="";
+  if (searchInput) searchInput.value="";
+  renderRegistrationList();
+});
+if (searchInput) searchInput.addEventListener("input",renderRegistrationList);
+if (statusFilter) statusFilter.addEventListener("change",renderRegistrationList);
+function getFilteredRegistrations() {
+  const keyword = String(searchInput?.value || "").trim().toLowerCase();
+  const selectedStatus = String(statusFilter?.value || "").trim().toUpperCase();
+  return registrationData.filter(function(item){
+    const searchable = [item.registrationNo,item.createdBy,item.status,item.notes].join(" ").toLowerCase();
+    return (!keyword || searchable.includes(keyword)) && (!selectedStatus || item.status===selectedStatus);
+  });
+}
+function getStatusLabel(status) {
+  return ({DRAFT:"Draft",SUBMITTED:"Submitted",WAITING_GL_APPROVAL:"Waiting GL Approval",
+    WAITING_SECTION_APPROVAL:"Waiting Section Approval",FULL_APPROVED:"Full Approved",
+    REJECTED:"Revision Required",REVISION_REQUIRED:"Revision Required"})[status] || status || "-";
+}
+function escapeHtml(value) {
+  return String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;")
+    .replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function formatRegistrationDate(value) {
+  if (!value) return "-";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? String(value) : new Intl.DateTimeFormat("id-ID",{
+    day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"
+  }).format(date);
+}
+function renderRegistrationList() {
+  if (!registrationList || !emptyState) return;
+  const data=getFilteredRegistrations();
+  registrationList.innerHTML="";
+  if (resultCount) resultCount.textContent=registrationLoading ? "Loading..." : data.length + (data.length===1?" registration":" registrations");
+  if (registrationLoading) {
+    emptyState.hidden=true;
+    const message=document.createElement("p");message.textContent="Memuat Registrasi Backlog...";
+    registrationList.appendChild(message);
+    updateSummary();return;
+  }
+  if (registrationError) {
+    emptyState.hidden=true;
+    const panel=document.createElement("div");
+    panel.style.cssText="padding:16px;border:1px solid #e0a0a0;border-radius:12px;margin:12px 0";
+    const text=document.createElement("p");text.textContent="Gagal memuat data: "+registrationError;
+    const retry=document.createElement("button");retry.type="button";retry.textContent="Coba Lagi";
+    retry.addEventListener("click",loadRegistrations);
+    panel.append(text,retry);registrationList.appendChild(panel);updateSummary();return;
+  }
+  emptyState.hidden=data.length!==0;
+  data.forEach(function(item){
+    const card=document.createElement("article");
+    card.className="registration-card";
+    card.style.cursor="pointer";
+    card.innerHTML=`<strong>${escapeHtml(item.registrationNo)}</strong>
+      <div>${escapeHtml(getStatusLabel(item.status))}</div>
+      <div style="margin-top:8px;font-size:0.9em;opacity:0.85">
+        ${escapeHtml(item.createdBy)} · ${escapeHtml(formatRegistrationDate(item.createdAt))}
+      </div>
+      <div style="margin-top:4px;font-size:0.9em;opacity:0.85">${item.totalItems} Item${item.totalItems===1?"":"s"}</div>
+      <div style="margin-top:10px;font-weight:600">${item.status==="DRAFT"?"Buka / Edit Draft →":"Lihat Detail →"}</div>`;
+    card.tabIndex=0;
+    card.setAttribute("role","button");
+    card.setAttribute("aria-label","Buka registrasi "+item.registrationNo);
+    card.addEventListener("click",function(){openRegistration(item);});
+    card.addEventListener("keydown",function(event){if(event.key==="Enter"||event.key===" "){event.preventDefault();openRegistration(item);}});
+    registrationList.appendChild(card);
+  });
+  updateSummary();
+}
+function updateSummary() {
+  const draft=registrationData.filter(x=>x.status==="DRAFT").length;
+  const waiting=registrationData.filter(x=>["SUBMITTED","WAITING_GL_APPROVAL","WAITING_SECTION_APPROVAL"].includes(x.status)).length;
+  const approved=registrationData.filter(x=>x.status==="FULL_APPROVED").length;
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=String(value);};
+  set("registrationTotal",registrationData.length);
+  set("registrationDraft",draft);
+  set("registrationWaiting",waiting);
+  set("registrationApproved",approved);
+}
+function initializeBacklogRegistration(){renderRegistrationList();loadRegistrations();}
+initializeBacklogRegistration();
