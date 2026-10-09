@@ -89,9 +89,11 @@ async function loadDetail(){try{
   const eligible=isGL||isSection;
   const forward=$('brdGLForward');
   if(forward){forward.hidden=!isGL;forward.disabled=false;}
-  const final=$('brdFinalApprove');if(final)final.hidden=!isSection;
+  const final=$('brdFinalApprove');if(final){final.hidden=!isSection;final.disabled=!isSection;final.textContent='Final Approve';}
   const revision=$('brdRequestRevision');if(revision){revision.hidden=!isSection;revision.disabled=!isSection;revision.textContent='Request Revision to GL';}
   const title=$('brdApprovalTitle');if(title)title.textContent=isGL?'GL Review & Correction':'Section Head — Final Decision';
+  const footer=$('brdApprovalPanel').querySelector(':scope > p.brd-muted:last-child');
+  if(footer)footer.textContent=isGL?'GL dapat mengoreksi part dan meneruskan ke Section Head.':'Section Head dapat Final Approve atau Request Revision ke GL. PDF dan MOL belum diproses.';
  $("brdApprovalPanel").hidden=!eligible;
  $("brdItems").replaceChildren();brdSelectedParts.clear();brdPartIds.length=0;brdItemPartIds.clear();
  const seenIds=new Set();let missingIds=0;
@@ -240,3 +242,31 @@ brdReviewStyles.textContent=`
 .brd-approval-panel[data-stage="WAITING_SECTION_APPROVAL"]{border-top:4px solid #7c3aed}
 `;
 document.head.append(brdReviewStyles);
+
+// Section Head: simpan keputusan Final Approve per PART ID, tanpa PDF/MOL.
+const brdFinalButton = $('brdFinalApprove');
+if (brdFinalButton) brdFinalButton.addEventListener('click', async function () {
+  if (!brdIsSectionHead()) return;
+  const ids = Array.from(brdSelectedParts);
+  if (!ids.length) { alert('Pilih minimal satu part untuk Final Approve.'); return; }
+  const rejected = brdPartIds.length - ids.length;
+  if (!confirm('FINAL APPROVE registrasi ini?\n\n'+ids.length+' part APPROVED\n'+rejected+' part REJECTED\n\nKeputusan ini mengunci registrasi. PDF dan MOL belum diproses.')) return;
+  brdFinalButton.disabled = true;
+  brdFinalButton.textContent = 'Menyimpan Final Approve...';
+  try {
+    const response = await fetch(BRD_API, {
+      method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'finalApproveBacklogSection',registrationId:brdId,
+        requesterId:brdRequester,selectedPartIds:ids})
+    });
+    if (!response.ok) throw Error('HTTP '+response.status);
+    const result = await response.json();
+    if (!result.success) throw Error(result.message || 'Final Approve gagal.');
+    alert('Final Approve berhasil. '+result.approvedParts+' part APPROVED, '+result.rejectedParts+' part REJECTED.\nPDF dan MOL belum diproses.');
+    location.reload();
+  } catch (error) {
+    alert('Gagal Final Approve: '+error.message);
+    brdFinalButton.disabled = false;
+    brdFinalButton.textContent = 'Final Approve';
+  }
+});
