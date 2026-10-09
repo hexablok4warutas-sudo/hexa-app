@@ -2,6 +2,42 @@
 const HEXA_API_URL="https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
 if(sessionStorage.getItem("hexaLoggedIn")!=="true"||!sessionStorage.getItem("hexaUser"))location.replace("index.html");
 let currentUser={};try{currentUser=JSON.parse(sessionStorage.getItem("hexaUser")||"{}");}catch(e){location.replace("index.html");}
+const HEXA_DOWNLOAD_API = HEXA_API_URL;
+
+async function hexaDownloadBacklogPdf(registrationId, requesterId, button) {
+  if (button.dataset.downloading === "1") return;
+  button.dataset.downloading = "1";
+  const previous = button.textContent;
+  button.textContent = "Menyiapkan PDF...";
+  try {
+    const response = await fetch(HEXA_DOWNLOAD_API, {
+      method: "POST",
+      headers: {"Content-Type": "text/plain;charset=utf-8"},
+      body: JSON.stringify({action:"getBacklogPdfDownload", registrationId, requesterId})
+    });
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const result = await response.json();
+    if (!result.success || !result.base64) throw new Error(result.message || "File PDF tidak tersedia.");
+    const binary = atob(result.base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    const blobUrl = URL.createObjectURL(new Blob([bytes], {type:"application/pdf"}));
+    const link = document.createElement("a");
+    link.href = blobUrl;
+    link.download = result.fileName || ("HEXA-Register-Backlog-" + registrationId + ".pdf");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 60000);
+  } catch (error) {
+    console.error("HEXA PDF download:", error);
+    alert("Download PDF gagal: " + (error.message || error));
+  } finally {
+    button.dataset.downloading = "0";
+    button.textContent = previous;
+  }
+}
+
 const byId=id=>document.getElementById(id);
 const backButton=byId("registrationBackButton"),searchInput=byId("registrationSearch"),filterButton=byId("registrationFilterButton"),filterPanel=byId("registrationFilterPanel"),statusFilter=byId("registrationStatusFilter"),clearFilterButton=byId("registrationClearFilter"),addButton=byId("registrationAddButton"),emptyAddButton=byId("registrationEmptyAddButton"),registrationList=byId("registrationList"),emptyState=byId("registrationEmpty"),resultCount=byId("registrationResultCount");
 let registrationData=[],registrationLoading=false,registrationError="";
@@ -38,7 +74,7 @@ function renderRegistrationList(){
     if(item.status==="FULL_APPROVED"&&/^https:\/\//i.test(item.pdfUrl)){
       const links=document.createElement("span");links.style.cssText="display:inline-flex;flex-wrap:wrap;gap:16px;margin-left:18px;align-items:center";
       const view=document.createElement("a");view.href=item.pdfUrl;view.target="_blank";view.rel="noopener noreferrer";view.textContent="📄 View PDF";
-      const download=document.createElement("a");const m=item.pdfUrl.match(/\/file\/d\/([\w-]+)/)||item.pdfUrl.match(/[?&]id=([\w-]+)/);download.href=m?"https://drive.google.com/uc?export=download&id="+encodeURIComponent(m[1]):item.pdfUrl;download.target="_blank";download.rel="noopener noreferrer";download.textContent="↧ Download";
+      const download=document.createElement("a");download.href="#";download.textContent="↧ Download";download.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();hexaDownloadBacklogPdf(item.registrationId,registrationUserId(),download);});
       [view,download].forEach(a=>a.addEventListener("click",e=>e.stopPropagation()));links.append(view,download);card.querySelector(".registration-card-link").append(links);
     }
     card.tabIndex=0;card.setAttribute("role","button");card.setAttribute("aria-label","Buka registrasi "+item.registrationNo+", status "+getStatusLabel(item.status));
