@@ -104,6 +104,8 @@ function initializeHexaHeader() {
     headerType
   );
 
+  initializeHexaProfileAvatar();
+
 
   console.log(
     "HEXA Global Header Ready:",
@@ -165,48 +167,6 @@ function createHexaHeaderHTML(
 
     <div class="header-actions">
 
-      <div class="search-box">
-
-        <input
-          type="text"
-          id="searchInput"
-          placeholder=""
-          autocomplete="off"
-          aria-label="Search"
-        >
-
-        <button
-          type="button"
-          id="searchButton"
-          class="search-button"
-          aria-label="Search"
-        >
-
-          <svg
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-
-            <circle
-              cx="11"
-              cy="11"
-              r="7"
-            ></circle>
-
-            <line
-              x1="16.5"
-              y1="16.5"
-              x2="21"
-              y2="21"
-            ></line>
-
-          </svg>
-
-        </button>
-
-      </div>
-
-
       <button
         type="button"
         id="refreshButton"
@@ -229,6 +189,21 @@ function createHexaHeaderHTML(
 
         </svg>
 
+      </button>
+
+      <button
+        type="button"
+        id="hexaProfileButton"
+        class="hexa-header-profile-button"
+        aria-label="Buka My Profile"
+        title="My Profile"
+      >
+        <span class="hexa-header-profile-avatar" id="hexaHeaderProfileAvatar">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 21c0-5 3.5-8 8-8s8 3 8 8"></path>
+          </svg>
+        </span>
       </button>
 
     </div>
@@ -439,6 +414,11 @@ function initializeHexaHeaderEvents(
     document.getElementById(
       "refreshButton"
     );
+
+  const profileButton = document.getElementById("hexaProfileButton");
+  profileButton?.addEventListener("click", function () {
+    window.location.href = "profile.html";
+  });
 
 
   const navMenuItems =
@@ -815,3 +795,42 @@ window.closeHexaNavigation =
 console.log(
   "HEXA Header Script Loaded"
 );
+// ========================================
+// PROFILE AVATAR IN GLOBAL HEADER
+// ========================================
+function initializeHexaProfileAvatar() {
+  if (!document.getElementById("hexaHeaderProfileStyle")) {
+    const style = document.createElement("style");
+    style.id = "hexaHeaderProfileStyle";
+    style.textContent = `
+      .header-actions { display:flex; align-items:center; gap:10px; }
+      .hexa-header-profile-button {
+        appearance:none; flex:0 0 auto; display:inline-flex;
+        align-items:center; justify-content:center;
+        width:44px; height:44px; padding:3px;
+        border:3px solid #f28c28; border-radius:50%;
+        background:#fff; cursor:pointer; overflow:hidden;
+        box-sizing:border-box; transition:transform .15s ease, box-shadow .15s ease;
+      }
+      .hexa-header-profile-button:hover { transform:scale(1.05); box-shadow:0 0 0 3px rgba(242,140,40,.16); }
+      .hexa-header-profile-button:focus-visible { outline:2px solid #f28c28; outline-offset:3px; }
+      .hexa-header-profile-avatar { width:100%; height:100%; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#f1f5f9; overflow:hidden; }
+      .hexa-header-profile-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+      .hexa-header-profile-avatar svg { width:22px; height:22px; fill:none; stroke:#64748b; stroke-width:1.8; stroke-linecap:round; }
+      @media(max-width:480px) { .header-actions {gap:8px;} .hexa-header-profile-button {width:40px;height:40px;} }
+    `;
+    document.head.appendChild(style);
+  }
+  const avatar = document.getElementById("hexaHeaderProfileAvatar");
+  if (!avatar) return;
+  let user = {};
+  try { user = JSON.parse(sessionStorage.getItem("hexaUser") || "{}"); } catch (_) {}
+  const raw = String(user.photo || user.PHOTO || user.photoUrl || user.profilePhoto || user.foto || "").trim();
+  if (!raw || !/^https:\/\//i.test(raw)) return;
+  const img = document.createElement("img");
+  img.alt = "Foto profil";
+  img.referrerPolicy = "no-referrer";
+  img.addEventListener("error", function () { img.remove(); }, {once:true});
+  img.src = raw;
+  avatar.appendChild(img);
+}
