@@ -84,6 +84,28 @@ async function loadDetail(){try{
  $("brdSummary").dataset.stage=String(r.status||"").toUpperCase();
  $("brdApprovalPanel").dataset.stage=String(r.status||"").toUpperCase();
  $("brdSummary").innerHTML=`<div class="brd-title">${esc(r.registrationId)}</div><span class="brd-status" data-status="${esc(r.status)}">${esc(labels[r.status]||r.status)}</span><div class="brd-grid">${field("Created By",r.createdBy)}${field("Created At",r.createdAt)}${field("Submitted At",r.submittedAt)}${field("Total Items",r.totalItems)}${field("Created Level",r.createdLevel)}${field("Notes",r.notes)}</div>`;
+  // PDF hanya tersedia setelah Full Approved dan URL tersimpan di database.
+  const existingPdfActions = document.getElementById("brdPdfActions");
+  if (existingPdfActions) existingPdfActions.remove();
+  const pdfUrl = String(r.pdfUrl || "").trim();
+  if (String(r.status || "").toUpperCase() === "FULL_APPROVED" && /^https:\/\//i.test(pdfUrl)) {
+    const pdfActions = document.createElement("div");
+    pdfActions.id = "brdPdfActions";
+    pdfActions.className = "brd-pdf-actions";
+    const view = document.createElement("a");
+    view.href = pdfUrl;
+    view.target = "_blank";
+    view.rel = "noopener noreferrer";
+    view.textContent = "📄 View PDF";
+    const download = document.createElement("a");
+    const fileIdMatch = pdfUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || pdfUrl.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    download.href = fileIdMatch ? "https://drive.google.com/uc?export=download&id=" + encodeURIComponent(fileIdMatch[1]) : pdfUrl;
+    download.target = "_blank";
+    download.rel = "noopener noreferrer";
+    download.textContent = "⇩ Download";
+    pdfActions.append(view, download);
+    $("brdSummary").append(pdfActions);
+  }
  const isGL=brdIsGL()&&String(r.status).toUpperCase()==='WAITING_GL_APPROVAL';
   const isSection=brdIsSectionHead()&&String(r.status).toUpperCase()==='WAITING_SECTION_APPROVAL';
   const eligible=isGL||isSection;
@@ -270,3 +292,7 @@ if (brdFinalButton) brdFinalButton.addEventListener('click', async function () {
     brdFinalButton.textContent = 'Final Approve';
   }
 });
+// Tombol PDF di halaman detail registrasi.
+const brdPdfStyles = document.createElement("style");
+brdPdfStyles.textContent = `.brd-pdf-actions{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px}.brd-pdf-actions a{color:#1d4ed8;font-weight:700;text-decoration:none}.brd-pdf-actions a:hover{text-decoration:underline}`;
+document.head.append(brdPdfStyles);
