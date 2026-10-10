@@ -150,32 +150,23 @@
 
 
 
-      <!-- =================================
-           BACKLOG KPI
-           ================================= -->
-
-      <section class="backlog-kpi-section">
-
-        <div class="backlog-kpi-heading">
-
-          <div>
-            <h2>Backlog KPI</h2>
-
-            <p>
-              Performance summary berdasarkan temuan inspeksi,
-              registrasi backlog dan status spare part.
-            </p>
+      <!-- KPI PERFORMANCE: data aktif dan histori upload -->
+      <section class="backlog-performance" aria-labelledby="bcPerfTitle">
+        <div class="bc-perf-head">
+          <div><h2 id="bcPerfTitle">Backlog KPI</h2>
+          <p>Material readiness dan pergerakan backlog dari Upload Source</p></div>
+          <div class="bc-perf-actions">
+            <select id="bcPeriod" aria-label="Periode KPI">
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <button id="bcKpiRefresh" type="button">Refresh</button>
           </div>
-
         </div>
-
-
-        <div class="backlog-kpi-grid">
-
-
-          <!-- FINDINGS -->
-
-          <article class="backlog-kpi-card">
+        <p id="bcKpiStatus" class="bc-perf-status" role="status">Memuat KPI...</p>
+        <h3 class="bc-perf-subtitle bc-first-subtitle">Inspection & Registration</h3>
+        <div class="bc-perf-grid">
+<article class="backlog-kpi-card">
 
             <span class="backlog-kpi-label">
               Inspection Findings
@@ -193,12 +184,7 @@
             </small>
 
           </article>
-
-
-
-          <!-- REGISTERED -->
-
-          <article class="backlog-kpi-card">
+<article class="backlog-kpi-card">
 
             <span class="backlog-kpi-label">
               Registered
@@ -216,12 +202,7 @@
             </small>
 
           </article>
-
-
-
-          <!-- APPROVED -->
-
-          <article class="backlog-kpi-card">
+<article class="backlog-kpi-card">
 
             <span class="backlog-kpi-label">
               Approved
@@ -239,49 +220,8 @@
             </small>
 
           </article>
-
-
-
-          <!-- PART READY -->
-
-          <article class="backlog-kpi-card">
-
-            <span class="backlog-kpi-label">
-              Part Ready
-            </span>
-
-            <strong
-              class="backlog-kpi-value"
-              id="kpiPartReady"
-            >
-              --
-            </strong>
-
-            <small>
-              Spare part siap digunakan
-            </small>
-
-          </article>
-
-
         </div>
-
-      </section>
-
-      <!-- KPI PERFORMANCE: data aktif dan histori upload -->
-      <section class="backlog-performance" aria-labelledby="bcPerfTitle">
-        <div class="bc-perf-head">
-          <div><h2 id="bcPerfTitle">Backlog Performance</h2>
-          <p>Material readiness dan pergerakan backlog dari Upload Source</p></div>
-          <div class="bc-perf-actions">
-            <select id="bcPeriod" aria-label="Periode KPI">
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-            </select>
-            <button id="bcKpiRefresh" type="button">Refresh</button>
-          </div>
-        </div>
-        <p id="bcKpiStatus" class="bc-perf-status" role="status">Memuat KPI...</p>
+        <h3 class="bc-perf-subtitle">Material Status & Current Backlog</h3>
         <div class="bc-perf-grid">
           <article><span>Total Records</span><strong id="bcKpiTotal">—</strong><small>Baris kebutuhan part aktif</small></article>
           <article><span>Waiting Part</span><strong id="bcKpiWaiting">—</strong><small>Belum tersedia di logistik</small></article>
@@ -300,7 +240,7 @@
           <article><span>Upload Count</span><strong id="bcKpiUploads">—</strong><small>Jumlah upload pada periode</small></article>
         </div>
         <div class="bc-perf-note">Outgoing terkonfirmasi, Absorption Rate, dan Material Issued (Rp) belum dihitung sampai data penyelesaian serta nilai transaksi material tervalidasi. Status SUPPLY tidak berarti pekerjaan selesai.</div>
-        <div class="bc-perf-history">
+        <div class="bc-perf-history"><h3>Grafik Incoming vs Removed Pending</h3><p class="bc-chart-caption">Berdasarkan histori upload; Removed Pending belum berarti selesai.</p><div id="bcMovementChart" class="bc-chart" aria-label="Grafik pergerakan backlog"></div><h3>Grafik Status Material Aktif</h3><div id="bcMaterialChart" class="bc-chart" aria-label="Grafik distribusi material"></div>
           <h3>Riwayat Periode</h3>
           <div class="bc-perf-table-wrap"><table><thead><tr><th>Periode</th><th>Uploads</th><th>Opening</th><th>Incoming</th><th>Removed Pending</th><th>Changed</th><th>Closing</th></tr></thead><tbody id="bcKpiHistory"><tr><td colspan="7">Memuat histori...</td></tr></tbody></table></div>
         </div>
