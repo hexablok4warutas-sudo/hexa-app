@@ -807,9 +807,9 @@ function initializeHexaProfileAvatar() {
       .hexa-header-profile-button {
         appearance:none; flex:0 0 auto; display:inline-flex;
         align-items:center; justify-content:center;
-        width:44px; height:44px; padding:3px;
+        width:44px; height:44px; padding:0;
         border:3px solid #f28c28; border-radius:50%;
-        background:#fff; cursor:pointer; overflow:hidden;
+        background:transparent; cursor:pointer; overflow:hidden;
         box-sizing:border-box; transition:transform .15s ease, box-shadow .15s ease;
       }
       .hexa-header-profile-button:hover { transform:scale(1.05); box-shadow:0 0 0 3px rgba(242,140,40,.16); }
