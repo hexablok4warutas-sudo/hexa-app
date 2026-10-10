@@ -268,6 +268,43 @@
 
       </section>
 
+      <!-- KPI PERFORMANCE: data aktif dan histori upload -->
+      <section class="backlog-performance" aria-labelledby="bcPerfTitle">
+        <div class="bc-perf-head">
+          <div><h2 id="bcPerfTitle">Backlog Performance</h2>
+          <p>Material readiness dan pergerakan backlog dari Upload Source</p></div>
+          <div class="bc-perf-actions">
+            <select id="bcPeriod" aria-label="Periode KPI">
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <button id="bcKpiRefresh" type="button">Refresh</button>
+          </div>
+        </div>
+        <p id="bcKpiStatus" class="bc-perf-status" role="status">Memuat KPI...</p>
+        <div class="bc-perf-grid">
+          <article><span>Total Records</span><strong id="bcKpiTotal">—</strong><small>Baris kebutuhan part aktif</small></article>
+          <article><span>Waiting Part</span><strong id="bcKpiWaiting">—</strong><small>Belum tersedia di logistik</small></article>
+          <article><span>Part Ready</span><strong id="bcKpiReady">—</strong><small>Tersedia, belum dikeluarkan</small></article>
+          <article><span>Supply</span><strong id="bcKpiSupply">—</strong><small>Sudah dikeluarkan logistik</small></article>
+          <article><span>Supply Ratio</span><strong id="bcKpiSupplyRatio">—</strong><small>Supply / total record aktif</small></article>
+          <article><span>Aging &gt; 30 Days</span><strong id="bcKpiAging">—</strong><small>Baris dengan aging WO di atas 30 hari</small></article>
+        </div>
+        <h3 class="bc-perf-subtitle">Backlog Movement <span id="bcPeriodLabel">Weekly</span></h3>
+        <div class="bc-perf-grid">
+          <article><span>Opening</span><strong id="bcKpiOpening">—</strong><small>Awal periode terdata</small></article>
+          <article><span>Incoming</span><strong id="bcKpiIncoming">—</strong><small>Record baru terdeteksi</small></article>
+          <article><span>Removed Pending</span><strong id="bcKpiRemoved">—</strong><small>Hilang dari source; belum dianggap selesai</small></article>
+          <article><span>Changed</span><strong id="bcKpiChanged">—</strong><small>Record yang mengalami perubahan</small></article>
+          <article><span>Closing</span><strong id="bcKpiClosing">—</strong><small>Akhir periode terdata</small></article>
+          <article><span>Upload Count</span><strong id="bcKpiUploads">—</strong><small>Jumlah upload pada periode</small></article>
+        </div>
+        <div class="bc-perf-note">Outgoing terkonfirmasi, Absorption Rate, dan Material Issued (Rp) belum dihitung sampai data penyelesaian serta nilai transaksi material tervalidasi. Status SUPPLY tidak berarti pekerjaan selesai.</div>
+        <div class="bc-perf-history">
+          <h3>Riwayat Periode</h3>
+          <div class="bc-perf-table-wrap"><table><thead><tr><th>Periode</th><th>Uploads</th><th>Opening</th><th>Incoming</th><th>Removed Pending</th><th>Changed</th><th>Closing</th></tr></thead><tbody id="bcKpiHistory"><tr><td colspan="7">Memuat histori...</td></tr></tbody></table></div>
+        </div>
+      </section>
 
     </section>
 
