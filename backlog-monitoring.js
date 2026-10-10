@@ -222,29 +222,51 @@ function bcDateControls(){
   bcSelectOptions('bcMonth',BC_MONTH_NAMES.map((name,i)=>[i+1,name]),m);
   bcUpdateWeeks();
 }
-function bcUpdateWeeks(){
+function bcIsoWeekInfo(date){
+  const d=new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate()));
+  const day=d.getUTCDay()||7;
+  d.setUTCDate(d.getUTCDate()+4-day);
+  const isoYear=d.getUTCFullYear();
+  const yearStart=new Date(Date.UTC(isoYear,0,1));
+  const week=Math.ceil((((d-yearStart)/86400000)+1)/7);
+  return {year:isoYear,week,key:isoYear+'-W'+String(week).padStart(2,'0')};
+}
+function bcWeekOptions(){
   const year=Number(bcKpiEl('bcYear').value),month=Number(bcKpiEl('bcMonth').value);
-  const last=new Date(year,month,0).getDate();
-  const current=bcKpiEl('bcWeek').value||String(Math.min(5,Math.ceil(new Date().getDate()/7)));
-  const weeks=Array.from({length:Math.ceil(last/7)},(_,i)=>{
-    const from=i*7+1,to=Math.min(last,(i+1)*7);
-    return [i+1,`Week ${i+1} (${from}–${to} ${BC_MONTH_NAMES[month-1]})`];
-  });
-  bcSelectOptions('bcWeek',weeks,weeks.some(x=>String(x[0])===current)?current:weeks[weeks.length-1][0]);
+  const first=new Date(Date.UTC(year,month-1,1));
+  const last=new Date(Date.UTC(year,month,0));
+  const monday=new Date(first);monday.setUTCDate(first.getUTCDate()-((first.getUTCDay()+6)%7));
+  const fmt=d=>`${d.getUTCDate()} ${BC_MONTH_NAMES[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+  const result=[];
+  for(let d=new Date(monday);d<=last;d.setUTCDate(d.getUTCDate()+7)){
+    const sunday=new Date(d);sunday.setUTCDate(sunday.getUTCDate()+6);
+    const iso=bcIsoWeekInfo(d);
+    result.push({key:iso.key,label:`Week ${iso.week} (${fmt(d)} – ${fmt(sunday)})`,from:fmt(d),to:fmt(sunday)});
+  }
+  return result;
+}
+function bcUpdateWeeks(){
+  const options=bcWeekOptions();
+  const current=bcKpiEl('bcWeek').value;
+  const now=new Date();
+  const todayIso=bcIsoWeekInfo(new Date(Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()))).key;
+  const selected=options.some(w=>w.key===current)?current:(options.some(w=>w.key===todayIso)?todayIso:options[0].key);
+  bcSelectOptions('bcWeek',options.map(w=>[w.key,w.label]),selected);
   bcKpiEl('bcWeek').hidden=bcKpiMode!=='weekly';
   ['bcWeeklyBtn','bcMonthlyBtn'].forEach((id,i)=>{
     const on=(i===0)===(bcKpiMode==='weekly');
     bcKpiEl(id).classList.toggle('is-active',on);
     bcKpiEl(id).setAttribute('aria-pressed',String(on));
   });
-  const w=Number(bcKpiEl('bcWeek').value);
+  const chosen=options.find(w=>w.key===bcKpiEl('bcWeek').value);
+  const year=Number(bcKpiEl('bcYear').value),month=Number(bcKpiEl('bcMonth').value);
   bcKpiSet('bcSelectedRange',bcKpiMode==='weekly'
-    ?`Week ${w}: ${7*(w-1)+1}–${Math.min(7*w,last)} ${BC_MONTH_NAMES[month-1]} ${year}`
-    :`1–${last} ${BC_MONTH_NAMES[month-1]} ${year}`);
+    ?`${chosen.label}`
+    :`1–${new Date(year,month,0).getDate()} ${BC_MONTH_NAMES[month-1]} ${year}`);
 }
 function bcSelectedKey(){
   const y=bcKpiEl('bcYear').value,m=bcKpiEl('bcMonth').value.padStart(2,'0');
-  return bcKpiMode==='monthly'?`${y}-${m}`:`${y}-${m}-W${bcKpiEl('bcWeek').value}`;
+  return bcKpiMode==='monthly'?`${y}-${m}`:bcKpiEl('bcWeek').value;
 }
 function bcRenderMovement(groups){
   const key=bcSelectedKey(),chosen=groups.find(g=>g.period===key);
@@ -253,7 +275,7 @@ function bcRenderMovement(groups){
   bcKpiSet('bcPeriodLabel',bcKpiMode==='weekly'?'Weekly':'Monthly');
   const tbody=bcKpiEl('bcKpiHistory');tbody.replaceChildren();
   const prefix=bcKpiEl('bcYear').value+'-'+bcKpiEl('bcMonth').value.padStart(2,'0');
-  const visible=groups.filter(g=>bcKpiMode==='weekly'?g.period.startsWith(prefix+'-W'):g.period.startsWith(bcKpiEl('bcYear').value+'-'));
+  const visible=groups.filter(g=>bcKpiMode==='weekly'?bcWeekOptions().some(w=>w.key===g.period):g.period.startsWith(bcKpiEl('bcYear').value+'-'));
   if(!visible.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=7;td.textContent='Belum ada snapshot pada periode ini';tr.append(td);tbody.append(tr);}
   visible.slice().reverse().forEach(g=>{
     const tr=document.createElement('tr');
@@ -302,7 +324,7 @@ if(bcKpiEl('bcYear')){
   bcKpiEl('bcWeeklyBtn').addEventListener('click',()=>{bcKpiMode='weekly';bcKpiLoad().catch(e=>bcKpiStatus(e.message))});
   bcKpiEl('bcMonthlyBtn').addEventListener('click',()=>{bcKpiMode='monthly';bcKpiLoad().catch(e=>bcKpiStatus(e.message))});
   bcKpiEl('bcYear').addEventListener('change',()=>{bcUpdateWeeks();bcRenderMovement(bcKpiGroups)});
-  bcKpiEl('bcMonth').addEventListener('change',()=>{bcKpiEl('bcWeek').value='1';bcUpdateWeeks();bcRenderMovement(bcKpiGroups)});
+  bcKpiEl('bcMonth').addEventListener('change',()=>{bcKpiEl('bcWeek').value='';bcUpdateWeeks();bcRenderMovement(bcKpiGroups)});
   bcKpiEl('bcWeek').addEventListener('change',()=>{bcUpdateWeeks();bcRenderMovement(bcKpiGroups)});
   bcKpiEl('bcKpiRefresh').addEventListener('click',()=>bcKpiLoad().catch(e=>bcKpiStatus(e.message)));
   bcKpiLoad().catch(e=>bcKpiStatus('Gagal memuat KPI: '+e.message));
