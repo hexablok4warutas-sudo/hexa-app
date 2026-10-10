@@ -10,7 +10,7 @@ let bcVisible=BC_DEFAULT.slice();try{let a=JSON.parse(localStorage.getItem(BC_KE
 let bcRows=[],bcFiltered=[],bcPage=0,bcSize=50,bcUploadRows=null,bcBatchId='',bcCommitted=false;
 const bcEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const bcLabel=k=>(BC_COLUMNS.find(c=>c[0]===k)||[k,k])[1];
-const bcCanUploadLocal=()=>{const role=String(bcUser.level||bcUser.LEVEL||'').trim().toUpperCase();const code=String(bcUser.kode||bcUser.KODE||'').trim();return ['SECTION','SECTION HEAD','SECTION_HEAD','GROUP LEADER','GROUP_LEADER','GL','ADMIN'].includes(role)||['2','3','4'].includes(code)||( ['2','3','4'].includes(role) && !code );};
+const bcCanUploadLocal=()=>{const role=String(bcUser.level||bcUser.LEVEL||'').trim().toUpperCase();const code=String(bcUser.kode||bcUser.KODE||'').trim();return ['SECTION','SECTION HEAD','SECTION_HEAD','GROUP LEADER','GROUP_LEADER','GL','ADMIN','MASTER'].includes(role)||['1','2','3','4'].includes(code)||( ['1','2','3','4'].includes(role) && !code );};
 const bcUserId=()=>String(bcUser.uniqId||bcUser.UNIQ_ID||bcUser.uniqID||bcUser.id||bcUser.userId||'').trim();
 async function bcApi(action,rest={}){const r=await fetch(BC_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,userId:bcUserId(),...rest})});const x=await r.json();if(!x.success)throw Error(x.message||'Gagal menghubungi server');return x}
 function bcToggle(id){$(id).hidden=!$(id).hidden}
