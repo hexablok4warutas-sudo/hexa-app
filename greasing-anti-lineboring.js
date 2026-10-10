@@ -2,7 +2,9 @@
 /* HEXA Greasing Anti Lineboring - Google Apps Script backend.
    Set GAL_API_URL to your deployed Apps Script /exec URL.
    Do not publish until your endpoint access control is configured. */
-const GAL_API_URL = "PASTE_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE";
+
+const GAL_API_URL = "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
+
 if(sessionStorage.getItem('hexaLoggedIn')!=='true'||!sessionStorage.getItem('hexaUser')) location.replace('index.html');
 const galUser=(()=>{try{return JSON.parse(sessionStorage.getItem('hexaUser')||'{}')}catch{return {}}})();
 const el=id=>document.getElementById(id);
