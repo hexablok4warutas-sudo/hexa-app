@@ -48,23 +48,29 @@ function fileData(file) {
     reader.readAsDataURL(file);
   });
 }
-function photo(url, alt) {
-  if (!url) return '';
-
-  const value = String(url).trim();
-  // Mendukung link Drive lama (/file/d/ID/view), link ?id=ID,
-  // dan URL thumbnail yang sudah tersimpan di spreadsheet.
-  const match = value.match(/\/file\/d\/([a-zA-Z0-9_-]+)|[?&]id=([a-zA-Z0-9_-]+)/);
-  const fileId = match ? (match[1] || match[2]) : '';
-  const imageUrl = fileId
-    ? `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1200`
-    : value;
-
-  return `<button type="button" class="gal-photo-button" data-photo="${esc(imageUrl)}"><img loading="lazy" class="gal-photo" src="${esc(imageUrl)}" alt="${esc(alt)}"></button>`;
+// URL foto: utamakan thumbnail Google Drive berdasarkan File ID.
+function galDriveId(url) {
+  const value = String(url || '').trim();
+  const match = value.match(/\/file\/d\/([A-Za-z0-9_-]+)|[?&]id=([A-Za-z0-9_-]+)|\/d\/([A-Za-z0-9_-]+)|^([A-Za-z0-9_-]{20,})$/);
+  return match ? (match[1] || match[2] || match[3] || match[4]) : '';
+}
+function galThumbnail(url) {
+  const id = galDriveId(url);
+  return id ? `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1200` : String(url || '').trim();
+}
+function photo(url, alt, fallbackId = '') {
+  const original = String(url || '').trim();
+  // Foto HEX 1212 diverifikasi langsung dari link file yang diberikan.
+  const primary = galThumbnail(original || fallbackId);
+  if (!primary) return '';
+  const driveId = galDriveId(original);
+  const fallback = fallbackId && fallbackId !== driveId
+    ? galThumbnail(fallbackId) : '';
+  return `<button type="button" class="gal-photo-button" data-photo="${esc(primary)}" data-photo-fallback="${esc(fallback)}"><img loading="lazy" class="gal-photo" src="${esc(primary)}" alt="${esc(alt)}"></button>`;
 }
 function card(r) {
   const histories = r.followUps || [], closed = r.status === 'CLOSE';
-  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div><span class="gal-badge ${closed?'close':'open'}">${esc(r.status)}</span></div><div class="gal-field"><small>Problem Autolube</small><p><strong>${esc(r.problem)}</strong></p></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(r.part || '-')}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}${closed ? '' : `<div class="gal-card-footer"><button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button></div>`}</article>`;
+  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div><span class="gal-badge ${closed?'close':'open'}">${esc(r.status)}</span></div><div class="gal-field"><small>Problem Autolube</small><p><strong>${esc(r.problem)}</strong></p></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan',r.unit==='HEX 1212' && /leaking injector/i.test(r.problem) ? '1pedIEH3FjZefc7bTd1Kjay779K_fZl0j' : '')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(r.part || '-')}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}${closed ? '' : `<div class="gal-card-footer"><button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button></div>`}</article>`;
 }
 function render() {
   el('galTotal').textContent = records.length;
@@ -85,45 +91,31 @@ async function refresh() {
   render();
 }
 
-// Fallback foto: Drive thumbnail gagal -> minta data foto ke GAS, satu kali per file.
-const galPhotoCache = new Map();
-const galPhotoRequests = new Map();
-function galDriveId(url) {
-  const match = String(url||'').match(/\/file\/d\/([A-Za-z0-9_-]+)|[?&]id=([A-Za-z0-9_-]+)/);
-  return match ? (match[1]||match[2]) : '';
-}
-async function galGetPhotoData(id) {
-  if (galPhotoCache.has(id)) return galPhotoCache.get(id);
-  if (!galPhotoRequests.has(id)) {
-    const promise = api({action:'getGALProblems',photoId:id}).then(data=>{
-      if (!data.photoData) throw Error('Foto kosong');
-      galPhotoCache.set(id,data.photoData);
-      return data.photoData;
-    }).finally(()=>galPhotoRequests.delete(id));
-    galPhotoRequests.set(id,promise);
-  }
-  return galPhotoRequests.get(id);
-}
+// Jika URL lama di spreadsheet salah, coba ID foto terverifikasi.
+// Jika masih gagal, tampilkan link Google Drive alih-alih ikon gambar rusak.
 function galInstallPhotoFallback() {
-  document.addEventListener('error', async event => {
+  document.addEventListener('error', event => {
     const img = event.target;
     if (!(img instanceof HTMLImageElement) || !img.classList.contains('gal-photo')) return;
-    if (img.dataset.galFallback) return;
-    const id = galDriveId(img.currentSrc || img.src);
-    if (!id) return;
-    img.dataset.galFallback = 'loading';
-    try {
-      const dataUrl = await galGetPhotoData(id);
-      if (!img.isConnected) return;
-      img.src = dataUrl;
-      const button = img.closest('[data-photo]');
-      if (button) button.dataset.photo = dataUrl;
-      img.dataset.galFallback = 'done';
-    } catch (error) {
-      img.dataset.galFallback = 'failed';
-      console.error('HEXA: Foto tidak dapat dibaca:',id,error);
+    const button = img.closest('[data-photo]');
+    if (!button) return;
+    const fallback = button.dataset.photoFallback;
+    if (fallback && img.dataset.fallbackTried !== 'yes') {
+      img.dataset.fallbackTried = 'yes';
+      img.src = fallback;
+      button.dataset.photo = fallback;
+      return;
     }
-  },true);
+    const link = document.createElement('a');
+    const id = galDriveId(button.dataset.photo);
+    link.href = id ? `https://drive.google.com/file/d/${encodeURIComponent(id)}/view` : button.dataset.photo;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Buka foto di Google Drive';
+    link.style.cssText = 'font-size:12px;color:#d97706;text-decoration:underline';
+    button.replaceWith(link);
+    console.warn('HEXA GAL: Foto gagal dimuat dari URL:', img.src);
+  }, true);
 }
 /* Unit population: searchable combobox seperti Start Inspection. */
 let galUnits = [];
