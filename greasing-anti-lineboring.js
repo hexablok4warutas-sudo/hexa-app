@@ -75,25 +75,60 @@ function render() {
   el('galCards').innerHTML = visible.length ? visible.map(card).join('') : '<div class="gal-empty">Belum ada problem yang sesuai.</div>';
 }
 async function refresh() {
-  const data = await api({action:'getGALProblems'});
-  const problems = Array.isArray(data.problems) ? data.problems : [];
-  // Baca riwayat berurutan agar tidak membanjiri Apps Script dengan request paralel.
-  const result = [];
-  for (const r of problems) {
-    let followUps = [];
-    try {
-      const history = await api({action:'getGALFollowUps', problemId:r.id});
-      followUps = (history.followups || []).map(h => ({...h, by:h.createdBy}));
-    } catch (error) {
-      console.warn('Gagal membaca riwayat problem ' + r.id, error);
-    }
-    result.push({id:r.id,unit:r.unitCode,problem:r.problem,damagePhoto:r.photo,part:r.requiredPart,recommendation:r.recommendedFollowUp,status:String(r.status || '').toUpperCase(),createdAt:r.createdAt,createdBy:r.createdBy,followUps});
-  }
-  records = result;
+  const data = await api({action:'getGALProblems',includeFollowUps:true});
+  records = (data.problems || []).map(r => ({
+    id:r.id,unit:r.unitCode,problem:r.problem,damagePhoto:r.photo,
+    part:r.requiredPart,recommendation:r.recommendedFollowUp,
+    status:String(r.status||'').toUpperCase(),createdAt:r.createdAt,createdBy:r.createdBy,
+    followUps:(r.followUps||[]).map(h=>({...h,by:h.createdBy}))
+  }));
   render();
+}
+
+// Fallback foto: Drive thumbnail gagal -> minta data foto ke GAS, satu kali per file.
+const galPhotoCache = new Map();
+const galPhotoRequests = new Map();
+function galDriveId(url) {
+  const match = String(url||'').match(/\/file\/d\/([A-Za-z0-9_-]+)|[?&]id=([A-Za-z0-9_-]+)/);
+  return match ? (match[1]||match[2]) : '';
+}
+async function galGetPhotoData(id) {
+  if (galPhotoCache.has(id)) return galPhotoCache.get(id);
+  if (!galPhotoRequests.has(id)) {
+    const promise = api({action:'getGALProblems',photoId:id}).then(data=>{
+      if (!data.photoData) throw Error('Foto kosong');
+      galPhotoCache.set(id,data.photoData);
+      return data.photoData;
+    }).finally(()=>galPhotoRequests.delete(id));
+    galPhotoRequests.set(id,promise);
+  }
+  return galPhotoRequests.get(id);
+}
+function galInstallPhotoFallback() {
+  document.addEventListener('error', async event => {
+    const img = event.target;
+    if (!(img instanceof HTMLImageElement) || !img.classList.contains('gal-photo')) return;
+    if (img.dataset.galFallback) return;
+    const id = galDriveId(img.currentSrc || img.src);
+    if (!id) return;
+    img.dataset.galFallback = 'loading';
+    try {
+      const dataUrl = await galGetPhotoData(id);
+      if (!img.isConnected) return;
+      img.src = dataUrl;
+      const button = img.closest('[data-photo]');
+      if (button) button.dataset.photo = dataUrl;
+      img.dataset.galFallback = 'done';
+    } catch (error) {
+      img.dataset.galFallback = 'failed';
+      console.error('HEXA: Foto tidak dapat dibaca:',id,error);
+    }
+  },true);
 }
 /* Unit population: searchable combobox seperti Start Inspection. */
 let galUnits = [];
+let galUnitsLoaded = false;
+let galUnitsLoading = null;
 const galUnitText = value => String(value ?? '').trim();
 function closeGalUnitOptions() {
   const options = el('galUnitOptions');
@@ -184,6 +219,7 @@ async function loadUnits() {
     search.disabled = false;
     search.placeholder = 'Search / Select Unit';
     if (!galUnits.length) console.warn('HEXA GAL: Tidak ada unit Running / Stand By pada Populasi.');
+    galUnitsLoaded = true;
     return galUnits.length;
   } catch (error) {
     search.disabled = true;
@@ -203,7 +239,16 @@ async function init() {
   el('galStatus').onchange = render;
   document.querySelectorAll('[data-dismiss]').forEach(b => b.onclick = () => close(b.dataset.dismiss));
   setupGalUnitCombobox();
-  el('galNew').onclick = () => { el('galNewForm').reset(); el('galUnit').value = ''; closeGalUnitOptions(); el('galNewMessage').textContent = ''; el('galNewDialog').showModal(); };
+  galInstallPhotoFallback();
+  el('galNew').onclick = () => {
+    el('galNewForm').reset(); el('galUnit').value = ''; closeGalUnitOptions();
+    el('galNewMessage').textContent = ''; el('galNewDialog').showModal();
+    if (!galUnitsLoaded && !galUnitsLoading) {
+      galUnitsLoading = loadUnits().catch(error => {
+        el('galNewMessage').textContent = 'Gagal memuat Code Unit: ' + error.message;
+      }).finally(() => {galUnitsLoading = null;});
+    }
+  };
   el('galLightboxClose').onclick = () => close('galLightbox');
   el('galCards').addEventListener('click', e => {
     const p = e.target.closest('[data-photo]');
@@ -253,10 +298,10 @@ async function init() {
   if (!configured()) { setGalSync('error', 'URL API Greasing belum dikonfigurasi.'); return; }
   setGalSync('loading', 'Sedang menyinkronkan data HEXA...');
   try {
-    const [_, count] = await Promise.all([refresh(), loadUnits()]);
+    await refresh();
     apiReady = true;
     el('galNew').disabled = false;
-    setGalSync('success', count ? 'Data tersinkron dengan Google Sheets HEXA.' : 'Koneksi berhasil, tetapi belum ada unit aktif.');
+    setGalSync('success', 'Data tersinkron dengan Google Sheets HEXA.');
   } catch (error) {
     apiReady = false;
     el('galNew').disabled = true;
