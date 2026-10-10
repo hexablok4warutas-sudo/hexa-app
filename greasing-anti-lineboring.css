@@ -39,3 +39,24 @@
 .gal-sync.is-error .gal-sync-error{display:block}
 @keyframes gal-sync-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.gal-sync.is-loading .gal-sync-refresh{animation:none}}
+
+/* =========================================
+   HEXA - GREASING ANTI LINEBORING
+   BACKGROUND DOODLE
+   ========================================= */
+
+body {
+  background-color: #fff9f2;
+  background-image: url("hexa-doodle.png");
+  background-repeat: repeat;
+  background-position: top left;
+  background-size: 600px auto;
+  background-attachment: fixed;
+}
+
+/* Pastikan konten tidak menutupi background */
+.gal-main,
+.gal-page,
+.gal-section {
+  background-color: transparent;
+}
