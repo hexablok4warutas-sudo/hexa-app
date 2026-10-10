@@ -14,18 +14,21 @@ const bcCanUploadLocal=()=>{const role=String(bcUser.level??bcUser.LEVEL??bcUser
 const bcUserId=()=>String(bcUser.uniqId||bcUser.UNIQ_ID||bcUser.uniqID||bcUser.id||bcUser.userId||'').trim();
 async function bcApi(action,rest={}){const r=await fetch(BC_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,userId:bcUserId(),...rest})});const x=await r.json();if(!x.success)throw Error(x.message||'Gagal menghubungi server');return x}
 function bcToggle(id){$(id).hidden=!$(id).hidden}
+const bcDefaultFilterFields=['E','N'];
 let bcFilterRules=[];
 let bcFilterSerial=0;
+function bcResetFilterRules(){bcFilterRules=bcDefaultFilterFields.map(field=>({id:++bcFilterSerial,field,value:'',fixed:true}));}
 function bcFilterOptions(field){return [...new Set(bcRows.map(r=>String(r[field]??'').trim()))].filter(Boolean).sort((a,b)=>a.localeCompare(b,'id',{numeric:true}));}
 function bcDrawFilters(){
  $('bcFilterRows').innerHTML=bcFilterRules.map(rule=>{
-  const options=BC_COLUMNS.map(([k,n])=>`<option value="${k}" ${rule.field===k?'selected':''}>${bcEsc(n)}</option>`).join('');
+  const options=BC_COLUMNS.filter(([k])=>!rule.fixed && !bcDefaultFilterFields.includes(k) || rule.fixed && k===rule.field).map(([k,n])=>`<option value="${k}" ${rule.field===k?'selected':''}>${bcEsc(n)}</option>`).join('');
   const values=bcFilterOptions(rule.field);
-  const choices='<option value="">Semua nilai</option>'+values.map(v=>`<option value="${bcEsc(v)}" ${rule.value===v?'selected':''}>${bcEsc(v)}</option>`).join('');
-  return `<div class="bc-filter-row" data-filter-id="${rule.id}"><select class="bc-filter-field" aria-label="Pilih header tabel">${options}</select><select class="bc-filter-value" aria-label="Pilih nilai filter">${choices}</select><button type="button" class="bc-filter-remove" title="Hapus filter" aria-label="Hapus filter">✕</button></div>`;
+  const choices='<option value="">Semua</option>'+values.map(v=>`<option value="${bcEsc(v)}" ${rule.value===v?'selected':''}>${bcEsc(v)}</option>`).join('');
+  return `<div class="bc-filter-row" data-filter-id="${rule.id}"><select class="bc-filter-field" aria-label="Header filter" ${rule.fixed?'disabled':''}>${options}</select><select class="bc-filter-value" aria-label="Nilai ${bcEsc(bcLabel(rule.field))}">${choices}</select>${rule.fixed?'<span class="bc-filter-placeholder" aria-hidden="true"></span>':'<button type="button" class="bc-filter-remove" title="Hapus filter" aria-label="Hapus filter">✕</button>'}</div>`;
  }).join('');
 }
 function bcFilters(){bcDrawFilters()}
+bcResetFilterRules();
 function bcApply(){
  const q=$('bcSearch').value.toLowerCase().trim();
  bcFiltered=bcRows.filter(r=>(!q||Object.values(r).some(v=>String(v??'').toLowerCase().includes(q)))&&bcFilterRules.every(rule=>!rule.value||String(r[rule.field]??'').trim()===rule.value));
@@ -43,8 +46,8 @@ $('bcBack').addEventListener('click',()=>window.location.assign('./backlog-monit
  bcApply();
 });
 $('bcFilterRows').addEventListener('click',e=>{if(!e.target.closest('.bc-filter-remove'))return;const row=e.target.closest('[data-filter-id]');bcFilterRules=bcFilterRules.filter(r=>r.id!==Number(row.dataset.filterId));bcDrawFilters();bcApply()});
-$('bcAddFilter').onclick=()=>{bcFilterRules.push({id:++bcFilterSerial,field:'E',value:''});bcDrawFilters()};
-$('bcResetFilter').onclick=()=>{bcFilterRules=[];bcDrawFilters();bcApply()};
+$('bcAddFilter').onclick=()=>{bcFilterRules.push({id:++bcFilterSerial,field:'I',value:'',fixed:false});bcDrawFilters()};
+$('bcResetFilter').onclick=()=>{bcResetFilterRules();bcDrawFilters();bcApply()};
 $('bcColumnChoices').onchange=e=>{let k=e.target.dataset.col;if(!k)return;let next=e.target.checked?[...bcVisible,k]:bcVisible.filter(v=>v!==k);if(!next.length){e.target.checked=true;return}bcVisible=next;localStorage.setItem(BC_KEY,JSON.stringify(next));bcRender()};$('bcAllColumns').onclick=()=>{bcVisible=BC_COLUMNS.map(c=>c[0]);localStorage.setItem(BC_KEY,JSON.stringify(bcVisible));bcDrawColumns();bcRender()};$('bcResetColumns').onclick=()=>{bcVisible=BC_DEFAULT.slice();localStorage.setItem(BC_KEY,JSON.stringify(bcVisible));bcDrawColumns();bcRender()};$('bcPrev').onclick=()=>{bcPage--;bcRender()};$('bcNext').onclick=()=>{bcPage++;bcRender()};$('bcTbody').onclick=e=>{let tr=e.target.closest('tr[data-i]');if(tr)bcShowDetail(bcFiltered[+tr.dataset.i])};document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$(b.dataset.close).close());$('bcUploadBtn').onclick=()=>{$('bcFile').click()};
 $('bcFile').onchange=async e=>{bcUploadRows=null;bcCommitted=false;$('bcSyncNotice').hidden=true;$('bcCommit').disabled=true;$('bcSync').disabled=true;const f=e.target.files[0];if(!f)return;$('bcUploadDialog').showModal();try{if(!window.XLSX)throw Error('Library pembaca Excel belum tersedia. Periksa koneksi internet.');$('bcUploadStatus').textContent='Membaca Excel...';let wb=XLSX.read(await f.arrayBuffer(),{type:'array',cellDates:true});let sheet=wb.Sheets.TRACK||wb.Sheets[wb.SheetNames[0]];if(!sheet)throw Error('Worksheet tidak ditemukan');let data=XLSX.utils.sheet_to_json(sheet,{header:'A',range:7,defval:'',raw:false});let header=XLSX.utils.sheet_to_json(sheet,{header:'A',range:6,defval:'',raw:false})[0]||{};for(let k of ['E','F','G','I','J','K','N','O','P'])if(!String(header[k]||'').trim())throw Error('Header kolom '+k+' tidak ditemukan pada baris 7.');bcUploadRows=data.map(r=>Object.fromEntries(BC_COLUMNS.map(([k])=>[k,bcExcelCell(r[k])]))).filter(r=>r.E&&r.G);if(!bcUploadRows.length)throw Error('Tidak ada record valid.');$('bcPreview').textContent=`File: ${f.name} | ${bcUploadRows.length} record valid | Sheet: ${wb.SheetNames[0]}`;$('bcUploadStatus').textContent='Preview siap. Klik Replace Data untuk mengganti snapshot monitoring.';$('bcCommit').disabled=false}catch(err){$('bcUploadStatus').textContent=err.message}};
 $('bcCommit').onclick=async()=>{if(!bcUploadRows)return;const btn=$('bcCommit');btn.disabled=true;try{let start=await bcApi('beginBacklogControlUpload',{fileName:$('bcFile').files[0].name,total:bcUploadRows.length});bcBatchId=start.batchId;const chunk=100;for(let i=0;i<bcUploadRows.length;i+=chunk){$('bcUploadStatus').textContent=`Mengupload ${Math.min(i+chunk,bcUploadRows.length)} / ${bcUploadRows.length}...`;await bcApi('appendBacklogControlUpload',{batchId:bcBatchId,offset:i,rows:bcUploadRows.slice(i,i+chunk)})}let done=await bcApi('commitBacklogControlUpload',{batchId:bcBatchId});bcCommitted=true;$('bcUploadStatus').textContent=`Replace Data berhasil (${done.count} record). Preview sync: ${done.matched} cocok unik, ${done.unmatched} tidak cocok, ${done.ambiguous} ambigu. Tidak ada PARTS_STATUS yang diubah sebelum konfirmasi.`;$('bcSync').disabled=!done.matched;await bcLoad()}catch(e){$('bcUploadStatus').textContent='Upload gagal: '+e.message;btn.disabled=false}};
