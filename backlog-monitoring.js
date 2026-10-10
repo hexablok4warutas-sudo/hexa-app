@@ -72,7 +72,7 @@ const BACKLOG_PAGES = {
 
   "backlog-control": {
     url: "backlog-control.html",
-    enabled: false
+    enabled: true
   }
 
 };
