@@ -81,12 +81,104 @@ async function refresh() {
   records = result;
   render();
 }
+/* Unit population: searchable combobox seperti Start Inspection. */
+let galUnits = [];
+const galUnitText = value => String(value ?? '').trim();
+function closeGalUnitOptions() {
+  const options = el('galUnitOptions');
+  options.hidden = true;
+  el('galUnitSearch').setAttribute('aria-expanded', 'false');
+}
+function chooseGalUnit(unit) {
+  el('galUnit').value = unit.unitCode;
+  el('galUnitSearch').value = unit.unitCode;
+  closeGalUnitOptions();
+}
+function renderGalUnitOptions(query = '') {
+  const options = el('galUnitOptions');
+  const q = galUnitText(query).toLowerCase();
+  const matches = galUnits.filter(u => [u.unitCode, u.egi, u.status].join(' ').toLowerCase().includes(q));
+  options.replaceChildren();
+  if (!matches.length) {
+    const empty = document.createElement('div');
+    empty.className = 'gal-unit-empty';
+    empty.textContent = 'Unit tidak ditemukan';
+    options.appendChild(empty);
+    return;
+  }
+  matches.forEach(unit => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'gal-unit-option';
+    button.setAttribute('role', 'option');
+    const main = document.createElement('span');
+    main.className = 'gal-unit-option-main';
+    const code = document.createElement('strong');
+    code.textContent = unit.unitCode;
+    const egi = document.createElement('small');
+    egi.textContent = unit.egi;
+    main.append(code, egi);
+    const status = document.createElement('span');
+    status.className = 'gal-unit-status ' + (unit.status.toUpperCase() === 'RUNNING' ? 'running' : 'standby');
+    status.textContent = unit.status;
+    button.append(main, status);
+    button.addEventListener('click', () => chooseGalUnit(unit));
+    options.appendChild(button);
+  });
+}
+function openGalUnitOptions() {
+  if (el('galUnitSearch').disabled) return;
+  renderGalUnitOptions(el('galUnitSearch').value);
+  el('galUnitOptions').hidden = false;
+  el('galUnitSearch').setAttribute('aria-expanded', 'true');
+}
+function setupGalUnitCombobox() {
+  const search = el('galUnitSearch');
+  search.addEventListener('focus', openGalUnitOptions);
+  search.addEventListener('click', openGalUnitOptions);
+  search.addEventListener('input', () => {
+    el('galUnit').value = '';
+    openGalUnitOptions();
+  });
+  search.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeGalUnitOptions();
+    if (event.key === 'Enter' && !el('galUnitOptions').hidden) {
+      const first = el('galUnitOptions').querySelector('.gal-unit-option');
+      if (first) { event.preventDefault(); first.click(); }
+    }
+  });
+  document.addEventListener('click', event => {
+    if (!el('galUnitCombobox').contains(event.target)) closeGalUnitOptions();
+  });
+}
+function setGalSync(state, message) {
+  const icon = el('galSync');
+  if (!icon) return;
+  icon.className = 'gal-sync is-' + state;
+  icon.title = message;
+  icon.setAttribute('aria-label', message);
+}
 async function loadUnits() {
-  const data = await api({action:'getGALAvailableUnits'});
-  const units = (data.units || []).filter(u => ['RUNNING','STANDBY'].includes(String(u.status || '').toUpperCase().replace(/\s+/g,'')));
-  el('galUnit').innerHTML = '<option value="">Pilih Code Unit</option>' + units.map(u => `<option value="${esc(u.unitCode)}">${esc(u.unitCode)} · ${esc(u.egi)} · ${esc(u.status)}</option>`).join('');
-  if (!units.length) el('galNotice').textContent = 'Tidak ada unit Running / Stand By pada Populasi.';
-  return units.length;
+  const search = el('galUnitSearch');
+  search.disabled = true;
+  search.placeholder = 'Loading Unit Population...';
+  try {
+    const data = await api({action:'getGALAvailableUnits'});
+    galUnits = (data.units || []).map(u => ({
+      unitCode: galUnitText(u.unitCode),
+      egi: galUnitText(u.egi),
+      status: galUnitText(u.status)
+    })).filter(u => u.unitCode && ['RUNNING','STANDBY'].includes(u.status.toUpperCase().replace(/\s+/g,'')))
+      .sort((a,b) => (a.status.toUpperCase() === 'RUNNING' ? 0 : 1) - (b.status.toUpperCase() === 'RUNNING' ? 0 : 1) || a.unitCode.localeCompare(b.unitCode, 'id', {numeric:true,sensitivity:'base'}));
+    search.disabled = false;
+    search.placeholder = 'Search / Select Unit';
+    if (!galUnits.length) console.warn('HEXA GAL: Tidak ada unit Running / Stand By pada Populasi.');
+    return galUnits.length;
+  } catch (error) {
+    search.disabled = true;
+    search.placeholder = 'Unable to load Unit Population';
+    throw error;
+  }
 }
 function busy(button, value) {
   button.disabled = value;
@@ -99,7 +191,8 @@ async function init() {
   el('galSearch').oninput = render;
   el('galStatus').onchange = render;
   document.querySelectorAll('[data-dismiss]').forEach(b => b.onclick = () => close(b.dataset.dismiss));
-  el('galNew').onclick = () => { el('galNewForm').reset(); el('galNewMessage').textContent = ''; el('galNewDialog').showModal(); };
+  setupGalUnitCombobox();
+  el('galNew').onclick = () => { el('galNewForm').reset(); el('galUnit').value = ''; closeGalUnitOptions(); el('galNewMessage').textContent = ''; el('galNewDialog').showModal(); };
   el('galLightboxClose').onclick = () => close('galLightbox');
   el('galCards').addEventListener('click', e => {
     const p = e.target.closest('[data-photo]');
@@ -120,7 +213,7 @@ async function init() {
     const b = el('galSaveNew'); busy(b, true);
     try {
       const unit = el('galUnit').value;
-      if (!unit) throw Error('Pilih Code Unit.');
+      if (!unit || el('galUnitSearch').value.trim() !== unit) throw Error('Pilih Code Unit dari daftar pencarian.');
       const file = el('galDamage').files[0];
       // New Problem: foto boleh kosong; bila dipilih harus valid.
       const photoData = file ? await fileData(file) : '';
@@ -146,18 +239,19 @@ async function init() {
     finally { busy(b, false); }
   };
   el('galNew').disabled = true;
-  if (!configured()) { el('galNotice').textContent = 'URL API Greasing belum dikonfigurasi.'; return; }
-  el('galNotice').textContent = 'Menghubungkan ke database HEXA...';
+  if (!configured()) { setGalSync('error', 'URL API Greasing belum dikonfigurasi.'); return; }
+  setGalSync('loading', 'Sedang menyinkronkan data HEXA...');
   try {
     const [_, count] = await Promise.all([refresh(), loadUnits()]);
     apiReady = true;
     el('galNew').disabled = false;
-    el('galNotice').textContent = count ? 'Data tersinkron dengan Google Sheets HEXA.' : 'Koneksi berhasil, tetapi belum ada unit aktif.';
+    setGalSync('success', count ? 'Data tersinkron dengan Google Sheets HEXA.' : 'Koneksi berhasil, tetapi belum ada unit aktif.');
   } catch (error) {
     apiReady = false;
     el('galNew').disabled = true;
-    el('galUnit').innerHTML = '<option value="">Gagal memuat Code Unit</option>';
-    el('galNotice').textContent = 'Koneksi database gagal: ' + error.message;
+    el('galUnitSearch').disabled = true;
+    el('galUnitSearch').placeholder = 'Gagal memuat Code Unit';
+    setGalSync('error', 'Koneksi database gagal: ' + error.message);
     console.error('HEXA GAL API:', error);
   }
 }
