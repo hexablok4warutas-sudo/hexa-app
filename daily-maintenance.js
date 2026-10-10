@@ -244,6 +244,12 @@ dailyMenuItems.forEach(
 
         }
 
+        // GREASING ANTI LINEBORING
+        if (menu === "greasing-anti-lineboring") {
+          window.location.href = "/greasing-anti-lineboring";
+          return;
+        }
+
         // =================================
         // UNIT HISTORY
         // =================================
