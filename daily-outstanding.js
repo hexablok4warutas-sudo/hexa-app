@@ -1427,21 +1427,6 @@ function createOutstandingItem(
 
   applyOutstandingMolBadge(mol, record.mol);
 
-  // Evidence PDF hanya muncul jika registrasi sudah REGISTERED.
-  const pdfUrl = getOutstandingPdfUrl(record);
-  if (pdfUrl) {
-    const viewPdf = document.createElement("button");
-    viewPdf.type = "button";
-    viewPdf.textContent = "View PDF";
-    viewPdf.title = "Lihat PDF registrasi backlog";
-    viewPdf.style.cssText = "border:1px solid #2563eb;border-radius:8px;background:#eff6ff;color:#1d4ed8;padding:6px 9px;font-weight:700;cursor:pointer;font-size:12px;";
-    viewPdf.addEventListener("click", function(event) {
-      event.stopPropagation();
-      openOutstandingEvidence(pdfUrl);
-    });
-    info.appendChild(viewPdf);
-  }
-
   // EDIT ICON
 
   const edit =
@@ -2084,20 +2069,36 @@ function openOutstandingEvidence(url) {
 
 function renderOutstandingDetailEvidence(record) {
   if (!detailMol) return;
-  const host = detailMol.parentElement;
-  if (!host) return;
-  let link = host.querySelector(".hexa-outstanding-evidence-link");
+
+  // MOL dan tombol PDF berada dalam satu kolom vertikal yang sama.
+  // Bungkus elemen MOL tanpa mengubah ID maupun event yang sudah ada.
+  let wrapper = detailMol.parentElement;
+  if (!wrapper || !wrapper.classList.contains("hexa-outstanding-mol-stack")) {
+    wrapper = document.createElement("div");
+    wrapper.className = "hexa-outstanding-mol-stack";
+    wrapper.style.cssText = "display:flex;flex-direction:column;align-items:flex-start;gap:8px;width:fit-content;max-width:100%;";
+    detailMol.parentNode.insertBefore(wrapper, detailMol);
+    wrapper.appendChild(detailMol);
+  }
+
+  let link = wrapper.querySelector(".hexa-outstanding-evidence-link");
   if (!link) {
     link = document.createElement("button");
     link.type = "button";
     link.className = "hexa-outstanding-evidence-link";
     link.textContent = "View PDF";
-    link.style.cssText = "display:none;margin-top:8px;border:1px solid #2563eb;border-radius:8px;background:#eff6ff;color:#1d4ed8;padding:7px 12px;font-weight:700;cursor:pointer;";
-    host.appendChild(link);
+    link.style.cssText = "display:none;align-items:center;justify-content:center;width:fit-content;max-width:100%;border:1px solid #2563eb;border-radius:999px;background:#eff6ff;color:#2563eb;padding:4px 10px;font-size:12px;line-height:1.3;font-weight:700;cursor:pointer;white-space:nowrap;box-sizing:border-box;";
+    wrapper.appendChild(link);
   }
+
   const url = getOutstandingPdfUrl(record);
   link.style.display = url ? "inline-flex" : "none";
-  link.onclick = url ? function(event) { event.stopPropagation(); openOutstandingEvidence(url); } : null;
+  link.onclick = url
+    ? function(event) {
+        event.stopPropagation();
+        openOutstandingEvidence(url);
+      }
+    : null;
 }
 
 // =====================================================
