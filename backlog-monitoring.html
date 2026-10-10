@@ -156,13 +156,19 @@
           <div><h2 id="bcPerfTitle">Backlog KPI</h2>
           <p>Material readiness dan pergerakan backlog dari Upload Source</p></div>
           <div class="bc-perf-actions">
-            <select id="bcPeriod" aria-label="Periode KPI">
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-            </select>
+            <div class="bc-period-selector">
+              <div class="bc-period-tabs" role="group" aria-label="Jenis periode">
+                <button type="button" id="bcWeeklyBtn" class="is-active" aria-pressed="true">Weekly</button>
+                <button type="button" id="bcMonthlyBtn" aria-pressed="false">Monthly</button>
+              </div>
+              <select id="bcYear" aria-label="Tahun"></select>
+              <select id="bcMonth" aria-label="Bulan"></select>
+              <select id="bcWeek" aria-label="Minggu"></select>
+            </div>
             <button id="bcKpiRefresh" type="button">Refresh</button>
           </div>
         </div>
+        <div class="bc-period-information"><span id="bcSelectedRange">Periode belum dipilih</span><span id="bcLastSource">Last Source Update: —</span></div>
         <p id="bcKpiStatus" class="bc-perf-status" role="status">Memuat KPI...</p>
         <h3 class="bc-perf-subtitle bc-first-subtitle">Inspection & Registration</h3>
         <div class="bc-perf-grid">
