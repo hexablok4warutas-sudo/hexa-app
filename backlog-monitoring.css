@@ -727,3 +727,11 @@ body {
 .bc-perf-table-wrap th,.bc-perf-table-wrap td{padding:12px;text-align:left;border-bottom:1px solid #e2e8f0;white-space:nowrap}
 .bc-perf-table-wrap th{background:#f1f5f9;color:#334155}
 @media(max-width:650px){.backlog-performance{padding:15px}.bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bc-perf-grid article{padding:12px}.bc-perf-grid strong{font-size:22px}}
+
+/* KPI charts */
+.bc-chart{display:flex;align-items:flex-end;gap:12px;overflow-x:auto;padding:16px 8px 12px;min-height:130px;border-bottom:1px solid #e2e8f0}.bc-chart-group{min-width:75px;flex:1;max-width:160px;text-align:center}.bc-chart-bars{height:165px;display:flex;align-items:flex-end;justify-content:center;gap:5px;border-bottom:1px solid #cbd5e1}.bc-chart-bar{width:30%;min-width:12px;border-radius:5px 5px 0 0;min-height:2px}.bc-chart-bar.incoming{background:#2563eb}.bc-chart-bar.removed{background:#f59e0b}.bc-chart-bar.waiting{background:#ef4444}.bc-chart-bar.ready{background:#10b981}.bc-chart-bar.supply{background:#64748b}.bc-chart-label{font-size:11px;color:#64748b;margin-top:8px;overflow-wrap:anywhere}.bc-chart-count{font-size:11px;font-weight:700;color:#334155}.bc-chart-legend{font-size:12px;color:#64748b;margin-top:10px}.bc-chart-caption{font-size:12px;color:#64748b;margin-top:7px}
+
+/* KPI terpadu: kartu legacy berada dalam grid performance */
+.backlog-performance .backlog-kpi-card{min-height:120px;background:#f8fafc;box-shadow:none;padding:17px;border:1px solid #e1e7ef;border-radius:14px}
+.backlog-performance .backlog-kpi-value{font-size:26px}
+.bc-first-subtitle{margin-top:16px}
