@@ -288,7 +288,7 @@ async function init() {
       const file = el('galEvidence').files[0];
       if (result === 'NORMAL' && !file) throw Error('Evidence wajib dilampirkan untuk hasil NORMAL.');
       const evidenceData = file ? await fileData(file) : '';
-      await api({action:'createGALFollowUp',problemId:selectedId,action:el('galAction').value.trim(),result,evidenceData,createdBy:username()});
+      await api({action:'createGALFollowUp',problemId:selectedId,followUpAction:el('galAction').value.trim(),result,evidenceData,createdBy:username()});
       close('galFollowDialog');
       await refresh();
     } catch (error) { el('galFollowMessage').textContent = error.message; }
