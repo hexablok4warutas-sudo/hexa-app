@@ -49,7 +49,18 @@ function fileData(file) {
   });
 }
 function photo(url, alt) {
-  return url ? `<button type="button" class="gal-photo-button" data-photo="${esc(url)}"><img loading="lazy" class="gal-photo" src="${esc(url)}" alt="${esc(alt)}"></button>` : '';
+  if (!url) return '';
+
+  const value = String(url).trim();
+  // Mendukung link Drive lama (/file/d/ID/view), link ?id=ID,
+  // dan URL thumbnail yang sudah tersimpan di spreadsheet.
+  const match = value.match(/\/file\/d\/([a-zA-Z0-9_-]+)|[?&]id=([a-zA-Z0-9_-]+)/);
+  const fileId = match ? (match[1] || match[2]) : '';
+  const imageUrl = fileId
+    ? `https://drive.google.com/thumbnail?id=${encodeURIComponent(fileId)}&sz=w1200`
+    : value;
+
+  return `<button type="button" class="gal-photo-button" data-photo="${esc(imageUrl)}"><img loading="lazy" class="gal-photo" src="${esc(imageUrl)}" alt="${esc(alt)}"></button>`;
 }
 function card(r) {
   const histories = r.followUps || [], closed = r.status === 'CLOSE';
