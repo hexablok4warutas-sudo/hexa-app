@@ -11,3 +11,14 @@
 .bc-source-upload:hover,.bc-source-upload:focus-visible{background:#eef6ff;border-color:#8bb5df}
 .bc-source-upload svg{width:23px;height:23px;fill:none;stroke:#24547f;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:650px){.bc-source-card{padding:10px 12px}.bc-source-upload{width:38px;height:38px}}
+
+/* Filter berdasarkan header tabel, multi-kondisi AND */
+.bc-filter-rows{display:grid;gap:9px;margin-top:12px}
+.bc-filter-row{display:grid;grid-template-columns:minmax(140px,1fr) minmax(140px,1fr) auto;gap:8px;align-items:center}
+.bc-filter-row select,.bc-filter-row input{width:100%;min-width:0;padding:10px;border:1px solid #d9e0e9;border-radius:9px;background:white;color:#192433}
+.bc-filter-row button,.bc-filter-add,.bc-column-actions button{padding:10px 12px;border:1px solid #d9e0e9;border-radius:9px;background:white;cursor:pointer}
+.bc-filter-add{margin-top:12px;color:#23517b}
+.bc-column-actions{display:flex;gap:8px}
+.bc-sync-notice{margin:12px 0;padding:12px 14px;border:1px solid #b9e4cc;border-radius:10px;background:#eefaf3;color:#145b38;line-height:1.5}
+.bc-sync-notice.info{border-color:#b9d6f2;background:#eef6ff;color:#24547f}
+@media(max-width:650px){.bc-filter-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}.bc-filter-row select{font-size:12px}.bc-filter-row button{padding:9px}.bc-column-actions button{padding:8px}}
