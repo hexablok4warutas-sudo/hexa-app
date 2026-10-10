@@ -1,32 +1,29 @@
 "use strict";
 
 
-// =====================================================
-// HEXA DAILY OUTSTANDING
-// =====================================================
+/* =====================================================
+   HEXA - UNIT HISTORY
+===================================================== */
 
 
-// =====================================================
-// API
-// =====================================================
+/* =====================================================
+   API
+===================================================== */
 
 const HEXA_API_URL =
   "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
 
 
-// =====================================================
-// SESSION PROTECTION
-// =====================================================
+/* =====================================================
+   SESSION PROTECTION
+===================================================== */
 
 const hexaLoggedIn =
-  sessionStorage.getItem(
-    "hexaLoggedIn"
-  );
+  sessionStorage.getItem("hexaLoggedIn");
 
 const hexaUserRaw =
-  sessionStorage.getItem(
-    "hexaUser"
-  );
+  sessionStorage.getItem("hexaUser");
+
 
 if (
   hexaLoggedIn !== "true" ||
@@ -39,11 +36,8 @@ if (
 }
 
 
-// =====================================================
-// USER
-// =====================================================
-
 let currentUser = null;
+
 
 try {
 
@@ -68,55 +62,359 @@ try {
 }
 
 
-// =====================================================
-// STATE
-// =====================================================
+/* =====================================================
+   STATE
+===================================================== */
 
-let outstandingData = [];
+let unitHistoryData = [];
 
-let filteredData = [];
+let filteredUnitHistoryData = [];
 
 let selectedRecord = null;
-
-let selectedRating = "";
-
-let selectedPartsStatus = "";
-
-let replacementPhoto = null;
-
-let evidenceFile = null;
 
 let photoZoom = 1;
 
 let pageInitialized = false;
 
 
-// =====================================================
-// DOM REFERENCES
-// =====================================================
+/* DELETE */
+
+let deleteMode = false;
+
+const selectedDeleteIds =
+  new Set();
+
+
+/* FILTER */
+
+let activeFilters = [];
+
+let filterCounter = 0;
+
+/* COLUMNS */
+
+const UNIT_HISTORY_COLUMNS_STORAGE_KEY =
+  "hexaUnitHistoryColumns";
+
+let activeColumnKeys = [];
+
+
+/* SHORTCUT DRAG */
+
+const UNIT_HISTORY_SHORTCUT_POSITION_KEY =
+  "hexaUnitHistoryShortcutPosition";
+
+let shortcutDragState = null;
+
+
+/* =====================================================
+   FILTER DEFINITIONS
+
+   Semua kategori database kecuali Unique ID.
+===================================================== */
+
+const UNIT_HISTORY_FILTER_FIELDS = [
+
+  {
+    key: "unitCode",
+    label: "Unit Code",
+    type: "select"
+  },
+
+  {
+    key: "hmInspection",
+    label: "HM Inspection",
+    type: "numberRange"
+  },
+
+  {
+    key: "dateInspection",
+    label: "Date Inspection",
+    type: "dateRange"
+  },
+
+  {
+    key: "photo",
+    label: "Photo",
+    type: "availability"
+  },
+
+  {
+    key: "groupComponent",
+    label: "Group Component",
+    type: "select"
+  },
+
+  {
+    key: "problemDescription",
+    label: "Problem Description",
+    type: "text"
+  },
+
+  {
+    key: "rating",
+    label: "Rating",
+    type: "select"
+  },
+
+  {
+    key: "partsDescription",
+    label: "Parts Description",
+    type: "text"
+  },
+
+  {
+    key: "partNo",
+    label: "Part No",
+    type: "text"
+  },
+
+  {
+    key: "quantity",
+    label: "Quantity",
+    type: "numberRange"
+  },
+
+  {
+    key: "inspectors",
+    label: "Inspectors",
+    type: "text"
+  },
+
+  {
+    key: "notes",
+    label: "Notes",
+    type: "text"
+  },
+
+  {
+    key: "mol",
+    label: "MOL",
+    type: "select"
+  },
+
+  {
+    key: "evidence",
+    label: "Evidence",
+    type: "availability"
+  },
+
+  {
+    key: "partsStatus",
+    label: "Parts Status",
+    type: "select"
+  },
+
+  {
+    key: "actionProblems",
+    label: "Action Problems",
+    type: "text"
+  },
+
+  {
+    key: "hmAction",
+    label: "HM Action",
+    type: "numberRange"
+  },
+
+  {
+    key: "dateAction",
+    label: "Date Action",
+    type: "dateRange"
+  },
+
+  {
+    key: "status",
+    label: "Status",
+    type: "select"
+  },
+
+  {
+    key: "manPower",
+    label: "Man Power",
+    type: "text"
+  }
+
+];
+
+/* =====================================================
+   CUSTOM COLUMN DEFINITIONS
+
+   Semua field DM DATABASE kecuali ID.
+===================================================== */
+
+const UNIT_HISTORY_COLUMN_FIELDS = [
+
+  {
+    key: "unitCode",
+    label: "Unit Code",
+    default: true
+  },
+
+  {
+    key: "hmInspection",
+    label: "HM Inspection",
+    default: true
+  },
+
+  {
+    key: "dateInspection",
+    label: "Date Inspection",
+    default: false
+  },
+
+  {
+    key: "photo",
+    label: "Photo",
+    default: true
+  },
+
+  {
+    key: "groupComponent",
+    label: "Group Component",
+    default: true
+  },
+
+  {
+    key: "problemDescription",
+    label: "Problem Description",
+    default: true
+  },
+
+  {
+    key: "rating",
+    label: "Rating",
+    default: true
+  },
+
+  {
+    key: "partsDescription",
+    label: "Parts Description",
+    default: true
+  },
+
+  {
+    key: "partNo",
+    label: "Part No",
+    default: true
+  },
+
+  {
+    key: "quantity",
+    label: "Quantity",
+    default: true
+  },
+
+  {
+    key: "inspectors",
+    label: "Inspectors",
+    default: false
+  },
+
+  {
+    key: "notes",
+    label: "Notes",
+    default: false
+  },
+
+  {
+    key: "mol",
+    label: "MOL",
+    default: true
+  },
+
+  {
+    key: "evidence",
+    label: "Evidence",
+    default: false
+  },
+
+  {
+    key: "partsStatus",
+    label: "Parts Status",
+    default: true
+  },
+
+  {
+    key: "actionProblems",
+    label: "Action Problems",
+    default: false
+  },
+
+  {
+    key: "hmAction",
+    label: "HM Action",
+    default: false
+  },
+
+  {
+    key: "dateAction",
+    label: "Date Action",
+    default: false
+  },
+
+  {
+    key: "status",
+    label: "Status",
+    default: true
+  },
+
+  {
+    key: "manPower",
+    label: "Man Power",
+    default: false
+  }
+
+];
+
+activeColumnKeys =
+  getInitialColumnKeys();
+
+/* =====================================================
+   DOM REFERENCES
+===================================================== */
 
 let filterButton;
+let columnsButton;
+let printButton;
+let sharePdfButton;
+let deleteButton;
+
 let filterPanel;
 let closeFilterButton;
 
-let filterUnitCode;
-let filterProblem;
-let filterDate;
-let filterMol;
+/* COLUMNS */
 
+let columnsPanel;
+let closeColumnsButton;
+let columnsList;
+let defaultColumnsButton;
+let selectAllColumnsButton;
+let applyColumnsButton;
+
+let filterConditions;
+let addFilterButton;
 let resetFilterButton;
 let applyFilterButton;
 
-let outstandingLoading;
-let outstandingEmpty;
-let outstandingError;
+let activeFiltersContainer;
 
-let outstandingScrollContainer;
-let outstandingList;
+let historyLoading;
+let historyEmpty;
+let historyError;
+
+let historyScrollContainer;
+let historyTableBody;
+
+let deleteHeader;
+let selectAllCheckbox;
 
 let scrollNavigation;
 let scrollUpButton;
 let scrollDownButton;
+
+
+/* DETAIL */
 
 let detailModal;
 let detailPhotoButton;
@@ -125,70 +423,56 @@ let detailPhoto;
 let detailUnitCode;
 let detailHmInspection;
 let detailDateInspection;
+let detailInspectors;
+
 let detailGroupComponent;
 let detailProblemDescription;
 let detailRating;
 let detailPartsDescription;
-let detailMol;
-let detailPartsStatus;
+let detailPartNo;
+let detailQuantity;
+let detailNotes;
 
-let editOutstandingButton;
+let detailMol;
+let detailEvidence;
+let detailPartsStatus;
+let detailActionProblems;
+let detailHmAction;
+let detailDateAction;
+let detailStatus;
+let detailManPower;
+
 let closeDetailButton;
+
+
+/* PHOTO VIEWER */
 
 let photoViewer;
 let photoViewerImage;
+
 let zoomOutButton;
 let zoomInButton;
 let resetZoomButton;
 let closePhotoViewerButton;
 
-let updateModal;
-let updateOutstandingForm;
 
-let updateInspectionId;
-let updateUnitCode;
-let updateHmInspection;
-let updateDateInspection;
-let updateInspectionPhoto;
-let updateInspectionPhotoPreview;
-let updateGroupComponent;
-let updateProblemDescription;
-let updateRating;
-let updateRatingGrid;
-let updatePartsDescription;
-let updatePartNo;
-let updateQuantity;
+/* DELETE MODAL */
 
-let updatePartRequirementList;
-let updateAddPartButton;
+let deleteModal;
+let deleteModalMessage;
 
-let updateNotes;
-let updateMol;
-let updateEvidence;
-let evidenceFileText;
-let existingEvidence;
-let partsStatusGrid;
-let updatePartsStatus;
-let updateStatus;
-let updateActionProblems;
-let updateHmAction;
-let updateDateAction;
-let updateManPower;
+let deleteNoButton;
+let deleteYesButton;
 
-let updateHmMinus;
-let updateHmPlus;
-let updateHmActionMinus;
-let updateHmActionPlus;
 
-let cancelUpdateButton;
-let submitUpdateButton;
+/* SHORTCUT */
 
 let startInspectionShortcut;
 
 
-// =====================================================
-// INITIALIZE
-// =====================================================
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -206,393 +490,354 @@ document.addEventListener(
 
     initializeSearch();
 
-    loadDailyOutstanding();
+    initializeShortcut();
+
+    loadUnitHistory();
 
   }
 );
 
 
-// =====================================================
-// CACHE ELEMENTS
-// =====================================================
+/* =====================================================
+   CACHE ELEMENTS
+===================================================== */
 
 function cacheElements() {
 
   filterButton =
     document.getElementById(
-      "filterButton"
+      "unitHistoryFilterButton"
     );
+
+   columnsButton =
+     document.getElementById(
+    "unitHistoryColumnsButton"
+     );
+
+  printButton =
+    document.getElementById(
+      "unitHistoryPrintButton"
+    );
+
+   sharePdfButton =
+  document.getElementById(
+    "unitHistorySharePdfButton"
+  );
+
+  deleteButton =
+    document.getElementById(
+      "unitHistoryDeleteButton"
+    );
+
 
   filterPanel =
     document.getElementById(
-      "filterPanel"
+      "unitHistoryFilterPanel"
     );
 
   closeFilterButton =
     document.getElementById(
-      "closeFilterButton"
+      "unitHistoryCloseFilterButton"
     );
 
-  filterUnitCode =
+  filterConditions =
     document.getElementById(
-      "filterUnitCode"
+      "unitHistoryFilterConditions"
     );
 
-  filterProblem =
+  addFilterButton =
     document.getElementById(
-      "filterProblem"
-    );
-
-  filterDate =
-    document.getElementById(
-      "filterDate"
-    );
-
-  filterMol =
-    document.getElementById(
-      "filterMol"
+      "unitHistoryAddFilterButton"
     );
 
   resetFilterButton =
     document.getElementById(
-      "resetFilterButton"
+      "unitHistoryResetFilterButton"
     );
 
   applyFilterButton =
     document.getElementById(
-      "applyFilterButton"
+      "unitHistoryApplyFilterButton"
     );
 
-  outstandingLoading =
+   /* COLUMNS */
+
+columnsPanel =
+  document.getElementById(
+    "unitHistoryColumnsPanel"
+  );
+
+closeColumnsButton =
+  document.getElementById(
+    "unitHistoryCloseColumnsButton"
+  );
+
+columnsList =
+  document.getElementById(
+    "unitHistoryColumnsList"
+  );
+
+defaultColumnsButton =
+  document.getElementById(
+    "unitHistoryDefaultColumnsButton"
+  );
+
+selectAllColumnsButton =
+  document.getElementById(
+    "unitHistorySelectAllColumnsButton"
+  );
+
+applyColumnsButton =
+  document.getElementById(
+    "unitHistoryApplyColumnsButton"
+  );
+
+  activeFiltersContainer =
     document.getElementById(
-      "outstandingLoading"
+      "unitHistoryActiveFilters"
     );
 
-  outstandingEmpty =
+
+  historyLoading =
     document.getElementById(
-      "outstandingEmpty"
+      "unitHistoryLoading"
     );
 
-  outstandingError =
+  historyEmpty =
     document.getElementById(
-      "outstandingError"
+      "unitHistoryEmpty"
     );
 
-  outstandingScrollContainer =
+  historyError =
     document.getElementById(
-      "outstandingScrollContainer"
+      "unitHistoryError"
     );
 
-  outstandingList =
+  historyScrollContainer =
     document.getElementById(
-      "outstandingList"
+      "unitHistoryScrollContainer"
     );
+
+  historyTableBody =
+    document.getElementById(
+      "unitHistoryTableBody"
+    );
+
+
+  deleteHeader =
+    document.getElementById(
+      "unitHistoryDeleteHeader"
+    );
+
+  selectAllCheckbox =
+    document.getElementById(
+      "unitHistorySelectAll"
+    );
+
 
   scrollNavigation =
     document.getElementById(
-      "scrollNavigation"
+      "unitHistoryScrollNavigation"
     );
 
   scrollUpButton =
     document.getElementById(
-      "scrollUpButton"
+      "unitHistoryScrollUpButton"
     );
 
   scrollDownButton =
     document.getElementById(
-      "scrollDownButton"
+      "unitHistoryScrollDownButton"
     );
+
+
+  /* DETAIL */
 
   detailModal =
     document.getElementById(
-      "detailModal"
+      "unitHistoryDetailModal"
     );
 
   detailPhotoButton =
     document.getElementById(
-      "detailPhotoButton"
+      "unitHistoryDetailPhotoButton"
     );
 
   detailPhoto =
     document.getElementById(
-      "detailPhoto"
+      "unitHistoryDetailPhoto"
     );
 
   detailUnitCode =
     document.getElementById(
-      "detailUnitCode"
+      "unitHistoryDetailUnitCode"
     );
 
   detailHmInspection =
     document.getElementById(
-      "detailHmInspection"
+      "unitHistoryDetailHmInspection"
     );
 
   detailDateInspection =
     document.getElementById(
-      "detailDateInspection"
+      "unitHistoryDetailDateInspection"
+    );
+
+  detailInspectors =
+    document.getElementById(
+      "unitHistoryDetailInspectors"
     );
 
   detailGroupComponent =
     document.getElementById(
-      "detailGroupComponent"
+      "unitHistoryDetailGroupComponent"
     );
 
   detailProblemDescription =
     document.getElementById(
-      "detailProblemDescription"
+      "unitHistoryDetailProblemDescription"
     );
 
   detailRating =
     document.getElementById(
-      "detailRating"
+      "unitHistoryDetailRating"
     );
 
   detailPartsDescription =
     document.getElementById(
-      "detailPartsDescription"
+      "unitHistoryDetailPartsDescription"
+    );
+
+  detailPartNo =
+    document.getElementById(
+      "unitHistoryDetailPartNo"
+    );
+
+  detailQuantity =
+    document.getElementById(
+      "unitHistoryDetailQuantity"
+    );
+
+  detailNotes =
+    document.getElementById(
+      "unitHistoryDetailNotes"
     );
 
   detailMol =
     document.getElementById(
-      "detailMol"
+      "unitHistoryDetailMol"
+    );
+
+  detailEvidence =
+    document.getElementById(
+      "unitHistoryDetailEvidence"
     );
 
   detailPartsStatus =
     document.getElementById(
-      "detailPartsStatus"
+      "unitHistoryDetailPartsStatus"
     );
 
-  editOutstandingButton =
+  detailActionProblems =
     document.getElementById(
-      "editOutstandingButton"
+      "unitHistoryDetailActionProblems"
+    );
+
+  detailHmAction =
+    document.getElementById(
+      "unitHistoryDetailHmAction"
+    );
+
+  detailDateAction =
+    document.getElementById(
+      "unitHistoryDetailDateAction"
+    );
+
+  detailStatus =
+    document.getElementById(
+      "unitHistoryDetailStatus"
+    );
+
+  detailManPower =
+    document.getElementById(
+      "unitHistoryDetailManPower"
     );
 
   closeDetailButton =
     document.getElementById(
-      "closeDetailButton"
+      "unitHistoryCloseDetailButton"
     );
+
+
+  /* PHOTO VIEWER */
 
   photoViewer =
     document.getElementById(
-      "photoViewer"
+      "unitHistoryPhotoViewer"
     );
 
   photoViewerImage =
     document.getElementById(
-      "photoViewerImage"
+      "unitHistoryPhotoViewerImage"
     );
 
   zoomOutButton =
     document.getElementById(
-      "zoomOutButton"
+      "unitHistoryZoomOutButton"
     );
 
   zoomInButton =
     document.getElementById(
-      "zoomInButton"
+      "unitHistoryZoomInButton"
     );
 
   resetZoomButton =
     document.getElementById(
-      "resetZoomButton"
+      "unitHistoryResetZoomButton"
     );
 
   closePhotoViewerButton =
     document.getElementById(
-      "closePhotoViewerButton"
+      "unitHistoryClosePhotoViewerButton"
     );
 
-  updateModal =
+
+  /* DELETE MODAL */
+
+  deleteModal =
     document.getElementById(
-      "updateModal"
+      "unitHistoryDeleteModal"
     );
 
-  updateOutstandingForm =
+  deleteModalMessage =
     document.getElementById(
-      "updateOutstandingForm"
+      "unitHistoryDeleteModalMessage"
     );
 
-  updateInspectionId =
+  deleteNoButton =
     document.getElementById(
-      "updateInspectionId"
+      "unitHistoryDeleteNoButton"
     );
 
-  updateUnitCode =
+  deleteYesButton =
     document.getElementById(
-      "updateUnitCode"
-    );
-
-  updateHmInspection =
-    document.getElementById(
-      "updateHmInspection"
-    );
-
-  updateDateInspection =
-    document.getElementById(
-      "updateDateInspection"
-    );
-
-  updateInspectionPhoto =
-    document.getElementById(
-      "updateInspectionPhoto"
-    );
-
-  updateInspectionPhotoPreview =
-    document.getElementById(
-      "updateInspectionPhotoPreview"
-    );
-
-  updateGroupComponent =
-    document.getElementById(
-      "updateGroupComponent"
-    );
-
-  updateProblemDescription =
-    document.getElementById(
-      "updateProblemDescription"
-    );
-
-  updateRating =
-    document.getElementById(
-      "updateRating"
-    );
-
-  updateRatingGrid =
-    document.getElementById(
-      "updateRatingGrid"
-    );
-
-  updatePartsDescription =
-    document.getElementById(
-      "updatePartsDescription"
-    );
-
-  updatePartNo =
-    document.getElementById(
-      "updatePartNo"
-    );
-
-    updateQuantity =
-    document.getElementById(
-      "updateQuantity"
+      "unitHistoryDeleteYesButton"
     );
 
 
-  updatePartRequirementList =
-    document.getElementById(
-      "updatePartRequirementList"
-    );
-
-
-  updateAddPartButton =
-    document.getElementById(
-      "updateAddPartButton"
-    );
-
-
-  updateNotes =
-
-  updateNotes =
-    document.getElementById(
-      "updateNotes"
-    );
-
-  updateMol =
-    document.getElementById(
-      "updateMol"
-    );
-
-  updateEvidence =
-    document.getElementById(
-      "updateEvidence"
-    );
-
-  evidenceFileText =
-    document.getElementById(
-      "evidenceFileText"
-    );
-
-  existingEvidence =
-    document.getElementById(
-      "existingEvidence"
-    );
-
-  partsStatusGrid =
-    document.getElementById(
-      "partsStatusGrid"
-    );
-
-  updatePartsStatus =
-    document.getElementById(
-      "updatePartsStatus"
-    );
-
-  updateStatus =
-    document.getElementById(
-      "updateStatus"
-    );
-
-  updateActionProblems =
-    document.getElementById(
-      "updateActionProblems"
-    );
-
-  updateHmAction =
-    document.getElementById(
-      "updateHmAction"
-    );
-
-  updateDateAction =
-    document.getElementById(
-      "updateDateAction"
-    );
-
-  updateManPower =
-    document.getElementById(
-      "updateManPower"
-    );
-
-  updateHmMinus =
-    document.getElementById(
-      "updateHmMinus"
-    );
-
-  updateHmPlus =
-    document.getElementById(
-      "updateHmPlus"
-    );
-
-  updateHmActionMinus =
-    document.getElementById(
-      "updateHmActionMinus"
-    );
-
-  updateHmActionPlus =
-    document.getElementById(
-      "updateHmActionPlus"
-    );
-
-  cancelUpdateButton =
-    document.getElementById(
-      "cancelUpdateButton"
-    );
-
-  submitUpdateButton =
-    document.getElementById(
-      "submitUpdateButton"
-    );
+  /* SHORTCUT */
 
   startInspectionShortcut =
     document.getElementById(
-      "startInspectionShortcut"
+      "unitHistoryStartInspectionShortcut"
     );
+
 }
 
 
-// =====================================================
-// EVENTS
-// =====================================================
+/* =====================================================
+   BIND EVENTS
+===================================================== */
 
 function bindEvents() {
 
@@ -604,7 +849,47 @@ function bindEvents() {
     );
   }
 
+   if (columnsButton) {
 
+  columnsButton.addEventListener(
+    "click",
+    toggleColumnsPanel
+  );
+}
+
+
+if (closeColumnsButton) {
+
+  closeColumnsButton.addEventListener(
+    "click",
+    closeColumnsPanel
+  );
+}
+   if (defaultColumnsButton) {
+
+  defaultColumnsButton.addEventListener(
+    "click",
+    resetColumnsToDefault
+  );
+}
+
+
+if (selectAllColumnsButton) {
+
+  selectAllColumnsButton.addEventListener(
+    "click",
+    selectAllColumns
+  );
+}
+
+   if (applyColumnsButton) {
+
+  applyColumnsButton.addEventListener(
+    "click",
+    applyColumns
+  );
+}
+   
   if (closeFilterButton) {
 
     closeFilterButton.addEventListener(
@@ -614,11 +899,14 @@ function bindEvents() {
   }
 
 
-  if (applyFilterButton) {
+  if (addFilterButton) {
 
-    applyFilterButton.addEventListener(
+    addFilterButton.addEventListener(
       "click",
-      applyFilters
+      function () {
+
+        addFilterCondition();
+      }
     );
   }
 
@@ -632,21 +920,46 @@ function bindEvents() {
   }
 
 
-  if (filterProblem) {
+  if (applyFilterButton) {
 
-    filterProblem.addEventListener(
-      "keydown",
-      function (event) {
+    applyFilterButton.addEventListener(
+      "click",
+      applyFilters
+    );
+  }
 
-        if (
-          event.key === "Enter"
-        ) {
 
-          event.preventDefault();
+  if (printButton) {
 
-          applyFilters();
-        }
-      }
+    printButton.addEventListener(
+      "click",
+      printCurrentHistory
+    );
+  }
+
+   if (sharePdfButton) {
+
+     sharePdfButton.addEventListener(
+       "click",
+       shareCurrentHistoryPdf
+     );
+   }
+
+
+  if (deleteButton) {
+
+    deleteButton.addEventListener(
+      "click",
+      handleDeleteButton
+    );
+  }
+
+
+  if (selectAllCheckbox) {
+
+    selectAllCheckbox.addEventListener(
+      "change",
+      handleSelectAll
     );
   }
 
@@ -657,7 +970,7 @@ function bindEvents() {
       "click",
       function () {
 
-        outstandingScrollContainer
+        historyScrollContainer
           ?.scrollBy({
 
             top: -250,
@@ -676,7 +989,7 @@ function bindEvents() {
       "click",
       function () {
 
-        outstandingScrollContainer
+        historyScrollContainer
           ?.scrollBy({
 
             top: 250,
@@ -698,29 +1011,11 @@ function bindEvents() {
   }
 
 
-  if (editOutstandingButton) {
-
-    editOutstandingButton.addEventListener(
-      "click",
-      openUpdateForm
-    );
-  }
-
-
   if (detailPhotoButton) {
 
     detailPhotoButton.addEventListener(
       "click",
       openPhotoViewer
-    );
-  }
-
-
-  if (closePhotoViewerButton) {
-
-    closePhotoViewerButton.addEventListener(
-      "click",
-      closePhotoViewer
     );
   }
 
@@ -759,183 +1054,35 @@ function bindEvents() {
       "click",
       function () {
 
-        setPhotoZoom(
-          1
-        );
+        setPhotoZoom(1);
       }
     );
   }
 
 
-  if (cancelUpdateButton) {
+  if (closePhotoViewerButton) {
 
-    cancelUpdateButton.addEventListener(
+    closePhotoViewerButton.addEventListener(
       "click",
-      closeUpdateForm
+      closePhotoViewer
     );
   }
 
 
-  if (updateOutstandingForm) {
+  if (deleteNoButton) {
 
-    updateOutstandingForm.addEventListener(
-      "submit",
-      submitOutstandingUpdate
-    );
-  }
-
-
-  if (updateInspectionPhoto) {
-
-    updateInspectionPhoto.addEventListener(
-      "change",
-      handleReplacementPhoto
-    );
-  }
-
-
-  if (updateEvidence) {
-
-    updateEvidence.addEventListener(
-      "change",
-      handleEvidenceFile
-    );
-  }
-
-
-  if (updateRatingGrid) {
-
-    updateRatingGrid.addEventListener(
+    deleteNoButton.addEventListener(
       "click",
-      handleRatingSelection
+      cancelDelete
     );
   }
 
 
-    if (partsStatusGrid) {
+  if (deleteYesButton) {
 
-    partsStatusGrid.addEventListener(
+    deleteYesButton.addEventListener(
       "click",
-      handlePartsStatusSelection
-    );
-  }
-
-
-  // ===================================================
-  // PART REQUIREMENT - ADD PART
-  // ===================================================
-
-  if (updateAddPartButton) {
-
-    updateAddPartButton.addEventListener(
-      "click",
-      function () {
-
-        addUpdatePart();
-
-      }
-    );
-  }
-
-
-  // ===================================================
-  // PART REQUIREMENT - REMOVE PART
-  // ===================================================
-
-  if (updatePartRequirementList) {
-
-    updatePartRequirementList.addEventListener(
-      "click",
-      function (event) {
-
-        const removeButton =
-          event.target.closest(
-            ".update-remove-part-button"
-          );
-
-        if (!removeButton) {
-          return;
-        }
-
-
-        const partItem =
-          removeButton.closest(
-            ".update-part-requirement-item"
-          );
-
-        if (!partItem) {
-          return;
-        }
-
-
-        const items =
-          getUpdatePartItems();
-
-
-        /*
-          Part Requirement harus selalu
-          mempunyai minimal satu card.
-        */
-
-        if (items.length <= 1) {
-
-          clearUpdatePartItem(
-            partItem
-          );
-
-          return;
-        }
-
-
-        partItem.remove();
-
-        renumberUpdateParts();
-
-        syncUpdatePartDatabaseFields();
-
-      }
-    );
-
-
-    /*
-      Setiap perubahan pada repeating field
-      langsung disinkronkan ke hidden field.
-    */
-
-    updatePartRequirementList.addEventListener(
-      "input",
-      function () {
-
-        syncUpdatePartDatabaseFields();
-
-      }
-    );
-  }
-
-
-  bindNumberControl(
-    updateHmMinus,
-    updateHmPlus,
-    updateHmInspection
-  );
-
-
-  bindNumberControl(
-    updateHmActionMinus,
-    updateHmActionPlus,
-    updateHmAction
-  );
-
-
-  if (startInspectionShortcut) {
-
-    startInspectionShortcut.addEventListener(
-      "click",
-      function () {
-
-        window.location.href =
-          "/start-inspection";
-      }
+      confirmDelete
     );
   }
 
@@ -944,106 +1091,21 @@ function bindEvents() {
     "keydown",
     handleEscapeKey
   );
-}
 
 
-// =====================================================
-// GLOBAL HEADER SEARCH
-// =====================================================
-
-function initializeSearch() {
-
-  /*
-    hexa-header.js melakukan inject header
-    pada DOMContentLoaded.
-
-    Karena hexa-header.js dimuat sebelum file ini,
-    searchInput sudah tersedia saat listener ini jalan.
-  */
-
-  const searchInput =
-    document.getElementById(
-      "searchInput"
-    );
-
-  if (!searchInput) {
-    return;
-  }
-
-  searchInput.addEventListener(
-    "input",
-    function () {
-
-      const query =
-        searchInput.value
-          .trim()
-          .toLowerCase();
-
-      if (!query) {
-
-        applyFilters();
-
-        return;
-      }
-
-      const base =
-        getFilterBaseData();
-
-      filteredData =
-        base.filter(
-          function (item) {
-
-            return (
-
-              normalizeText(
-                item.unitCode
-              ).includes(
-                query
-              ) ||
-
-              normalizeText(
-                item.problemDescription
-              ).includes(
-                query
-              ) ||
-
-              normalizeText(
-                item.groupComponent
-              ).includes(
-                query
-              ) ||
-
-              normalizeText(
-                item.rating
-              ).includes(
-                query
-              ) ||
-
-              normalizeText(
-                item.partsDescription
-              ).includes(
-                query
-              )
-
-            );
-          }
-        );
-
-      renderOutstandingList(
-        filteredData
-      );
-    }
+  window.addEventListener(
+    "resize",
+    keepShortcutInsideViewport
   );
+
 }
 
 
-// =====================================================
-// API REQUEST
-// =====================================================
+/* =====================================================
+   API REQUEST
+===================================================== */
 
-async function apiRequest(
-  payload
-) {
+async function apiRequest(payload) {
 
   const response =
     await fetch(
@@ -1067,6 +1129,7 @@ async function apiRequest(
       }
     );
 
+
   if (!response.ok) {
 
     throw new Error(
@@ -1075,10 +1138,13 @@ async function apiRequest(
     );
   }
 
+
   const text =
     await response.text();
 
+
   let result;
+
 
   try {
 
@@ -1094,17 +1160,19 @@ async function apiRequest(
     );
   }
 
+
   return result;
 }
 
 
-// =====================================================
-// LOAD DAILY OUTSTANDING
-// =====================================================
+/* =====================================================
+   LOAD UNIT HISTORY
+===================================================== */
 
-async function loadDailyOutstanding() {
+async function loadUnitHistory() {
 
   showLoadingState();
+
 
   try {
 
@@ -1112,9 +1180,10 @@ async function loadDailyOutstanding() {
       await apiRequest({
 
         action:
-          "getDailyOutstanding"
+          "getUnitHistory"
 
       });
+
 
     if (
       !result ||
@@ -1123,32 +1192,39 @@ async function loadDailyOutstanding() {
 
       throw new Error(
         result?.message ||
-        "Gagal mengambil Daily Outstanding."
+        "Gagal mengambil Unit History."
       );
     }
 
-    outstandingData =
+
+    unitHistoryData =
       Array.isArray(
         result.data
       )
         ? result.data
         : [];
 
-    filteredData =
-      [...outstandingData];
 
-    populateUnitFilter();
+    /*
+      Backend sudah mengirim newest first.
 
-    populateUpdateUnitOptions();
+      Kita tidak melakukan sort ulang agar urutan
+      backend tetap dipertahankan.
+    */
 
-    renderOutstandingList(
-      filteredData
+    filteredUnitHistoryData =
+      [...unitHistoryData];
+
+
+    renderUnitHistory(
+      filteredUnitHistoryData
     );
+
 
   } catch (error) {
 
     console.error(
-      "Daily Outstanding:",
+      "Unit History:",
       error
     );
 
@@ -1159,29 +1235,29 @@ async function loadDailyOutstanding() {
 }
 
 
-// =====================================================
-// UI STATES
-// =====================================================
+/* =====================================================
+   UI STATES
+===================================================== */
 
 function showLoadingState() {
 
-  if (outstandingLoading) {
-    outstandingLoading.hidden =
+  if (historyLoading) {
+    historyLoading.hidden =
       false;
   }
 
-  if (outstandingEmpty) {
-    outstandingEmpty.hidden =
+  if (historyEmpty) {
+    historyEmpty.hidden =
       true;
   }
 
-  if (outstandingError) {
-    outstandingError.hidden =
+  if (historyError) {
+    historyError.hidden =
       true;
   }
 
-  if (outstandingScrollContainer) {
-    outstandingScrollContainer.hidden =
+  if (historyScrollContainer) {
+    historyScrollContainer.hidden =
       true;
   }
 
@@ -1192,22 +1268,20 @@ function showLoadingState() {
 }
 
 
-function showErrorState(
-  message
-) {
+function showErrorState(message) {
 
-  if (outstandingLoading) {
-    outstandingLoading.hidden =
+  if (historyLoading) {
+    historyLoading.hidden =
       true;
   }
 
-  if (outstandingEmpty) {
-    outstandingEmpty.hidden =
+  if (historyEmpty) {
+    historyEmpty.hidden =
       true;
   }
 
-  if (outstandingScrollContainer) {
-    outstandingScrollContainer.hidden =
+  if (historyScrollContainer) {
+    historyScrollContainer.hidden =
       true;
   }
 
@@ -1216,55 +1290,57 @@ function showErrorState(
       true;
   }
 
-  if (outstandingError) {
 
-    outstandingError.textContent =
+  if (historyError) {
+
+    historyError.textContent =
       message ||
-      "Data Daily Outstanding gagal dimuat.";
+      "Data Unit History gagal dimuat.";
 
-    outstandingError.hidden =
+    historyError.hidden =
       false;
   }
 }
 
 
-// =====================================================
-// RENDER LIST
-// =====================================================
+/* =====================================================
+   RENDER TABLE
+===================================================== */
 
-function renderOutstandingList(
-  records
-) {
+function renderUnitHistory(records) {
 
-  if (!outstandingList) {
+  if (!historyTableBody) {
     return;
   }
 
-  outstandingList.innerHTML =
+
+  historyTableBody.innerHTML =
     "";
 
-  if (outstandingLoading) {
-    outstandingLoading.hidden =
+
+  if (historyLoading) {
+    historyLoading.hidden =
       true;
   }
 
-  if (outstandingError) {
-    outstandingError.hidden =
+  if (historyError) {
+    historyError.hidden =
       true;
   }
+
 
   if (
     !records ||
     records.length === 0
   ) {
 
-    if (outstandingEmpty) {
-      outstandingEmpty.hidden =
+    if (historyEmpty) {
+      historyEmpty.hidden =
         false;
     }
 
-    if (outstandingScrollContainer) {
-      outstandingScrollContainer.hidden =
+    if (historyScrollContainer) {
+      historyScrollContainer.hidden =
         true;
     }
 
@@ -1276,206 +1352,218 @@ function renderOutstandingList(
     return;
   }
 
-  if (outstandingEmpty) {
-    outstandingEmpty.hidden =
+
+  if (historyEmpty) {
+    historyEmpty.hidden =
       true;
   }
 
-  if (outstandingScrollContainer) {
-    outstandingScrollContainer.hidden =
+  if (historyScrollContainer) {
+    historyScrollContainer.hidden =
       false;
   }
+
 
   records.forEach(
     function (record) {
 
-      outstandingList.appendChild(
-        createOutstandingItem(
+      historyTableBody.appendChild(
+        createHistoryRow(
           record
         )
       );
     }
   );
 
+
+  updateDeleteUI();
+
   updateScrollNavigation();
 }
 
 
-// =====================================================
-// CREATE LIST ITEM
-// =====================================================
+/* =====================================================
+   CREATE TABLE ROW
+===================================================== */
 
-function createOutstandingItem(
-  record
-) {
+function createHistoryRow(record) {
 
-  const item =
+  const row =
     document.createElement(
-      "div"
+      "tr"
     );
 
-  item.className =
-    "outstanding-item";
 
-  item.dataset.id =
+  row.dataset.id =
     record.id || "";
 
-  item.tabIndex =
-    0;
 
+  /* ===================================================
+     DELETE CHECKBOX
+  =================================================== */
 
-  // PHOTO
-
-  const photoWrap =
+  const deleteCell =
     document.createElement(
-      "div"
+      "td"
     );
 
-  photoWrap.className =
-    "outstanding-item-photo";
+
+  deleteCell.className =
+    "unit-history-delete-column";
+
+  deleteCell.hidden =
+    !deleteMode;
 
 
-  const photo =
+  const checkbox =
     document.createElement(
-      "img"
+      "input"
     );
 
-  photo.alt =
-    record.unitCode
-      ? "Photo " +
-        record.unitCode
-      : "Inspection Photo";
 
-  photo.loading =
-    "lazy";
+  checkbox.type =
+    "checkbox";
 
-  photo.src =
-    getDriveImageUrl(
-      record.photo
+  checkbox.className =
+    "unit-history-row-checkbox";
+
+  checkbox.value =
+    record.id || "";
+
+  checkbox.checked =
+    selectedDeleteIds.has(
+      record.id
     );
 
-  photo.onerror =
+
+  checkbox.addEventListener(
+    "click",
+    function (event) {
+
+      event.stopPropagation();
+    }
+  );
+
+
+  checkbox.addEventListener(
+    "change",
     function () {
 
-      this.onerror =
-        null;
-
-      this.src =
-        createPhotoPlaceholder();
-    };
-
-  photoWrap.appendChild(
-    photo
+      toggleDeleteSelection(
+        record.id,
+        checkbox.checked
+      );
+    }
   );
 
 
-  // INFORMATION
+  deleteCell.addEventListener(
+    "click",
+    function (event) {
 
-  const info =
-    document.createElement(
-      "div"
-    );
-
-  info.className =
-    "outstanding-item-information";
-
-
-  const unit =
-    document.createElement(
-      "div"
-    );
-
-  unit.className =
-    "outstanding-item-unit";
-
-  unit.textContent =
-    record.unitCode ||
-    "-";
-
-
-  const problem =
-    document.createElement(
-      "div"
-    );
-
-  problem.className =
-    "outstanding-item-problem";
-
-  problem.textContent =
-    record.problemDescription ||
-    "-";
-
-
-  info.appendChild(
-    unit
-  );
-
-  info.appendChild(
-    problem
+      event.stopPropagation();
+    }
   );
 
 
-  // MOL
-
-  const mol =
-    document.createElement(
-      "div"
-    );
-
-  mol.className =
-    "outstanding-item-mol";
-
-  if (
-    normalizeText(
-      record.mol
-    ) === "submitted"
-  ) {
-
-    mol.classList.add(
-      "submitted"
-    );
-  }
-
-  mol.textContent =
-    record.mol ||
-    "Belum";
-
-
-  // EDIT ICON
-
-  const edit =
-    document.createElement(
-      "button"
-    );
-
-  edit.type =
-    "button";
-
-  edit.className =
-    "outstanding-item-edit";
-
-  edit.setAttribute(
-    "aria-label",
-    "Edit " +
-      (
-        record.unitCode ||
-        "Outstanding"
-      )
+  deleteCell.appendChild(
+    checkbox
   );
 
-  edit.innerHTML = `
-    <svg viewBox="0 0 24 24">
-      <path d="M4 20h4L19 9l-4-4L4 16v4z"></path>
-      <path d="M13.5 6.5l4 4"></path>
-    </svg>
-  `;
+
+  row.appendChild(
+    deleteCell
+  );
 
 
-  // ROW CLICK -> DETAIL
+  /* ===================================================
+     CUSTOM DATA COLUMNS
+  =================================================== */
 
-  item.addEventListener(
+  const partDescriptions =
+    splitPartMultiline(
+      record.partsDescription
+    );
+
+  const partNumbers =
+    splitPartMultiline(
+      record.partNo
+    );
+
+  const partQuantities =
+    splitPartMultiline(
+      record.quantity
+    );
+
+
+  const totalParts =
+    Math.max(
+      1,
+      partDescriptions.length,
+      partNumbers.length,
+      partQuantities.length
+    );
+
+
+  UNIT_HISTORY_COLUMN_FIELDS
+    .filter(
+      function (field) {
+
+        return activeColumnKeys.includes(
+          field.key
+        );
+      }
+    )
+    .forEach(
+      function (field) {
+
+        appendHistoryColumnCell(
+          row,
+          record,
+          field.key,
+          {
+            descriptions:
+              partDescriptions,
+
+            partNumbers:
+              partNumbers,
+
+            quantities:
+              partQuantities,
+
+            totalParts:
+              totalParts
+          }
+        );
+      }
+    );
+
+
+
+
+  /* ===================================================
+     ROW CLICK
+  =================================================== */
+
+  row.addEventListener(
     "click",
     function () {
+
+      if (deleteMode) {
+
+        checkbox.checked =
+          !checkbox.checked;
+
+
+        toggleDeleteSelection(
+          record.id,
+          checkbox.checked
+        );
+
+
+        return;
+      }
+
 
       openDetail(
         record.id
@@ -1484,72 +1572,1044 @@ function createOutstandingItem(
   );
 
 
-  item.addEventListener(
-    "keydown",
-    function (event) {
+  return row;
+}
 
-      if (
-        event.key === "Enter" ||
-        event.key === " "
-      ) {
+/* =====================================================
+   INITIAL CUSTOM COLUMNS
+===================================================== */
 
-        event.preventDefault();
+function getInitialColumnKeys() {
 
-        openDetail(
-          record.id
-        );
-      }
-    }
-  );
-
-
-  // EDIT ICON -> UPDATE FORM
-
-  edit.addEventListener(
-    "click",
-    async function (event) {
-
-      event.stopPropagation();
-
-      await loadRecordDetail(
-        record.id
+  const defaultKeys =
+    UNIT_HISTORY_COLUMN_FIELDS
+      .filter(
+        function (field) {
+          return field.default === true;
+        }
+      )
+      .map(
+        function (field) {
+          return field.key;
+        }
       );
 
-      if (selectedRecord) {
 
-        fillUpdateForm(
-          selectedRecord
+  try {
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem(
+          UNIT_HISTORY_COLUMNS_STORAGE_KEY
+        ) || "null"
+      );
+
+
+    if (!Array.isArray(saved)) {
+      return defaultKeys;
+    }
+
+
+    const validKeys =
+      UNIT_HISTORY_COLUMN_FIELDS
+        .filter(
+          function (field) {
+            return saved.includes(
+              field.key
+            );
+          }
+        )
+        .map(
+          function (field) {
+            return field.key;
+          }
         );
 
-        showUpdateModal();
-      }
-    }
-  );
+
+    return validKeys.length
+      ? validKeys
+      : defaultKeys;
 
 
-  item.appendChild(
-    photoWrap
-  );
+  } catch (error) {
 
-  item.appendChild(
-    info
-  );
-
-  item.appendChild(
-    mol
-  );
-
-  item.appendChild(
-    edit
-  );
-
-  return item;
+    return defaultKeys;
+  }
 }
 
 
-// =====================================================
-// FILTER
-// =====================================================
+/* =====================================================
+   APPEND CUSTOM HISTORY COLUMN
+===================================================== */
+
+function appendHistoryColumnCell(
+  row,
+  record,
+  columnKey,
+  partData
+) {
+
+  /* PHOTO */
+
+  if (columnKey === "photo") {
+
+    appendHistoryPhotoCell(
+      row,
+      record
+    );
+
+    return;
+  }
+
+
+  /* STATUS */
+
+  if (columnKey === "status") {
+
+    const cell =
+      document.createElement(
+        "td"
+      );
+
+
+    cell.appendChild(
+      createBadge(
+        record.status ||
+        "OPEN",
+        "status"
+      )
+    );
+
+
+    row.appendChild(
+      cell
+    );
+
+
+    return;
+  }
+
+
+  /* MOL */
+
+  if (columnKey === "mol") {
+
+    const cell =
+      document.createElement(
+        "td"
+      );
+
+
+    cell.appendChild(
+      createBadge(
+        getMolDisplay(record),
+        "mol"
+      )
+    );
+
+
+    row.appendChild(
+      cell
+    );
+
+
+    return;
+  }
+
+
+  /* EVIDENCE: hanya PDF pada MOL REGISTERED */
+
+  if (columnKey === "evidence") {
+    const cell = document.createElement("td");
+    cell.appendChild(createMolEvidenceLink(record));
+    row.appendChild(cell);
+    return;
+  }
+
+  /* PARTS DESCRIPTION */
+
+  if (
+    columnKey ===
+    "partsDescription"
+  ) {
+
+    row.appendChild(
+      createPartRequirementCell(
+        partData.descriptions,
+        partData.totalParts,
+        "description"
+      )
+    );
+
+
+    return;
+  }
+
+
+  /* PART NO */
+
+  if (columnKey === "partNo") {
+
+    row.appendChild(
+      createPartRequirementCell(
+        partData.partNumbers,
+        partData.totalParts,
+        "number"
+      )
+    );
+
+
+    return;
+  }
+
+
+  /* QUANTITY */
+
+  if (columnKey === "quantity") {
+
+    row.appendChild(
+      createPartRequirementCell(
+        partData.quantities,
+        partData.totalParts,
+        "quantity"
+      )
+    );
+
+
+    return;
+  }
+
+
+  /* NORMAL TEXT FIELD */
+
+  appendTextCell(
+    row,
+    record[columnKey]
+  );
+}
+
+
+/* =====================================================
+   PHOTO CELL
+===================================================== */
+
+function appendHistoryPhotoCell(
+  row,
+  record
+) {
+
+  const photoCell =
+    document.createElement(
+      "td"
+    );
+
+
+  if (record.photo) {
+
+    const image =
+      document.createElement(
+        "img"
+      );
+
+
+    image.className =
+      "unit-history-row-photo";
+
+    image.loading =
+      "lazy";
+
+
+    image.alt =
+      record.unitCode
+        ? "Photo " +
+          record.unitCode
+        : "Inspection Photo";
+
+
+    image.src =
+      getDriveImageUrl(
+        record.photo
+      );
+
+
+    image.onerror =
+      function () {
+
+        this.onerror =
+          null;
+
+        this.src =
+          createPhotoPlaceholder();
+      };
+
+
+    photoCell.appendChild(
+      image
+    );
+
+  } else {
+
+    const empty =
+      document.createElement(
+        "span"
+      );
+
+
+    empty.className =
+      "unit-history-row-no-photo";
+
+    empty.textContent =
+      "No Photo";
+
+
+    photoCell.appendChild(
+      empty
+    );
+  }
+
+
+  row.appendChild(
+    photoCell
+  );
+}
+
+/* =====================================================
+   CELL HELPER
+===================================================== */
+
+function appendTextCell(
+  row,
+  value
+) {
+
+  const cell =
+    document.createElement(
+      "td"
+    );
+
+
+  if (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ) {
+
+    const empty =
+      document.createElement(
+        "span"
+      );
+
+    empty.className =
+      "unit-history-empty-value";
+
+    empty.textContent =
+      "-";
+
+    cell.appendChild(
+      empty
+    );
+
+  } else {
+
+    cell.textContent =
+      value;
+  }
+
+
+  row.appendChild(
+    cell
+  );
+}
+
+/* =====================================================
+   PART REQUIREMENT TABLE HELPER
+
+   Parts Description, Part No dan Quantity disimpan
+   sebagai multiline string di database.
+
+   Alignment selalu berdasarkan index yang sama.
+===================================================== */
+
+function splitPartMultiline(value) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return [];
+  }
+
+  return String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .split("\n");
+}
+
+
+/* =====================================================
+   APPEND 3 PART REQUIREMENT CELLS
+===================================================== */
+
+function appendPartRequirementCells(
+  row,
+  partsDescription,
+  partNo,
+  quantity
+) {
+
+  const descriptions =
+    splitPartMultiline(
+      partsDescription
+    );
+
+  const partNumbers =
+    splitPartMultiline(
+      partNo
+    );
+
+  const quantities =
+    splitPartMultiline(
+      quantity
+    );
+
+
+  /*
+    Jumlah baris mengikuti data terpanjang.
+
+    Jangan filter array karena posisi kosong harus
+    tetap dipertahankan agar alignment tidak bergeser.
+  */
+
+  const totalParts =
+    Math.max(
+      1,
+      descriptions.length,
+      partNumbers.length,
+      quantities.length
+    );
+
+
+  const descriptionCell =
+    createPartRequirementCell(
+      descriptions,
+      totalParts,
+      "description"
+    );
+
+
+  const partNoCell =
+    createPartRequirementCell(
+      partNumbers,
+      totalParts,
+      "number"
+    );
+
+
+  const quantityCell =
+    createPartRequirementCell(
+      quantities,
+      totalParts,
+      "quantity"
+    );
+
+
+  row.appendChild(
+    descriptionCell
+  );
+
+  row.appendChild(
+    partNoCell
+  );
+
+  row.appendChild(
+    quantityCell
+  );
+}
+
+
+/* =====================================================
+   CREATE ONE PART REQUIREMENT CELL
+===================================================== */
+
+function createPartRequirementCell(
+  values,
+  totalParts,
+  type
+) {
+
+  const cell =
+    document.createElement(
+      "td"
+    );
+
+
+  cell.classList.add(
+    "unit-history-parts-cell"
+  );
+
+
+  const list =
+    document.createElement(
+      "div"
+    );
+
+
+  list.className =
+    "unit-history-part-list";
+
+
+  for (
+    let index = 0;
+    index < totalParts;
+    index++
+  ) {
+
+    const line =
+      document.createElement(
+        "div"
+      );
+
+
+    line.className =
+      "unit-history-part-line";
+
+
+    if (type === "description") {
+
+      line.classList.add(
+        "unit-history-part-description"
+      );
+
+    } else if (type === "number") {
+
+      line.classList.add(
+        "unit-history-part-number"
+      );
+
+    } else if (type === "quantity") {
+
+      line.classList.add(
+        "unit-history-part-quantity"
+      );
+    }
+
+
+    /*
+      Jangan menghapus posisi kosong.
+
+      Contoh:
+      Hose   | 611-5996 | 1
+      Plug   |          | 4
+
+      Baris Part No kedua tetap dibuat.
+    */
+
+    const rawValue =
+      values[index] !== undefined
+        ? String(values[index]).trim()
+        : "";
+
+
+    if (rawValue) {
+
+      line.textContent =
+        rawValue;
+
+    } else {
+
+      line.textContent =
+        "-";
+
+      line.classList.add(
+        "unit-history-part-empty"
+      );
+    }
+
+
+    list.appendChild(
+      line
+    );
+  }
+
+
+  cell.appendChild(
+    list
+  );
+
+
+  return cell;
+}
+
+/* =====================================================
+   BADGE
+===================================================== */
+
+function createBadge(value, type) {
+  const badge = document.createElement("span");
+  const normalized = normalizeText(value);
+  badge.className = "unit-history-badge";
+
+  if (type === "status") {
+    badge.classList.add(
+      normalized === "close"
+        ? "unit-history-badge-close"
+        : "unit-history-badge-open"
+    );
+  } else if (type === "mol") {
+    const colors = {
+      belum: ["#64748B", "#F1F5F9"],
+      draft: ["#D97706", "#FFFBEB"],
+      submitted: ["#2563EB", "#EFF6FF"],
+      registered: ["#16A34A", "#F0FDF4"]
+    };
+    const palette = colors[normalized] || colors.belum;
+    badge.style.color = palette[0];
+    badge.style.backgroundColor = palette[1];
+    badge.style.border = "1px solid " + palette[0];
+    badge.style.padding = "4px 9px";
+    badge.style.borderRadius = "999px";
+    badge.style.fontWeight = "700";
+  }
+
+  badge.textContent = value || "-";
+  return badge;
+}
+
+function getMolDisplay(record) {
+  const mol = String(record?.mol ?? "").trim().toUpperCase();
+  return mol || "BELUM";
+}
+
+function createMolEvidenceLink(record) {
+  const container = document.createElement("span");
+  const status = getMolDisplay(record);
+  const raw = String(record?.evidence ?? "").trim();
+
+  if (status !== "REGISTERED" || !/^https:\/\//i.test(raw)) {
+    container.textContent = "-";
+    return container;
+  }
+
+  const link = document.createElement("a");
+  link.href = raw;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "View PDF";
+  link.style.color = "#2563EB";
+  link.style.fontWeight = "700";
+  link.style.textDecoration = "underline";
+  link.addEventListener("click", function (event) {
+    event.stopPropagation();
+  });
+  return link;
+}
+
+
+/* =====================================================
+   GLOBAL HEADER SEARCH
+===================================================== */
+
+function initializeSearch() {
+
+  const searchInput =
+    document.getElementById(
+      "searchInput"
+    );
+
+
+  if (!searchInput) {
+    return;
+  }
+
+
+  searchInput.addEventListener(
+    "input",
+    function () {
+
+      applyAllFilters();
+    }
+  );
+}
+
+/* =====================================================
+   COLUMNS PANEL
+===================================================== */
+
+/* =====================================================
+   RENDER COLUMN OPTIONS
+===================================================== */
+
+function renderColumnOptions() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  columnsList.innerHTML = "";
+
+
+  UNIT_HISTORY_COLUMN_FIELDS.forEach(
+    function (field) {
+
+      const option =
+        document.createElement("label");
+
+
+      option.className =
+        "unit-history-column-option";
+
+
+      const checkbox =
+        document.createElement("input");
+
+
+      checkbox.type =
+        "checkbox";
+
+      checkbox.value =
+        field.key;
+
+      checkbox.dataset.columnKey =
+        field.key;
+
+      checkbox.checked =
+        activeColumnKeys.includes(
+         field.key
+        );
+
+
+      const label =
+        document.createElement("span");
+
+
+      label.textContent =
+        field.label;
+
+
+      option.appendChild(
+        checkbox
+      );
+
+      option.appendChild(
+        label
+      );
+
+
+      columnsList.appendChild(
+        option
+      );
+
+    }
+  );
+}
+
+
+
+/* =====================================================
+   RESET COLUMNS TO DEFAULT
+===================================================== */
+
+function resetColumnsToDefault() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  UNIT_HISTORY_COLUMN_FIELDS.forEach(
+    function (field) {
+
+      const checkbox =
+        columnsList.querySelector(
+          `input[data-column-key="${field.key}"]`
+        );
+
+
+      if (checkbox) {
+
+        checkbox.checked =
+          field.default === true;
+
+      }
+
+    }
+  );
+}
+
+
+/* =====================================================
+   SELECT ALL COLUMNS
+===================================================== */
+
+function selectAllColumns() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  const checkboxes =
+    columnsList.querySelectorAll(
+      'input[data-column-key]'
+    );
+
+
+  checkboxes.forEach(
+    function (checkbox) {
+
+      checkbox.checked = true;
+
+    }
+  );
+}
+
+/* =====================================================
+   APPLY CUSTOM COLUMNS
+===================================================== */
+
+function applyColumns() {
+
+  if (!columnsList) {
+    return;
+  }
+
+
+  const selectedKeys =
+    UNIT_HISTORY_COLUMN_FIELDS
+      .filter(
+        function (field) {
+
+          const checkbox =
+            columnsList.querySelector(
+              `input[data-column-key="${field.key}"]`
+            );
+
+          return Boolean(
+            checkbox?.checked
+          );
+        }
+      )
+      .map(
+        function (field) {
+          return field.key;
+        }
+      );
+
+
+  if (selectedKeys.length === 0) {
+
+    alert(
+      "Pilih minimal satu column."
+    );
+
+    return;
+  }
+
+
+  activeColumnKeys =
+  selectedKeys;
+
+
+localStorage.setItem(
+  UNIT_HISTORY_COLUMNS_STORAGE_KEY,
+  JSON.stringify(
+    activeColumnKeys
+  )
+);
+
+
+renderUnitHistoryTableHeader();
+
+  renderUnitHistory(
+    filteredUnitHistoryData
+  );
+
+
+  closeColumnsPanel();
+}
+
+
+function toggleColumnsPanel() {
+
+  if (!columnsPanel) {
+    return;
+  }
+
+
+  const willOpen =
+    columnsPanel.hidden;
+
+   if (
+  willOpen &&
+  columnsList &&
+  columnsList.children.length === 0
+) {
+
+  renderColumnOptions();
+}
+
+
+  columnsPanel.hidden =
+    !willOpen;
+
+
+  columnsButton?.setAttribute(
+    "aria-expanded",
+    willOpen
+      ? "true"
+      : "false"
+  );
+
+
+  /*
+    Agar Filter dan Columns tidak terbuka
+    bersamaan.
+  */
+
+  if (willOpen) {
+    closeFilterPanel();
+  }
+}
+
+
+function closeColumnsPanel() {
+
+  if (!columnsPanel) {
+    return;
+  }
+
+
+  columnsPanel.hidden =
+    true;
+
+
+  columnsButton?.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+}
+
+/* =====================================================
+   RENDER CUSTOM TABLE HEADER
+===================================================== */
+
+function renderUnitHistoryTableHeader() {
+
+  const table =
+    historyTableBody?.closest(
+      "table"
+    );
+
+
+  const headerRow =
+    table?.querySelector(
+      "thead tr"
+    );
+
+
+  if (!headerRow) {
+    return;
+  }
+
+
+  headerRow.innerHTML = "";
+
+
+  /* DELETE COLUMN */
+
+  const deleteTh =
+    document.createElement(
+      "th"
+    );
+
+
+  deleteTh.id =
+    "unitHistoryDeleteHeader";
+
+  deleteTh.className =
+    "unit-history-delete-column";
+
+  deleteTh.hidden =
+    !deleteMode;
+
+
+  const selectAll =
+    document.createElement(
+      "input"
+    );
+
+
+  selectAll.type =
+    "checkbox";
+
+  selectAll.id =
+    "unitHistorySelectAll";
+
+
+  selectAll.addEventListener(
+    "change",
+    handleSelectAll
+  );
+
+
+  deleteTh.appendChild(
+    selectAll
+  );
+
+
+  headerRow.appendChild(
+    deleteTh
+  );
+
+
+  /*
+    Karena header dibuat ulang,
+    update DOM references delete.
+  */
+
+  deleteHeader =
+    deleteTh;
+
+  selectAllCheckbox =
+    selectAll;
+
+
+  /* ACTIVE DATA COLUMNS */
+
+  UNIT_HISTORY_COLUMN_FIELDS
+    .filter(
+      function (field) {
+
+        return activeColumnKeys.includes(
+          field.key
+        );
+      }
+    )
+    .forEach(
+      function (field) {
+
+        const th =
+          document.createElement(
+            "th"
+          );
+
+
+        th.textContent =
+          field.label;
+
+
+        headerRow.appendChild(
+          th
+        );
+      }
+    );
+}
+
+/* =====================================================
+   FILTER PANEL
+===================================================== */
 
 function toggleFilterPanel() {
 
@@ -1557,11 +2617,14 @@ function toggleFilterPanel() {
     return;
   }
 
+
   const willOpen =
     filterPanel.hidden;
 
+
   filterPanel.hidden =
     !willOpen;
+
 
   filterButton?.setAttribute(
     "aria-expanded",
@@ -1569,6 +2632,16 @@ function toggleFilterPanel() {
       ? "true"
       : "false"
   );
+
+
+  if (
+    willOpen &&
+    filterConditions &&
+    filterConditions.children.length === 0
+  ) {
+
+    addFilterCondition();
+  }
 }
 
 
@@ -1578,8 +2651,10 @@ function closeFilterPanel() {
     return;
   }
 
+
   filterPanel.hidden =
     true;
+
 
   filterButton?.setAttribute(
     "aria-expanded",
@@ -1588,39 +2663,69 @@ function closeFilterPanel() {
 }
 
 
-function populateUnitFilter() {
+/* =====================================================
+   ADD FILTER CONDITION
+===================================================== */
 
-  if (!filterUnitCode) {
+function addFilterCondition(
+  existingFilter = null
+) {
+
+  if (!filterConditions) {
     return;
   }
 
-  const currentValue =
-    filterUnitCode.value;
 
-  const units =
-    [
-      ...new Set(
+  filterCounter += 1;
 
-        outstandingData
-          .map(
-            function (item) {
 
-              return (
-                item.unitCode ||
-                ""
-              ).trim();
-            }
-          )
-          .filter(Boolean)
+  const condition =
+    document.createElement(
+      "div"
+    );
 
-      )
-    ].sort();
+  condition.className =
+    "unit-history-filter-condition";
 
-  filterUnitCode.innerHTML =
-    `<option value="">All Unit</option>`;
+  condition.dataset.filterId =
+    String(filterCounter);
 
-  units.forEach(
-    function (unit) {
+
+  /* CATEGORY FIELD */
+
+  const categoryField =
+    document.createElement(
+      "div"
+    );
+
+  categoryField.className =
+    "unit-history-filter-field";
+
+
+  const categoryLabel =
+    document.createElement(
+      "label"
+    );
+
+  categoryLabel.textContent =
+    "Category";
+
+
+  const categorySelect =
+    document.createElement(
+      "select"
+    );
+
+  categorySelect.className =
+    "unit-history-filter-category";
+
+
+  categorySelect.innerHTML =
+    `<option value="">Select Category</option>`;
+
+
+  UNIT_HISTORY_FILTER_FIELDS.forEach(
+    function (field) {
 
       const option =
         document.createElement(
@@ -1628,347 +2733,1254 @@ function populateUnitFilter() {
         );
 
       option.value =
-        unit;
+        field.key;
 
       option.textContent =
-        unit;
+        field.label;
 
-      filterUnitCode.appendChild(
+      categorySelect.appendChild(
         option
       );
     }
   );
 
-  if (
-    units.includes(
-      currentValue
-    )
-  ) {
 
-    filterUnitCode.value =
-      currentValue;
-  }
-}
+  categoryField.appendChild(
+    categoryLabel
+  );
+
+  categoryField.appendChild(
+    categorySelect
+  );
 
 
-function getFilterBaseData() {
+  /* VALUE FIELD */
 
-  let result =
-    [...outstandingData];
-
-  const unit =
-    filterUnitCode?.value ||
-    "";
-
-  const problem =
-    normalizeText(
-      filterProblem?.value
+  const valueField =
+    document.createElement(
+      "div"
     );
 
-  const date =
-    filterDate?.value ||
-    "";
+  valueField.className =
+    "unit-history-filter-field unit-history-filter-value-field";
 
-  const mol =
-    filterMol?.value ||
-    "";
 
-  if (unit) {
+  const valueLabel =
+    document.createElement(
+      "label"
+    );
 
-    result =
-      result.filter(
-        function (item) {
+  valueLabel.textContent =
+    "Value";
 
-          return (
-            item.unitCode ===
-            unit
-          );
-        }
+
+  const controlContainer =
+    document.createElement(
+      "div"
+    );
+
+  controlContainer.className =
+    "unit-history-filter-control";
+
+
+  valueField.appendChild(
+    valueLabel
+  );
+
+  valueField.appendChild(
+    controlContainer
+  );
+
+
+  /* REMOVE */
+
+  const removeButton =
+    document.createElement(
+      "button"
+    );
+
+  removeButton.type =
+    "button";
+
+  removeButton.className =
+    "unit-history-filter-remove";
+
+  removeButton.setAttribute(
+    "aria-label",
+    "Remove Filter"
+  );
+
+  removeButton.textContent =
+    "×";
+
+
+  removeButton.addEventListener(
+    "click",
+    function () {
+
+      condition.remove();
+
+      if (
+        filterConditions.children.length === 0
+      ) {
+
+        addFilterCondition();
+      }
+    }
+  );
+
+
+  categorySelect.addEventListener(
+    "change",
+    function () {
+
+      renderFilterControl(
+        condition,
+        categorySelect.value
       );
+    }
+  );
+
+
+  condition.appendChild(
+    categoryField
+  );
+
+  condition.appendChild(
+    valueField
+  );
+
+  condition.appendChild(
+    removeButton
+  );
+
+
+  filterConditions.appendChild(
+    condition
+  );
+
+
+  if (existingFilter) {
+
+    categorySelect.value =
+      existingFilter.key || "";
+
+    renderFilterControl(
+      condition,
+      categorySelect.value,
+      existingFilter
+    );
+
+  } else {
+
+    renderFilterControl(
+      condition,
+      ""
+    );
   }
-
-  if (problem) {
-
-    result =
-      result.filter(
-        function (item) {
-
-          return normalizeText(
-            item.problemDescription
-          ).includes(
-            problem
-          );
-        }
-      );
-  }
-
-  if (date) {
-
-    result =
-      result.filter(
-        function (item) {
-
-          return (
-            item.dateInspection ===
-            date
-          );
-        }
-      );
-  }
-
-  if (mol) {
-
-    result =
-      result.filter(
-        function (item) {
-
-          return (
-            normalizeText(
-              item.mol
-            ) ===
-            normalizeText(
-              mol
-            )
-          );
-        }
-      );
-  }
-
-  return result;
 }
 
+
+/* =====================================================
+   RENDER FILTER CONTROL
+===================================================== */
+
+function renderFilterControl(
+  condition,
+  fieldKey,
+  existingFilter = null
+) {
+
+  const container =
+    condition.querySelector(
+      ".unit-history-filter-control"
+    );
+
+
+  if (!container) {
+    return;
+  }
+
+
+  container.innerHTML =
+    "";
+
+
+  const definition =
+    UNIT_HISTORY_FILTER_FIELDS.find(
+      function (field) {
+
+        return field.key ===
+          fieldKey;
+      }
+    );
+
+
+  if (!definition) {
+
+    const input =
+      document.createElement(
+        "input"
+      );
+
+    input.type =
+      "text";
+
+    input.disabled =
+      true;
+
+    input.placeholder =
+      "Select category first";
+
+    container.appendChild(
+      input
+    );
+
+    return;
+  }
+
+
+  /* TEXT */
+
+  if (definition.type === "text") {
+
+    const input =
+      document.createElement(
+        "input"
+      );
+
+    input.type =
+      "text";
+
+    input.className =
+      "unit-history-filter-value";
+
+    input.placeholder =
+      "Contains...";
+
+    input.value =
+      existingFilter?.value ||
+      "";
+
+    container.appendChild(
+      input
+    );
+
+    return;
+  }
+
+
+  /* SELECT */
+
+  if (definition.type === "select") {
+
+    const select =
+      document.createElement(
+        "select"
+      );
+
+    select.className =
+      "unit-history-filter-value";
+
+
+    select.innerHTML =
+      `<option value="">All</option>`;
+
+
+    getUniqueValues(
+      fieldKey
+    ).forEach(
+      function (value) {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value =
+          value;
+
+        option.textContent =
+          value;
+
+        select.appendChild(
+          option
+        );
+      }
+    );
+
+
+    select.value =
+      existingFilter?.value ||
+      "";
+
+
+    container.appendChild(
+      select
+    );
+
+    return;
+  }
+
+
+  /* AVAILABILITY */
+
+  if (
+    definition.type ===
+    "availability"
+  ) {
+
+    const select =
+      document.createElement(
+        "select"
+      );
+
+    select.className =
+      "unit-history-filter-value";
+
+
+    select.innerHTML = `
+      <option value="">All</option>
+      <option value="available">Available</option>
+      <option value="empty">Empty</option>
+    `;
+
+
+    select.value =
+      existingFilter?.value ||
+      "";
+
+
+    container.appendChild(
+      select
+    );
+
+    return;
+  }
+
+
+  /* NUMBER RANGE */
+
+  if (
+    definition.type ===
+    "numberRange"
+  ) {
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+    wrapper.style.display =
+      "grid";
+
+    wrapper.style.gridTemplateColumns =
+      "1fr 1fr";
+
+    wrapper.style.gap =
+      "7px";
+
+
+    const minInput =
+      document.createElement(
+        "input"
+      );
+
+    minInput.type =
+      "number";
+
+    minInput.placeholder =
+      "Min";
+
+    minInput.className =
+      "unit-history-filter-min";
+
+    minInput.value =
+      existingFilter?.min ??
+      "";
+
+
+    const maxInput =
+      document.createElement(
+        "input"
+      );
+
+    maxInput.type =
+      "number";
+
+    maxInput.placeholder =
+      "Max";
+
+    maxInput.className =
+      "unit-history-filter-max";
+
+    maxInput.value =
+      existingFilter?.max ??
+      "";
+
+
+    wrapper.appendChild(
+      minInput
+    );
+
+    wrapper.appendChild(
+      maxInput
+    );
+
+
+    container.appendChild(
+      wrapper
+    );
+
+    return;
+  }
+
+
+  /* DATE RANGE */
+
+  if (
+    definition.type ===
+    "dateRange"
+  ) {
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+    wrapper.style.display =
+      "grid";
+
+    wrapper.style.gridTemplateColumns =
+      "1fr 1fr";
+
+    wrapper.style.gap =
+      "7px";
+
+
+    const fromInput =
+      document.createElement(
+        "input"
+      );
+
+    fromInput.type =
+      "date";
+
+    fromInput.className =
+      "unit-history-filter-from";
+
+    fromInput.value =
+      existingFilter?.from ||
+      "";
+
+
+    const toInput =
+      document.createElement(
+        "input"
+      );
+
+    toInput.type =
+      "date";
+
+    toInput.className =
+      "unit-history-filter-to";
+
+    toInput.value =
+      existingFilter?.to ||
+      "";
+
+
+    wrapper.appendChild(
+      fromInput
+    );
+
+    wrapper.appendChild(
+      toInput
+    );
+
+
+    container.appendChild(
+      wrapper
+    );
+  }
+}
+
+
+/* =====================================================
+   UNIQUE FILTER VALUES
+===================================================== */
+
+function getUniqueValues(
+  fieldKey
+) {
+
+  return [
+    ...new Set(
+
+      unitHistoryData
+
+        .map(
+          function (record) {
+
+            let value =
+              record[fieldKey];
+
+            if (
+              fieldKey === "mol"
+            ) {
+
+              value =
+                getMolDisplay(
+                  record
+                );
+            }
+
+            return String(
+              value ?? ""
+            ).trim();
+          }
+        )
+
+        .filter(Boolean)
+
+    )
+  ].sort(
+    function (a, b) {
+
+      return a.localeCompare(
+        b,
+        undefined,
+        {
+          numeric: true
+        }
+      );
+    }
+  );
+}
+
+
+/* =====================================================
+   READ FILTER CONDITIONS
+===================================================== */
+
+function readFilterConditions() {
+
+  if (!filterConditions) {
+    return [];
+  }
+
+
+  const filters = [];
+
+
+  filterConditions
+    .querySelectorAll(
+      ".unit-history-filter-condition"
+    )
+    .forEach(
+      function (condition) {
+
+        const category =
+          condition.querySelector(
+            ".unit-history-filter-category"
+          )?.value || "";
+
+
+        if (!category) {
+          return;
+        }
+
+
+        const definition =
+          UNIT_HISTORY_FILTER_FIELDS.find(
+            function (field) {
+
+              return field.key ===
+                category;
+            }
+          );
+
+
+        if (!definition) {
+          return;
+        }
+
+
+        if (
+          definition.type === "text" ||
+          definition.type === "select" ||
+          definition.type === "availability"
+        ) {
+
+          const value =
+            condition.querySelector(
+              ".unit-history-filter-value"
+            )?.value || "";
+
+
+          if (!value) {
+            return;
+          }
+
+
+          filters.push({
+
+            key:
+              category,
+
+            type:
+              definition.type,
+
+            value:
+              value
+
+          });
+
+
+          return;
+        }
+
+
+        if (
+          definition.type ===
+          "numberRange"
+        ) {
+
+          const min =
+            condition.querySelector(
+              ".unit-history-filter-min"
+            )?.value ?? "";
+
+          const max =
+            condition.querySelector(
+              ".unit-history-filter-max"
+            )?.value ?? "";
+
+
+          if (
+            min === "" &&
+            max === ""
+          ) {
+
+            return;
+          }
+
+
+          filters.push({
+
+            key:
+              category,
+
+            type:
+              definition.type,
+
+            min:
+              min,
+
+            max:
+              max
+
+          });
+
+
+          return;
+        }
+
+
+        if (
+          definition.type ===
+          "dateRange"
+        ) {
+
+          const from =
+            condition.querySelector(
+              ".unit-history-filter-from"
+            )?.value || "";
+
+          const to =
+            condition.querySelector(
+              ".unit-history-filter-to"
+            )?.value || "";
+
+
+          if (
+            !from &&
+            !to
+          ) {
+
+            return;
+          }
+
+
+          filters.push({
+
+            key:
+              category,
+
+            type:
+              definition.type,
+
+            from:
+              from,
+
+            to:
+              to
+
+          });
+        }
+
+      }
+    );
+
+
+  return filters;
+}
+
+
+/* =====================================================
+   APPLY FILTER BUTTON
+===================================================== */
 
 function applyFilters() {
 
-  filteredData =
-    getFilterBaseData();
+  activeFilters =
+    readFilterConditions();
+
+
+  applyAllFilters();
+
+  renderActiveFilterChips();
+
+  closeFilterPanel();
+}
+
+
+/* =====================================================
+   APPLY ALL FILTERS
+===================================================== */
+
+function applyAllFilters() {
+
+  let result =
+    [...unitHistoryData];
+
+
+  activeFilters.forEach(
+    function (filter) {
+
+      result =
+        result.filter(
+          function (record) {
+
+            return recordMatchesFilter(
+              record,
+              filter
+            );
+          }
+        );
+    }
+  );
+
+
+  /* GLOBAL HEADER SEARCH */
 
   const searchInput =
     document.getElementById(
       "searchInput"
     );
+
 
   const query =
     normalizeText(
       searchInput?.value
     );
 
+
   if (query) {
 
-    filteredData =
-      filteredData.filter(
-        function (item) {
+    result =
+      result.filter(
+        function (record) {
 
-          return (
-
-            normalizeText(
-              item.unitCode
-            ).includes(
-              query
-            ) ||
-
-            normalizeText(
-              item.problemDescription
-            ).includes(
-              query
-            ) ||
-
-            normalizeText(
-              item.groupComponent
-            ).includes(
-              query
-            ) ||
-
-            normalizeText(
-              item.rating
-            ).includes(
-              query
-            ) ||
-
-            normalizeText(
-              item.partsDescription
-            ).includes(
-              query
-            )
-
+          return recordMatchesSearch(
+            record,
+            query
           );
         }
       );
   }
 
-  renderOutstandingList(
-    filteredData
-  );
 
-  closeFilterPanel();
+  filteredUnitHistoryData =
+    result;
+
+
+  selectedDeleteIds.clear();
+
+
+  renderUnitHistory(
+    filteredUnitHistoryData
+  );
 }
 
 
+/* =====================================================
+   FILTER MATCHING
+===================================================== */
+
+function recordMatchesFilter(
+  record,
+  filter
+) {
+
+  let rawValue =
+    record[filter.key];
+
+
+  if (filter.key === "mol") {
+
+    rawValue =
+      getMolDisplay(
+        record
+      );
+  }
+
+
+  /* TEXT */
+
+  if (filter.type === "text") {
+
+    return normalizeText(
+      rawValue
+    ).includes(
+      normalizeText(
+        filter.value
+      )
+    );
+  }
+
+
+  /* SELECT */
+
+  if (filter.type === "select") {
+
+    return normalizeText(
+      rawValue
+    ) ===
+    normalizeText(
+      filter.value
+    );
+  }
+
+
+  /* AVAILABLE / EMPTY */
+
+  if (
+    filter.type ===
+    "availability"
+  ) {
+
+    const hasValue =
+      Boolean(
+        String(
+          rawValue ?? ""
+        ).trim()
+      );
+
+
+    return filter.value ===
+      "available"
+        ? hasValue
+        : !hasValue;
+  }
+
+
+  /* NUMBER RANGE */
+
+  if (
+    filter.type ===
+    "numberRange"
+  ) {
+
+    const value =
+      parseNumericValue(
+        rawValue
+      );
+
+
+    if (
+      Number.isNaN(value)
+    ) {
+
+      return false;
+    }
+
+
+    if (
+      filter.min !== "" &&
+      value <
+        Number(filter.min)
+    ) {
+
+      return false;
+    }
+
+
+    if (
+      filter.max !== "" &&
+      value >
+        Number(filter.max)
+    ) {
+
+      return false;
+    }
+
+
+    return true;
+  }
+
+
+  /* DATE RANGE */
+
+  if (
+    filter.type ===
+    "dateRange"
+  ) {
+
+    const date =
+      normalizeDateValue(
+        rawValue
+      );
+
+
+    if (!date) {
+      return false;
+    }
+
+
+    if (
+      filter.from &&
+      date < filter.from
+    ) {
+
+      return false;
+    }
+
+
+    if (
+      filter.to &&
+      date > filter.to
+    ) {
+
+      return false;
+    }
+
+
+    return true;
+  }
+
+
+  return true;
+}
+
+
+/* =====================================================
+   GLOBAL SEARCH MATCHING
+===================================================== */
+
+function recordMatchesSearch(
+  record,
+  query
+) {
+
+  const values = [
+
+    record.unitCode,
+    record.hmInspection,
+    record.dateInspection,
+    record.groupComponent,
+    record.problemDescription,
+    record.rating,
+    record.partsDescription,
+    record.partNo,
+    record.quantity,
+    record.inspectors,
+    record.notes,
+    getMolDisplay(record),
+    record.partsStatus,
+    record.actionProblems,
+    record.hmAction,
+    record.dateAction,
+    record.status,
+    record.manPower
+
+  ];
+
+
+  return values.some(
+    function (value) {
+
+      return normalizeText(
+        value
+      ).includes(
+        query
+      );
+    }
+  );
+}
+
+
+/* =====================================================
+   RESET FILTERS
+===================================================== */
+
 function resetFilters() {
 
-  if (filterUnitCode) {
-    filterUnitCode.value =
+  activeFilters =
+    [];
+
+
+  if (filterConditions) {
+
+    filterConditions.innerHTML =
       "";
+
+    addFilterCondition();
   }
 
-  if (filterProblem) {
-    filterProblem.value =
-      "";
-  }
-
-  if (filterDate) {
-    filterDate.value =
-      "";
-  }
-
-  if (filterMol) {
-    filterMol.value =
-      "";
-  }
 
   const searchInput =
     document.getElementById(
       "searchInput"
     );
 
+
   if (searchInput) {
+
     searchInput.value =
       "";
   }
 
-  filteredData =
-    [...outstandingData];
 
-  renderOutstandingList(
-    filteredData
+  filteredUnitHistoryData =
+    [...unitHistoryData];
+
+
+  selectedDeleteIds.clear();
+
+
+  renderUnitHistory(
+    filteredUnitHistoryData
   );
+
+
+  renderActiveFilterChips();
 
   closeFilterPanel();
 }
 
 
-// =====================================================
-// SCROLL NAVIGATION
-// =====================================================
+/* =====================================================
+   ACTIVE FILTER CHIPS
+===================================================== */
 
-function updateScrollNavigation() {
+function renderActiveFilterChips() {
 
-  if (
-    !outstandingScrollContainer ||
-    !scrollNavigation
-  ) {
+  if (!activeFiltersContainer) {
     return;
   }
 
-  requestAnimationFrame(
-    function () {
 
-      const hasScroll =
-        outstandingScrollContainer
-          .scrollHeight >
-        outstandingScrollContainer
-          .clientHeight + 5;
+  activeFiltersContainer.innerHTML =
+    "";
 
-      scrollNavigation.hidden =
-        !hasScroll;
+
+  if (
+    activeFilters.length === 0
+  ) {
+
+    activeFiltersContainer.hidden =
+      true;
+
+    return;
+  }
+
+
+  activeFiltersContainer.hidden =
+    false;
+
+
+  activeFilters.forEach(
+    function (filter) {
+
+      const definition =
+        UNIT_HISTORY_FILTER_FIELDS.find(
+          function (field) {
+
+            return field.key ===
+              filter.key;
+          }
+        );
+
+
+      const chip =
+        document.createElement(
+          "span"
+        );
+
+      chip.className =
+        "unit-history-filter-chip";
+
+
+      let text =
+        definition?.label ||
+        filter.key;
+
+
+      if (
+        filter.type === "numberRange"
+      ) {
+
+        text +=
+          ": " +
+          (
+            filter.min ||
+            "Min"
+          ) +
+          " - " +
+          (
+            filter.max ||
+            "Max"
+          );
+
+      } else if (
+        filter.type === "dateRange"
+      ) {
+
+        text +=
+          ": " +
+          (
+            filter.from ||
+            "Start"
+          ) +
+          " - " +
+          (
+            filter.to ||
+            "End"
+          );
+
+      } else {
+
+        text +=
+          ": " +
+          filter.value;
+      }
+
+
+      chip.textContent =
+        text;
+
+
+      activeFiltersContainer.appendChild(
+        chip
+      );
     }
   );
 }
 
 
-// =====================================================
-// LOAD DETAIL
-// =====================================================
+/* =====================================================
+   SCROLL NAVIGATION
+===================================================== */
 
-async function loadRecordDetail(
-  inspectionId
-) {
+function updateScrollNavigation() {
 
-  try {
+  if (
+    !historyScrollContainer ||
+    !scrollNavigation
+  ) {
 
-    const result =
-      await apiRequest({
-
-        action:
-          "getDailyOutstandingDetail",
-
-        inspectionId:
-          inspectionId
-
-      });
-
-    if (
-      !result ||
-      result.success !== true
-    ) {
-
-      throw new Error(
-        result?.message ||
-        "Detail Outstanding gagal dimuat."
-      );
-    }
-
-    selectedRecord =
-      result.data;
-
-    return selectedRecord;
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    alert(
-      error.message ||
-      "Detail Outstanding gagal dimuat."
-    );
-
-    selectedRecord =
-      null;
-
-    return null;
+    return;
   }
+
+
+  requestAnimationFrame(
+    function () {
+
+      const hasVerticalScroll =
+        historyScrollContainer
+          .scrollHeight >
+        historyScrollContainer
+          .clientHeight + 5;
+
+
+      scrollNavigation.hidden =
+        !hasVerticalScroll;
+    }
+  );
 }
 
 
-// =====================================================
-// OPEN DETAIL
-// =====================================================
+/* =====================================================
+   OPEN DETAIL
+===================================================== */
 
-async function openDetail(
+function openDetail(
   inspectionId
 ) {
 
   const record =
-    await loadRecordDetail(
-      inspectionId
+    unitHistoryData.find(
+      function (item) {
+
+        return String(
+          item.id
+        ) ===
+        String(
+          inspectionId
+        );
+      }
     );
 
+
   if (!record) {
+
+    alert(
+      "Detail Unit History tidak ditemukan."
+    );
+
     return;
   }
+
+
+  selectedRecord =
+    record;
+
 
   fillDetailModal(
     record
   );
 
+
   if (detailModal) {
+
     detailModal.hidden =
       false;
   }
+
 
   setMainShortcutVisible(
     false
   );
 
+
   updateBodyModalState();
 }
 
 
-// =====================================================
-// FILL DETAIL
-// =====================================================
+/* =====================================================
+   FILL DETAIL
+===================================================== */
 
 function fillDetailModal(
   record
@@ -1977,9 +3989,12 @@ function fillDetailModal(
   if (detailPhoto) {
 
     detailPhoto.src =
-      getDriveImageUrl(
-        record.photo
-      );
+      record.photo
+        ? getDriveImageUrl(
+            record.photo
+          )
+        : createPhotoPlaceholder();
+
 
     detailPhoto.onerror =
       function () {
@@ -1992,15 +4007,18 @@ function fillDetailModal(
       };
   }
 
+
   setText(
     detailUnitCode,
     record.unitCode
   );
 
+
   setText(
     detailHmInspection,
     record.hmInspection
   );
+
 
   setText(
     detailDateInspection,
@@ -2009,67 +4027,132 @@ function fillDetailModal(
     )
   );
 
+
+  setText(
+    detailInspectors,
+    record.inspectors
+  );
+
+
   setText(
     detailGroupComponent,
     record.groupComponent
   );
+
 
   setText(
     detailProblemDescription,
     record.problemDescription
   );
 
+
   setText(
     detailRating,
     record.rating
   );
 
-  setText(
-    detailPartsDescription,
-    formatPartSummary(
-      record.partsDescription
-    )
-  );
 
   setText(
-    detailMol,
-    record.mol ||
-    "Belum"
+    detailPartsDescription,
+    record.partsDescription
   );
+
+
+  setText(
+    detailPartNo,
+    record.partNo
+  );
+
+
+  setText(
+    detailQuantity,
+    record.quantity
+  );
+
+
+  setText(
+    detailNotes,
+    record.notes
+  );
+
+
+  if (detailMol) {
+    detailMol.replaceChildren(createBadge(getMolDisplay(record), "mol"));
+  }
+
+  if (detailEvidence) {
+    detailEvidence.replaceChildren(createMolEvidenceLink(record));
+  }
+
 
   setText(
     detailPartsStatus,
-    record.partsStatus ||
-    "-"
+    record.partsStatus
+  );
+
+
+  setText(
+    detailActionProblems,
+    record.actionProblems
+  );
+
+
+  setText(
+    detailHmAction,
+    record.hmAction
+  );
+
+
+  setText(
+    detailDateAction,
+    formatDisplayDate(
+      record.dateAction
+    )
+  );
+
+
+  setText(
+    detailStatus,
+    record.status
+  );
+
+
+  setText(
+    detailManPower,
+    record.manPower
   );
 }
 
 
-// =====================================================
-// CLOSE DETAIL
-// =====================================================
+/* =====================================================
+   CLOSE DETAIL
+===================================================== */
 
 function closeDetail() {
 
   if (detailModal) {
+
     detailModal.hidden =
       true;
   }
 
+
   selectedRecord =
     null;
+
 
   setMainShortcutVisible(
     true
   );
 
+
   updateBodyModalState();
 }
 
 
-// =====================================================
-// PHOTO VIEWER
-// =====================================================
+/* =====================================================
+   PHOTO VIEWER
+===================================================== */
 
 function openPhotoViewer() {
 
@@ -2077,11 +4160,14 @@ function openPhotoViewer() {
     !selectedRecord ||
     !selectedRecord.photo
   ) {
+
     return;
   }
 
+
   photoZoom =
     1;
+
 
   if (photoViewerImage) {
 
@@ -2094,11 +4180,13 @@ function openPhotoViewer() {
       "scale(1)";
   }
 
+
   if (resetZoomButton) {
 
     resetZoomButton.textContent =
       "100%";
   }
+
 
   if (photoViewer) {
 
@@ -2106,9 +4194,11 @@ function openPhotoViewer() {
       false;
   }
 
+
   setMainShortcutVisible(
     false
   );
+
 
   updateBodyModalState();
 }
@@ -2122,14 +4212,17 @@ function closePhotoViewer() {
       true;
   }
 
+
   photoZoom =
     1;
+
 
   if (photoViewerImage) {
 
     photoViewerImage.style.transform =
       "scale(1)";
   }
+
 
   updateBodyModalState();
 }
@@ -2148,11 +4241,13 @@ function setPhotoZoom(
       )
     );
 
+
   if (photoViewerImage) {
 
     photoViewerImage.style.transform =
       `scale(${photoZoom})`;
   }
+
 
   if (resetZoomButton) {
 
@@ -2164,1574 +4259,446 @@ function setPhotoZoom(
 }
 
 
-// =====================================================
-// OPEN UPDATE FORM
-// =====================================================
+/* =====================================================
+   DELETE BUTTON
+===================================================== */
 
-function openUpdateForm() {
+function handleDeleteButton() {
 
-  if (!selectedRecord) {
+  /*
+    FIRST CLICK:
+    Masuk Delete Mode.
+  */
+
+  if (!deleteMode) {
+
+    enterDeleteMode();
+
     return;
   }
 
-  fillUpdateForm(
-    selectedRecord
-  );
 
-  if (detailModal) {
+  /*
+    SECOND CLICK:
+    Jika belum memilih data, keluar Delete Mode.
+  */
 
-    detailModal.hidden =
-      true;
+  if (
+    selectedDeleteIds.size === 0
+  ) {
+
+    alert(
+      "Belum ada data yang dipilih."
+    );
+
+    exitDeleteMode();
+
+    return;
   }
 
-  showUpdateModal();
+
+  openDeleteConfirmation();
 }
 
 
-function showUpdateModal() {
+/* =====================================================
+   ENTER DELETE MODE
+===================================================== */
 
-  if (updateModal) {
+function enterDeleteMode() {
 
-    updateModal.hidden =
+  deleteMode =
+    true;
+
+
+  selectedDeleteIds.clear();
+
+
+  if (selectAllCheckbox) {
+
+    selectAllCheckbox.checked =
       false;
 
-    updateModal.scrollTop =
-      0;
+    selectAllCheckbox.indeterminate =
+      false;
   }
+
+
+  updateDeleteUI();
+
+
+  renderUnitHistory(
+    filteredUnitHistoryData
+  );
+}
+
+
+/* =====================================================
+   EXIT DELETE MODE
+===================================================== */
+
+function exitDeleteMode() {
+
+  deleteMode =
+    false;
+
+
+  selectedDeleteIds.clear();
+
+
+  if (selectAllCheckbox) {
+
+    selectAllCheckbox.checked =
+      false;
+
+    selectAllCheckbox.indeterminate =
+      false;
+  }
+
+
+  updateDeleteUI();
+
+
+  renderUnitHistory(
+    filteredUnitHistoryData
+  );
+}
+
+
+/* =====================================================
+   DELETE UI
+===================================================== */
+
+function updateDeleteUI() {
+
+  if (deleteHeader) {
+
+    deleteHeader.hidden =
+      !deleteMode;
+  }
+
+
+  if (deleteButton) {
+
+    deleteButton.classList.toggle(
+      "is-active",
+      deleteMode
+    );
+
+
+    deleteButton.setAttribute(
+      "aria-label",
+      deleteMode
+        ? (
+            selectedDeleteIds.size > 0
+              ? "Delete " +
+                selectedDeleteIds.size +
+                " selected item"
+              : "Exit Delete Mode"
+          )
+        : "Delete Unit History"
+    );
+  }
+
+
+  document
+    .querySelectorAll(
+      ".unit-history-delete-column"
+    )
+    .forEach(
+      function (element) {
+
+        element.hidden =
+          !deleteMode;
+      }
+    );
+
+
+  updateSelectAllState();
+}
+
+
+/* =====================================================
+   TOGGLE DELETE SELECTION
+===================================================== */
+
+function toggleDeleteSelection(
+  inspectionId,
+  selected
+) {
+
+  if (!inspectionId) {
+    return;
+  }
+
+
+  if (selected) {
+
+    selectedDeleteIds.add(
+      inspectionId
+    );
+
+  } else {
+
+    selectedDeleteIds.delete(
+      inspectionId
+    );
+  }
+
+
+  updateSelectAllState();
+}
+
+
+/* =====================================================
+   SELECT ALL
+===================================================== */
+
+function handleSelectAll() {
+
+  if (!selectAllCheckbox) {
+    return;
+  }
+
+
+  if (
+    selectAllCheckbox.checked
+  ) {
+
+    filteredUnitHistoryData
+      .forEach(
+        function (record) {
+
+          if (record.id) {
+
+            selectedDeleteIds.add(
+              record.id
+            );
+          }
+        }
+      );
+
+  } else {
+
+    filteredUnitHistoryData
+      .forEach(
+        function (record) {
+
+          selectedDeleteIds.delete(
+            record.id
+          );
+        }
+      );
+  }
+
+
+  historyTableBody
+    ?.querySelectorAll(
+      ".unit-history-row-checkbox"
+    )
+    .forEach(
+      function (checkbox) {
+
+        checkbox.checked =
+          selectedDeleteIds.has(
+            checkbox.value
+          );
+      }
+    );
+
+
+  updateSelectAllState();
+}
+
+
+/* =====================================================
+   SELECT ALL STATE
+===================================================== */
+
+function updateSelectAllState() {
+
+  if (!selectAllCheckbox) {
+    return;
+  }
+
+
+  const ids =
+    filteredUnitHistoryData
+
+      .map(
+        function (record) {
+
+          return record.id;
+        }
+      )
+
+      .filter(Boolean);
+
+
+  if (ids.length === 0) {
+
+    selectAllCheckbox.checked =
+      false;
+
+    selectAllCheckbox.indeterminate =
+      false;
+
+    return;
+  }
+
+
+  const selectedCount =
+    ids.filter(
+      function (id) {
+
+        return selectedDeleteIds.has(
+          id
+        );
+      }
+    ).length;
+
+
+  selectAllCheckbox.checked =
+    selectedCount ===
+    ids.length;
+
+
+  selectAllCheckbox.indeterminate =
+    selectedCount > 0 &&
+    selectedCount < ids.length;
+}
+
+
+/* =====================================================
+   DELETE CONFIRMATION
+===================================================== */
+
+function openDeleteConfirmation() {
+
+  const count =
+    selectedDeleteIds.size;
+
+
+  if (!count) {
+    return;
+  }
+
+
+  if (deleteModalMessage) {
+
+    deleteModalMessage.textContent =
+      "Apa kamu yakin akan menghapus " +
+      count +
+      " item dari database?";
+  }
+
+
+  if (deleteModal) {
+
+    deleteModal.hidden =
+      false;
+  }
+
 
   setMainShortcutVisible(
     false
   );
 
-  updateBodyModalState();
-}
-
-
-// =====================================================
-// CLOSE UPDATE FORM
-// =====================================================
-
-function closeUpdateForm() {
-
-  if (updateModal) {
-
-    updateModal.hidden =
-      true;
-  }
-
-  replacementPhoto =
-    null;
-
-  evidenceFile =
-    null;
-
-  if (updateInspectionPhoto) {
-
-    updateInspectionPhoto.value =
-      "";
-  }
-
-  if (updateEvidence) {
-
-    updateEvidence.value =
-      "";
-  }
-
-  /*
-    Cancel dari Update kembali ke Detail
-    sesuai alur referensi.
-  */
-
-  if (selectedRecord) {
-
-    fillDetailModal(
-      selectedRecord
-    );
-
-    if (detailModal) {
-
-      detailModal.hidden =
-        false;
-    }
-
-    setMainShortcutVisible(
-      false
-    );
-
-  } else {
-
-    setMainShortcutVisible(
-      true
-    );
-  }
 
   updateBodyModalState();
 }
 
 
-// =====================================================
-// FILL UPDATE FORM
-// =====================================================
+/* =====================================================
+   CANCEL DELETE
+===================================================== */
 
-function fillUpdateForm(
-  record
-) {
+function cancelDelete() {
 
-  replacementPhoto =
-    null;
+  if (deleteModal) {
 
-  evidenceFile =
-    null;
-
-  if (updateInspectionPhoto) {
-    updateInspectionPhoto.value =
-      "";
-  }
-
-  if (updateEvidence) {
-    updateEvidence.value =
-      "";
-  }
-
-  updateInspectionId.value =
-    record.id ||
-    "";
-
-  ensureSelectOption(
-    updateUnitCode,
-    record.unitCode
-  );
-
-  updateUnitCode.value =
-    record.unitCode ||
-    "";
-
-  updateHmInspection.value =
-    record.hmInspection ||
-    "";
-
-  updateDateInspection.value =
-    record.dateInspection ||
-    "";
-
-  updateInspectionPhotoPreview.src =
-    getDriveImageUrl(
-      record.photo
-    );
-
-  updateInspectionPhotoPreview.onerror =
-    function () {
-
-      this.onerror =
-        null;
-
-      this.src =
-        createPhotoPlaceholder();
-    };
-
-  ensureSelectOption(
-    updateGroupComponent,
-    record.groupComponent
-  );
-
-  updateGroupComponent.value =
-    record.groupComponent ||
-    "";
-
-  updateProblemDescription.value =
-    record.problemDescription ||
-    "";
-
-  setRatingSelection(
-    record.rating
-  );
-
-  // ===================================================
-  // PART REQUIREMENT
-  // DATABASE MULTILINE -> REPEATING FIELD
-  // ===================================================
-
-  loadUpdatePartRequirements(
-
-    record.partsDescription || "",
-
-    record.partNo || "",
-
-    record.quantity || ""
-
-  );
-
-  updateNotes.value =
-    record.notes ||
-    "";
-
-  updateMol.value =
-    record.mol ||
-    "Belum";
-
-  setPartsStatusSelection(
-    record.partsStatus
-  );
-
-  updateStatus.value =
-    record.status ||
-    "OPEN";
-
-  updateActionProblems.value =
-    record.actionProblems ||
-    "";
-
-  updateHmAction.value =
-    record.hmAction ||
-    "";
-
-  updateDateAction.value =
-    record.dateAction ||
-    "";
-
-  updateManPower.value =
-    record.manPower ||
-    "";
-
-  updateEvidenceDisplay(
-    record.evidence
-  );
-}
-
-
-// =====================================================
-// UNIT OPTIONS
-// =====================================================
-
-function populateUpdateUnitOptions() {
-
-  if (!updateUnitCode) {
-    return;
-  }
-
-  const units =
-    [
-      ...new Set(
-
-        outstandingData
-          .map(
-            function (item) {
-
-              return (
-                item.unitCode ||
-                ""
-              ).trim();
-            }
-          )
-          .filter(Boolean)
-
-      )
-    ].sort();
-
-  updateUnitCode.innerHTML =
-    `<option value="">Select Unit</option>`;
-
-  units.forEach(
-    function (unit) {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-      option.value =
-        unit;
-
-      option.textContent =
-        unit;
-
-      updateUnitCode.appendChild(
-        option
-      );
-    }
-  );
-}
-
-
-// =====================================================
-// RATING
-// =====================================================
-
-function handleRatingSelection(
-  event
-) {
-
-  const button =
-    event.target.closest(
-      ".rating-button"
-    );
-
-  if (!button) {
-    return;
-  }
-
-  setRatingSelection(
-    button.dataset.rating ||
-    ""
-  );
-}
-
-
-function setRatingSelection(
-  rating
-) {
-
-  selectedRating =
-    rating ||
-    "";
-
-  if (updateRating) {
-
-    updateRating.value =
-      selectedRating;
-  }
-
-  updateRatingGrid
-    ?.querySelectorAll(
-      ".rating-button"
-    )
-    .forEach(
-      function (button) {
-
-        button.classList.toggle(
-          "selected",
-          button.dataset.rating ===
-            selectedRating
-        );
-      }
-    );
-}
-
-// =====================================================
-// PART REQUIREMENT
-// =====================================================
-
-function splitMultilineValue(
-  value
-) {
-
-  if (
-    value === null ||
-    value === undefined ||
-    value === ""
-  ) {
-
-    return [];
-  }
-
-
-  return String(value)
-    .replace(/\r\n/g, "\n")
-    .replace(/\r/g, "\n")
-    .split("\n");
-}
-
-
-// =====================================================
-// CREATE PART ITEM
-// =====================================================
-
-function createUpdatePartItem(
-  partDescription = "",
-  partNo = "",
-  quantity = ""
-) {
-
-  const item =
-    document.createElement(
-      "div"
-    );
-
-
-  item.className =
-    "update-part-requirement-item";
-
-
-  item.innerHTML = `
-
-    <div class="update-part-item-header">
-
-      <div class="update-part-item-title">
-        Part
-      </div>
-
-      <button
-        type="button"
-        class="update-remove-part-button"
-        aria-label="Remove Part"
-      >
-        Remove Part
-      </button>
-
-    </div>
-
-
-    <div class="update-part-field">
-
-      <label>
-        Part Description
-      </label>
-
-      <input
-        type="text"
-        class="update-part-description-input"
-        autocomplete="off"
-        placeholder="Input Part Description"
-      >
-
-    </div>
-
-
-    <div class="update-part-row">
-
-
-      <div
-        class="
-          update-part-field
-          update-part-no-field
-        "
-      >
-
-        <label>
-          Part No.
-        </label>
-
-        <input
-          type="text"
-          class="update-part-no-input"
-          autocomplete="off"
-          placeholder="Input Part No."
-        >
-
-      </div>
-
-
-      <div
-        class="
-          update-part-field
-          update-part-quantity-field
-        "
-      >
-
-        <label>
-          Qty
-        </label>
-
-        <input
-          type="number"
-          class="update-part-quantity-input"
-          min="0"
-          step="1"
-          inputmode="numeric"
-          placeholder="0"
-        >
-
-      </div>
-
-
-    </div>
-
-  `;
-
-
-  const descriptionInput =
-    item.querySelector(
-      ".update-part-description-input"
-    );
-
-
-  const partNoInput =
-    item.querySelector(
-      ".update-part-no-input"
-    );
-
-
-  const quantityInput =
-    item.querySelector(
-      ".update-part-quantity-input"
-    );
-
-
-  if (descriptionInput) {
-
-    descriptionInput.value =
-      partDescription || "";
-  }
-
-
-  if (partNoInput) {
-
-    partNoInput.value =
-      partNo || "";
-  }
-
-
-  if (quantityInput) {
-
-    quantityInput.value =
-      quantity || "";
-  }
-
-
-  return item;
-}
-
-
-// =====================================================
-// GET ALL PART ITEMS
-// =====================================================
-
-function getUpdatePartItems() {
-
-  if (!updatePartRequirementList) {
-    return [];
-  }
-
-
-  return Array.from(
-    updatePartRequirementList
-      .querySelectorAll(
-        ".update-part-requirement-item"
-      )
-  );
-}
-
-
-// =====================================================
-// RENUMBER PARTS
-// =====================================================
-
-function renumberUpdateParts() {
-
-  const items =
-    getUpdatePartItems();
-
-
-  items.forEach(
-    function (
-      item,
-      index
-    ) {
-
-      const number =
-        index + 1;
-
-
-      item.dataset.partIndex =
-        String(number);
-
-
-      const title =
-        item.querySelector(
-          ".update-part-item-title"
-        );
-
-
-      if (title) {
-
-        title.textContent =
-          "Part " + number;
-      }
-
-
-      const removeButton =
-        item.querySelector(
-          ".update-remove-part-button"
-        );
-
-
-      if (removeButton) {
-
-        removeButton.setAttribute(
-          "aria-label",
-          "Remove Part " + number
-        );
-      }
-
-    }
-  );
-}
-
-
-// =====================================================
-// CLEAR ONE PART
-// =====================================================
-
-function clearUpdatePartItem(
-  item
-) {
-
-  if (!item) {
-    return;
-  }
-
-
-  const descriptionInput =
-    item.querySelector(
-      ".update-part-description-input"
-    );
-
-
-  const partNoInput =
-    item.querySelector(
-      ".update-part-no-input"
-    );
-
-
-  const quantityInput =
-    item.querySelector(
-      ".update-part-quantity-input"
-    );
-
-
-  if (descriptionInput) {
-    descriptionInput.value = "";
-  }
-
-
-  if (partNoInput) {
-    partNoInput.value = "";
-  }
-
-
-  if (quantityInput) {
-    quantityInput.value = "";
-  }
-
-
-  syncUpdatePartDatabaseFields();
-}
-
-
-// =====================================================
-// ADD NEW PART
-// =====================================================
-
-function addUpdatePart(
-  partDescription = "",
-  partNo = "",
-  quantity = ""
-) {
-
-  if (!updatePartRequirementList) {
-    return;
-  }
-
-
-  const item =
-    createUpdatePartItem(
-      partDescription,
-      partNo,
-      quantity
-    );
-
-
-  updatePartRequirementList
-    .appendChild(
-      item
-    );
-
-
-  renumberUpdateParts();
-
-  syncUpdatePartDatabaseFields();
-
-
-  /*
-    Jika Add Part ditekan manual,
-    fokus langsung ke Part Description baru.
-  */
-
-  if (
-    !partDescription &&
-    !partNo &&
-    !quantity
-  ) {
-
-    item
-      .querySelector(
-        ".update-part-description-input"
-      )
-      ?.focus();
-  }
-}
-
-
-// =====================================================
-// LOAD DATABASE -> REPEATING PART
-// =====================================================
-
-function loadUpdatePartRequirements(
-  partsDescription,
-  partNo,
-  quantity
-) {
-
-  if (!updatePartRequirementList) {
-    return;
-  }
-
-
-  const descriptions =
-    splitMultilineValue(
-      partsDescription
-    );
-
-
-  const partNumbers =
-    splitMultilineValue(
-      partNo
-    );
-
-
-  const quantities =
-    splitMultilineValue(
-      quantity
-    );
-
-
-  /*
-    Jumlah card mengikuti field dengan
-    jumlah baris terbanyak.
-
-    Contoh:
-
-    Description = 3
-    Part No      = 2
-    Quantity     = 3
-
-    Maka tetap dibuat 3 Part.
-  */
-
-  const totalParts =
-    Math.max(
-      1,
-      descriptions.length,
-      partNumbers.length,
-      quantities.length
-    );
-
-
-  updatePartRequirementList.innerHTML =
-    "";
-
-
-  for (
-    let index = 0;
-    index < totalParts;
-    index++
-  ) {
-
-    const item =
-      createUpdatePartItem(
-
-        descriptions[index] || "",
-
-        partNumbers[index] || "",
-
-        quantities[index] || ""
-
-      );
-
-
-    updatePartRequirementList
-      .appendChild(
-        item
-      );
-  }
-
-
-  renumberUpdateParts();
-
-  syncUpdatePartDatabaseFields();
-}
-
-
-// =====================================================
-// COLLECT REPEATING PART
-// =====================================================
-
-function collectUpdatePartRequirements() {
-
-  const items =
-    getUpdatePartItems();
-
-
-  const validParts =
-    [];
-
-
-  items.forEach(
-    function (item) {
-
-      const partDescription =
-        item
-          .querySelector(
-            ".update-part-description-input"
-          )
-          ?.value
-          .trim() || "";
-
-
-      const partNo =
-        item
-          .querySelector(
-            ".update-part-no-input"
-          )
-          ?.value
-          .trim() || "";
-
-
-      const quantity =
-        item
-          .querySelector(
-            ".update-part-quantity-input"
-          )
-          ?.value
-          .trim() || "";
-
-
-      /*
-        Card yang benar-benar kosong
-        tidak perlu masuk database.
-
-        Card yang hanya terisi salah satu
-        field tetap dipertahankan agar
-        alignment tidak rusak.
-      */
-
-      if (
-        !partDescription &&
-        !partNo &&
-        !quantity
-      ) {
-
-        return;
-      }
-
-
-      validParts.push({
-
-        partDescription:
-          partDescription,
-
-        partNo:
-          partNo,
-
-        quantity:
-          quantity
-
-      });
-
-    }
-  );
-
-
-  return {
-
-    partsDescription:
-      validParts
-        .map(
-          function (part) {
-
-            return part.partDescription;
-
-          }
-        )
-        .join("\n"),
-
-
-    partNo:
-      validParts
-        .map(
-          function (part) {
-
-            return part.partNo;
-
-          }
-        )
-        .join("\n"),
-
-
-    quantity:
-      validParts
-        .map(
-          function (part) {
-
-            return part.quantity;
-
-          }
-        )
-        .join("\n")
-
-  };
-}
-
-
-// =====================================================
-// SYNC REPEATING PART -> HIDDEN DATABASE FIELD
-// =====================================================
-
-function syncUpdatePartDatabaseFields() {
-
-  const parts =
-    collectUpdatePartRequirements();
-
-
-  if (updatePartsDescription) {
-
-    updatePartsDescription.value =
-      parts.partsDescription;
-  }
-
-
-  if (updatePartNo) {
-
-    updatePartNo.value =
-      parts.partNo;
-  }
-
-
-  if (updateQuantity) {
-
-    updateQuantity.value =
-      parts.quantity;
-  }
-
-
-  return parts;
-}
-
-
-// =====================================================
-// DETAIL PART SUMMARY
-// =====================================================
-
-function formatPartSummary(
-  value
-) {
-
-  if (!value) {
-    return "-";
-  }
-
-
-  const parts =
-    String(value)
-      .replace(/\r\n/g, "\n")
-      .replace(/\r/g, "\n")
-      .split("\n")
-      .map(
-        function (item) {
-
-          return item.trim();
-
-        }
-      )
-      .filter(Boolean);
-
-
-  if (parts.length === 0) {
-    return "-";
-  }
-
-
-  if (parts.length <= 3) {
-
-    return parts.join(
-      ", "
-    );
-  }
-
-
-  return (
-    parts
-      .slice(
-        0,
-        3
-      )
-      .join(", ") +
-    ", ...."
-  );
-}
-
-// =====================================================
-// PARTS STATUS
-// =====================================================
-
-function handlePartsStatusSelection(
-  event
-) {
-
-  const button =
-    event.target.closest(
-      ".parts-status-button"
-    );
-
-  if (!button) {
-    return;
-  }
-
-  setPartsStatusSelection(
-    button.dataset.status ||
-    ""
-  );
-}
-
-
-function setPartsStatusSelection(
-  status
-) {
-
-  selectedPartsStatus =
-    status ||
-    "";
-
-  if (updatePartsStatus) {
-
-    updatePartsStatus.value =
-      selectedPartsStatus;
-  }
-
-  partsStatusGrid
-    ?.querySelectorAll(
-      ".parts-status-button"
-    )
-    .forEach(
-      function (button) {
-
-        button.classList.toggle(
-          "selected",
-          button.dataset.status ===
-            selectedPartsStatus
-        );
-      }
-    );
-}
-
-
-// =====================================================
-// HM + / -
-// =====================================================
-
-function bindNumberControl(
-  minusButton,
-  plusButton,
-  input
-) {
-
-  if (
-    !minusButton ||
-    !plusButton ||
-    !input
-  ) {
-    return;
-  }
-
-  minusButton.addEventListener(
-    "click",
-    function () {
-
-      const value =
-        Number(
-          input.value ||
-          0
-        );
-
-      input.value =
-        Math.max(
-          0,
-          value - 1
-        );
-    }
-  );
-
-  plusButton.addEventListener(
-    "click",
-    function () {
-
-      const value =
-        Number(
-          input.value ||
-          0
-        );
-
-      input.value =
-        value + 1;
-    }
-  );
-}
-
-
-// =====================================================
-// REPLACEMENT PHOTO
-// =====================================================
-
-async function handleReplacementPhoto(
-  event
-) {
-
-  const file =
-    event.target.files?.[0];
-
-  if (!file) {
-
-    replacementPhoto =
-      null;
-
-    return;
-  }
-
-  if (
-    !file.type.startsWith(
-      "image/"
-    )
-  ) {
-
-    alert(
-      "Photo harus berupa file gambar."
-    );
-
-    event.target.value =
-      "";
-
-    replacementPhoto =
-      null;
-
-    return;
-  }
-
-  try {
-
-    replacementPhoto =
-      await compressImageFile(
-        file
-      );
-
-    updateInspectionPhotoPreview.src =
-      replacementPhoto.previewUrl;
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    alert(
-      "Photo gagal diproses."
-    );
-
-    event.target.value =
-      "";
-
-    replacementPhoto =
-      null;
-  }
-}
-
-
-// =====================================================
-// EVIDENCE
-// =====================================================
-
-async function handleEvidenceFile(
-  event
-) {
-
-  const file =
-    event.target.files?.[0];
-
-  if (!file) {
-
-    evidenceFile =
-      null;
-
-    evidenceFileText.textContent =
-      "Upload Photo / PDF";
-
-    return;
-  }
-
-  const allowed =
-    [
-
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-      "image/webp",
-      "application/pdf"
-
-    ];
-
-  if (
-    !allowed.includes(
-      file.type
-    )
-  ) {
-
-    alert(
-      "Evidence hanya mendukung JPG, PNG, WEBP atau PDF."
-    );
-
-    event.target.value =
-      "";
-
-    evidenceFile =
-      null;
-
-    return;
-  }
-
-  try {
-
-    /*
-      Evidence image juga dikompres supaya payload
-      Apps Script lebih ringan.
-
-      PDF dibaca langsung tanpa kompresi.
-    */
-
-    if (
-      file.type.startsWith(
-        "image/"
-      )
-    ) {
-
-      const compressed =
-        await compressImageFile(
-          file
-        );
-
-      evidenceFile = {
-
-        base64:
-          compressed.base64,
-
-        mimeType:
-          compressed.mimeType,
-
-        name:
-          file.name
-
-      };
-
-    } else {
-
-      const base64 =
-        await fileToBase64(
-          file
-        );
-
-      evidenceFile = {
-
-        base64:
-          base64,
-
-        mimeType:
-          file.type,
-
-        name:
-          file.name
-
-      };
-    }
-
-    evidenceFileText.textContent =
-      file.name;
-
-    /*
-      Preview MOL di form.
-      Backend tetap penentu final.
-    */
-
-    if (updateMol) {
-
-      updateMol.value =
-        "Submitted";
-    }
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    alert(
-      "Evidence gagal diproses."
-    );
-
-    event.target.value =
-      "";
-
-    evidenceFile =
-      null;
-  }
-}
-
-
-function updateEvidenceDisplay(
-  evidenceUrl
-) {
-
-  if (!existingEvidence) {
-    return;
-  }
-
-  existingEvidence.innerHTML =
-    "";
-
-  if (!evidenceUrl) {
-
-    existingEvidence.hidden =
+    deleteModal.hidden =
       true;
-
-    if (evidenceFileText) {
-
-      evidenceFileText.textContent =
-        "Upload Photo / PDF";
-    }
-
-    return;
   }
 
-  existingEvidence.hidden =
+
+  /*
+    Sesuai kebutuhan:
+    No = clear checks + exit delete mode.
+  */
+
+  deleteMode =
     false;
 
-  const label =
-    document.createElement(
-      "span"
-    );
+  selectedDeleteIds.clear();
 
-  label.textContent =
-    "Evidence sudah tersedia";
 
-  existingEvidence.appendChild(
-    label
+  setMainShortcutVisible(
+    true
   );
 
-  if (evidenceFileText) {
 
-    evidenceFileText.textContent =
-      "Replace Evidence";
-  }
+  updateBodyModalState();
+
+
+  renderUnitHistory(
+    filteredUnitHistoryData
+  );
 }
 
 
-// =====================================================
-// SUBMIT UPDATE
-// =====================================================
+/* =====================================================
+   CONFIRM DELETE
+===================================================== */
 
-async function submitOutstandingUpdate(
-  event
-) {
+async function confirmDelete() {
 
-  event.preventDefault();
-
-  if (!selectedRecord) {
-
-    alert(
-      "Data Outstanding tidak ditemukan."
+  const inspectionIds =
+    Array.from(
+      selectedDeleteIds
     );
 
-    return;
-  }
 
-  const inspectionId =
-    updateInspectionId.value
-      .trim();
+  if (
+    inspectionIds.length === 0
+  ) {
 
-  const unitCode =
-    updateUnitCode.value
-      .trim();
-
-  const hmInspection =
-    updateHmInspection.value
-      .trim();
-
-  const dateInspection =
-    updateDateInspection.value
-      .trim();
-
-  const groupComponent =
-    updateGroupComponent.value
-      .trim();
-
-  const problemDescription =
-    updateProblemDescription.value
-      .trim();
-
-  const rating =
-    updateRating.value
-      .trim();
-
-  if (!unitCode) {
-
-    alert(
-      "Unit Code wajib diisi."
-    );
-
-    return;
-  }
-
-  if (!hmInspection) {
-
-    alert(
-      "HM Inspection wajib diisi."
-    );
-
-    return;
-  }
-
-  if (!dateInspection) {
-
-    alert(
-      "Date Inspection wajib diisi."
-    );
-
-    return;
-  }
-
-  if (!groupComponent) {
-
-    alert(
-      "Group Component wajib diisi."
-    );
-
-    return;
-  }
-
-  if (!problemDescription) {
-
-    alert(
-      "Problem Description wajib diisi."
-    );
-
-    return;
-  }
-
-   if (!rating) {
-
-    alert(
-      "Rating wajib dipilih."
-    );
+    cancelDelete();
 
     return;
   }
 
 
-  // ===================================================
-  // PART REQUIREMENT
-  // REPEATING FIELD -> MULTILINE DATABASE
-  // ===================================================
+  if (deleteYesButton) {
 
-  const partRequirement =
-    syncUpdatePartDatabaseFields();
+    deleteYesButton.disabled =
+      true;
 
-
-  const payload = {
-
-    action:
-      "updateDailyOutstanding",
-
-    inspectionId:
-      inspectionId,
-
-    unitCode:
-      unitCode,
-
-    hmInspection:
-      hmInspection,
-
-    dateInspection:
-      dateInspection,
-
-    groupComponent:
-      groupComponent,
-
-    problemDescription:
-      problemDescription,
-
-    rating:
-      rating,
-
-    partsDescription:
-      partRequirement
-        .partsDescription,
-
-    partNo:
-      partRequirement
-        .partNo,
-
-    quantity:
-      partRequirement
-        .quantity,
-
-    notes:
-      updateNotes.value
-        .trim(),
-
-    partsStatus:
-      updatePartsStatus.value
-        .trim(),
-
-    actionProblems:
-      updateActionProblems.value
-        .trim(),
-
-    hmAction:
-      updateHmAction.value
-        .trim(),
-
-    dateAction:
-      updateDateAction.value
-        .trim(),
-
-    manPower:
-      updateManPower.value
-        .trim()
-
-  };
-
-
-  // PHOTO BARU
-
-  if (replacementPhoto) {
-
-    payload.photoBase64 =
-      replacementPhoto.base64;
-
-    payload.photoMimeType =
-      replacementPhoto.mimeType;
+    deleteYesButton.textContent =
+      "Deleting...";
   }
 
 
-  // EVIDENCE BARU
+  if (deleteNoButton) {
 
-  if (evidenceFile) {
-
-    payload.evidenceBase64 =
-      evidenceFile.base64;
-
-    payload.evidenceMimeType =
-      evidenceFile.mimeType;
+    deleteNoButton.disabled =
+      true;
   }
 
-
-  setUpdateLoading(
-    true
-  );
 
   try {
 
     const result =
-      await apiRequest(
-        payload
-      );
+      await apiRequest({
+
+        action:
+          "deleteUnitHistory",
+
+        inspectionIds:
+          inspectionIds
+
+      });
+
 
     if (
       !result ||
@@ -3740,313 +4707,1519 @@ async function submitOutstandingUpdate(
 
       throw new Error(
         result?.message ||
-        "Update Outstanding gagal."
+        "Data Unit History gagal dihapus."
       );
     }
 
-    /*
-      Backend yang menentukan MOL dan Status.
-    */
 
-    const finalStatus =
-      result.status ||
-      result.data?.status ||
-      "OPEN";
+    if (deleteModal) {
 
-    const finalMol =
-      result.mol ||
-      result.data?.mol ||
-      "Belum";
-
-
-    alert(
-      result.message ||
-      (
-        "Outstanding berhasil diupdate.\n" +
-        "MOL: " +
-        finalMol +
-        "\nStatus: " +
-        finalStatus
-      )
-    );
-
-
-    // Tutup semua modal
-
-    if (updateModal) {
-
-      updateModal.hidden =
+      deleteModal.hidden =
         true;
     }
 
-    if (detailModal) {
 
-      detailModal.hidden =
-        true;
-    }
+    deleteMode =
+      false;
 
-    selectedRecord =
-      null;
+    selectedDeleteIds.clear();
 
-    replacementPhoto =
-      null;
-
-    evidenceFile =
-      null;
 
     setMainShortcutVisible(
       true
     );
 
+
     updateBodyModalState();
 
 
-    /*
-      Reload list dari server.
+    alert(
+      result.message ||
+      (
+        inspectionIds.length +
+        " data berhasil dihapus."
+      )
+    );
 
-      Jika Action Problems terisi dan backend
-      mengubah Status menjadi CLOSE,
-      record otomatis tidak kembali karena
-      getDailyOutstanding hanya mengirim OPEN.
+
+    /*
+      Ambil ulang database setelah delete.
     */
 
-    await loadDailyOutstanding();
+    await loadUnitHistory();
+
 
   } catch (error) {
 
     console.error(
-      "Update Outstanding:",
+      "Delete Unit History:",
       error
     );
 
+
     alert(
       error.message ||
-      "Update Outstanding gagal."
+      "Data Unit History gagal dihapus."
     );
+
 
   } finally {
 
-    setUpdateLoading(
+    if (deleteYesButton) {
+
+      deleteYesButton.disabled =
+        false;
+
+      deleteYesButton.textContent =
+        "Yes";
+    }
+
+
+    if (deleteNoButton) {
+
+      deleteNoButton.disabled =
+        false;
+    }
+  }
+}
+
+
+
+/* =====================================================
+   PRINT CURRENT FILTERED RESULT
+===================================================== */
+
+function printCurrentHistory() {
+
+  if (
+    !filteredUnitHistoryData ||
+    filteredUnitHistoryData.length === 0
+  ) {
+
+    alert(
+      "Tidak ada data untuk dicetak."
+    );
+
+    return;
+  }
+
+
+  const printWindow =
+    window.open(
+      "",
+      "_blank"
+    );
+
+
+  if (!printWindow) {
+
+    alert(
+      "Browser memblokir jendela Print."
+    );
+
+    return;
+  }
+
+
+  /* ===================================================
+     CURRENT USER
+  =================================================== */
+
+  let printUserId = "-";
+
+  try {
+
+    const storedUser =
+      JSON.parse(
+        sessionStorage.getItem(
+          "hexaUser"
+        ) || "{}"
+      );
+
+    printUserId =
+      storedUser.userId ||
+      storedUser.userID ||
+      storedUser.userid ||
+      storedUser["USER ID"] ||
+      storedUser.id ||
+      "-";
+
+  } catch (error) {
+
+    printUserId = "-";
+  }
+
+
+  /* ===================================================
+     ASSET URL
+     Dibuat absolute supaya tetap terbaca di print window.
+  =================================================== */
+
+  const hrsLogoUrl =
+  new URL(
+    "hexa-icon-logo-hrsheaderprint.png",
+    window.location.href
+  ).href;
+
+
+  const hexaLogoUrl =
+    new URL(
+      "hexa-logo-header.png",
+      window.location.href
+    ).href;
+
+
+  /* ===================================================
+     PRINT PART CELL
+     Semua multiline dipertahankan berdasarkan index.
+  =================================================== */
+
+  function splitPrintPartValue(value) {
+
+    if (
+      value === null ||
+      value === undefined ||
+      value === ""
+    ) {
+      return [];
+    }
+
+    return String(value)
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .split("\n");
+  }
+
+
+  function buildPrintPartCell(
+    values,
+    totalParts,
+    type
+  ) {
+
+    let html =
+      `<div class="print-part-list ${type}">`;
+
+
+    for (
+      let index = 0;
+      index < totalParts;
+      index++
+    ) {
+
+      const value =
+        values[index] !== undefined
+          ? String(values[index]).trim()
+          : "";
+
+
+      html += `
+        <div class="print-part-line">
+          ${
+            value
+              ? escapeHtml(value)
+              : '<span class="print-empty">-</span>'
+          }
+        </div>
+      `;
+    }
+
+
+    html += "</div>";
+
+    return html;
+  }
+
+
+  /* ===================================================
+     TABLE ROWS
+  =================================================== */
+
+  const rows =
+    filteredUnitHistoryData
+      .map(
+        function (record) {
+
+          const descriptions =
+            splitPrintPartValue(
+              record.partsDescription
+            );
+
+          const partNumbers =
+            splitPrintPartValue(
+              record.partNo
+            );
+
+          const quantities =
+            splitPrintPartValue(
+              record.quantity
+            );
+
+
+          const totalParts =
+            Math.max(
+              1,
+              descriptions.length,
+              partNumbers.length,
+              quantities.length
+            );
+
+
+          const descriptionHtml =
+            buildPrintPartCell(
+              descriptions,
+              totalParts,
+              "description"
+            );
+
+
+          const partNoHtml =
+            buildPrintPartCell(
+              partNumbers,
+              totalParts,
+              "part-number"
+            );
+
+
+          const quantityHtml =
+            buildPrintPartCell(
+              quantities,
+              totalParts,
+              "quantity"
+            );
+
+
+          return `
+            <tr class="history-record">
+
+              <td>
+                ${escapeHtml(record.unitCode)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.hmInspection)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.groupComponent)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.problemDescription)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.rating)}
+              </td>
+
+              <td>
+                ${escapeHtml(record.status)}
+              </td>
+
+              <td class="part-cell">
+                ${descriptionHtml}
+              </td>
+
+              <td class="part-cell">
+                ${partNoHtml}
+              </td>
+
+              <td class="part-cell qty-cell">
+                ${quantityHtml}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  getMolDisplay(record)
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(record.partsStatus)}
+              </td>
+
+            </tr>
+          `;
+        }
+      )
+      .join("");
+
+
+  const generatedDate =
+    new Date()
+      .toLocaleString(
+        "id-ID"
+      );
+
+
+  /* ===================================================
+     PRINT DOCUMENT
+  =================================================== */
+
+  printWindow.document.write(`
+    <!DOCTYPE html>
+
+    <html lang="id">
+
+    <head>
+
+      <meta charset="UTF-8">
+
+      <title>HEXA - Unit History</title>
+
+      <style>
+
+        @page {
+          size: A4 landscape;
+
+          margin:
+            10mm
+            9mm
+            14mm
+            9mm;
+        }
+
+
+        * {
+          box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+
+          font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+          color: #222;
+
+          background: #fff;
+        }
+
+
+        body {
+          position: relative;
+
+          padding-bottom: 18px;
+        }
+
+
+        /* =============================================
+           MAIN TABLE
+        ============================================= */
+
+        table {
+          width: 100%;
+
+          border-collapse: collapse;
+
+          table-layout: fixed;
+
+          font-size: 7.5px;
+        }
+
+
+        thead {
+          display: table-header-group;
+        }
+
+
+        tbody {
+          display: table-row-group;
+        }
+
+
+        /* =============================================
+           REPEATING PRINT HEADER
+        ============================================= */
+
+        .print-header-row th {
+          padding: 0 0 8px 0;
+
+          border: 0;
+
+          background: #fff;
+
+          color: #222;
+        }
+
+
+        .print-header {
+          width: 100%;
+
+          display: flex;
+
+          align-items: center;
+          justify-content: space-between;
+
+          gap: 20px;
+
+          padding-bottom: 7px;
+
+          border-bottom:
+            2px solid #111;
+        }
+
+
+        .print-header-left {
+          min-width: 0;
+
+          text-align: left;
+        }
+
+
+        .print-title {
+          margin: 0;
+
+          font-size: 20px;
+          line-height: 1.15;
+
+          font-weight: 800;
+
+          color: #111;
+        }
+
+
+        .print-meta {
+          margin-top: 4px;
+
+          font-size: 8px;
+          line-height: 1.3;
+
+          font-weight: 400;
+
+          color: #666;
+        }
+
+
+        .print-header-logos {
+          flex-shrink: 0;
+
+          display: flex;
+
+          align-items: center;
+
+          gap: 12px;
+        }
+
+
+        .print-header-logos img {
+          display: block;
+
+          width: auto;
+
+          object-fit: contain;
+        }
+
+
+        .print-logo-hrs {
+           width: auto;
+           height: 31px;
+           object-fit: contain;
+      }
+
+
+        .print-logo-hexa {
+           width: auto;
+           height: 31px;
+           object-fit: contain;
+        }
+
+
+        /* =============================================
+           COLUMN HEADER
+        ============================================= */
+
+        .column-header th {
+          padding: 5px 4px;
+
+          border:
+            1px solid #777;
+
+          background: #111;
+
+          color: #fff;
+
+          font-size: 7px;
+          line-height: 1.15;
+
+          font-weight: 700;
+
+          text-align: left;
+
+          vertical-align: middle;
+        }
+
+
+        /* =============================================
+           BODY
+        ============================================= */
+
+        tbody td {
+          padding: 5px 4px;
+
+          border:
+            1px solid #aaa;
+
+          background: #fff;
+
+          color: #222;
+
+          vertical-align: top;
+
+          line-height: 1.25;
+
+          text-align: left;
+
+          word-break: break-word;
+
+          overflow-wrap: anywhere;
+        }
+
+
+        /*
+          Semua informasi record dimulai dari atas,
+          bukan vertical center.
+        */
+
+        tbody tr.history-record > td {
+          vertical-align: top !important;
+        }
+
+
+        /*
+          Sebisa mungkin satu inspection tidak
+          dipotong antar halaman.
+        */
+
+        tbody tr.history-record {
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+
+
+        /* =============================================
+           COLUMN WIDTH
+        ============================================= */
+
+        .column-header th:nth-child(1) {
+          width: 8%;
+        }
+
+        .column-header th:nth-child(2) {
+          width: 8%;
+        }
+
+        .column-header th:nth-child(3) {
+          width: 11%;
+        }
+
+        .column-header th:nth-child(4) {
+          width: 17%;
+        }
+
+        .column-header th:nth-child(5) {
+          width: 7%;
+        }
+
+        .column-header th:nth-child(6) {
+          width: 7%;
+        }
+
+        .column-header th:nth-child(7) {
+          width: 15%;
+        }
+
+        .column-header th:nth-child(8) {
+          width: 11%;
+        }
+
+        .column-header th:nth-child(9) {
+          width: 5%;
+        }
+
+        .column-header th:nth-child(10) {
+          width: 5%;
+        }
+
+        .column-header th:nth-child(11) {
+          width: 6%;
+        }
+
+
+        /* =============================================
+           PART REQUIREMENT
+        ============================================= */
+
+        td.part-cell {
+          padding-top: 3px;
+          padding-bottom: 3px;
+        }
+
+
+        .print-part-list {
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+
+          gap: 0;
+        }
+
+
+        .print-part-line {
+          min-height: 19px;
+
+          display: flex;
+          align-items: flex-start;
+
+          padding:
+            3px
+            0;
+
+          border-bottom:
+            1px solid #e1e1e1;
+
+          line-height: 13px;
+
+          text-align: left;
+        }
+
+
+        .print-part-line:last-child {
+          border-bottom: 0;
+        }
+
+
+        .print-part-list.quantity
+        .print-part-line {
+          justify-content: center;
+
+          text-align: center;
+        }
+
+
+        td.qty-cell {
+          text-align: center;
+        }
+
+
+        .print-empty {
+          color: #999;
+        }
+
+
+        /* =============================================
+           USER FOOTER
+        ============================================= */
+
+        .print-user-footer {
+          position: fixed;
+
+          left: 0;
+          bottom: -8mm;
+
+          font-size: 7px;
+          line-height: 1;
+
+          color: #555;
+        }
+
+
+        /* =============================================
+           PRINT
+        ============================================= */
+
+        @media print {
+
+          .print-header-row {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+
+          .column-header {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+
+        }
+
+      </style>
+
+    </head>
+
+
+    <body>
+
+
+      <table>
+
+        <thead>
+
+
+          <!-- ========================================
+               HEADER INI DIULANG SETIAP HALAMAN
+          ========================================= -->
+
+          <tr class="print-header-row">
+
+            <th colspan="11">
+
+              <div class="print-header">
+
+                <div class="print-header-left">
+
+                  <div class="print-title">
+                    HEXA - Unit History
+                  </div>
+
+                  <div class="print-meta">
+
+                    ${filteredUnitHistoryData.length}
+                    records
+
+                    &nbsp;•&nbsp;
+
+                    Printed
+                    ${escapeHtml(generatedDate)}
+
+                  </div>
+
+                </div>
+
+
+                <div class="print-header-logos">
+
+                  <img
+                    class="print-logo-hrs"
+                    src="${escapeHtml(hrsLogoUrl)}"
+                    alt="HRS"
+                  >
+
+                  <img
+                    class="print-logo-hexa"
+                    src="${escapeHtml(hexaLogoUrl)}"
+                    alt="HEXA"
+                  >
+
+                </div>
+
+              </div>
+
+            </th>
+
+          </tr>
+
+
+          <!-- ========================================
+               COLUMN HEADER
+          ========================================= -->
+
+          <tr class="column-header">
+
+            <th>Unit Code</th>
+
+            <th>HM Inspection</th>
+
+            <th>Group Component</th>
+
+            <th>Problem Description</th>
+
+            <th>Rating</th>
+
+            <th>Status</th>
+
+            <th>Parts Description</th>
+
+            <th>Part No</th>
+
+            <th>Qty</th>
+
+            <th>MOL</th>
+
+            <th>Parts Status</th>
+
+          </tr>
+
+
+        </thead>
+
+
+        <tbody>
+
+          ${rows}
+
+        </tbody>
+
+
+      </table>
+
+
+      <!-- USER ID FOOTER -->
+
+      <div class="print-user-footer">
+
+        USER ID :
+        ${escapeHtml(printUserId)}
+
+      </div>
+
+
+      <script>
+
+        window.onload = function () {
+
+          /*
+            Tunggu sebentar agar kedua logo selesai
+            dirender sebelum dialog print dibuka.
+          */
+
+          setTimeout(
+            function () {
+
+              window.print();
+
+            },
+            300
+          );
+
+        };
+
+      <\/script>
+
+
+    </body>
+
+    </html>
+  `);
+
+
+  printWindow.document.close();
+}
+
+/* =====================================================
+   SHORTCUT INITIALIZE
+===================================================== */
+
+function initializeShortcut() {
+
+  if (!startInspectionShortcut) {
+    return;
+  }
+
+
+  restoreShortcutPosition();
+
+
+  startInspectionShortcut.addEventListener(
+    "pointerdown",
+    handleShortcutPointerDown
+  );
+}
+
+
+/* =====================================================
+   SHORTCUT POINTER DOWN
+===================================================== */
+
+function handleShortcutPointerDown(
+  event
+) {
+
+  if (
+    event.button !== undefined &&
+    event.button !== 0
+  ) {
+
+    return;
+  }
+
+
+  const rect =
+    startInspectionShortcut
+      .getBoundingClientRect();
+
+
+  shortcutDragState = {
+
+    pointerId:
+      event.pointerId,
+
+    startX:
+      event.clientX,
+
+    startY:
+      event.clientY,
+
+    startLeft:
+      rect.left,
+
+    startTop:
+      rect.top,
+
+    moved:
       false
+
+  };
+
+
+  startInspectionShortcut
+    .setPointerCapture(
+      event.pointerId
+    );
+
+
+  startInspectionShortcut
+    .addEventListener(
+      "pointermove",
+      handleShortcutPointerMove
+    );
+
+
+  startInspectionShortcut
+    .addEventListener(
+      "pointerup",
+      handleShortcutPointerUp
+    );
+
+
+  startInspectionShortcut
+    .addEventListener(
+      "pointercancel",
+      handleShortcutPointerUp
+    );
+
+
+  event.preventDefault();
+}
+
+
+/* =====================================================
+   SHORTCUT POINTER MOVE
+===================================================== */
+
+function handleShortcutPointerMove(
+  event
+) {
+
+  if (
+    !shortcutDragState ||
+    event.pointerId !==
+      shortcutDragState.pointerId
+  ) {
+
+    return;
+  }
+
+
+  const deltaX =
+    event.clientX -
+    shortcutDragState.startX;
+
+
+  const deltaY =
+    event.clientY -
+    shortcutDragState.startY;
+
+
+  if (
+    Math.abs(deltaX) > 5 ||
+    Math.abs(deltaY) > 5
+  ) {
+
+    shortcutDragState.moved =
+      true;
+  }
+
+
+  const buttonWidth =
+    startInspectionShortcut
+      .offsetWidth;
+
+
+  const buttonHeight =
+    startInspectionShortcut
+      .offsetHeight;
+
+
+  const margin =
+    8;
+
+
+  const maxLeft =
+    Math.max(
+      margin,
+      window.innerWidth -
+      buttonWidth -
+      margin
+    );
+
+
+  const maxTop =
+    Math.max(
+      margin,
+      window.innerHeight -
+      buttonHeight -
+      margin
+    );
+
+
+  const left =
+    clamp(
+      shortcutDragState.startLeft +
+      deltaX,
+      margin,
+      maxLeft
+    );
+
+
+  const top =
+    clamp(
+      shortcutDragState.startTop +
+      deltaY,
+      margin,
+      maxTop
+    );
+
+
+  startInspectionShortcut.style.left =
+    left + "px";
+
+  startInspectionShortcut.style.top =
+    top + "px";
+
+  startInspectionShortcut.style.right =
+    "auto";
+
+  startInspectionShortcut.style.bottom =
+    "auto";
+}
+
+
+/* =====================================================
+   SHORTCUT POINTER UP
+===================================================== */
+
+function handleShortcutPointerUp(
+  event
+) {
+
+  if (
+    !shortcutDragState ||
+    event.pointerId !==
+      shortcutDragState.pointerId
+  ) {
+
+    return;
+  }
+
+
+  const wasMoved =
+    shortcutDragState.moved;
+
+
+  try {
+
+    startInspectionShortcut
+      .releasePointerCapture(
+        event.pointerId
+      );
+
+  } catch (error) {
+
+    /* Ignore */
+  }
+
+
+  startInspectionShortcut
+    .removeEventListener(
+      "pointermove",
+      handleShortcutPointerMove
+    );
+
+
+  startInspectionShortcut
+    .removeEventListener(
+      "pointerup",
+      handleShortcutPointerUp
+    );
+
+
+  startInspectionShortcut
+    .removeEventListener(
+      "pointercancel",
+      handleShortcutPointerUp
+    );
+
+
+  shortcutDragState =
+    null;
+
+
+  if (wasMoved) {
+
+    saveShortcutPosition();
+
+  } else {
+
+    window.location.href =
+      "/start-inspection";
+  }
+}
+
+
+/* =====================================================
+   SAVE SHORTCUT POSITION
+===================================================== */
+
+function saveShortcutPosition() {
+
+  if (!startInspectionShortcut) {
+    return;
+  }
+
+
+  const rect =
+    startInspectionShortcut
+      .getBoundingClientRect();
+
+
+  const position = {
+
+    left:
+      rect.left,
+
+    top:
+      rect.top
+
+  };
+
+
+  try {
+
+    localStorage.setItem(
+      UNIT_HISTORY_SHORTCUT_POSITION_KEY,
+      JSON.stringify(
+        position
+      )
+    );
+
+  } catch (error) {
+
+    console.warn(
+      "Shortcut position tidak dapat disimpan.",
+      error
     );
   }
 }
 
 
-// =====================================================
-// UPDATE LOADING
-// =====================================================
+/* =====================================================
+   RESTORE SHORTCUT POSITION
+===================================================== */
 
-function setUpdateLoading(
-  loading
-) {
+function restoreShortcutPosition() {
 
-  if (!submitUpdateButton) {
+  if (!startInspectionShortcut) {
     return;
   }
 
-  submitUpdateButton.disabled =
-    loading;
 
-  submitUpdateButton.textContent =
-    loading
-      ? "Updating..."
-      : "Update";
+  let savedPosition =
+    null;
 
-  if (cancelUpdateButton) {
 
-    cancelUpdateButton.disabled =
-      loading;
+  try {
+
+    savedPosition =
+      JSON.parse(
+        localStorage.getItem(
+          UNIT_HISTORY_SHORTCUT_POSITION_KEY
+        )
+      );
+
+  } catch (error) {
+
+    savedPosition =
+      null;
+  }
+
+
+  if (
+    !savedPosition ||
+    !Number.isFinite(
+      Number(savedPosition.left)
+    ) ||
+    !Number.isFinite(
+      Number(savedPosition.top)
+    )
+  ) {
+
+    return;
+  }
+
+
+  const width =
+    startInspectionShortcut
+      .offsetWidth ||
+    70;
+
+
+  const height =
+    startInspectionShortcut
+      .offsetHeight ||
+    70;
+
+
+  const margin =
+    8;
+
+
+  const left =
+    clamp(
+      Number(
+        savedPosition.left
+      ),
+      margin,
+      Math.max(
+        margin,
+        window.innerWidth -
+        width -
+        margin
+      )
+    );
+
+
+  const top =
+    clamp(
+      Number(
+        savedPosition.top
+      ),
+      margin,
+      Math.max(
+        margin,
+        window.innerHeight -
+        height -
+        margin
+      )
+    );
+
+
+  startInspectionShortcut.style.left =
+    left + "px";
+
+  startInspectionShortcut.style.top =
+    top + "px";
+
+  startInspectionShortcut.style.right =
+    "auto";
+
+  startInspectionShortcut.style.bottom =
+    "auto";
+}
+
+
+/* =====================================================
+   KEEP SHORTCUT INSIDE VIEWPORT
+===================================================== */
+
+function keepShortcutInsideViewport() {
+
+  if (
+    !startInspectionShortcut ||
+    startInspectionShortcut.hidden
+  ) {
+
+    return;
+  }
+
+
+  const rect =
+    startInspectionShortcut
+      .getBoundingClientRect();
+
+
+  /*
+    Kalau tombol masih menggunakan posisi CSS default,
+    jangan paksa menjadi left/top.
+  */
+
+  const hasCustomPosition =
+    startInspectionShortcut.style.left ||
+    startInspectionShortcut.style.top;
+
+
+  if (!hasCustomPosition) {
+    return;
+  }
+
+
+  const margin =
+    8;
+
+
+  const left =
+    clamp(
+      rect.left,
+      margin,
+      Math.max(
+        margin,
+        window.innerWidth -
+        rect.width -
+        margin
+      )
+    );
+
+
+  const top =
+    clamp(
+      rect.top,
+      margin,
+      Math.max(
+        margin,
+        window.innerHeight -
+        rect.height -
+        margin
+      )
+    );
+
+
+  startInspectionShortcut.style.left =
+    left + "px";
+
+  startInspectionShortcut.style.top =
+    top + "px";
+
+
+  saveShortcutPosition();
+}
+
+
+/* =====================================================
+   SHORTCUT VISIBILITY
+===================================================== */
+
+function setMainShortcutVisible(
+  visible
+) {
+
+  if (!startInspectionShortcut) {
+    return;
+  }
+
+
+  startInspectionShortcut.hidden =
+    !visible;
+}
+
+
+/* =====================================================
+   BODY MODAL STATE
+===================================================== */
+
+function updateBodyModalState() {
+
+  const hasOpenModal =
+
+    (
+      detailModal &&
+      !detailModal.hidden
+    ) ||
+
+    (
+      photoViewer &&
+      !photoViewer.hidden
+    ) ||
+
+    (
+      deleteModal &&
+      !deleteModal.hidden
+    );
+
+
+  document.body.classList.toggle(
+    "modal-open",
+    Boolean(
+      hasOpenModal
+    )
+  );
+}
+
+
+/* =====================================================
+   ESCAPE KEY
+===================================================== */
+
+function handleEscapeKey(
+  event
+) {
+
+  if (
+    event.key !== "Escape"
+  ) {
+
+    return;
+  }
+
+
+  if (
+    photoViewer &&
+    !photoViewer.hidden
+  ) {
+
+    closePhotoViewer();
+
+    return;
+  }
+
+
+  if (
+    deleteModal &&
+    !deleteModal.hidden
+  ) {
+
+    cancelDelete();
+
+    return;
+  }
+
+
+  if (
+    detailModal &&
+    !detailModal.hidden
+  ) {
+
+    closeDetail();
+
+    return;
+  }
+
+
+  if (
+    filterPanel &&
+    !filterPanel.hidden
+  ) {
+
+    closeFilterPanel();
+
+    return;
+  }
+
+
+  if (deleteMode) {
+
+    exitDeleteMode();
   }
 }
 
 
-// =====================================================
-// IMAGE COMPRESSION
-// =====================================================
-
-function compressImageFile(
-  file
-) {
-
-  return new Promise(
-    function (
-      resolve,
-      reject
-    ) {
-
-      const reader =
-        new FileReader();
-
-      reader.onload =
-        function () {
-
-          const image =
-            new Image();
-
-          image.onload =
-            function () {
-
-              const maxDimension =
-                1600;
-
-              let width =
-                image.width;
-
-              let height =
-                image.height;
-
-              if (
-                width >
-                  maxDimension ||
-                height >
-                  maxDimension
-              ) {
-
-                const scale =
-                  Math.min(
-
-                    maxDimension /
-                      width,
-
-                    maxDimension /
-                      height
-
-                  );
-
-                width =
-                  Math.round(
-                    width * scale
-                  );
-
-                height =
-                  Math.round(
-                    height * scale
-                  );
-              }
-
-              const canvas =
-                document.createElement(
-                  "canvas"
-                );
-
-              canvas.width =
-                width;
-
-              canvas.height =
-                height;
-
-              const context =
-                canvas.getContext(
-                  "2d"
-                );
-
-              context.drawImage(
-                image,
-                0,
-                0,
-                width,
-                height
-              );
-
-              const dataUrl =
-                canvas.toDataURL(
-                  "image/jpeg",
-                  0.75
-                );
-
-              resolve({
-
-                base64:
-                  dataUrl,
-
-                mimeType:
-                  "image/jpeg",
-
-                previewUrl:
-                  dataUrl
-
-              });
-            };
-
-          image.onerror =
-            function () {
-
-              reject(
-                new Error(
-                  "Gambar tidak dapat dibaca."
-                )
-              );
-            };
-
-          image.src =
-            reader.result;
-        };
-
-      reader.onerror =
-        function () {
-
-          reject(
-            new Error(
-              "File tidak dapat dibaca."
-            )
-          );
-        };
-
-      reader.readAsDataURL(
-        file
-      );
-    }
-  );
-}
-
-
-// =====================================================
-// FILE TO BASE64
-// =====================================================
-
-function fileToBase64(
-  file
-) {
-
-  return new Promise(
-    function (
-      resolve,
-      reject
-    ) {
-
-      const reader =
-        new FileReader();
-
-      reader.onload =
-        function () {
-
-          resolve(
-            reader.result
-          );
-        };
-
-      reader.onerror =
-        function () {
-
-          reject(
-            new Error(
-              "File tidak dapat dibaca."
-            )
-          );
-        };
-
-      reader.readAsDataURL(
-        file
-      );
-    }
-  );
-}
-
-
-// =====================================================
-// GOOGLE DRIVE IMAGE URL
-// =====================================================
+/* =====================================================
+   GOOGLE DRIVE IMAGE URL
+===================================================== */
 
 function getDriveFileId(
   url
@@ -4056,16 +6229,19 @@ function getDriveFileId(
     return "";
   }
 
+
   const value =
     String(
       url
     );
+
 
   let match =
     value.match(
       /\/d\/([a-zA-Z0-9_-]+)/
     );
 
+
   if (
     match &&
     match[1]
@@ -4073,12 +6249,14 @@ function getDriveFileId(
 
     return match[1];
   }
+
 
   match =
     value.match(
       /[?&]id=([a-zA-Z0-9_-]+)/
     );
 
+
   if (
     match &&
     match[1]
@@ -4086,6 +6264,7 @@ function getDriveFileId(
 
     return match[1];
   }
+
 
   return "";
 }
@@ -4100,15 +6279,18 @@ function getDriveImageUrl(
     return createPhotoPlaceholder();
   }
 
+
   const fileId =
     getDriveFileId(
       url
     );
 
+
   if (!fileId) {
 
     return url;
   }
+
 
   return (
     "https://drive.google.com/thumbnail?id=" +
@@ -4120,67 +6302,54 @@ function getDriveImageUrl(
 }
 
 
-// =====================================================
-// PHOTO PLACEHOLDER
-// =====================================================
+/* =====================================================
+   PHOTO PLACEHOLDER
+===================================================== */
 
 function createPhotoPlaceholder() {
 
-  return (
-    "data:image/svg+xml;charset=UTF-8," +
-    encodeURIComponent(`
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
+  const svg = `
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="600"
+      height="400"
+      viewBox="0 0 600 400"
+    >
+
+      <rect
         width="600"
         height="400"
-        viewBox="0 0 600 400"
+        fill="#ececec"
+      />
+
+      <text
+        x="300"
+        y="200"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-family="Arial"
+        font-size="32"
+        fill="#999999"
       >
-        <rect
-          width="600"
-          height="400"
-          fill="#eeeeee"
-        />
-        <path
-          d="M190 280l75-90 55 65 35-40 65 65H190z"
-          fill="#c7c7c7"
-        />
-        <circle
-          cx="235"
-          cy="135"
-          r="30"
-          fill="#c7c7c7"
-        />
-        <text
-          x="300"
-          y="340"
-          text-anchor="middle"
-          font-family="Arial"
-          font-size="22"
-          fill="#888888"
-        >
-          No Photo
-        </text>
-      </svg>
-    `)
+        No Photo
+      </text>
+
+    </svg>
+  `;
+
+
+  return (
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(
+      svg
+    )
   );
 }
 
 
-// =====================================================
-// HELPERS
-// =====================================================
-
-function normalizeText(
-  value
-) {
-
-  return String(
-    value || ""
-  )
-    .trim()
-    .toLowerCase();
-}
-
+/* =====================================================
+   TEXT HELPER
+===================================================== */
 
 function setText(
   element,
@@ -4191,56 +6360,152 @@ function setText(
     return;
   }
 
+
+  if (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ) {
+
+    element.textContent =
+      "-";
+
+    return;
+  }
+
+
   element.textContent =
-    value ||
-    "-";
+    value;
 }
 
 
-function ensureSelectOption(
-  select,
+/* =====================================================
+   NORMALIZE TEXT
+===================================================== */
+
+function normalizeText(
+  value
+) {
+
+  return String(
+    value ?? ""
+  )
+    .trim()
+    .toLowerCase();
+}
+
+
+/* =====================================================
+   NUMERIC VALUE
+===================================================== */
+
+function parseNumericValue(
   value
 ) {
 
   if (
-    !select ||
-    !value
+    value === null ||
+    value === undefined ||
+    value === ""
   ) {
-    return;
+
+    return NaN;
   }
 
-  const exists =
-    Array.from(
-      select.options
-    ).some(
-      function (option) {
 
-        return (
-          option.value ===
-          value
-        );
-      }
-    );
+  const text =
+    String(value)
+      .trim()
+      .replace(/\s/g, "")
+      .replace(/,/g, "");
 
-  if (!exists) {
 
-    const option =
-      document.createElement(
-        "option"
-      );
-
-    option.value =
-      value;
-
-    option.textContent =
-      value;
-
-    select.appendChild(
-      option
-    );
-  }
+  return Number(
+    text
+  );
 }
 
+
+/* =====================================================
+   DATE NORMALIZATION
+===================================================== */
+
+function normalizeDateValue(
+  value
+) {
+
+  if (!value) {
+    return "";
+  }
+
+
+  const text =
+    String(value)
+      .trim();
+
+
+  /*
+    YYYY-MM-DD
+  */
+
+  if (
+    /^\d{4}-\d{2}-\d{2}$/
+      .test(text)
+  ) {
+
+    return text;
+  }
+
+
+  const date =
+    new Date(
+      text
+    );
+
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "";
+  }
+
+
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
+
+  return (
+    year +
+    "-" +
+    month +
+    "-" +
+    day
+  );
+}
+
+
+/* =====================================================
+   DISPLAY DATE
+===================================================== */
 
 function formatDisplayDate(
   value
@@ -4250,17 +6515,24 @@ function formatDisplayDate(
     return "-";
   }
 
-  const parts =
-    String(
+
+  const normalized =
+    normalizeDateValue(
       value
-    ).split("-");
+    );
 
-  if (
-    parts.length !== 3
-  ) {
 
-    return value;
+  if (!normalized) {
+
+    return String(
+      value
+    );
   }
+
+
+  const parts =
+    normalized.split("-");
+
 
   return (
     parts[2] +
@@ -4272,112 +6544,124 @@ function formatDisplayDate(
 }
 
 
-// =====================================================
-// SHORTCUT VISIBILITY
-// =====================================================
+/* =====================================================
+   CLAMP
+===================================================== */
 
-function setMainShortcutVisible(
-  visible
+function clamp(
+  value,
+  min,
+  max
 ) {
 
-  if (!startInspectionShortcut) {
-    return;
-  }
-
-  startInspectionShortcut.hidden =
-    !visible;
-}
-
-
-// =====================================================
-// BODY MODAL STATE
-// =====================================================
-
-function updateBodyModalState() {
-
-  const hasOpenModal =
-    (
-      detailModal &&
-      !detailModal.hidden
-    ) ||
-    (
-      updateModal &&
-      !updateModal.hidden
-    ) ||
-    (
-      photoViewer &&
-      !photoViewer.hidden
-    );
-
-  document.body.classList.toggle(
-    "modal-open",
-    Boolean(
-      hasOpenModal
-    )
+  return Math.min(
+    Math.max(
+      value,
+      min
+    ),
+    max
   );
 }
 
 
-// =====================================================
-// ESCAPE
-// =====================================================
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-function handleEscapeKey(
-  event
+function escapeHtml(
+  value
 ) {
 
-  if (
-    event.key !==
-    "Escape"
-  ) {
-    return;
-  }
+  return String(
+    value ?? "-"
+  )
 
-  if (
-    photoViewer &&
-    !photoViewer.hidden
-  ) {
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-    closePhotoViewer();
+    .replace(
+      /</g,
+      "&lt;"
+    )
 
-    return;
-  }
+    .replace(
+      />/g,
+      "&gt;"
+    )
 
-  if (
-    updateModal &&
-    !updateModal.hidden
-  ) {
+    .replace(
+      /"/g,
+      "&quot;"
+    )
 
-    closeUpdateForm();
-
-    return;
-  }
-
-  if (
-    detailModal &&
-    !detailModal.hidden
-  ) {
-
-    closeDetail();
-
-    return;
-  }
-
-  if (
-    filterPanel &&
-    !filterPanel.hidden
-  ) {
-
-    closeFilterPanel();
-  }
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 }
+/* =====================================================
+   SHARE CURRENT UNIT HISTORY PDF
+===================================================== */
 
+async function shareCurrentHistoryPdf() {
 
-// =====================================================
-// RESIZE
-// =====================================================
+  if (
+    !filteredUnitHistoryData ||
+    filteredUnitHistoryData.length === 0
+  ) {
+    alert("Tidak ada data untuk dibagikan.");
+    return;
+  }
 
-window.addEventListener(
-  "resize",
-  updateScrollNavigation
-);
+  if (
+    !window.jspdf ||
+    !window.jspdf.jsPDF
+  ) {
+    alert("jsPDF belum dimuat.");
+    return;
+  }
+
+  const jsPDF = window.jspdf.jsPDF;
+
+  const doc = new jsPDF({
+    orientation: "landscape",
+    unit: "mm",
+    format: "a4"
+  });
+
+  doc.setFontSize(18);
+
+  doc.text(
+    "HEXA - Unit History",
+    15,
+    20
+  );
+
+  doc.setFontSize(11);
+
+  doc.text(
+    "PDF Test - A4 Landscape",
+    15,
+    30
+  );
+
+  doc.text(
+    "Total Record: " +
+      filteredUnitHistoryData.length,
+    15,
+    38
+  );
+
+  const pdfBlob = doc.output("blob");
+
+  const pdfUrl =
+    URL.createObjectURL(pdfBlob);
+
+  window.open(
+    pdfUrl,
+    "_blank"
+  );
+
+}
