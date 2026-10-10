@@ -285,9 +285,42 @@ function bcRenderMovement(groups){
   });
   bcKpiMovementChart(visible);
 }
+
+function bcKpiDateRange(){
+  const y=Number(bcKpiEl('bcYear').value),m=Number(bcKpiEl('bcMonth').value);
+  const iso=d=>d.toISOString().slice(0,10);
+  if(bcKpiMode==='monthly')return {startDate:iso(new Date(Date.UTC(y,m-1,1))),endDate:iso(new Date(Date.UTC(y,m,0)))};
+  const selected=bcKpiEl('bcWeek').value;
+  const week=bcWeekOptions().find(w=>w.key===selected);
+  if(!week)throw new Error('Minggu kalender belum dipilih');
+  const first=new Date(Date.UTC(y,m-1,1));
+  first.setUTCDate(first.getUTCDate()-((first.getUTCDay()+6)%7));
+  const index=bcWeekOptions().findIndex(w=>w.key===selected);
+  first.setUTCDate(first.getUTCDate()+index*7);
+  const last=new Date(first);last.setUTCDate(last.getUTCDate()+6);
+  return {startDate:iso(first),endDate:iso(last)};
+}
+let bcKpiPeriodRequest=0;
+async function bcKpiLoadRegistration(){
+  const request=++bcKpiPeriodRequest;
+  ['kpiInspectionFindings','kpiRegistered','kpiApproved'].forEach(id=>bcKpiSet(id,'…'));
+  try{
+    const result=await bcKpiRequest('getBacklogRegistrationKpi',bcKpiDateRange());
+    if(request!==bcKpiPeriodRequest)return;
+    bcKpiSet('kpiInspectionFindings',bcKpiNumber(result.inspectionFindings));
+    bcKpiSet('kpiRegistered',bcKpiNumber(result.registered));
+    bcKpiSet('kpiApproved',bcKpiNumber(result.approved));
+  }catch(e){
+    if(request!==bcKpiPeriodRequest)return;
+    ['kpiInspectionFindings','kpiRegistered','kpiApproved'].forEach(id=>bcKpiSet(id,'—'));
+    bcKpiStatus('Inspection & Registration belum termuat: '+e.message);
+  }
+}
+
 async function bcKpiLoad(){
   bcUpdateWeeks();
   bcKpiStatus('Mengambil data Backlog Control...');
+  bcKpiLoadRegistration();
   const [active,movement]=await Promise.allSettled([
     bcKpiRequest('getBacklogControl'),
     bcKpiRequest('getBacklogMovementSummary',{period:bcKpiMode})
@@ -323,9 +356,9 @@ if(bcKpiEl('bcYear')){
   bcDateControls();
   bcKpiEl('bcWeeklyBtn').addEventListener('click',()=>{bcKpiMode='weekly';bcKpiLoad().catch(e=>bcKpiStatus(e.message))});
   bcKpiEl('bcMonthlyBtn').addEventListener('click',()=>{bcKpiMode='monthly';bcKpiLoad().catch(e=>bcKpiStatus(e.message))});
-  bcKpiEl('bcYear').addEventListener('change',()=>{bcUpdateWeeks();bcRenderMovement(bcKpiGroups)});
-  bcKpiEl('bcMonth').addEventListener('change',()=>{bcKpiEl('bcWeek').value='';bcUpdateWeeks();bcRenderMovement(bcKpiGroups)});
-  bcKpiEl('bcWeek').addEventListener('change',()=>{bcUpdateWeeks();bcRenderMovement(bcKpiGroups)});
+  bcKpiEl('bcYear').addEventListener('change',()=>{bcUpdateWeeks();bcRenderMovement(bcKpiGroups);bcKpiLoadRegistration()});
+  bcKpiEl('bcMonth').addEventListener('change',()=>{bcKpiEl('bcWeek').value='';bcUpdateWeeks();bcRenderMovement(bcKpiGroups);bcKpiLoadRegistration()});
+  bcKpiEl('bcWeek').addEventListener('change',()=>{bcUpdateWeeks();bcRenderMovement(bcKpiGroups);bcKpiLoadRegistration()});
   bcKpiEl('bcKpiRefresh').addEventListener('click',()=>bcKpiLoad().catch(e=>bcKpiStatus(e.message)));
   bcKpiLoad().catch(e=>bcKpiStatus('Gagal memuat KPI: '+e.message));
 }
