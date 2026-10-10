@@ -735,3 +735,13 @@ body {
 .backlog-performance .backlog-kpi-card{min-height:120px;background:#f8fafc;box-shadow:none;padding:17px;border:1px solid #e1e7ef;border-radius:14px}
 .backlog-performance .backlog-kpi-value{font-size:26px}
 .bc-first-subtitle{margin-top:16px}
+
+
+/* WEEKLY / MONTHLY DATE PICKER */
+.bc-period-selector{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.bc-period-tabs{display:flex;padding:3px;border:1px solid #d6e0eb;border-radius:11px;background:#f1f5f9}
+.bc-period-tabs button{padding:8px 13px;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer;font-size:13px}
+.bc-period-tabs button.is-active{background:#fff;color:#1d4ed8;box-shadow:0 1px 4px #1e293b1a;font-weight:700}
+.bc-period-information{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:15px;font-size:12px;color:#64748b}
+#bcSelectedRange{font-weight:700;color:#334155}
+@media(max-width:650px){.bc-period-selector{width:100%}.bc-period-selector select{flex:1;min-width:0}.bc-perf-actions{width:100%;flex-wrap:wrap}}
