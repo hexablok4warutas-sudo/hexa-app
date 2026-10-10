@@ -1425,21 +1425,22 @@ function createOutstandingItem(
   mol.className =
     "outstanding-item-mol";
 
-  if (
-    normalizeText(
-      record.mol
-    ) === "submitted"
-  ) {
+  applyOutstandingMolBadge(mol, record.mol);
 
-    mol.classList.add(
-      "submitted"
-    );
+  // Evidence PDF hanya muncul jika registrasi sudah REGISTERED.
+  const pdfUrl = getOutstandingPdfUrl(record);
+  if (pdfUrl) {
+    const viewPdf = document.createElement("button");
+    viewPdf.type = "button";
+    viewPdf.textContent = "View PDF";
+    viewPdf.title = "Lihat PDF registrasi backlog";
+    viewPdf.style.cssText = "border:1px solid #2563eb;border-radius:8px;background:#eff6ff;color:#1d4ed8;padding:6px 9px;font-weight:700;cursor:pointer;font-size:12px;";
+    viewPdf.addEventListener("click", function(event) {
+      event.stopPropagation();
+      openOutstandingEvidence(pdfUrl);
+    });
+    info.appendChild(viewPdf);
   }
-
-  mol.textContent =
-    record.mol ||
-    "Belum";
-
 
   // EDIT ICON
 
@@ -2031,11 +2032,8 @@ function fillDetailModal(
     )
   );
 
-  setText(
-    detailMol,
-    record.mol ||
-    "Belum"
-  );
+  applyOutstandingMolBadge(detailMol, record.mol);
+  renderOutstandingDetailEvidence(record);
 
   setText(
     detailPartsStatus,
@@ -2044,6 +2042,63 @@ function fillDetailModal(
   );
 }
 
+
+// =====================================================
+// MOL STATUS & EVIDENCE (BACKLOG REGISTRATION)
+// =====================================================
+function applyOutstandingMolBadge(element, value) {
+  if (!element) return;
+  const status = String(value || "BELUM").trim().toUpperCase();
+  const palette = {
+    BELUM: ["#64748b", "#f1f5f9"],
+    DRAFT: ["#d97706", "#fffbeb"],
+    SUBMITTED: ["#2563eb", "#eff6ff"],
+    REGISTERED: ["#16a34a", "#f0fdf4"]
+  };
+  const colors = palette[status] || palette.BELUM;
+  element.textContent = status;
+  element.style.color = colors[0];
+  element.style.backgroundColor = colors[1];
+  element.style.border = "1px solid " + colors[0];
+  element.style.borderRadius = "999px";
+  element.style.padding = "4px 10px";
+  element.style.fontWeight = "700";
+  element.style.display = "inline-flex";
+  element.style.alignItems = "center";
+  element.style.justifyContent = "center";
+  element.style.width = "fit-content";
+}
+
+function getOutstandingPdfUrl(record) {
+  if (!record || String(record.mol || "").trim().toUpperCase() !== "REGISTERED") return "";
+  const url = String(record.evidence || "").trim();
+  if (!/^https:\/\//i.test(url)) return "";
+  return url;
+}
+
+function openOutstandingEvidence(url) {
+  // Tautan PDF Google Drive memerlukan hak akses akun yang sesuai.
+  // Tidak mengubah mekanisme API PDF di Backlog Registration.
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function renderOutstandingDetailEvidence(record) {
+  if (!detailMol) return;
+  const host = detailMol.parentElement;
+  if (!host) return;
+  let link = host.querySelector(".hexa-outstanding-evidence-link");
+  if (!link) {
+    link = document.createElement("button");
+    link.type = "button";
+    link.className = "hexa-outstanding-evidence-link";
+    link.textContent = "View PDF";
+    link.style.cssText = "display:none;margin-top:8px;border:1px solid #2563eb;border-radius:8px;background:#eff6ff;color:#1d4ed8;padding:7px 12px;font-weight:700;cursor:pointer;";
+    host.appendChild(link);
+  }
+  const url = getOutstandingPdfUrl(record);
+  link.style.display = url ? "inline-flex" : "none";
+  link.onclick = url ? function(event) { event.stopPropagation(); openOutstandingEvidence(url); } : null;
+}
 
 // =====================================================
 // CLOSE DETAIL
