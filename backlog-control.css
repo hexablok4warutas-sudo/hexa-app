@@ -22,3 +22,5 @@
 .bc-sync-notice{margin:12px 0;padding:12px 14px;border:1px solid #b9e4cc;border-radius:10px;background:#eefaf3;color:#145b38;line-height:1.5}
 .bc-sync-notice.info{border-color:#b9d6f2;background:#eef6ff;color:#24547f}
 @media(max-width:650px){.bc-filter-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto}.bc-filter-row select{font-size:12px}.bc-filter-row button{padding:9px}.bc-column-actions button{padding:8px}}
+
+.bc-filter-spacer{display:block}.bc-filter-placeholder{width:36px;display:block}.bc-filter-row .bc-filter-field:disabled{opacity:1;color:#192433;background:#f7f9fc;cursor:default}.bc-filter-row .bc-filter-remove{min-width:36px}
