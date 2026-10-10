@@ -1,29 +1,32 @@
 "use strict";
 
 
-/* =====================================================
-   HEXA - UNIT HISTORY
-===================================================== */
+// =====================================================
+// HEXA DAILY OUTSTANDING
+// =====================================================
 
 
-/* =====================================================
-   API
-===================================================== */
+// =====================================================
+// API
+// =====================================================
 
 const HEXA_API_URL =
   "https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec";
 
 
-/* =====================================================
-   SESSION PROTECTION
-===================================================== */
+// =====================================================
+// SESSION PROTECTION
+// =====================================================
 
 const hexaLoggedIn =
-  sessionStorage.getItem("hexaLoggedIn");
+  sessionStorage.getItem(
+    "hexaLoggedIn"
+  );
 
 const hexaUserRaw =
-  sessionStorage.getItem("hexaUser");
-
+  sessionStorage.getItem(
+    "hexaUser"
+  );
 
 if (
   hexaLoggedIn !== "true" ||
@@ -36,8 +39,11 @@ if (
 }
 
 
-let currentUser = null;
+// =====================================================
+// USER
+// =====================================================
 
+let currentUser = null;
 
 try {
 
@@ -62,359 +68,55 @@ try {
 }
 
 
-/* =====================================================
-   STATE
-===================================================== */
+// =====================================================
+// STATE
+// =====================================================
 
-let unitHistoryData = [];
+let outstandingData = [];
 
-let filteredUnitHistoryData = [];
+let filteredData = [];
 
 let selectedRecord = null;
+
+let selectedRating = "";
+
+let selectedPartsStatus = "";
+
+let replacementPhoto = null;
+
+let evidenceFile = null;
 
 let photoZoom = 1;
 
 let pageInitialized = false;
 
 
-/* DELETE */
-
-let deleteMode = false;
-
-const selectedDeleteIds =
-  new Set();
-
-
-/* FILTER */
-
-let activeFilters = [];
-
-let filterCounter = 0;
-
-/* COLUMNS */
-
-const UNIT_HISTORY_COLUMNS_STORAGE_KEY =
-  "hexaUnitHistoryColumns";
-
-let activeColumnKeys = [];
-
-
-/* SHORTCUT DRAG */
-
-const UNIT_HISTORY_SHORTCUT_POSITION_KEY =
-  "hexaUnitHistoryShortcutPosition";
-
-let shortcutDragState = null;
-
-
-/* =====================================================
-   FILTER DEFINITIONS
-
-   Semua kategori database kecuali Unique ID.
-===================================================== */
-
-const UNIT_HISTORY_FILTER_FIELDS = [
-
-  {
-    key: "unitCode",
-    label: "Unit Code",
-    type: "select"
-  },
-
-  {
-    key: "hmInspection",
-    label: "HM Inspection",
-    type: "numberRange"
-  },
-
-  {
-    key: "dateInspection",
-    label: "Date Inspection",
-    type: "dateRange"
-  },
-
-  {
-    key: "photo",
-    label: "Photo",
-    type: "availability"
-  },
-
-  {
-    key: "groupComponent",
-    label: "Group Component",
-    type: "select"
-  },
-
-  {
-    key: "problemDescription",
-    label: "Problem Description",
-    type: "text"
-  },
-
-  {
-    key: "rating",
-    label: "Rating",
-    type: "select"
-  },
-
-  {
-    key: "partsDescription",
-    label: "Parts Description",
-    type: "text"
-  },
-
-  {
-    key: "partNo",
-    label: "Part No",
-    type: "text"
-  },
-
-  {
-    key: "quantity",
-    label: "Quantity",
-    type: "numberRange"
-  },
-
-  {
-    key: "inspectors",
-    label: "Inspectors",
-    type: "text"
-  },
-
-  {
-    key: "notes",
-    label: "Notes",
-    type: "text"
-  },
-
-  {
-    key: "mol",
-    label: "MOL",
-    type: "select"
-  },
-
-  {
-    key: "evidence",
-    label: "Evidence",
-    type: "availability"
-  },
-
-  {
-    key: "partsStatus",
-    label: "Parts Status",
-    type: "select"
-  },
-
-  {
-    key: "actionProblems",
-    label: "Action Problems",
-    type: "text"
-  },
-
-  {
-    key: "hmAction",
-    label: "HM Action",
-    type: "numberRange"
-  },
-
-  {
-    key: "dateAction",
-    label: "Date Action",
-    type: "dateRange"
-  },
-
-  {
-    key: "status",
-    label: "Status",
-    type: "select"
-  },
-
-  {
-    key: "manPower",
-    label: "Man Power",
-    type: "text"
-  }
-
-];
-
-/* =====================================================
-   CUSTOM COLUMN DEFINITIONS
-
-   Semua field DM DATABASE kecuali ID.
-===================================================== */
-
-const UNIT_HISTORY_COLUMN_FIELDS = [
-
-  {
-    key: "unitCode",
-    label: "Unit Code",
-    default: true
-  },
-
-  {
-    key: "hmInspection",
-    label: "HM Inspection",
-    default: true
-  },
-
-  {
-    key: "dateInspection",
-    label: "Date Inspection",
-    default: false
-  },
-
-  {
-    key: "photo",
-    label: "Photo",
-    default: true
-  },
-
-  {
-    key: "groupComponent",
-    label: "Group Component",
-    default: true
-  },
-
-  {
-    key: "problemDescription",
-    label: "Problem Description",
-    default: true
-  },
-
-  {
-    key: "rating",
-    label: "Rating",
-    default: true
-  },
-
-  {
-    key: "partsDescription",
-    label: "Parts Description",
-    default: true
-  },
-
-  {
-    key: "partNo",
-    label: "Part No",
-    default: true
-  },
-
-  {
-    key: "quantity",
-    label: "Quantity",
-    default: true
-  },
-
-  {
-    key: "inspectors",
-    label: "Inspectors",
-    default: false
-  },
-
-  {
-    key: "notes",
-    label: "Notes",
-    default: false
-  },
-
-  {
-    key: "mol",
-    label: "MOL",
-    default: true
-  },
-
-  {
-    key: "evidence",
-    label: "Evidence",
-    default: false
-  },
-
-  {
-    key: "partsStatus",
-    label: "Parts Status",
-    default: true
-  },
-
-  {
-    key: "actionProblems",
-    label: "Action Problems",
-    default: false
-  },
-
-  {
-    key: "hmAction",
-    label: "HM Action",
-    default: false
-  },
-
-  {
-    key: "dateAction",
-    label: "Date Action",
-    default: false
-  },
-
-  {
-    key: "status",
-    label: "Status",
-    default: true
-  },
-
-  {
-    key: "manPower",
-    label: "Man Power",
-    default: false
-  }
-
-];
-
-activeColumnKeys =
-  getInitialColumnKeys();
-
-/* =====================================================
-   DOM REFERENCES
-===================================================== */
+// =====================================================
+// DOM REFERENCES
+// =====================================================
 
 let filterButton;
-let columnsButton;
-let printButton;
-let sharePdfButton;
-let deleteButton;
-
 let filterPanel;
 let closeFilterButton;
 
-/* COLUMNS */
+let filterUnitCode;
+let filterProblem;
+let filterDate;
+let filterMol;
 
-let columnsPanel;
-let closeColumnsButton;
-let columnsList;
-let defaultColumnsButton;
-let selectAllColumnsButton;
-let applyColumnsButton;
-
-let filterConditions;
-let addFilterButton;
 let resetFilterButton;
 let applyFilterButton;
 
-let activeFiltersContainer;
+let outstandingLoading;
+let outstandingEmpty;
+let outstandingError;
 
-let historyLoading;
-let historyEmpty;
-let historyError;
-
-let historyScrollContainer;
-let historyTableBody;
-
-let deleteHeader;
-let selectAllCheckbox;
+let outstandingScrollContainer;
+let outstandingList;
 
 let scrollNavigation;
 let scrollUpButton;
 let scrollDownButton;
-
-
-/* DETAIL */
 
 let detailModal;
 let detailPhotoButton;
@@ -423,56 +125,70 @@ let detailPhoto;
 let detailUnitCode;
 let detailHmInspection;
 let detailDateInspection;
-let detailInspectors;
-
 let detailGroupComponent;
 let detailProblemDescription;
 let detailRating;
 let detailPartsDescription;
-let detailPartNo;
-let detailQuantity;
-let detailNotes;
-
 let detailMol;
-let detailEvidence;
 let detailPartsStatus;
-let detailActionProblems;
-let detailHmAction;
-let detailDateAction;
-let detailStatus;
-let detailManPower;
 
+let editOutstandingButton;
 let closeDetailButton;
-
-
-/* PHOTO VIEWER */
 
 let photoViewer;
 let photoViewerImage;
-
 let zoomOutButton;
 let zoomInButton;
 let resetZoomButton;
 let closePhotoViewerButton;
 
+let updateModal;
+let updateOutstandingForm;
 
-/* DELETE MODAL */
+let updateInspectionId;
+let updateUnitCode;
+let updateHmInspection;
+let updateDateInspection;
+let updateInspectionPhoto;
+let updateInspectionPhotoPreview;
+let updateGroupComponent;
+let updateProblemDescription;
+let updateRating;
+let updateRatingGrid;
+let updatePartsDescription;
+let updatePartNo;
+let updateQuantity;
 
-let deleteModal;
-let deleteModalMessage;
+let updatePartRequirementList;
+let updateAddPartButton;
 
-let deleteNoButton;
-let deleteYesButton;
+let updateNotes;
+let updateMol;
+let updateEvidence;
+let evidenceFileText;
+let existingEvidence;
+let partsStatusGrid;
+let updatePartsStatus;
+let updateStatus;
+let updateActionProblems;
+let updateHmAction;
+let updateDateAction;
+let updateManPower;
 
+let updateHmMinus;
+let updateHmPlus;
+let updateHmActionMinus;
+let updateHmActionPlus;
 
-/* SHORTCUT */
+let cancelUpdateButton;
+let submitUpdateButton;
 
 let startInspectionShortcut;
 
 
-/* =====================================================
-   INITIALIZE
-===================================================== */
+// =====================================================
+// INITIALIZE
+// =====================================================
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -490,354 +206,393 @@ document.addEventListener(
 
     initializeSearch();
 
-    initializeShortcut();
-
-    loadUnitHistory();
+    loadDailyOutstanding();
 
   }
 );
 
 
-/* =====================================================
-   CACHE ELEMENTS
-===================================================== */
+// =====================================================
+// CACHE ELEMENTS
+// =====================================================
 
 function cacheElements() {
 
   filterButton =
     document.getElementById(
-      "unitHistoryFilterButton"
+      "filterButton"
     );
-
-   columnsButton =
-     document.getElementById(
-    "unitHistoryColumnsButton"
-     );
-
-  printButton =
-    document.getElementById(
-      "unitHistoryPrintButton"
-    );
-
-   sharePdfButton =
-  document.getElementById(
-    "unitHistorySharePdfButton"
-  );
-
-  deleteButton =
-    document.getElementById(
-      "unitHistoryDeleteButton"
-    );
-
 
   filterPanel =
     document.getElementById(
-      "unitHistoryFilterPanel"
+      "filterPanel"
     );
 
   closeFilterButton =
     document.getElementById(
-      "unitHistoryCloseFilterButton"
+      "closeFilterButton"
     );
 
-  filterConditions =
+  filterUnitCode =
     document.getElementById(
-      "unitHistoryFilterConditions"
+      "filterUnitCode"
     );
 
-  addFilterButton =
+  filterProblem =
     document.getElementById(
-      "unitHistoryAddFilterButton"
+      "filterProblem"
+    );
+
+  filterDate =
+    document.getElementById(
+      "filterDate"
+    );
+
+  filterMol =
+    document.getElementById(
+      "filterMol"
     );
 
   resetFilterButton =
     document.getElementById(
-      "unitHistoryResetFilterButton"
+      "resetFilterButton"
     );
 
   applyFilterButton =
     document.getElementById(
-      "unitHistoryApplyFilterButton"
+      "applyFilterButton"
     );
 
-   /* COLUMNS */
-
-columnsPanel =
-  document.getElementById(
-    "unitHistoryColumnsPanel"
-  );
-
-closeColumnsButton =
-  document.getElementById(
-    "unitHistoryCloseColumnsButton"
-  );
-
-columnsList =
-  document.getElementById(
-    "unitHistoryColumnsList"
-  );
-
-defaultColumnsButton =
-  document.getElementById(
-    "unitHistoryDefaultColumnsButton"
-  );
-
-selectAllColumnsButton =
-  document.getElementById(
-    "unitHistorySelectAllColumnsButton"
-  );
-
-applyColumnsButton =
-  document.getElementById(
-    "unitHistoryApplyColumnsButton"
-  );
-
-  activeFiltersContainer =
+  outstandingLoading =
     document.getElementById(
-      "unitHistoryActiveFilters"
+      "outstandingLoading"
     );
 
-
-  historyLoading =
+  outstandingEmpty =
     document.getElementById(
-      "unitHistoryLoading"
+      "outstandingEmpty"
     );
 
-  historyEmpty =
+  outstandingError =
     document.getElementById(
-      "unitHistoryEmpty"
+      "outstandingError"
     );
 
-  historyError =
+  outstandingScrollContainer =
     document.getElementById(
-      "unitHistoryError"
+      "outstandingScrollContainer"
     );
 
-  historyScrollContainer =
+  outstandingList =
     document.getElementById(
-      "unitHistoryScrollContainer"
+      "outstandingList"
     );
-
-  historyTableBody =
-    document.getElementById(
-      "unitHistoryTableBody"
-    );
-
-
-  deleteHeader =
-    document.getElementById(
-      "unitHistoryDeleteHeader"
-    );
-
-  selectAllCheckbox =
-    document.getElementById(
-      "unitHistorySelectAll"
-    );
-
 
   scrollNavigation =
     document.getElementById(
-      "unitHistoryScrollNavigation"
+      "scrollNavigation"
     );
 
   scrollUpButton =
     document.getElementById(
-      "unitHistoryScrollUpButton"
+      "scrollUpButton"
     );
 
   scrollDownButton =
     document.getElementById(
-      "unitHistoryScrollDownButton"
+      "scrollDownButton"
     );
-
-
-  /* DETAIL */
 
   detailModal =
     document.getElementById(
-      "unitHistoryDetailModal"
+      "detailModal"
     );
 
   detailPhotoButton =
     document.getElementById(
-      "unitHistoryDetailPhotoButton"
+      "detailPhotoButton"
     );
 
   detailPhoto =
     document.getElementById(
-      "unitHistoryDetailPhoto"
+      "detailPhoto"
     );
 
   detailUnitCode =
     document.getElementById(
-      "unitHistoryDetailUnitCode"
+      "detailUnitCode"
     );
 
   detailHmInspection =
     document.getElementById(
-      "unitHistoryDetailHmInspection"
+      "detailHmInspection"
     );
 
   detailDateInspection =
     document.getElementById(
-      "unitHistoryDetailDateInspection"
-    );
-
-  detailInspectors =
-    document.getElementById(
-      "unitHistoryDetailInspectors"
+      "detailDateInspection"
     );
 
   detailGroupComponent =
     document.getElementById(
-      "unitHistoryDetailGroupComponent"
+      "detailGroupComponent"
     );
 
   detailProblemDescription =
     document.getElementById(
-      "unitHistoryDetailProblemDescription"
+      "detailProblemDescription"
     );
 
   detailRating =
     document.getElementById(
-      "unitHistoryDetailRating"
+      "detailRating"
     );
 
   detailPartsDescription =
     document.getElementById(
-      "unitHistoryDetailPartsDescription"
-    );
-
-  detailPartNo =
-    document.getElementById(
-      "unitHistoryDetailPartNo"
-    );
-
-  detailQuantity =
-    document.getElementById(
-      "unitHistoryDetailQuantity"
-    );
-
-  detailNotes =
-    document.getElementById(
-      "unitHistoryDetailNotes"
+      "detailPartsDescription"
     );
 
   detailMol =
     document.getElementById(
-      "unitHistoryDetailMol"
-    );
-
-  detailEvidence =
-    document.getElementById(
-      "unitHistoryDetailEvidence"
+      "detailMol"
     );
 
   detailPartsStatus =
     document.getElementById(
-      "unitHistoryDetailPartsStatus"
+      "detailPartsStatus"
     );
 
-  detailActionProblems =
+  editOutstandingButton =
     document.getElementById(
-      "unitHistoryDetailActionProblems"
-    );
-
-  detailHmAction =
-    document.getElementById(
-      "unitHistoryDetailHmAction"
-    );
-
-  detailDateAction =
-    document.getElementById(
-      "unitHistoryDetailDateAction"
-    );
-
-  detailStatus =
-    document.getElementById(
-      "unitHistoryDetailStatus"
-    );
-
-  detailManPower =
-    document.getElementById(
-      "unitHistoryDetailManPower"
+      "editOutstandingButton"
     );
 
   closeDetailButton =
     document.getElementById(
-      "unitHistoryCloseDetailButton"
+      "closeDetailButton"
     );
-
-
-  /* PHOTO VIEWER */
 
   photoViewer =
     document.getElementById(
-      "unitHistoryPhotoViewer"
+      "photoViewer"
     );
 
   photoViewerImage =
     document.getElementById(
-      "unitHistoryPhotoViewerImage"
+      "photoViewerImage"
     );
 
   zoomOutButton =
     document.getElementById(
-      "unitHistoryZoomOutButton"
+      "zoomOutButton"
     );
 
   zoomInButton =
     document.getElementById(
-      "unitHistoryZoomInButton"
+      "zoomInButton"
     );
 
   resetZoomButton =
     document.getElementById(
-      "unitHistoryResetZoomButton"
+      "resetZoomButton"
     );
 
   closePhotoViewerButton =
     document.getElementById(
-      "unitHistoryClosePhotoViewerButton"
+      "closePhotoViewerButton"
     );
 
-
-  /* DELETE MODAL */
-
-  deleteModal =
+  updateModal =
     document.getElementById(
-      "unitHistoryDeleteModal"
+      "updateModal"
     );
 
-  deleteModalMessage =
+  updateOutstandingForm =
     document.getElementById(
-      "unitHistoryDeleteModalMessage"
+      "updateOutstandingForm"
     );
 
-  deleteNoButton =
+  updateInspectionId =
     document.getElementById(
-      "unitHistoryDeleteNoButton"
+      "updateInspectionId"
     );
 
-  deleteYesButton =
+  updateUnitCode =
     document.getElementById(
-      "unitHistoryDeleteYesButton"
+      "updateUnitCode"
+    );
+
+  updateHmInspection =
+    document.getElementById(
+      "updateHmInspection"
+    );
+
+  updateDateInspection =
+    document.getElementById(
+      "updateDateInspection"
+    );
+
+  updateInspectionPhoto =
+    document.getElementById(
+      "updateInspectionPhoto"
+    );
+
+  updateInspectionPhotoPreview =
+    document.getElementById(
+      "updateInspectionPhotoPreview"
+    );
+
+  updateGroupComponent =
+    document.getElementById(
+      "updateGroupComponent"
+    );
+
+  updateProblemDescription =
+    document.getElementById(
+      "updateProblemDescription"
+    );
+
+  updateRating =
+    document.getElementById(
+      "updateRating"
+    );
+
+  updateRatingGrid =
+    document.getElementById(
+      "updateRatingGrid"
+    );
+
+  updatePartsDescription =
+    document.getElementById(
+      "updatePartsDescription"
+    );
+
+  updatePartNo =
+    document.getElementById(
+      "updatePartNo"
+    );
+
+    updateQuantity =
+    document.getElementById(
+      "updateQuantity"
     );
 
 
-  /* SHORTCUT */
+  updatePartRequirementList =
+    document.getElementById(
+      "updatePartRequirementList"
+    );
+
+
+  updateAddPartButton =
+    document.getElementById(
+      "updateAddPartButton"
+    );
+
+
+  updateNotes =
+
+  updateNotes =
+    document.getElementById(
+      "updateNotes"
+    );
+
+  updateMol =
+    document.getElementById(
+      "updateMol"
+    );
+
+  updateEvidence =
+    document.getElementById(
+      "updateEvidence"
+    );
+
+  evidenceFileText =
+    document.getElementById(
+      "evidenceFileText"
+    );
+
+  existingEvidence =
+    document.getElementById(
+      "existingEvidence"
+    );
+
+  partsStatusGrid =
+    document.getElementById(
+      "partsStatusGrid"
+    );
+
+  updatePartsStatus =
+    document.getElementById(
+      "updatePartsStatus"
+    );
+
+  updateStatus =
+    document.getElementById(
+      "updateStatus"
+    );
+
+  updateActionProblems =
+    document.getElementById(
+      "updateActionProblems"
+    );
+
+  updateHmAction =
+    document.getElementById(
+      "updateHmAction"
+    );
+
+  updateDateAction =
+    document.getElementById(
+      "updateDateAction"
+    );
+
+  updateManPower =
+    document.getElementById(
+      "updateManPower"
+    );
+
+  updateHmMinus =
+    document.getElementById(
+      "updateHmMinus"
+    );
+
+  updateHmPlus =
+    document.getElementById(
+      "updateHmPlus"
+    );
+
+  updateHmActionMinus =
+    document.getElementById(
+      "updateHmActionMinus"
+    );
+
+  updateHmActionPlus =
+    document.getElementById(
+      "updateHmActionPlus"
+    );
+
+  cancelUpdateButton =
+    document.getElementById(
+      "cancelUpdateButton"
+    );
+
+  submitUpdateButton =
+    document.getElementById(
+      "submitUpdateButton"
+    );
 
   startInspectionShortcut =
     document.getElementById(
-      "unitHistoryStartInspectionShortcut"
+      "startInspectionShortcut"
     );
-
 }
 
 
-/* =====================================================
-   BIND EVENTS
-===================================================== */
+// =====================================================
+// EVENTS
+// =====================================================
 
 function bindEvents() {
 
@@ -849,73 +604,12 @@ function bindEvents() {
     );
   }
 
-   if (columnsButton) {
 
-  columnsButton.addEventListener(
-    "click",
-    toggleColumnsPanel
-  );
-}
-
-
-if (closeColumnsButton) {
-
-  closeColumnsButton.addEventListener(
-    "click",
-    closeColumnsPanel
-  );
-}
-   if (defaultColumnsButton) {
-
-  defaultColumnsButton.addEventListener(
-    "click",
-    resetColumnsToDefault
-  );
-}
-
-
-if (selectAllColumnsButton) {
-
-  selectAllColumnsButton.addEventListener(
-    "click",
-    selectAllColumns
-  );
-}
-
-   if (applyColumnsButton) {
-
-  applyColumnsButton.addEventListener(
-    "click",
-    applyColumns
-  );
-}
-   
   if (closeFilterButton) {
 
     closeFilterButton.addEventListener(
       "click",
       closeFilterPanel
-    );
-  }
-
-
-  if (addFilterButton) {
-
-    addFilterButton.addEventListener(
-      "click",
-      function () {
-
-        addFilterCondition();
-      }
-    );
-  }
-
-
-  if (resetFilterButton) {
-
-    resetFilterButton.addEventListener(
-      "click",
-      resetFilters
     );
   }
 
@@ -929,37 +623,30 @@ if (selectAllColumnsButton) {
   }
 
 
-  if (printButton) {
+  if (resetFilterButton) {
 
-    printButton.addEventListener(
+    resetFilterButton.addEventListener(
       "click",
-      printCurrentHistory
-    );
-  }
-
-   if (sharePdfButton) {
-
-     sharePdfButton.addEventListener(
-       "click",
-       shareCurrentHistoryPdf
-     );
-   }
-
-
-  if (deleteButton) {
-
-    deleteButton.addEventListener(
-      "click",
-      handleDeleteButton
+      resetFilters
     );
   }
 
 
-  if (selectAllCheckbox) {
+  if (filterProblem) {
 
-    selectAllCheckbox.addEventListener(
-      "change",
-      handleSelectAll
+    filterProblem.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          applyFilters();
+        }
+      }
     );
   }
 
@@ -970,7 +657,7 @@ if (selectAllColumnsButton) {
       "click",
       function () {
 
-        historyScrollContainer
+        outstandingScrollContainer
           ?.scrollBy({
 
             top: -250,
@@ -989,7 +676,7 @@ if (selectAllColumnsButton) {
       "click",
       function () {
 
-        historyScrollContainer
+        outstandingScrollContainer
           ?.scrollBy({
 
             top: 250,
@@ -1011,11 +698,29 @@ if (selectAllColumnsButton) {
   }
 
 
+  if (editOutstandingButton) {
+
+    editOutstandingButton.addEventListener(
+      "click",
+      openUpdateForm
+    );
+  }
+
+
   if (detailPhotoButton) {
 
     detailPhotoButton.addEventListener(
       "click",
       openPhotoViewer
+    );
+  }
+
+
+  if (closePhotoViewerButton) {
+
+    closePhotoViewerButton.addEventListener(
+      "click",
+      closePhotoViewer
     );
   }
 
@@ -1054,35 +759,183 @@ if (selectAllColumnsButton) {
       "click",
       function () {
 
-        setPhotoZoom(1);
+        setPhotoZoom(
+          1
+        );
       }
     );
   }
 
 
-  if (closePhotoViewerButton) {
+  if (cancelUpdateButton) {
 
-    closePhotoViewerButton.addEventListener(
+    cancelUpdateButton.addEventListener(
       "click",
-      closePhotoViewer
+      closeUpdateForm
     );
   }
 
 
-  if (deleteNoButton) {
+  if (updateOutstandingForm) {
 
-    deleteNoButton.addEventListener(
-      "click",
-      cancelDelete
+    updateOutstandingForm.addEventListener(
+      "submit",
+      submitOutstandingUpdate
     );
   }
 
 
-  if (deleteYesButton) {
+  if (updateInspectionPhoto) {
 
-    deleteYesButton.addEventListener(
+    updateInspectionPhoto.addEventListener(
+      "change",
+      handleReplacementPhoto
+    );
+  }
+
+
+  if (updateEvidence) {
+
+    updateEvidence.addEventListener(
+      "change",
+      handleEvidenceFile
+    );
+  }
+
+
+  if (updateRatingGrid) {
+
+    updateRatingGrid.addEventListener(
       "click",
-      confirmDelete
+      handleRatingSelection
+    );
+  }
+
+
+    if (partsStatusGrid) {
+
+    partsStatusGrid.addEventListener(
+      "click",
+      handlePartsStatusSelection
+    );
+  }
+
+
+  // ===================================================
+  // PART REQUIREMENT - ADD PART
+  // ===================================================
+
+  if (updateAddPartButton) {
+
+    updateAddPartButton.addEventListener(
+      "click",
+      function () {
+
+        addUpdatePart();
+
+      }
+    );
+  }
+
+
+  // ===================================================
+  // PART REQUIREMENT - REMOVE PART
+  // ===================================================
+
+  if (updatePartRequirementList) {
+
+    updatePartRequirementList.addEventListener(
+      "click",
+      function (event) {
+
+        const removeButton =
+          event.target.closest(
+            ".update-remove-part-button"
+          );
+
+        if (!removeButton) {
+          return;
+        }
+
+
+        const partItem =
+          removeButton.closest(
+            ".update-part-requirement-item"
+          );
+
+        if (!partItem) {
+          return;
+        }
+
+
+        const items =
+          getUpdatePartItems();
+
+
+        /*
+          Part Requirement harus selalu
+          mempunyai minimal satu card.
+        */
+
+        if (items.length <= 1) {
+
+          clearUpdatePartItem(
+            partItem
+          );
+
+          return;
+        }
+
+
+        partItem.remove();
+
+        renumberUpdateParts();
+
+        syncUpdatePartDatabaseFields();
+
+      }
+    );
+
+
+    /*
+      Setiap perubahan pada repeating field
+      langsung disinkronkan ke hidden field.
+    */
+
+    updatePartRequirementList.addEventListener(
+      "input",
+      function () {
+
+        syncUpdatePartDatabaseFields();
+
+      }
+    );
+  }
+
+
+  bindNumberControl(
+    updateHmMinus,
+    updateHmPlus,
+    updateHmInspection
+  );
+
+
+  bindNumberControl(
+    updateHmActionMinus,
+    updateHmActionPlus,
+    updateHmAction
+  );
+
+
+  if (startInspectionShortcut) {
+
+    startInspectionShortcut.addEventListener(
+      "click",
+      function () {
+
+        window.location.href =
+          "/start-inspection";
+      }
     );
   }
 
@@ -1091,21 +944,106 @@ if (selectAllColumnsButton) {
     "keydown",
     handleEscapeKey
   );
-
-
-  window.addEventListener(
-    "resize",
-    keepShortcutInsideViewport
-  );
-
 }
 
 
-/* =====================================================
-   API REQUEST
-===================================================== */
+// =====================================================
+// GLOBAL HEADER SEARCH
+// =====================================================
 
-async function apiRequest(payload) {
+function initializeSearch() {
+
+  /*
+    hexa-header.js melakukan inject header
+    pada DOMContentLoaded.
+
+    Karena hexa-header.js dimuat sebelum file ini,
+    searchInput sudah tersedia saat listener ini jalan.
+  */
+
+  const searchInput =
+    document.getElementById(
+      "searchInput"
+    );
+
+  if (!searchInput) {
+    return;
+  }
+
+  searchInput.addEventListener(
+    "input",
+    function () {
+
+      const query =
+        searchInput.value
+          .trim()
+          .toLowerCase();
+
+      if (!query) {
+
+        applyFilters();
+
+        return;
+      }
+
+      const base =
+        getFilterBaseData();
+
+      filteredData =
+        base.filter(
+          function (item) {
+
+            return (
+
+              normalizeText(
+                item.unitCode
+              ).includes(
+                query
+              ) ||
+
+              normalizeText(
+                item.problemDescription
+              ).includes(
+                query
+              ) ||
+
+              normalizeText(
+                item.groupComponent
+              ).includes(
+                query
+              ) ||
+
+              normalizeText(
+                item.rating
+              ).includes(
+                query
+              ) ||
+
+              normalizeText(
+                item.partsDescription
+              ).includes(
+                query
+              )
+
+            );
+          }
+        );
+
+      renderOutstandingList(
+        filteredData
+      );
+    }
+  );
+}
+
+
+// =====================================================
+// API REQUEST
+// =====================================================
+
+async function apiRequest(
+  payload
+) {
 
   const response =
     await fetch(
@@ -1129,7 +1067,6 @@ async function apiRequest(payload) {
       }
     );
 
-
   if (!response.ok) {
 
     throw new Error(
@@ -1138,13 +1075,10 @@ async function apiRequest(payload) {
     );
   }
 
-
   const text =
     await response.text();
 
-
   let result;
-
 
   try {
 
@@ -1160,19 +1094,17 @@ async function apiRequest(payload) {
     );
   }
 
-
   return result;
 }
 
 
-/* =====================================================
-   LOAD UNIT HISTORY
-===================================================== */
+// =====================================================
+// LOAD DAILY OUTSTANDING
+// =====================================================
 
-async function loadUnitHistory() {
+async function loadDailyOutstanding() {
 
   showLoadingState();
-
 
   try {
 
@@ -1180,10 +1112,9 @@ async function loadUnitHistory() {
       await apiRequest({
 
         action:
-          "getUnitHistory"
+          "getDailyOutstanding"
 
       });
-
 
     if (
       !result ||
@@ -1192,39 +1123,32 @@ async function loadUnitHistory() {
 
       throw new Error(
         result?.message ||
-        "Gagal mengambil Unit History."
+        "Gagal mengambil Daily Outstanding."
       );
     }
 
-
-    unitHistoryData =
+    outstandingData =
       Array.isArray(
         result.data
       )
         ? result.data
         : [];
 
+    filteredData =
+      [...outstandingData];
 
-    /*
-      Backend sudah mengirim newest first.
+    populateUnitFilter();
 
-      Kita tidak melakukan sort ulang agar urutan
-      backend tetap dipertahankan.
-    */
+    populateUpdateUnitOptions();
 
-    filteredUnitHistoryData =
-      [...unitHistoryData];
-
-
-    renderUnitHistory(
-      filteredUnitHistoryData
+    renderOutstandingList(
+      filteredData
     );
-
 
   } catch (error) {
 
     console.error(
-      "Unit History:",
+      "Daily Outstanding:",
       error
     );
 
@@ -1235,29 +1159,29 @@ async function loadUnitHistory() {
 }
 
 
-/* =====================================================
-   UI STATES
-===================================================== */
+// =====================================================
+// UI STATES
+// =====================================================
 
 function showLoadingState() {
 
-  if (historyLoading) {
-    historyLoading.hidden =
+  if (outstandingLoading) {
+    outstandingLoading.hidden =
       false;
   }
 
-  if (historyEmpty) {
-    historyEmpty.hidden =
+  if (outstandingEmpty) {
+    outstandingEmpty.hidden =
       true;
   }
 
-  if (historyError) {
-    historyError.hidden =
+  if (outstandingError) {
+    outstandingError.hidden =
       true;
   }
 
-  if (historyScrollContainer) {
-    historyScrollContainer.hidden =
+  if (outstandingScrollContainer) {
+    outstandingScrollContainer.hidden =
       true;
   }
 
@@ -1268,20 +1192,22 @@ function showLoadingState() {
 }
 
 
-function showErrorState(message) {
+function showErrorState(
+  message
+) {
 
-  if (historyLoading) {
-    historyLoading.hidden =
+  if (outstandingLoading) {
+    outstandingLoading.hidden =
       true;
   }
 
-  if (historyEmpty) {
-    historyEmpty.hidden =
+  if (outstandingEmpty) {
+    outstandingEmpty.hidden =
       true;
   }
 
-  if (historyScrollContainer) {
-    historyScrollContainer.hidden =
+  if (outstandingScrollContainer) {
+    outstandingScrollContainer.hidden =
       true;
   }
 
@@ -1290,57 +1216,55 @@ function showErrorState(message) {
       true;
   }
 
+  if (outstandingError) {
 
-  if (historyError) {
-
-    historyError.textContent =
+    outstandingError.textContent =
       message ||
-      "Data Unit History gagal dimuat.";
+      "Data Daily Outstanding gagal dimuat.";
 
-    historyError.hidden =
+    outstandingError.hidden =
       false;
   }
 }
 
 
-/* =====================================================
-   RENDER TABLE
-===================================================== */
+// =====================================================
+// RENDER LIST
+// =====================================================
 
-function renderUnitHistory(records) {
+function renderOutstandingList(
+  records
+) {
 
-  if (!historyTableBody) {
+  if (!outstandingList) {
     return;
   }
 
-
-  historyTableBody.innerHTML =
+  outstandingList.innerHTML =
     "";
 
-
-  if (historyLoading) {
-    historyLoading.hidden =
+  if (outstandingLoading) {
+    outstandingLoading.hidden =
       true;
   }
 
-  if (historyError) {
-    historyError.hidden =
+  if (outstandingError) {
+    outstandingError.hidden =
       true;
   }
-
 
   if (
     !records ||
     records.length === 0
   ) {
 
-    if (historyEmpty) {
-      historyEmpty.hidden =
+    if (outstandingEmpty) {
+      outstandingEmpty.hidden =
         false;
     }
 
-    if (historyScrollContainer) {
-      historyScrollContainer.hidden =
+    if (outstandingScrollContainer) {
+      outstandingScrollContainer.hidden =
         true;
     }
 
@@ -1352,218 +1276,206 @@ function renderUnitHistory(records) {
     return;
   }
 
-
-  if (historyEmpty) {
-    historyEmpty.hidden =
+  if (outstandingEmpty) {
+    outstandingEmpty.hidden =
       true;
   }
 
-  if (historyScrollContainer) {
-    historyScrollContainer.hidden =
+  if (outstandingScrollContainer) {
+    outstandingScrollContainer.hidden =
       false;
   }
-
 
   records.forEach(
     function (record) {
 
-      historyTableBody.appendChild(
-        createHistoryRow(
+      outstandingList.appendChild(
+        createOutstandingItem(
           record
         )
       );
     }
   );
 
-
-  updateDeleteUI();
-
   updateScrollNavigation();
 }
 
 
-/* =====================================================
-   CREATE TABLE ROW
-===================================================== */
+// =====================================================
+// CREATE LIST ITEM
+// =====================================================
 
-function createHistoryRow(record) {
+function createOutstandingItem(
+  record
+) {
 
-  const row =
+  const item =
     document.createElement(
-      "tr"
+      "div"
     );
 
+  item.className =
+    "outstanding-item";
 
-  row.dataset.id =
+  item.dataset.id =
     record.id || "";
 
+  item.tabIndex =
+    0;
 
-  /* ===================================================
-     DELETE CHECKBOX
-  =================================================== */
 
-  const deleteCell =
+  // PHOTO
+
+  const photoWrap =
     document.createElement(
-      "td"
+      "div"
     );
 
-
-  deleteCell.className =
-    "unit-history-delete-column";
-
-  deleteCell.hidden =
-    !deleteMode;
+  photoWrap.className =
+    "outstanding-item-photo";
 
 
-  const checkbox =
+  const photo =
     document.createElement(
-      "input"
+      "img"
     );
 
+  photo.alt =
+    record.unitCode
+      ? "Photo " +
+        record.unitCode
+      : "Inspection Photo";
 
-  checkbox.type =
-    "checkbox";
+  photo.loading =
+    "lazy";
 
-  checkbox.className =
-    "unit-history-row-checkbox";
-
-  checkbox.value =
-    record.id || "";
-
-  checkbox.checked =
-    selectedDeleteIds.has(
-      record.id
+  photo.src =
+    getDriveImageUrl(
+      record.photo
     );
 
-
-  checkbox.addEventListener(
-    "click",
-    function (event) {
-
-      event.stopPropagation();
-    }
-  );
-
-
-  checkbox.addEventListener(
-    "change",
+  photo.onerror =
     function () {
 
-      toggleDeleteSelection(
-        record.id,
-        checkbox.checked
-      );
-    }
+      this.onerror =
+        null;
+
+      this.src =
+        createPhotoPlaceholder();
+    };
+
+  photoWrap.appendChild(
+    photo
   );
 
 
-  deleteCell.addEventListener(
-    "click",
-    function (event) {
+  // INFORMATION
 
-      event.stopPropagation();
-    }
+  const info =
+    document.createElement(
+      "div"
+    );
+
+  info.className =
+    "outstanding-item-information";
+
+
+  const unit =
+    document.createElement(
+      "div"
+    );
+
+  unit.className =
+    "outstanding-item-unit";
+
+  unit.textContent =
+    record.unitCode ||
+    "-";
+
+
+  const problem =
+    document.createElement(
+      "div"
+    );
+
+  problem.className =
+    "outstanding-item-problem";
+
+  problem.textContent =
+    record.problemDescription ||
+    "-";
+
+
+  info.appendChild(
+    unit
+  );
+
+  info.appendChild(
+    problem
   );
 
 
-  deleteCell.appendChild(
-    checkbox
+  // MOL
+
+  const mol =
+    document.createElement(
+      "div"
+    );
+
+  mol.className =
+    "outstanding-item-mol";
+
+  if (
+    normalizeText(
+      record.mol
+    ) === "submitted"
+  ) {
+
+    mol.classList.add(
+      "submitted"
+    );
+  }
+
+  mol.textContent =
+    record.mol ||
+    "Belum";
+
+
+  // EDIT ICON
+
+  const edit =
+    document.createElement(
+      "button"
+    );
+
+  edit.type =
+    "button";
+
+  edit.className =
+    "outstanding-item-edit";
+
+  edit.setAttribute(
+    "aria-label",
+    "Edit " +
+      (
+        record.unitCode ||
+        "Outstanding"
+      )
   );
 
-
-  row.appendChild(
-    deleteCell
-  );
-
-
-  /* ===================================================
-     CUSTOM DATA COLUMNS
-  =================================================== */
-
-  const partDescriptions =
-    splitPartMultiline(
-      record.partsDescription
-    );
-
-  const partNumbers =
-    splitPartMultiline(
-      record.partNo
-    );
-
-  const partQuantities =
-    splitPartMultiline(
-      record.quantity
-    );
+  edit.innerHTML = `
+    <svg viewBox="0 0 24 24">
+      <path d="M4 20h4L19 9l-4-4L4 16v4z"></path>
+      <path d="M13.5 6.5l4 4"></path>
+    </svg>
+  `;
 
 
-  const totalParts =
-    Math.max(
-      1,
-      partDescriptions.length,
-      partNumbers.length,
-      partQuantities.length
-    );
+  // ROW CLICK -> DETAIL
 
-
-  UNIT_HISTORY_COLUMN_FIELDS
-    .filter(
-      function (field) {
-
-        return activeColumnKeys.includes(
-          field.key
-        );
-      }
-    )
-    .forEach(
-      function (field) {
-
-        appendHistoryColumnCell(
-          row,
-          record,
-          field.key,
-          {
-            descriptions:
-              partDescriptions,
-
-            partNumbers:
-              partNumbers,
-
-            quantities:
-              partQuantities,
-
-            totalParts:
-              totalParts
-          }
-        );
-      }
-    );
-
-
-
-
-  /* ===================================================
-     ROW CLICK
-  =================================================== */
-
-  row.addEventListener(
+  item.addEventListener(
     "click",
     function () {
-
-      if (deleteMode) {
-
-        checkbox.checked =
-          !checkbox.checked;
-
-
-        toggleDeleteSelection(
-          record.id,
-          checkbox.checked
-        );
-
-
-        return;
-      }
-
 
       openDetail(
         record.id
@@ -1572,1062 +1484,72 @@ function createHistoryRow(record) {
   );
 
 
-  return row;
-}
-
-/* =====================================================
-   INITIAL CUSTOM COLUMNS
-===================================================== */
-
-function getInitialColumnKeys() {
-
-  const defaultKeys =
-    UNIT_HISTORY_COLUMN_FIELDS
-      .filter(
-        function (field) {
-          return field.default === true;
-        }
-      )
-      .map(
-        function (field) {
-          return field.key;
-        }
-      );
-
-
-  try {
-
-    const saved =
-      JSON.parse(
-        localStorage.getItem(
-          UNIT_HISTORY_COLUMNS_STORAGE_KEY
-        ) || "null"
-      );
-
-
-    if (!Array.isArray(saved)) {
-      return defaultKeys;
-    }
-
-
-    const validKeys =
-      UNIT_HISTORY_COLUMN_FIELDS
-        .filter(
-          function (field) {
-            return saved.includes(
-              field.key
-            );
-          }
-        )
-        .map(
-          function (field) {
-            return field.key;
-          }
-        );
-
-
-    return validKeys.length
-      ? validKeys
-      : defaultKeys;
-
-
-  } catch (error) {
-
-    return defaultKeys;
-  }
-}
-
-
-/* =====================================================
-   APPEND CUSTOM HISTORY COLUMN
-===================================================== */
-
-function appendHistoryColumnCell(
-  row,
-  record,
-  columnKey,
-  partData
-) {
-
-  /* PHOTO */
-
-  if (columnKey === "photo") {
-
-    appendHistoryPhotoCell(
-      row,
-      record
-    );
-
-    return;
-  }
-
-
-  /* STATUS */
-
-  if (columnKey === "status") {
-
-    const cell =
-      document.createElement(
-        "td"
-      );
-
-
-    cell.appendChild(
-      createBadge(
-        record.status ||
-        "OPEN",
-        "status"
-      )
-    );
-
-
-    row.appendChild(
-      cell
-    );
-
-
-    return;
-  }
-
-
-  /* MOL */
-
-  if (columnKey === "mol") {
-
-    const cell =
-      document.createElement(
-        "td"
-      );
-
-
-    cell.appendChild(
-      createBadge(
-        getMolDisplay(record),
-        "mol"
-      )
-    );
-
-
-    row.appendChild(
-      cell
-    );
-
-
-    return;
-  }
-
-
-  /* PARTS DESCRIPTION */
-
-  if (
-    columnKey ===
-    "partsDescription"
-  ) {
-
-    row.appendChild(
-      createPartRequirementCell(
-        partData.descriptions,
-        partData.totalParts,
-        "description"
-      )
-    );
-
-
-    return;
-  }
-
-
-  /* PART NO */
-
-  if (columnKey === "partNo") {
-
-    row.appendChild(
-      createPartRequirementCell(
-        partData.partNumbers,
-        partData.totalParts,
-        "number"
-      )
-    );
-
-
-    return;
-  }
-
-
-  /* QUANTITY */
-
-  if (columnKey === "quantity") {
-
-    row.appendChild(
-      createPartRequirementCell(
-        partData.quantities,
-        partData.totalParts,
-        "quantity"
-      )
-    );
-
-
-    return;
-  }
-
-
-  /* NORMAL TEXT FIELD */
-
-  appendTextCell(
-    row,
-    record[columnKey]
-  );
-}
-
-
-/* =====================================================
-   PHOTO CELL
-===================================================== */
-
-function appendHistoryPhotoCell(
-  row,
-  record
-) {
-
-  const photoCell =
-    document.createElement(
-      "td"
-    );
-
-
-  if (record.photo) {
-
-    const image =
-      document.createElement(
-        "img"
-      );
-
-
-    image.className =
-      "unit-history-row-photo";
-
-    image.loading =
-      "lazy";
-
-
-    image.alt =
-      record.unitCode
-        ? "Photo " +
-          record.unitCode
-        : "Inspection Photo";
-
-
-    image.src =
-      getDriveImageUrl(
-        record.photo
-      );
-
-
-    image.onerror =
-      function () {
-
-        this.onerror =
-          null;
-
-        this.src =
-          createPhotoPlaceholder();
-      };
-
-
-    photoCell.appendChild(
-      image
-    );
-
-  } else {
-
-    const empty =
-      document.createElement(
-        "span"
-      );
-
-
-    empty.className =
-      "unit-history-row-no-photo";
-
-    empty.textContent =
-      "No Photo";
-
-
-    photoCell.appendChild(
-      empty
-    );
-  }
-
-
-  row.appendChild(
-    photoCell
-  );
-}
-
-/* =====================================================
-   CELL HELPER
-===================================================== */
-
-function appendTextCell(
-  row,
-  value
-) {
-
-  const cell =
-    document.createElement(
-      "td"
-    );
-
-
-  if (
-    value === null ||
-    value === undefined ||
-    String(value).trim() === ""
-  ) {
-
-    const empty =
-      document.createElement(
-        "span"
-      );
-
-    empty.className =
-      "unit-history-empty-value";
-
-    empty.textContent =
-      "-";
-
-    cell.appendChild(
-      empty
-    );
-
-  } else {
-
-    cell.textContent =
-      value;
-  }
-
-
-  row.appendChild(
-    cell
-  );
-}
-
-/* =====================================================
-   PART REQUIREMENT TABLE HELPER
-
-   Parts Description, Part No dan Quantity disimpan
-   sebagai multiline string di database.
-
-   Alignment selalu berdasarkan index yang sama.
-===================================================== */
-
-function splitPartMultiline(value) {
-
-  if (
-    value === null ||
-    value === undefined ||
-    value === ""
-  ) {
-    return [];
-  }
-
-  return String(value)
-    .replace(/\r\n/g, "\n")
-    .replace(/\r/g, "\n")
-    .split("\n");
-}
-
-
-/* =====================================================
-   APPEND 3 PART REQUIREMENT CELLS
-===================================================== */
-
-function appendPartRequirementCells(
-  row,
-  partsDescription,
-  partNo,
-  quantity
-) {
-
-  const descriptions =
-    splitPartMultiline(
-      partsDescription
-    );
-
-  const partNumbers =
-    splitPartMultiline(
-      partNo
-    );
-
-  const quantities =
-    splitPartMultiline(
-      quantity
-    );
-
-
-  /*
-    Jumlah baris mengikuti data terpanjang.
-
-    Jangan filter array karena posisi kosong harus
-    tetap dipertahankan agar alignment tidak bergeser.
-  */
-
-  const totalParts =
-    Math.max(
-      1,
-      descriptions.length,
-      partNumbers.length,
-      quantities.length
-    );
-
-
-  const descriptionCell =
-    createPartRequirementCell(
-      descriptions,
-      totalParts,
-      "description"
-    );
-
-
-  const partNoCell =
-    createPartRequirementCell(
-      partNumbers,
-      totalParts,
-      "number"
-    );
-
-
-  const quantityCell =
-    createPartRequirementCell(
-      quantities,
-      totalParts,
-      "quantity"
-    );
-
-
-  row.appendChild(
-    descriptionCell
-  );
-
-  row.appendChild(
-    partNoCell
-  );
-
-  row.appendChild(
-    quantityCell
-  );
-}
-
-
-/* =====================================================
-   CREATE ONE PART REQUIREMENT CELL
-===================================================== */
-
-function createPartRequirementCell(
-  values,
-  totalParts,
-  type
-) {
-
-  const cell =
-    document.createElement(
-      "td"
-    );
-
-
-  cell.classList.add(
-    "unit-history-parts-cell"
-  );
-
-
-  const list =
-    document.createElement(
-      "div"
-    );
-
-
-  list.className =
-    "unit-history-part-list";
-
-
-  for (
-    let index = 0;
-    index < totalParts;
-    index++
-  ) {
-
-    const line =
-      document.createElement(
-        "div"
-      );
-
-
-    line.className =
-      "unit-history-part-line";
-
-
-    if (type === "description") {
-
-      line.classList.add(
-        "unit-history-part-description"
-      );
-
-    } else if (type === "number") {
-
-      line.classList.add(
-        "unit-history-part-number"
-      );
-
-    } else if (type === "quantity") {
-
-      line.classList.add(
-        "unit-history-part-quantity"
-      );
-    }
-
-
-    /*
-      Jangan menghapus posisi kosong.
-
-      Contoh:
-      Hose   | 611-5996 | 1
-      Plug   |          | 4
-
-      Baris Part No kedua tetap dibuat.
-    */
-
-    const rawValue =
-      values[index] !== undefined
-        ? String(values[index]).trim()
-        : "";
-
-
-    if (rawValue) {
-
-      line.textContent =
-        rawValue;
-
-    } else {
-
-      line.textContent =
-        "-";
-
-      line.classList.add(
-        "unit-history-part-empty"
-      );
-    }
-
-
-    list.appendChild(
-      line
-    );
-  }
-
-
-  cell.appendChild(
-    list
-  );
-
-
-  return cell;
-}
-
-/* =====================================================
-   BADGE
-===================================================== */
-
-function createBadge(
-  value,
-  type
-) {
-
-  const badge =
-    document.createElement(
-      "span"
-    );
-
-
-  const normalized =
-    normalizeText(
-      value
-    );
-
-
-  badge.className =
-    "unit-history-badge";
-
-
-  if (type === "status") {
-
-    if (normalized === "close") {
-
-      badge.classList.add(
-        "unit-history-badge-close"
-      );
-
-    } else {
-
-      badge.classList.add(
-        "unit-history-badge-open"
-      );
-    }
-
-  } else {
-
-    if (normalized === "submitted") {
-
-      badge.classList.add(
-        "unit-history-badge-submitted"
-      );
-
-    } else {
-
-      badge.classList.add(
-        "unit-history-badge-belum"
-      );
-    }
-  }
-
-
-  badge.textContent =
-    value || "-";
-
-
-  return badge;
-}
-
-
-/* =====================================================
-   MOL DISPLAY
-
-   Evidence menjadi sumber tambahan agar record lama
-   tetap terbaca benar.
-===================================================== */
-
-function getMolDisplay(record) {
-
-  if (record.evidence) {
-    return "Submitted";
-  }
-
-  if (
-    normalizeText(
-      record.mol
-    ) === "submitted"
-  ) {
-
-    return "Submitted";
-  }
-
-  return record.mol ||
-    "Belum";
-}
-
-
-/* =====================================================
-   GLOBAL HEADER SEARCH
-===================================================== */
-
-function initializeSearch() {
-
-  const searchInput =
-    document.getElementById(
-      "searchInput"
-    );
-
-
-  if (!searchInput) {
-    return;
-  }
-
-
-  searchInput.addEventListener(
-    "input",
-    function () {
-
-      applyAllFilters();
-    }
-  );
-}
-
-/* =====================================================
-   COLUMNS PANEL
-===================================================== */
-
-/* =====================================================
-   RENDER COLUMN OPTIONS
-===================================================== */
-
-function renderColumnOptions() {
-
-  if (!columnsList) {
-    return;
-  }
-
-
-  columnsList.innerHTML = "";
-
-
-  UNIT_HISTORY_COLUMN_FIELDS.forEach(
-    function (field) {
-
-      const option =
-        document.createElement("label");
-
-
-      option.className =
-        "unit-history-column-option";
-
-
-      const checkbox =
-        document.createElement("input");
-
-
-      checkbox.type =
-        "checkbox";
-
-      checkbox.value =
-        field.key;
-
-      checkbox.dataset.columnKey =
-        field.key;
-
-      checkbox.checked =
-        activeColumnKeys.includes(
-         field.key
-        );
-
-
-      const label =
-        document.createElement("span");
-
-
-      label.textContent =
-        field.label;
-
-
-      option.appendChild(
-        checkbox
-      );
-
-      option.appendChild(
-        label
-      );
-
-
-      columnsList.appendChild(
-        option
-      );
-
-    }
-  );
-}
-
-
-
-/* =====================================================
-   RESET COLUMNS TO DEFAULT
-===================================================== */
-
-function resetColumnsToDefault() {
-
-  if (!columnsList) {
-    return;
-  }
-
-
-  UNIT_HISTORY_COLUMN_FIELDS.forEach(
-    function (field) {
-
-      const checkbox =
-        columnsList.querySelector(
-          `input[data-column-key="${field.key}"]`
-        );
-
-
-      if (checkbox) {
-
-        checkbox.checked =
-          field.default === true;
-
-      }
-
-    }
-  );
-}
-
-
-/* =====================================================
-   SELECT ALL COLUMNS
-===================================================== */
-
-function selectAllColumns() {
-
-  if (!columnsList) {
-    return;
-  }
-
-
-  const checkboxes =
-    columnsList.querySelectorAll(
-      'input[data-column-key]'
-    );
-
-
-  checkboxes.forEach(
-    function (checkbox) {
-
-      checkbox.checked = true;
-
-    }
-  );
-}
-
-/* =====================================================
-   APPLY CUSTOM COLUMNS
-===================================================== */
-
-function applyColumns() {
-
-  if (!columnsList) {
-    return;
-  }
-
-
-  const selectedKeys =
-    UNIT_HISTORY_COLUMN_FIELDS
-      .filter(
-        function (field) {
-
-          const checkbox =
-            columnsList.querySelector(
-              `input[data-column-key="${field.key}"]`
-            );
-
-          return Boolean(
-            checkbox?.checked
-          );
-        }
-      )
-      .map(
-        function (field) {
-          return field.key;
-        }
-      );
-
-
-  if (selectedKeys.length === 0) {
-
-    alert(
-      "Pilih minimal satu column."
-    );
-
-    return;
-  }
-
-
-  activeColumnKeys =
-  selectedKeys;
-
-
-localStorage.setItem(
-  UNIT_HISTORY_COLUMNS_STORAGE_KEY,
-  JSON.stringify(
-    activeColumnKeys
-  )
-);
-
-
-renderUnitHistoryTableHeader();
-
-  renderUnitHistory(
-    filteredUnitHistoryData
-  );
-
-
-  closeColumnsPanel();
-}
-
-
-function toggleColumnsPanel() {
-
-  if (!columnsPanel) {
-    return;
-  }
-
-
-  const willOpen =
-    columnsPanel.hidden;
-
-   if (
-  willOpen &&
-  columnsList &&
-  columnsList.children.length === 0
-) {
-
-  renderColumnOptions();
-}
-
-
-  columnsPanel.hidden =
-    !willOpen;
-
-
-  columnsButton?.setAttribute(
-    "aria-expanded",
-    willOpen
-      ? "true"
-      : "false"
-  );
-
-
-  /*
-    Agar Filter dan Columns tidak terbuka
-    bersamaan.
-  */
-
-  if (willOpen) {
-    closeFilterPanel();
-  }
-}
-
-
-function closeColumnsPanel() {
-
-  if (!columnsPanel) {
-    return;
-  }
-
-
-  columnsPanel.hidden =
-    true;
-
-
-  columnsButton?.setAttribute(
-    "aria-expanded",
-    "false"
-  );
-}
-
-/* =====================================================
-   RENDER CUSTOM TABLE HEADER
-===================================================== */
-
-function renderUnitHistoryTableHeader() {
-
-  const table =
-    historyTableBody?.closest(
-      "table"
-    );
-
-
-  const headerRow =
-    table?.querySelector(
-      "thead tr"
-    );
-
-
-  if (!headerRow) {
-    return;
-  }
-
-
-  headerRow.innerHTML = "";
-
-
-  /* DELETE COLUMN */
-
-  const deleteTh =
-    document.createElement(
-      "th"
-    );
-
-
-  deleteTh.id =
-    "unitHistoryDeleteHeader";
-
-  deleteTh.className =
-    "unit-history-delete-column";
-
-  deleteTh.hidden =
-    !deleteMode;
-
-
-  const selectAll =
-    document.createElement(
-      "input"
-    );
-
-
-  selectAll.type =
-    "checkbox";
-
-  selectAll.id =
-    "unitHistorySelectAll";
-
-
-  selectAll.addEventListener(
-    "change",
-    handleSelectAll
-  );
-
-
-  deleteTh.appendChild(
-    selectAll
-  );
-
-
-  headerRow.appendChild(
-    deleteTh
-  );
-
-
-  /*
-    Karena header dibuat ulang,
-    update DOM references delete.
-  */
-
-  deleteHeader =
-    deleteTh;
-
-  selectAllCheckbox =
-    selectAll;
-
-
-  /* ACTIVE DATA COLUMNS */
-
-  UNIT_HISTORY_COLUMN_FIELDS
-    .filter(
-      function (field) {
-
-        return activeColumnKeys.includes(
-          field.key
+  item.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+
+        event.preventDefault();
+
+        openDetail(
+          record.id
         );
       }
-    )
-    .forEach(
-      function (field) {
-
-        const th =
-          document.createElement(
-            "th"
-          );
+    }
+  );
 
 
-        th.textContent =
-          field.label;
+  // EDIT ICON -> UPDATE FORM
 
+  edit.addEventListener(
+    "click",
+    async function (event) {
 
-        headerRow.appendChild(
-          th
+      event.stopPropagation();
+
+      await loadRecordDetail(
+        record.id
+      );
+
+      if (selectedRecord) {
+
+        fillUpdateForm(
+          selectedRecord
         );
+
+        showUpdateModal();
       }
-    );
+    }
+  );
+
+
+  item.appendChild(
+    photoWrap
+  );
+
+  item.appendChild(
+    info
+  );
+
+  item.appendChild(
+    mol
+  );
+
+  item.appendChild(
+    edit
+  );
+
+  return item;
 }
 
-/* =====================================================
-   FILTER PANEL
-===================================================== */
+
+// =====================================================
+// FILTER
+// =====================================================
 
 function toggleFilterPanel() {
 
@@ -2635,14 +1557,11 @@ function toggleFilterPanel() {
     return;
   }
 
-
   const willOpen =
     filterPanel.hidden;
 
-
   filterPanel.hidden =
     !willOpen;
-
 
   filterButton?.setAttribute(
     "aria-expanded",
@@ -2650,16 +1569,6 @@ function toggleFilterPanel() {
       ? "true"
       : "false"
   );
-
-
-  if (
-    willOpen &&
-    filterConditions &&
-    filterConditions.children.length === 0
-  ) {
-
-    addFilterCondition();
-  }
 }
 
 
@@ -2669,10 +1578,8 @@ function closeFilterPanel() {
     return;
   }
 
-
   filterPanel.hidden =
     true;
-
 
   filterButton?.setAttribute(
     "aria-expanded",
@@ -2681,69 +1588,39 @@ function closeFilterPanel() {
 }
 
 
-/* =====================================================
-   ADD FILTER CONDITION
-===================================================== */
+function populateUnitFilter() {
 
-function addFilterCondition(
-  existingFilter = null
-) {
-
-  if (!filterConditions) {
+  if (!filterUnitCode) {
     return;
   }
 
+  const currentValue =
+    filterUnitCode.value;
 
-  filterCounter += 1;
+  const units =
+    [
+      ...new Set(
 
+        outstandingData
+          .map(
+            function (item) {
 
-  const condition =
-    document.createElement(
-      "div"
-    );
+              return (
+                item.unitCode ||
+                ""
+              ).trim();
+            }
+          )
+          .filter(Boolean)
 
-  condition.className =
-    "unit-history-filter-condition";
+      )
+    ].sort();
 
-  condition.dataset.filterId =
-    String(filterCounter);
+  filterUnitCode.innerHTML =
+    `<option value="">All Unit</option>`;
 
-
-  /* CATEGORY FIELD */
-
-  const categoryField =
-    document.createElement(
-      "div"
-    );
-
-  categoryField.className =
-    "unit-history-filter-field";
-
-
-  const categoryLabel =
-    document.createElement(
-      "label"
-    );
-
-  categoryLabel.textContent =
-    "Category";
-
-
-  const categorySelect =
-    document.createElement(
-      "select"
-    );
-
-  categorySelect.className =
-    "unit-history-filter-category";
-
-
-  categorySelect.innerHTML =
-    `<option value="">Select Category</option>`;
-
-
-  UNIT_HISTORY_FILTER_FIELDS.forEach(
-    function (field) {
+  units.forEach(
+    function (unit) {
 
       const option =
         document.createElement(
@@ -2751,1254 +1628,347 @@ function addFilterCondition(
         );
 
       option.value =
-        field.key;
+        unit;
 
       option.textContent =
-        field.label;
+        unit;
 
-      categorySelect.appendChild(
+      filterUnitCode.appendChild(
         option
       );
     }
   );
 
+  if (
+    units.includes(
+      currentValue
+    )
+  ) {
 
-  categoryField.appendChild(
-    categoryLabel
-  );
-
-  categoryField.appendChild(
-    categorySelect
-  );
-
-
-  /* VALUE FIELD */
-
-  const valueField =
-    document.createElement(
-      "div"
-    );
-
-  valueField.className =
-    "unit-history-filter-field unit-history-filter-value-field";
-
-
-  const valueLabel =
-    document.createElement(
-      "label"
-    );
-
-  valueLabel.textContent =
-    "Value";
-
-
-  const controlContainer =
-    document.createElement(
-      "div"
-    );
-
-  controlContainer.className =
-    "unit-history-filter-control";
-
-
-  valueField.appendChild(
-    valueLabel
-  );
-
-  valueField.appendChild(
-    controlContainer
-  );
-
-
-  /* REMOVE */
-
-  const removeButton =
-    document.createElement(
-      "button"
-    );
-
-  removeButton.type =
-    "button";
-
-  removeButton.className =
-    "unit-history-filter-remove";
-
-  removeButton.setAttribute(
-    "aria-label",
-    "Remove Filter"
-  );
-
-  removeButton.textContent =
-    "×";
-
-
-  removeButton.addEventListener(
-    "click",
-    function () {
-
-      condition.remove();
-
-      if (
-        filterConditions.children.length === 0
-      ) {
-
-        addFilterCondition();
-      }
-    }
-  );
-
-
-  categorySelect.addEventListener(
-    "change",
-    function () {
-
-      renderFilterControl(
-        condition,
-        categorySelect.value
-      );
-    }
-  );
-
-
-  condition.appendChild(
-    categoryField
-  );
-
-  condition.appendChild(
-    valueField
-  );
-
-  condition.appendChild(
-    removeButton
-  );
-
-
-  filterConditions.appendChild(
-    condition
-  );
-
-
-  if (existingFilter) {
-
-    categorySelect.value =
-      existingFilter.key || "";
-
-    renderFilterControl(
-      condition,
-      categorySelect.value,
-      existingFilter
-    );
-
-  } else {
-
-    renderFilterControl(
-      condition,
-      ""
-    );
+    filterUnitCode.value =
+      currentValue;
   }
 }
 
 
-/* =====================================================
-   RENDER FILTER CONTROL
-===================================================== */
+function getFilterBaseData() {
 
-function renderFilterControl(
-  condition,
-  fieldKey,
-  existingFilter = null
-) {
+  let result =
+    [...outstandingData];
 
-  const container =
-    condition.querySelector(
-      ".unit-history-filter-control"
-    );
-
-
-  if (!container) {
-    return;
-  }
-
-
-  container.innerHTML =
+  const unit =
+    filterUnitCode?.value ||
     "";
 
-
-  const definition =
-    UNIT_HISTORY_FILTER_FIELDS.find(
-      function (field) {
-
-        return field.key ===
-          fieldKey;
-      }
+  const problem =
+    normalizeText(
+      filterProblem?.value
     );
 
+  const date =
+    filterDate?.value ||
+    "";
 
-  if (!definition) {
+  const mol =
+    filterMol?.value ||
+    "";
 
-    const input =
-      document.createElement(
-        "input"
-      );
+  if (unit) {
 
-    input.type =
-      "text";
+    result =
+      result.filter(
+        function (item) {
 
-    input.disabled =
-      true;
-
-    input.placeholder =
-      "Select category first";
-
-    container.appendChild(
-      input
-    );
-
-    return;
-  }
-
-
-  /* TEXT */
-
-  if (definition.type === "text") {
-
-    const input =
-      document.createElement(
-        "input"
-      );
-
-    input.type =
-      "text";
-
-    input.className =
-      "unit-history-filter-value";
-
-    input.placeholder =
-      "Contains...";
-
-    input.value =
-      existingFilter?.value ||
-      "";
-
-    container.appendChild(
-      input
-    );
-
-    return;
-  }
-
-
-  /* SELECT */
-
-  if (definition.type === "select") {
-
-    const select =
-      document.createElement(
-        "select"
-      );
-
-    select.className =
-      "unit-history-filter-value";
-
-
-    select.innerHTML =
-      `<option value="">All</option>`;
-
-
-    getUniqueValues(
-      fieldKey
-    ).forEach(
-      function (value) {
-
-        const option =
-          document.createElement(
-            "option"
+          return (
+            item.unitCode ===
+            unit
           );
-
-        option.value =
-          value;
-
-        option.textContent =
-          value;
-
-        select.appendChild(
-          option
-        );
-      }
-    );
-
-
-    select.value =
-      existingFilter?.value ||
-      "";
-
-
-    container.appendChild(
-      select
-    );
-
-    return;
-  }
-
-
-  /* AVAILABILITY */
-
-  if (
-    definition.type ===
-    "availability"
-  ) {
-
-    const select =
-      document.createElement(
-        "select"
-      );
-
-    select.className =
-      "unit-history-filter-value";
-
-
-    select.innerHTML = `
-      <option value="">All</option>
-      <option value="available">Available</option>
-      <option value="empty">Empty</option>
-    `;
-
-
-    select.value =
-      existingFilter?.value ||
-      "";
-
-
-    container.appendChild(
-      select
-    );
-
-    return;
-  }
-
-
-  /* NUMBER RANGE */
-
-  if (
-    definition.type ===
-    "numberRange"
-  ) {
-
-    const wrapper =
-      document.createElement(
-        "div"
-      );
-
-    wrapper.style.display =
-      "grid";
-
-    wrapper.style.gridTemplateColumns =
-      "1fr 1fr";
-
-    wrapper.style.gap =
-      "7px";
-
-
-    const minInput =
-      document.createElement(
-        "input"
-      );
-
-    minInput.type =
-      "number";
-
-    minInput.placeholder =
-      "Min";
-
-    minInput.className =
-      "unit-history-filter-min";
-
-    minInput.value =
-      existingFilter?.min ??
-      "";
-
-
-    const maxInput =
-      document.createElement(
-        "input"
-      );
-
-    maxInput.type =
-      "number";
-
-    maxInput.placeholder =
-      "Max";
-
-    maxInput.className =
-      "unit-history-filter-max";
-
-    maxInput.value =
-      existingFilter?.max ??
-      "";
-
-
-    wrapper.appendChild(
-      minInput
-    );
-
-    wrapper.appendChild(
-      maxInput
-    );
-
-
-    container.appendChild(
-      wrapper
-    );
-
-    return;
-  }
-
-
-  /* DATE RANGE */
-
-  if (
-    definition.type ===
-    "dateRange"
-  ) {
-
-    const wrapper =
-      document.createElement(
-        "div"
-      );
-
-    wrapper.style.display =
-      "grid";
-
-    wrapper.style.gridTemplateColumns =
-      "1fr 1fr";
-
-    wrapper.style.gap =
-      "7px";
-
-
-    const fromInput =
-      document.createElement(
-        "input"
-      );
-
-    fromInput.type =
-      "date";
-
-    fromInput.className =
-      "unit-history-filter-from";
-
-    fromInput.value =
-      existingFilter?.from ||
-      "";
-
-
-    const toInput =
-      document.createElement(
-        "input"
-      );
-
-    toInput.type =
-      "date";
-
-    toInput.className =
-      "unit-history-filter-to";
-
-    toInput.value =
-      existingFilter?.to ||
-      "";
-
-
-    wrapper.appendChild(
-      fromInput
-    );
-
-    wrapper.appendChild(
-      toInput
-    );
-
-
-    container.appendChild(
-      wrapper
-    );
-  }
-}
-
-
-/* =====================================================
-   UNIQUE FILTER VALUES
-===================================================== */
-
-function getUniqueValues(
-  fieldKey
-) {
-
-  return [
-    ...new Set(
-
-      unitHistoryData
-
-        .map(
-          function (record) {
-
-            let value =
-              record[fieldKey];
-
-            if (
-              fieldKey === "mol"
-            ) {
-
-              value =
-                getMolDisplay(
-                  record
-                );
-            }
-
-            return String(
-              value ?? ""
-            ).trim();
-          }
-        )
-
-        .filter(Boolean)
-
-    )
-  ].sort(
-    function (a, b) {
-
-      return a.localeCompare(
-        b,
-        undefined,
-        {
-          numeric: true
         }
       );
-    }
-  );
-}
-
-
-/* =====================================================
-   READ FILTER CONDITIONS
-===================================================== */
-
-function readFilterConditions() {
-
-  if (!filterConditions) {
-    return [];
   }
 
+  if (problem) {
 
-  const filters = [];
+    result =
+      result.filter(
+        function (item) {
 
-
-  filterConditions
-    .querySelectorAll(
-      ".unit-history-filter-condition"
-    )
-    .forEach(
-      function (condition) {
-
-        const category =
-          condition.querySelector(
-            ".unit-history-filter-category"
-          )?.value || "";
-
-
-        if (!category) {
-          return;
-        }
-
-
-        const definition =
-          UNIT_HISTORY_FILTER_FIELDS.find(
-            function (field) {
-
-              return field.key ===
-                category;
-            }
+          return normalizeText(
+            item.problemDescription
+          ).includes(
+            problem
           );
-
-
-        if (!definition) {
-          return;
         }
+      );
+  }
 
+  if (date) {
 
-        if (
-          definition.type === "text" ||
-          definition.type === "select" ||
-          definition.type === "availability"
-        ) {
+    result =
+      result.filter(
+        function (item) {
 
-          const value =
-            condition.querySelector(
-              ".unit-history-filter-value"
-            )?.value || "";
-
-
-          if (!value) {
-            return;
-          }
-
-
-          filters.push({
-
-            key:
-              category,
-
-            type:
-              definition.type,
-
-            value:
-              value
-
-          });
-
-
-          return;
+          return (
+            item.dateInspection ===
+            date
+          );
         }
+      );
+  }
 
+  if (mol) {
 
-        if (
-          definition.type ===
-          "numberRange"
-        ) {
+    result =
+      result.filter(
+        function (item) {
 
-          const min =
-            condition.querySelector(
-              ".unit-history-filter-min"
-            )?.value ?? "";
-
-          const max =
-            condition.querySelector(
-              ".unit-history-filter-max"
-            )?.value ?? "";
-
-
-          if (
-            min === "" &&
-            max === ""
-          ) {
-
-            return;
-          }
-
-
-          filters.push({
-
-            key:
-              category,
-
-            type:
-              definition.type,
-
-            min:
-              min,
-
-            max:
-              max
-
-          });
-
-
-          return;
+          return (
+            normalizeText(
+              item.mol
+            ) ===
+            normalizeText(
+              mol
+            )
+          );
         }
+      );
+  }
 
-
-        if (
-          definition.type ===
-          "dateRange"
-        ) {
-
-          const from =
-            condition.querySelector(
-              ".unit-history-filter-from"
-            )?.value || "";
-
-          const to =
-            condition.querySelector(
-              ".unit-history-filter-to"
-            )?.value || "";
-
-
-          if (
-            !from &&
-            !to
-          ) {
-
-            return;
-          }
-
-
-          filters.push({
-
-            key:
-              category,
-
-            type:
-              definition.type,
-
-            from:
-              from,
-
-            to:
-              to
-
-          });
-        }
-
-      }
-    );
-
-
-  return filters;
+  return result;
 }
 
-
-/* =====================================================
-   APPLY FILTER BUTTON
-===================================================== */
 
 function applyFilters() {
 
-  activeFilters =
-    readFilterConditions();
-
-
-  applyAllFilters();
-
-  renderActiveFilterChips();
-
-  closeFilterPanel();
-}
-
-
-/* =====================================================
-   APPLY ALL FILTERS
-===================================================== */
-
-function applyAllFilters() {
-
-  let result =
-    [...unitHistoryData];
-
-
-  activeFilters.forEach(
-    function (filter) {
-
-      result =
-        result.filter(
-          function (record) {
-
-            return recordMatchesFilter(
-              record,
-              filter
-            );
-          }
-        );
-    }
-  );
-
-
-  /* GLOBAL HEADER SEARCH */
+  filteredData =
+    getFilterBaseData();
 
   const searchInput =
     document.getElementById(
       "searchInput"
     );
-
 
   const query =
     normalizeText(
       searchInput?.value
     );
 
-
   if (query) {
 
-    result =
-      result.filter(
-        function (record) {
+    filteredData =
+      filteredData.filter(
+        function (item) {
 
-          return recordMatchesSearch(
-            record,
-            query
+          return (
+
+            normalizeText(
+              item.unitCode
+            ).includes(
+              query
+            ) ||
+
+            normalizeText(
+              item.problemDescription
+            ).includes(
+              query
+            ) ||
+
+            normalizeText(
+              item.groupComponent
+            ).includes(
+              query
+            ) ||
+
+            normalizeText(
+              item.rating
+            ).includes(
+              query
+            ) ||
+
+            normalizeText(
+              item.partsDescription
+            ).includes(
+              query
+            )
+
           );
         }
       );
   }
 
-
-  filteredUnitHistoryData =
-    result;
-
-
-  selectedDeleteIds.clear();
-
-
-  renderUnitHistory(
-    filteredUnitHistoryData
+  renderOutstandingList(
+    filteredData
   );
+
+  closeFilterPanel();
 }
 
-
-/* =====================================================
-   FILTER MATCHING
-===================================================== */
-
-function recordMatchesFilter(
-  record,
-  filter
-) {
-
-  let rawValue =
-    record[filter.key];
-
-
-  if (filter.key === "mol") {
-
-    rawValue =
-      getMolDisplay(
-        record
-      );
-  }
-
-
-  /* TEXT */
-
-  if (filter.type === "text") {
-
-    return normalizeText(
-      rawValue
-    ).includes(
-      normalizeText(
-        filter.value
-      )
-    );
-  }
-
-
-  /* SELECT */
-
-  if (filter.type === "select") {
-
-    return normalizeText(
-      rawValue
-    ) ===
-    normalizeText(
-      filter.value
-    );
-  }
-
-
-  /* AVAILABLE / EMPTY */
-
-  if (
-    filter.type ===
-    "availability"
-  ) {
-
-    const hasValue =
-      Boolean(
-        String(
-          rawValue ?? ""
-        ).trim()
-      );
-
-
-    return filter.value ===
-      "available"
-        ? hasValue
-        : !hasValue;
-  }
-
-
-  /* NUMBER RANGE */
-
-  if (
-    filter.type ===
-    "numberRange"
-  ) {
-
-    const value =
-      parseNumericValue(
-        rawValue
-      );
-
-
-    if (
-      Number.isNaN(value)
-    ) {
-
-      return false;
-    }
-
-
-    if (
-      filter.min !== "" &&
-      value <
-        Number(filter.min)
-    ) {
-
-      return false;
-    }
-
-
-    if (
-      filter.max !== "" &&
-      value >
-        Number(filter.max)
-    ) {
-
-      return false;
-    }
-
-
-    return true;
-  }
-
-
-  /* DATE RANGE */
-
-  if (
-    filter.type ===
-    "dateRange"
-  ) {
-
-    const date =
-      normalizeDateValue(
-        rawValue
-      );
-
-
-    if (!date) {
-      return false;
-    }
-
-
-    if (
-      filter.from &&
-      date < filter.from
-    ) {
-
-      return false;
-    }
-
-
-    if (
-      filter.to &&
-      date > filter.to
-    ) {
-
-      return false;
-    }
-
-
-    return true;
-  }
-
-
-  return true;
-}
-
-
-/* =====================================================
-   GLOBAL SEARCH MATCHING
-===================================================== */
-
-function recordMatchesSearch(
-  record,
-  query
-) {
-
-  const values = [
-
-    record.unitCode,
-    record.hmInspection,
-    record.dateInspection,
-    record.groupComponent,
-    record.problemDescription,
-    record.rating,
-    record.partsDescription,
-    record.partNo,
-    record.quantity,
-    record.inspectors,
-    record.notes,
-    getMolDisplay(record),
-    record.partsStatus,
-    record.actionProblems,
-    record.hmAction,
-    record.dateAction,
-    record.status,
-    record.manPower
-
-  ];
-
-
-  return values.some(
-    function (value) {
-
-      return normalizeText(
-        value
-      ).includes(
-        query
-      );
-    }
-  );
-}
-
-
-/* =====================================================
-   RESET FILTERS
-===================================================== */
 
 function resetFilters() {
 
-  activeFilters =
-    [];
-
-
-  if (filterConditions) {
-
-    filterConditions.innerHTML =
+  if (filterUnitCode) {
+    filterUnitCode.value =
       "";
-
-    addFilterCondition();
   }
 
+  if (filterProblem) {
+    filterProblem.value =
+      "";
+  }
+
+  if (filterDate) {
+    filterDate.value =
+      "";
+  }
+
+  if (filterMol) {
+    filterMol.value =
+      "";
+  }
 
   const searchInput =
     document.getElementById(
       "searchInput"
     );
 
-
   if (searchInput) {
-
     searchInput.value =
       "";
   }
 
+  filteredData =
+    [...outstandingData];
 
-  filteredUnitHistoryData =
-    [...unitHistoryData];
-
-
-  selectedDeleteIds.clear();
-
-
-  renderUnitHistory(
-    filteredUnitHistoryData
+  renderOutstandingList(
+    filteredData
   );
-
-
-  renderActiveFilterChips();
 
   closeFilterPanel();
 }
 
 
-/* =====================================================
-   ACTIVE FILTER CHIPS
-===================================================== */
-
-function renderActiveFilterChips() {
-
-  if (!activeFiltersContainer) {
-    return;
-  }
-
-
-  activeFiltersContainer.innerHTML =
-    "";
-
-
-  if (
-    activeFilters.length === 0
-  ) {
-
-    activeFiltersContainer.hidden =
-      true;
-
-    return;
-  }
-
-
-  activeFiltersContainer.hidden =
-    false;
-
-
-  activeFilters.forEach(
-    function (filter) {
-
-      const definition =
-        UNIT_HISTORY_FILTER_FIELDS.find(
-          function (field) {
-
-            return field.key ===
-              filter.key;
-          }
-        );
-
-
-      const chip =
-        document.createElement(
-          "span"
-        );
-
-      chip.className =
-        "unit-history-filter-chip";
-
-
-      let text =
-        definition?.label ||
-        filter.key;
-
-
-      if (
-        filter.type === "numberRange"
-      ) {
-
-        text +=
-          ": " +
-          (
-            filter.min ||
-            "Min"
-          ) +
-          " - " +
-          (
-            filter.max ||
-            "Max"
-          );
-
-      } else if (
-        filter.type === "dateRange"
-      ) {
-
-        text +=
-          ": " +
-          (
-            filter.from ||
-            "Start"
-          ) +
-          " - " +
-          (
-            filter.to ||
-            "End"
-          );
-
-      } else {
-
-        text +=
-          ": " +
-          filter.value;
-      }
-
-
-      chip.textContent =
-        text;
-
-
-      activeFiltersContainer.appendChild(
-        chip
-      );
-    }
-  );
-}
-
-
-/* =====================================================
-   SCROLL NAVIGATION
-===================================================== */
+// =====================================================
+// SCROLL NAVIGATION
+// =====================================================
 
 function updateScrollNavigation() {
 
   if (
-    !historyScrollContainer ||
+    !outstandingScrollContainer ||
     !scrollNavigation
   ) {
-
     return;
   }
-
 
   requestAnimationFrame(
     function () {
 
-      const hasVerticalScroll =
-        historyScrollContainer
+      const hasScroll =
+        outstandingScrollContainer
           .scrollHeight >
-        historyScrollContainer
+        outstandingScrollContainer
           .clientHeight + 5;
 
-
       scrollNavigation.hidden =
-        !hasVerticalScroll;
+        !hasScroll;
     }
   );
 }
 
 
-/* =====================================================
-   OPEN DETAIL
-===================================================== */
+// =====================================================
+// LOAD DETAIL
+// =====================================================
 
-function openDetail(
+async function loadRecordDetail(
+  inspectionId
+) {
+
+  try {
+
+    const result =
+      await apiRequest({
+
+        action:
+          "getDailyOutstandingDetail",
+
+        inspectionId:
+          inspectionId
+
+      });
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result?.message ||
+        "Detail Outstanding gagal dimuat."
+      );
+    }
+
+    selectedRecord =
+      result.data;
+
+    return selectedRecord;
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      error.message ||
+      "Detail Outstanding gagal dimuat."
+    );
+
+    selectedRecord =
+      null;
+
+    return null;
+  }
+}
+
+
+// =====================================================
+// OPEN DETAIL
+// =====================================================
+
+async function openDetail(
   inspectionId
 ) {
 
   const record =
-    unitHistoryData.find(
-      function (item) {
-
-        return String(
-          item.id
-        ) ===
-        String(
-          inspectionId
-        );
-      }
+    await loadRecordDetail(
+      inspectionId
     );
-
 
   if (!record) {
-
-    alert(
-      "Detail Unit History tidak ditemukan."
-    );
-
     return;
   }
-
-
-  selectedRecord =
-    record;
-
 
   fillDetailModal(
     record
   );
 
-
   if (detailModal) {
-
     detailModal.hidden =
       false;
   }
-
 
   setMainShortcutVisible(
     false
   );
 
-
   updateBodyModalState();
 }
 
 
-/* =====================================================
-   FILL DETAIL
-===================================================== */
+// =====================================================
+// FILL DETAIL
+// =====================================================
 
 function fillDetailModal(
   record
@@ -4007,12 +1977,9 @@ function fillDetailModal(
   if (detailPhoto) {
 
     detailPhoto.src =
-      record.photo
-        ? getDriveImageUrl(
-            record.photo
-          )
-        : createPhotoPlaceholder();
-
+      getDriveImageUrl(
+        record.photo
+      );
 
     detailPhoto.onerror =
       function () {
@@ -4025,18 +1992,15 @@ function fillDetailModal(
       };
   }
 
-
   setText(
     detailUnitCode,
     record.unitCode
   );
 
-
   setText(
     detailHmInspection,
     record.hmInspection
   );
-
 
   setText(
     detailDateInspection,
@@ -4045,144 +2009,67 @@ function fillDetailModal(
     )
   );
 
-
-  setText(
-    detailInspectors,
-    record.inspectors
-  );
-
-
   setText(
     detailGroupComponent,
     record.groupComponent
   );
-
 
   setText(
     detailProblemDescription,
     record.problemDescription
   );
 
-
   setText(
     detailRating,
     record.rating
   );
 
-
   setText(
     detailPartsDescription,
-    record.partsDescription
+    formatPartSummary(
+      record.partsDescription
+    )
   );
-
-
-  setText(
-    detailPartNo,
-    record.partNo
-  );
-
-
-  setText(
-    detailQuantity,
-    record.quantity
-  );
-
-
-  setText(
-    detailNotes,
-    record.notes
-  );
-
 
   setText(
     detailMol,
-    getMolDisplay(
-      record
-    )
+    record.mol ||
+    "Belum"
   );
-
-
-  /*
-    Evidence tidak ditampilkan sebagai file.
-    Hanya status Submitted / Belum.
-  */
-
-  setText(
-    detailEvidence,
-    record.evidence
-      ? "Submitted"
-      : "Belum"
-  );
-
 
   setText(
     detailPartsStatus,
-    record.partsStatus
-  );
-
-
-  setText(
-    detailActionProblems,
-    record.actionProblems
-  );
-
-
-  setText(
-    detailHmAction,
-    record.hmAction
-  );
-
-
-  setText(
-    detailDateAction,
-    formatDisplayDate(
-      record.dateAction
-    )
-  );
-
-
-  setText(
-    detailStatus,
-    record.status
-  );
-
-
-  setText(
-    detailManPower,
-    record.manPower
+    record.partsStatus ||
+    "-"
   );
 }
 
 
-/* =====================================================
-   CLOSE DETAIL
-===================================================== */
+// =====================================================
+// CLOSE DETAIL
+// =====================================================
 
 function closeDetail() {
 
   if (detailModal) {
-
     detailModal.hidden =
       true;
   }
 
-
   selectedRecord =
     null;
-
 
   setMainShortcutVisible(
     true
   );
 
-
   updateBodyModalState();
 }
 
 
-/* =====================================================
-   PHOTO VIEWER
-===================================================== */
+// =====================================================
+// PHOTO VIEWER
+// =====================================================
 
 function openPhotoViewer() {
 
@@ -4190,14 +2077,11 @@ function openPhotoViewer() {
     !selectedRecord ||
     !selectedRecord.photo
   ) {
-
     return;
   }
 
-
   photoZoom =
     1;
-
 
   if (photoViewerImage) {
 
@@ -4210,13 +2094,11 @@ function openPhotoViewer() {
       "scale(1)";
   }
 
-
   if (resetZoomButton) {
 
     resetZoomButton.textContent =
       "100%";
   }
-
 
   if (photoViewer) {
 
@@ -4224,11 +2106,9 @@ function openPhotoViewer() {
       false;
   }
 
-
   setMainShortcutVisible(
     false
   );
-
 
   updateBodyModalState();
 }
@@ -4242,17 +2122,14 @@ function closePhotoViewer() {
       true;
   }
 
-
   photoZoom =
     1;
-
 
   if (photoViewerImage) {
 
     photoViewerImage.style.transform =
       "scale(1)";
   }
-
 
   updateBodyModalState();
 }
@@ -4271,13 +2148,11 @@ function setPhotoZoom(
       )
     );
 
-
   if (photoViewerImage) {
 
     photoViewerImage.style.transform =
       `scale(${photoZoom})`;
   }
-
 
   if (resetZoomButton) {
 
@@ -4289,446 +2164,1574 @@ function setPhotoZoom(
 }
 
 
-/* =====================================================
-   DELETE BUTTON
-===================================================== */
+// =====================================================
+// OPEN UPDATE FORM
+// =====================================================
 
-function handleDeleteButton() {
+function openUpdateForm() {
 
-  /*
-    FIRST CLICK:
-    Masuk Delete Mode.
-  */
-
-  if (!deleteMode) {
-
-    enterDeleteMode();
-
+  if (!selectedRecord) {
     return;
   }
 
-
-  /*
-    SECOND CLICK:
-    Jika belum memilih data, keluar Delete Mode.
-  */
-
-  if (
-    selectedDeleteIds.size === 0
-  ) {
-
-    alert(
-      "Belum ada data yang dipilih."
-    );
-
-    exitDeleteMode();
-
-    return;
-  }
-
-
-  openDeleteConfirmation();
-}
-
-
-/* =====================================================
-   ENTER DELETE MODE
-===================================================== */
-
-function enterDeleteMode() {
-
-  deleteMode =
-    true;
-
-
-  selectedDeleteIds.clear();
-
-
-  if (selectAllCheckbox) {
-
-    selectAllCheckbox.checked =
-      false;
-
-    selectAllCheckbox.indeterminate =
-      false;
-  }
-
-
-  updateDeleteUI();
-
-
-  renderUnitHistory(
-    filteredUnitHistoryData
+  fillUpdateForm(
+    selectedRecord
   );
+
+  if (detailModal) {
+
+    detailModal.hidden =
+      true;
+  }
+
+  showUpdateModal();
 }
 
 
-/* =====================================================
-   EXIT DELETE MODE
-===================================================== */
+function showUpdateModal() {
 
-function exitDeleteMode() {
+  if (updateModal) {
 
-  deleteMode =
-    false;
-
-
-  selectedDeleteIds.clear();
-
-
-  if (selectAllCheckbox) {
-
-    selectAllCheckbox.checked =
+    updateModal.hidden =
       false;
 
-    selectAllCheckbox.indeterminate =
-      false;
+    updateModal.scrollTop =
+      0;
   }
-
-
-  updateDeleteUI();
-
-
-  renderUnitHistory(
-    filteredUnitHistoryData
-  );
-}
-
-
-/* =====================================================
-   DELETE UI
-===================================================== */
-
-function updateDeleteUI() {
-
-  if (deleteHeader) {
-
-    deleteHeader.hidden =
-      !deleteMode;
-  }
-
-
-  if (deleteButton) {
-
-    deleteButton.classList.toggle(
-      "is-active",
-      deleteMode
-    );
-
-
-    deleteButton.setAttribute(
-      "aria-label",
-      deleteMode
-        ? (
-            selectedDeleteIds.size > 0
-              ? "Delete " +
-                selectedDeleteIds.size +
-                " selected item"
-              : "Exit Delete Mode"
-          )
-        : "Delete Unit History"
-    );
-  }
-
-
-  document
-    .querySelectorAll(
-      ".unit-history-delete-column"
-    )
-    .forEach(
-      function (element) {
-
-        element.hidden =
-          !deleteMode;
-      }
-    );
-
-
-  updateSelectAllState();
-}
-
-
-/* =====================================================
-   TOGGLE DELETE SELECTION
-===================================================== */
-
-function toggleDeleteSelection(
-  inspectionId,
-  selected
-) {
-
-  if (!inspectionId) {
-    return;
-  }
-
-
-  if (selected) {
-
-    selectedDeleteIds.add(
-      inspectionId
-    );
-
-  } else {
-
-    selectedDeleteIds.delete(
-      inspectionId
-    );
-  }
-
-
-  updateSelectAllState();
-}
-
-
-/* =====================================================
-   SELECT ALL
-===================================================== */
-
-function handleSelectAll() {
-
-  if (!selectAllCheckbox) {
-    return;
-  }
-
-
-  if (
-    selectAllCheckbox.checked
-  ) {
-
-    filteredUnitHistoryData
-      .forEach(
-        function (record) {
-
-          if (record.id) {
-
-            selectedDeleteIds.add(
-              record.id
-            );
-          }
-        }
-      );
-
-  } else {
-
-    filteredUnitHistoryData
-      .forEach(
-        function (record) {
-
-          selectedDeleteIds.delete(
-            record.id
-          );
-        }
-      );
-  }
-
-
-  historyTableBody
-    ?.querySelectorAll(
-      ".unit-history-row-checkbox"
-    )
-    .forEach(
-      function (checkbox) {
-
-        checkbox.checked =
-          selectedDeleteIds.has(
-            checkbox.value
-          );
-      }
-    );
-
-
-  updateSelectAllState();
-}
-
-
-/* =====================================================
-   SELECT ALL STATE
-===================================================== */
-
-function updateSelectAllState() {
-
-  if (!selectAllCheckbox) {
-    return;
-  }
-
-
-  const ids =
-    filteredUnitHistoryData
-
-      .map(
-        function (record) {
-
-          return record.id;
-        }
-      )
-
-      .filter(Boolean);
-
-
-  if (ids.length === 0) {
-
-    selectAllCheckbox.checked =
-      false;
-
-    selectAllCheckbox.indeterminate =
-      false;
-
-    return;
-  }
-
-
-  const selectedCount =
-    ids.filter(
-      function (id) {
-
-        return selectedDeleteIds.has(
-          id
-        );
-      }
-    ).length;
-
-
-  selectAllCheckbox.checked =
-    selectedCount ===
-    ids.length;
-
-
-  selectAllCheckbox.indeterminate =
-    selectedCount > 0 &&
-    selectedCount < ids.length;
-}
-
-
-/* =====================================================
-   DELETE CONFIRMATION
-===================================================== */
-
-function openDeleteConfirmation() {
-
-  const count =
-    selectedDeleteIds.size;
-
-
-  if (!count) {
-    return;
-  }
-
-
-  if (deleteModalMessage) {
-
-    deleteModalMessage.textContent =
-      "Apa kamu yakin akan menghapus " +
-      count +
-      " item dari database?";
-  }
-
-
-  if (deleteModal) {
-
-    deleteModal.hidden =
-      false;
-  }
-
 
   setMainShortcutVisible(
     false
   );
 
-
   updateBodyModalState();
 }
 
 
-/* =====================================================
-   CANCEL DELETE
-===================================================== */
+// =====================================================
+// CLOSE UPDATE FORM
+// =====================================================
 
-function cancelDelete() {
+function closeUpdateForm() {
 
-  if (deleteModal) {
+  if (updateModal) {
 
-    deleteModal.hidden =
+    updateModal.hidden =
       true;
   }
 
+  replacementPhoto =
+    null;
+
+  evidenceFile =
+    null;
+
+  if (updateInspectionPhoto) {
+
+    updateInspectionPhoto.value =
+      "";
+  }
+
+  if (updateEvidence) {
+
+    updateEvidence.value =
+      "";
+  }
 
   /*
-    Sesuai kebutuhan:
-    No = clear checks + exit delete mode.
+    Cancel dari Update kembali ke Detail
+    sesuai alur referensi.
   */
 
-  deleteMode =
-    false;
+  if (selectedRecord) {
 
-  selectedDeleteIds.clear();
+    fillDetailModal(
+      selectedRecord
+    );
 
+    if (detailModal) {
 
-  setMainShortcutVisible(
-    true
-  );
+      detailModal.hidden =
+        false;
+    }
 
+    setMainShortcutVisible(
+      false
+    );
+
+  } else {
+
+    setMainShortcutVisible(
+      true
+    );
+  }
 
   updateBodyModalState();
+}
 
 
-  renderUnitHistory(
-    filteredUnitHistoryData
+// =====================================================
+// FILL UPDATE FORM
+// =====================================================
+
+function fillUpdateForm(
+  record
+) {
+
+  replacementPhoto =
+    null;
+
+  evidenceFile =
+    null;
+
+  if (updateInspectionPhoto) {
+    updateInspectionPhoto.value =
+      "";
+  }
+
+  if (updateEvidence) {
+    updateEvidence.value =
+      "";
+  }
+
+  updateInspectionId.value =
+    record.id ||
+    "";
+
+  ensureSelectOption(
+    updateUnitCode,
+    record.unitCode
+  );
+
+  updateUnitCode.value =
+    record.unitCode ||
+    "";
+
+  updateHmInspection.value =
+    record.hmInspection ||
+    "";
+
+  updateDateInspection.value =
+    record.dateInspection ||
+    "";
+
+  updateInspectionPhotoPreview.src =
+    getDriveImageUrl(
+      record.photo
+    );
+
+  updateInspectionPhotoPreview.onerror =
+    function () {
+
+      this.onerror =
+        null;
+
+      this.src =
+        createPhotoPlaceholder();
+    };
+
+  ensureSelectOption(
+    updateGroupComponent,
+    record.groupComponent
+  );
+
+  updateGroupComponent.value =
+    record.groupComponent ||
+    "";
+
+  updateProblemDescription.value =
+    record.problemDescription ||
+    "";
+
+  setRatingSelection(
+    record.rating
+  );
+
+  // ===================================================
+  // PART REQUIREMENT
+  // DATABASE MULTILINE -> REPEATING FIELD
+  // ===================================================
+
+  loadUpdatePartRequirements(
+
+    record.partsDescription || "",
+
+    record.partNo || "",
+
+    record.quantity || ""
+
+  );
+
+  updateNotes.value =
+    record.notes ||
+    "";
+
+  updateMol.value =
+    record.mol ||
+    "Belum";
+
+  setPartsStatusSelection(
+    record.partsStatus
+  );
+
+  updateStatus.value =
+    record.status ||
+    "OPEN";
+
+  updateActionProblems.value =
+    record.actionProblems ||
+    "";
+
+  updateHmAction.value =
+    record.hmAction ||
+    "";
+
+  updateDateAction.value =
+    record.dateAction ||
+    "";
+
+  updateManPower.value =
+    record.manPower ||
+    "";
+
+  updateEvidenceDisplay(
+    record.evidence
   );
 }
 
 
-/* =====================================================
-   CONFIRM DELETE
-===================================================== */
+// =====================================================
+// UNIT OPTIONS
+// =====================================================
 
-async function confirmDelete() {
+function populateUpdateUnitOptions() {
 
-  const inspectionIds =
-    Array.from(
-      selectedDeleteIds
+  if (!updateUnitCode) {
+    return;
+  }
+
+  const units =
+    [
+      ...new Set(
+
+        outstandingData
+          .map(
+            function (item) {
+
+              return (
+                item.unitCode ||
+                ""
+              ).trim();
+            }
+          )
+          .filter(Boolean)
+
+      )
+    ].sort();
+
+  updateUnitCode.innerHTML =
+    `<option value="">Select Unit</option>`;
+
+  units.forEach(
+    function (unit) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        unit;
+
+      option.textContent =
+        unit;
+
+      updateUnitCode.appendChild(
+        option
+      );
+    }
+  );
+}
+
+
+// =====================================================
+// RATING
+// =====================================================
+
+function handleRatingSelection(
+  event
+) {
+
+  const button =
+    event.target.closest(
+      ".rating-button"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  setRatingSelection(
+    button.dataset.rating ||
+    ""
+  );
+}
+
+
+function setRatingSelection(
+  rating
+) {
+
+  selectedRating =
+    rating ||
+    "";
+
+  if (updateRating) {
+
+    updateRating.value =
+      selectedRating;
+  }
+
+  updateRatingGrid
+    ?.querySelectorAll(
+      ".rating-button"
+    )
+    .forEach(
+      function (button) {
+
+        button.classList.toggle(
+          "selected",
+          button.dataset.rating ===
+            selectedRating
+        );
+      }
+    );
+}
+
+// =====================================================
+// PART REQUIREMENT
+// =====================================================
+
+function splitMultilineValue(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+
+    return [];
+  }
+
+
+  return String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .split("\n");
+}
+
+
+// =====================================================
+// CREATE PART ITEM
+// =====================================================
+
+function createUpdatePartItem(
+  partDescription = "",
+  partNo = "",
+  quantity = ""
+) {
+
+  const item =
+    document.createElement(
+      "div"
     );
 
 
+  item.className =
+    "update-part-requirement-item";
+
+
+  item.innerHTML = `
+
+    <div class="update-part-item-header">
+
+      <div class="update-part-item-title">
+        Part
+      </div>
+
+      <button
+        type="button"
+        class="update-remove-part-button"
+        aria-label="Remove Part"
+      >
+        Remove Part
+      </button>
+
+    </div>
+
+
+    <div class="update-part-field">
+
+      <label>
+        Part Description
+      </label>
+
+      <input
+        type="text"
+        class="update-part-description-input"
+        autocomplete="off"
+        placeholder="Input Part Description"
+      >
+
+    </div>
+
+
+    <div class="update-part-row">
+
+
+      <div
+        class="
+          update-part-field
+          update-part-no-field
+        "
+      >
+
+        <label>
+          Part No.
+        </label>
+
+        <input
+          type="text"
+          class="update-part-no-input"
+          autocomplete="off"
+          placeholder="Input Part No."
+        >
+
+      </div>
+
+
+      <div
+        class="
+          update-part-field
+          update-part-quantity-field
+        "
+      >
+
+        <label>
+          Qty
+        </label>
+
+        <input
+          type="number"
+          class="update-part-quantity-input"
+          min="0"
+          step="1"
+          inputmode="numeric"
+          placeholder="0"
+        >
+
+      </div>
+
+
+    </div>
+
+  `;
+
+
+  const descriptionInput =
+    item.querySelector(
+      ".update-part-description-input"
+    );
+
+
+  const partNoInput =
+    item.querySelector(
+      ".update-part-no-input"
+    );
+
+
+  const quantityInput =
+    item.querySelector(
+      ".update-part-quantity-input"
+    );
+
+
+  if (descriptionInput) {
+
+    descriptionInput.value =
+      partDescription || "";
+  }
+
+
+  if (partNoInput) {
+
+    partNoInput.value =
+      partNo || "";
+  }
+
+
+  if (quantityInput) {
+
+    quantityInput.value =
+      quantity || "";
+  }
+
+
+  return item;
+}
+
+
+// =====================================================
+// GET ALL PART ITEMS
+// =====================================================
+
+function getUpdatePartItems() {
+
+  if (!updatePartRequirementList) {
+    return [];
+  }
+
+
+  return Array.from(
+    updatePartRequirementList
+      .querySelectorAll(
+        ".update-part-requirement-item"
+      )
+  );
+}
+
+
+// =====================================================
+// RENUMBER PARTS
+// =====================================================
+
+function renumberUpdateParts() {
+
+  const items =
+    getUpdatePartItems();
+
+
+  items.forEach(
+    function (
+      item,
+      index
+    ) {
+
+      const number =
+        index + 1;
+
+
+      item.dataset.partIndex =
+        String(number);
+
+
+      const title =
+        item.querySelector(
+          ".update-part-item-title"
+        );
+
+
+      if (title) {
+
+        title.textContent =
+          "Part " + number;
+      }
+
+
+      const removeButton =
+        item.querySelector(
+          ".update-remove-part-button"
+        );
+
+
+      if (removeButton) {
+
+        removeButton.setAttribute(
+          "aria-label",
+          "Remove Part " + number
+        );
+      }
+
+    }
+  );
+}
+
+
+// =====================================================
+// CLEAR ONE PART
+// =====================================================
+
+function clearUpdatePartItem(
+  item
+) {
+
+  if (!item) {
+    return;
+  }
+
+
+  const descriptionInput =
+    item.querySelector(
+      ".update-part-description-input"
+    );
+
+
+  const partNoInput =
+    item.querySelector(
+      ".update-part-no-input"
+    );
+
+
+  const quantityInput =
+    item.querySelector(
+      ".update-part-quantity-input"
+    );
+
+
+  if (descriptionInput) {
+    descriptionInput.value = "";
+  }
+
+
+  if (partNoInput) {
+    partNoInput.value = "";
+  }
+
+
+  if (quantityInput) {
+    quantityInput.value = "";
+  }
+
+
+  syncUpdatePartDatabaseFields();
+}
+
+
+// =====================================================
+// ADD NEW PART
+// =====================================================
+
+function addUpdatePart(
+  partDescription = "",
+  partNo = "",
+  quantity = ""
+) {
+
+  if (!updatePartRequirementList) {
+    return;
+  }
+
+
+  const item =
+    createUpdatePartItem(
+      partDescription,
+      partNo,
+      quantity
+    );
+
+
+  updatePartRequirementList
+    .appendChild(
+      item
+    );
+
+
+  renumberUpdateParts();
+
+  syncUpdatePartDatabaseFields();
+
+
+  /*
+    Jika Add Part ditekan manual,
+    fokus langsung ke Part Description baru.
+  */
+
   if (
-    inspectionIds.length === 0
+    !partDescription &&
+    !partNo &&
+    !quantity
   ) {
 
-    cancelDelete();
+    item
+      .querySelector(
+        ".update-part-description-input"
+      )
+      ?.focus();
+  }
+}
+
+
+// =====================================================
+// LOAD DATABASE -> REPEATING PART
+// =====================================================
+
+function loadUpdatePartRequirements(
+  partsDescription,
+  partNo,
+  quantity
+) {
+
+  if (!updatePartRequirementList) {
+    return;
+  }
+
+
+  const descriptions =
+    splitMultilineValue(
+      partsDescription
+    );
+
+
+  const partNumbers =
+    splitMultilineValue(
+      partNo
+    );
+
+
+  const quantities =
+    splitMultilineValue(
+      quantity
+    );
+
+
+  /*
+    Jumlah card mengikuti field dengan
+    jumlah baris terbanyak.
+
+    Contoh:
+
+    Description = 3
+    Part No      = 2
+    Quantity     = 3
+
+    Maka tetap dibuat 3 Part.
+  */
+
+  const totalParts =
+    Math.max(
+      1,
+      descriptions.length,
+      partNumbers.length,
+      quantities.length
+    );
+
+
+  updatePartRequirementList.innerHTML =
+    "";
+
+
+  for (
+    let index = 0;
+    index < totalParts;
+    index++
+  ) {
+
+    const item =
+      createUpdatePartItem(
+
+        descriptions[index] || "",
+
+        partNumbers[index] || "",
+
+        quantities[index] || ""
+
+      );
+
+
+    updatePartRequirementList
+      .appendChild(
+        item
+      );
+  }
+
+
+  renumberUpdateParts();
+
+  syncUpdatePartDatabaseFields();
+}
+
+
+// =====================================================
+// COLLECT REPEATING PART
+// =====================================================
+
+function collectUpdatePartRequirements() {
+
+  const items =
+    getUpdatePartItems();
+
+
+  const validParts =
+    [];
+
+
+  items.forEach(
+    function (item) {
+
+      const partDescription =
+        item
+          .querySelector(
+            ".update-part-description-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      const partNo =
+        item
+          .querySelector(
+            ".update-part-no-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      const quantity =
+        item
+          .querySelector(
+            ".update-part-quantity-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      /*
+        Card yang benar-benar kosong
+        tidak perlu masuk database.
+
+        Card yang hanya terisi salah satu
+        field tetap dipertahankan agar
+        alignment tidak rusak.
+      */
+
+      if (
+        !partDescription &&
+        !partNo &&
+        !quantity
+      ) {
+
+        return;
+      }
+
+
+      validParts.push({
+
+        partDescription:
+          partDescription,
+
+        partNo:
+          partNo,
+
+        quantity:
+          quantity
+
+      });
+
+    }
+  );
+
+
+  return {
+
+    partsDescription:
+      validParts
+        .map(
+          function (part) {
+
+            return part.partDescription;
+
+          }
+        )
+        .join("\n"),
+
+
+    partNo:
+      validParts
+        .map(
+          function (part) {
+
+            return part.partNo;
+
+          }
+        )
+        .join("\n"),
+
+
+    quantity:
+      validParts
+        .map(
+          function (part) {
+
+            return part.quantity;
+
+          }
+        )
+        .join("\n")
+
+  };
+}
+
+
+// =====================================================
+// SYNC REPEATING PART -> HIDDEN DATABASE FIELD
+// =====================================================
+
+function syncUpdatePartDatabaseFields() {
+
+  const parts =
+    collectUpdatePartRequirements();
+
+
+  if (updatePartsDescription) {
+
+    updatePartsDescription.value =
+      parts.partsDescription;
+  }
+
+
+  if (updatePartNo) {
+
+    updatePartNo.value =
+      parts.partNo;
+  }
+
+
+  if (updateQuantity) {
+
+    updateQuantity.value =
+      parts.quantity;
+  }
+
+
+  return parts;
+}
+
+
+// =====================================================
+// DETAIL PART SUMMARY
+// =====================================================
+
+function formatPartSummary(
+  value
+) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  const parts =
+    String(value)
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .split("\n")
+      .map(
+        function (item) {
+
+          return item.trim();
+
+        }
+      )
+      .filter(Boolean);
+
+
+  if (parts.length === 0) {
+    return "-";
+  }
+
+
+  if (parts.length <= 3) {
+
+    return parts.join(
+      ", "
+    );
+  }
+
+
+  return (
+    parts
+      .slice(
+        0,
+        3
+      )
+      .join(", ") +
+    ", ...."
+  );
+}
+
+// =====================================================
+// PARTS STATUS
+// =====================================================
+
+function handlePartsStatusSelection(
+  event
+) {
+
+  const button =
+    event.target.closest(
+      ".parts-status-button"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  setPartsStatusSelection(
+    button.dataset.status ||
+    ""
+  );
+}
+
+
+function setPartsStatusSelection(
+  status
+) {
+
+  selectedPartsStatus =
+    status ||
+    "";
+
+  if (updatePartsStatus) {
+
+    updatePartsStatus.value =
+      selectedPartsStatus;
+  }
+
+  partsStatusGrid
+    ?.querySelectorAll(
+      ".parts-status-button"
+    )
+    .forEach(
+      function (button) {
+
+        button.classList.toggle(
+          "selected",
+          button.dataset.status ===
+            selectedPartsStatus
+        );
+      }
+    );
+}
+
+
+// =====================================================
+// HM + / -
+// =====================================================
+
+function bindNumberControl(
+  minusButton,
+  plusButton,
+  input
+) {
+
+  if (
+    !minusButton ||
+    !plusButton ||
+    !input
+  ) {
+    return;
+  }
+
+  minusButton.addEventListener(
+    "click",
+    function () {
+
+      const value =
+        Number(
+          input.value ||
+          0
+        );
+
+      input.value =
+        Math.max(
+          0,
+          value - 1
+        );
+    }
+  );
+
+  plusButton.addEventListener(
+    "click",
+    function () {
+
+      const value =
+        Number(
+          input.value ||
+          0
+        );
+
+      input.value =
+        value + 1;
+    }
+  );
+}
+
+
+// =====================================================
+// REPLACEMENT PHOTO
+// =====================================================
+
+async function handleReplacementPhoto(
+  event
+) {
+
+  const file =
+    event.target.files?.[0];
+
+  if (!file) {
+
+    replacementPhoto =
+      null;
+
+    return;
+  }
+
+  if (
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
+
+    alert(
+      "Photo harus berupa file gambar."
+    );
+
+    event.target.value =
+      "";
+
+    replacementPhoto =
+      null;
+
+    return;
+  }
+
+  try {
+
+    replacementPhoto =
+      await compressImageFile(
+        file
+      );
+
+    updateInspectionPhotoPreview.src =
+      replacementPhoto.previewUrl;
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Photo gagal diproses."
+    );
+
+    event.target.value =
+      "";
+
+    replacementPhoto =
+      null;
+  }
+}
+
+
+// =====================================================
+// EVIDENCE
+// =====================================================
+
+async function handleEvidenceFile(
+  event
+) {
+
+  const file =
+    event.target.files?.[0];
+
+  if (!file) {
+
+    evidenceFile =
+      null;
+
+    evidenceFileText.textContent =
+      "Upload Photo / PDF";
+
+    return;
+  }
+
+  const allowed =
+    [
+
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "application/pdf"
+
+    ];
+
+  if (
+    !allowed.includes(
+      file.type
+    )
+  ) {
+
+    alert(
+      "Evidence hanya mendukung JPG, PNG, WEBP atau PDF."
+    );
+
+    event.target.value =
+      "";
+
+    evidenceFile =
+      null;
+
+    return;
+  }
+
+  try {
+
+    /*
+      Evidence image juga dikompres supaya payload
+      Apps Script lebih ringan.
+
+      PDF dibaca langsung tanpa kompresi.
+    */
+
+    if (
+      file.type.startsWith(
+        "image/"
+      )
+    ) {
+
+      const compressed =
+        await compressImageFile(
+          file
+        );
+
+      evidenceFile = {
+
+        base64:
+          compressed.base64,
+
+        mimeType:
+          compressed.mimeType,
+
+        name:
+          file.name
+
+      };
+
+    } else {
+
+      const base64 =
+        await fileToBase64(
+          file
+        );
+
+      evidenceFile = {
+
+        base64:
+          base64,
+
+        mimeType:
+          file.type,
+
+        name:
+          file.name
+
+      };
+    }
+
+    evidenceFileText.textContent =
+      file.name;
+
+    /*
+      Preview MOL di form.
+      Backend tetap penentu final.
+    */
+
+    if (updateMol) {
+
+      updateMol.value =
+        "Submitted";
+    }
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Evidence gagal diproses."
+    );
+
+    event.target.value =
+      "";
+
+    evidenceFile =
+      null;
+  }
+}
+
+
+function updateEvidenceDisplay(
+  evidenceUrl
+) {
+
+  if (!existingEvidence) {
+    return;
+  }
+
+  existingEvidence.innerHTML =
+    "";
+
+  if (!evidenceUrl) {
+
+    existingEvidence.hidden =
+      true;
+
+    if (evidenceFileText) {
+
+      evidenceFileText.textContent =
+        "Upload Photo / PDF";
+    }
+
+    return;
+  }
+
+  existingEvidence.hidden =
+    false;
+
+  const label =
+    document.createElement(
+      "span"
+    );
+
+  label.textContent =
+    "Evidence sudah tersedia";
+
+  existingEvidence.appendChild(
+    label
+  );
+
+  if (evidenceFileText) {
+
+    evidenceFileText.textContent =
+      "Replace Evidence";
+  }
+}
+
+
+// =====================================================
+// SUBMIT UPDATE
+// =====================================================
+
+async function submitOutstandingUpdate(
+  event
+) {
+
+  event.preventDefault();
+
+  if (!selectedRecord) {
+
+    alert(
+      "Data Outstanding tidak ditemukan."
+    );
+
+    return;
+  }
+
+  const inspectionId =
+    updateInspectionId.value
+      .trim();
+
+  const unitCode =
+    updateUnitCode.value
+      .trim();
+
+  const hmInspection =
+    updateHmInspection.value
+      .trim();
+
+  const dateInspection =
+    updateDateInspection.value
+      .trim();
+
+  const groupComponent =
+    updateGroupComponent.value
+      .trim();
+
+  const problemDescription =
+    updateProblemDescription.value
+      .trim();
+
+  const rating =
+    updateRating.value
+      .trim();
+
+  if (!unitCode) {
+
+    alert(
+      "Unit Code wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!hmInspection) {
+
+    alert(
+      "HM Inspection wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!dateInspection) {
+
+    alert(
+      "Date Inspection wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!groupComponent) {
+
+    alert(
+      "Group Component wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!problemDescription) {
+
+    alert(
+      "Problem Description wajib diisi."
+    );
+
+    return;
+  }
+
+   if (!rating) {
+
+    alert(
+      "Rating wajib dipilih."
+    );
 
     return;
   }
 
 
-  if (deleteYesButton) {
+  // ===================================================
+  // PART REQUIREMENT
+  // REPEATING FIELD -> MULTILINE DATABASE
+  // ===================================================
 
-    deleteYesButton.disabled =
-      true;
+  const partRequirement =
+    syncUpdatePartDatabaseFields();
 
-    deleteYesButton.textContent =
-      "Deleting...";
+
+  const payload = {
+
+    action:
+      "updateDailyOutstanding",
+
+    inspectionId:
+      inspectionId,
+
+    unitCode:
+      unitCode,
+
+    hmInspection:
+      hmInspection,
+
+    dateInspection:
+      dateInspection,
+
+    groupComponent:
+      groupComponent,
+
+    problemDescription:
+      problemDescription,
+
+    rating:
+      rating,
+
+    partsDescription:
+      partRequirement
+        .partsDescription,
+
+    partNo:
+      partRequirement
+        .partNo,
+
+    quantity:
+      partRequirement
+        .quantity,
+
+    notes:
+      updateNotes.value
+        .trim(),
+
+    partsStatus:
+      updatePartsStatus.value
+        .trim(),
+
+    actionProblems:
+      updateActionProblems.value
+        .trim(),
+
+    hmAction:
+      updateHmAction.value
+        .trim(),
+
+    dateAction:
+      updateDateAction.value
+        .trim(),
+
+    manPower:
+      updateManPower.value
+        .trim()
+
+  };
+
+
+  // PHOTO BARU
+
+  if (replacementPhoto) {
+
+    payload.photoBase64 =
+      replacementPhoto.base64;
+
+    payload.photoMimeType =
+      replacementPhoto.mimeType;
   }
 
 
-  if (deleteNoButton) {
+  // EVIDENCE BARU
 
-    deleteNoButton.disabled =
-      true;
+  if (evidenceFile) {
+
+    payload.evidenceBase64 =
+      evidenceFile.base64;
+
+    payload.evidenceMimeType =
+      evidenceFile.mimeType;
   }
 
+
+  setUpdateLoading(
+    true
+  );
 
   try {
 
     const result =
-      await apiRequest({
-
-        action:
-          "deleteUnitHistory",
-
-        inspectionIds:
-          inspectionIds
-
-      });
-
+      await apiRequest(
+        payload
+      );
 
     if (
       !result ||
@@ -4737,1519 +3740,313 @@ async function confirmDelete() {
 
       throw new Error(
         result?.message ||
-        "Data Unit History gagal dihapus."
+        "Update Outstanding gagal."
       );
     }
 
+    /*
+      Backend yang menentukan MOL dan Status.
+    */
 
-    if (deleteModal) {
+    const finalStatus =
+      result.status ||
+      result.data?.status ||
+      "OPEN";
 
-      deleteModal.hidden =
-        true;
-    }
-
-
-    deleteMode =
-      false;
-
-    selectedDeleteIds.clear();
-
-
-    setMainShortcutVisible(
-      true
-    );
-
-
-    updateBodyModalState();
+    const finalMol =
+      result.mol ||
+      result.data?.mol ||
+      "Belum";
 
 
     alert(
       result.message ||
       (
-        inspectionIds.length +
-        " data berhasil dihapus."
+        "Outstanding berhasil diupdate.\n" +
+        "MOL: " +
+        finalMol +
+        "\nStatus: " +
+        finalStatus
       )
     );
 
 
+    // Tutup semua modal
+
+    if (updateModal) {
+
+      updateModal.hidden =
+        true;
+    }
+
+    if (detailModal) {
+
+      detailModal.hidden =
+        true;
+    }
+
+    selectedRecord =
+      null;
+
+    replacementPhoto =
+      null;
+
+    evidenceFile =
+      null;
+
+    setMainShortcutVisible(
+      true
+    );
+
+    updateBodyModalState();
+
+
     /*
-      Ambil ulang database setelah delete.
+      Reload list dari server.
+
+      Jika Action Problems terisi dan backend
+      mengubah Status menjadi CLOSE,
+      record otomatis tidak kembali karena
+      getDailyOutstanding hanya mengirim OPEN.
     */
 
-    await loadUnitHistory();
-
+    await loadDailyOutstanding();
 
   } catch (error) {
 
     console.error(
-      "Delete Unit History:",
+      "Update Outstanding:",
       error
     );
-
 
     alert(
       error.message ||
-      "Data Unit History gagal dihapus."
+      "Update Outstanding gagal."
     );
-
 
   } finally {
 
-    if (deleteYesButton) {
-
-      deleteYesButton.disabled =
-        false;
-
-      deleteYesButton.textContent =
-        "Yes";
-    }
-
-
-    if (deleteNoButton) {
-
-      deleteNoButton.disabled =
-        false;
-    }
+    setUpdateLoading(
+      false
+    );
   }
 }
 
 
+// =====================================================
+// UPDATE LOADING
+// =====================================================
 
-/* =====================================================
-   PRINT CURRENT FILTERED RESULT
-===================================================== */
+function setUpdateLoading(
+  loading
+) {
 
-function printCurrentHistory() {
-
-  if (
-    !filteredUnitHistoryData ||
-    filteredUnitHistoryData.length === 0
-  ) {
-
-    alert(
-      "Tidak ada data untuk dicetak."
-    );
-
+  if (!submitUpdateButton) {
     return;
   }
 
+  submitUpdateButton.disabled =
+    loading;
 
-  const printWindow =
-    window.open(
-      "",
-      "_blank"
-    );
+  submitUpdateButton.textContent =
+    loading
+      ? "Updating..."
+      : "Update";
 
+  if (cancelUpdateButton) {
 
-  if (!printWindow) {
-
-    alert(
-      "Browser memblokir jendela Print."
-    );
-
-    return;
+    cancelUpdateButton.disabled =
+      loading;
   }
+}
 
 
-  /* ===================================================
-     CURRENT USER
-  =================================================== */
+// =====================================================
+// IMAGE COMPRESSION
+// =====================================================
 
-  let printUserId = "-";
+function compressImageFile(
+  file
+) {
 
-  try {
-
-    const storedUser =
-      JSON.parse(
-        sessionStorage.getItem(
-          "hexaUser"
-        ) || "{}"
-      );
-
-    printUserId =
-      storedUser.userId ||
-      storedUser.userID ||
-      storedUser.userid ||
-      storedUser["USER ID"] ||
-      storedUser.id ||
-      "-";
-
-  } catch (error) {
-
-    printUserId = "-";
-  }
-
-
-  /* ===================================================
-     ASSET URL
-     Dibuat absolute supaya tetap terbaca di print window.
-  =================================================== */
-
-  const hrsLogoUrl =
-  new URL(
-    "hexa-icon-logo-hrsheaderprint.png",
-    window.location.href
-  ).href;
-
-
-  const hexaLogoUrl =
-    new URL(
-      "hexa-logo-header.png",
-      window.location.href
-    ).href;
-
-
-  /* ===================================================
-     PRINT PART CELL
-     Semua multiline dipertahankan berdasarkan index.
-  =================================================== */
-
-  function splitPrintPartValue(value) {
-
-    if (
-      value === null ||
-      value === undefined ||
-      value === ""
-    ) {
-      return [];
-    }
-
-    return String(value)
-      .replace(/\r\n/g, "\n")
-      .replace(/\r/g, "\n")
-      .split("\n");
-  }
-
-
-  function buildPrintPartCell(
-    values,
-    totalParts,
-    type
-  ) {
-
-    let html =
-      `<div class="print-part-list ${type}">`;
-
-
-    for (
-      let index = 0;
-      index < totalParts;
-      index++
+  return new Promise(
+    function (
+      resolve,
+      reject
     ) {
 
-      const value =
-        values[index] !== undefined
-          ? String(values[index]).trim()
-          : "";
+      const reader =
+        new FileReader();
 
+      reader.onload =
+        function () {
 
-      html += `
-        <div class="print-part-line">
-          ${
-            value
-              ? escapeHtml(value)
-              : '<span class="print-empty">-</span>'
-          }
-        </div>
-      `;
-    }
+          const image =
+            new Image();
 
-
-    html += "</div>";
-
-    return html;
-  }
-
-
-  /* ===================================================
-     TABLE ROWS
-  =================================================== */
-
-  const rows =
-    filteredUnitHistoryData
-      .map(
-        function (record) {
-
-          const descriptions =
-            splitPrintPartValue(
-              record.partsDescription
-            );
-
-          const partNumbers =
-            splitPrintPartValue(
-              record.partNo
-            );
-
-          const quantities =
-            splitPrintPartValue(
-              record.quantity
-            );
-
-
-          const totalParts =
-            Math.max(
-              1,
-              descriptions.length,
-              partNumbers.length,
-              quantities.length
-            );
-
-
-          const descriptionHtml =
-            buildPrintPartCell(
-              descriptions,
-              totalParts,
-              "description"
-            );
-
-
-          const partNoHtml =
-            buildPrintPartCell(
-              partNumbers,
-              totalParts,
-              "part-number"
-            );
-
-
-          const quantityHtml =
-            buildPrintPartCell(
-              quantities,
-              totalParts,
-              "quantity"
-            );
-
-
-          return `
-            <tr class="history-record">
-
-              <td>
-                ${escapeHtml(record.unitCode)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.hmInspection)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.groupComponent)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.problemDescription)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.rating)}
-              </td>
-
-              <td>
-                ${escapeHtml(record.status)}
-              </td>
-
-              <td class="part-cell">
-                ${descriptionHtml}
-              </td>
-
-              <td class="part-cell">
-                ${partNoHtml}
-              </td>
-
-              <td class="part-cell qty-cell">
-                ${quantityHtml}
-              </td>
-
-              <td>
-                ${escapeHtml(
-                  getMolDisplay(record)
-                )}
-              </td>
-
-              <td>
-                ${escapeHtml(record.partsStatus)}
-              </td>
-
-            </tr>
-          `;
-        }
-      )
-      .join("");
-
-
-  const generatedDate =
-    new Date()
-      .toLocaleString(
-        "id-ID"
-      );
-
-
-  /* ===================================================
-     PRINT DOCUMENT
-  =================================================== */
-
-  printWindow.document.write(`
-    <!DOCTYPE html>
-
-    <html lang="id">
-
-    <head>
-
-      <meta charset="UTF-8">
-
-      <title>HEXA - Unit History</title>
-
-      <style>
-
-        @page {
-          size: A4 landscape;
-
-          margin:
-            10mm
-            9mm
-            14mm
-            9mm;
-        }
-
-
-        * {
-          box-sizing: border-box;
-        }
-
-
-        html,
-        body {
-          margin: 0;
-          padding: 0;
-
-          font-family:
-            Arial,
-            Helvetica,
-            sans-serif;
-
-          color: #222;
-
-          background: #fff;
-        }
-
-
-        body {
-          position: relative;
-
-          padding-bottom: 18px;
-        }
-
-
-        /* =============================================
-           MAIN TABLE
-        ============================================= */
-
-        table {
-          width: 100%;
-
-          border-collapse: collapse;
-
-          table-layout: fixed;
-
-          font-size: 7.5px;
-        }
-
-
-        thead {
-          display: table-header-group;
-        }
-
-
-        tbody {
-          display: table-row-group;
-        }
-
-
-        /* =============================================
-           REPEATING PRINT HEADER
-        ============================================= */
-
-        .print-header-row th {
-          padding: 0 0 8px 0;
-
-          border: 0;
-
-          background: #fff;
-
-          color: #222;
-        }
-
-
-        .print-header {
-          width: 100%;
-
-          display: flex;
-
-          align-items: center;
-          justify-content: space-between;
-
-          gap: 20px;
-
-          padding-bottom: 7px;
-
-          border-bottom:
-            2px solid #111;
-        }
-
-
-        .print-header-left {
-          min-width: 0;
-
-          text-align: left;
-        }
-
-
-        .print-title {
-          margin: 0;
-
-          font-size: 20px;
-          line-height: 1.15;
-
-          font-weight: 800;
-
-          color: #111;
-        }
-
-
-        .print-meta {
-          margin-top: 4px;
-
-          font-size: 8px;
-          line-height: 1.3;
-
-          font-weight: 400;
-
-          color: #666;
-        }
-
-
-        .print-header-logos {
-          flex-shrink: 0;
-
-          display: flex;
-
-          align-items: center;
-
-          gap: 12px;
-        }
-
-
-        .print-header-logos img {
-          display: block;
-
-          width: auto;
-
-          object-fit: contain;
-        }
-
-
-        .print-logo-hrs {
-           width: auto;
-           height: 31px;
-           object-fit: contain;
-      }
-
-
-        .print-logo-hexa {
-           width: auto;
-           height: 31px;
-           object-fit: contain;
-        }
-
-
-        /* =============================================
-           COLUMN HEADER
-        ============================================= */
-
-        .column-header th {
-          padding: 5px 4px;
-
-          border:
-            1px solid #777;
-
-          background: #111;
-
-          color: #fff;
-
-          font-size: 7px;
-          line-height: 1.15;
-
-          font-weight: 700;
-
-          text-align: left;
-
-          vertical-align: middle;
-        }
-
-
-        /* =============================================
-           BODY
-        ============================================= */
-
-        tbody td {
-          padding: 5px 4px;
-
-          border:
-            1px solid #aaa;
-
-          background: #fff;
-
-          color: #222;
-
-          vertical-align: top;
-
-          line-height: 1.25;
-
-          text-align: left;
-
-          word-break: break-word;
-
-          overflow-wrap: anywhere;
-        }
-
-
-        /*
-          Semua informasi record dimulai dari atas,
-          bukan vertical center.
-        */
-
-        tbody tr.history-record > td {
-          vertical-align: top !important;
-        }
-
-
-        /*
-          Sebisa mungkin satu inspection tidak
-          dipotong antar halaman.
-        */
-
-        tbody tr.history-record {
-          break-inside: avoid;
-          page-break-inside: avoid;
-        }
-
-
-        /* =============================================
-           COLUMN WIDTH
-        ============================================= */
-
-        .column-header th:nth-child(1) {
-          width: 8%;
-        }
-
-        .column-header th:nth-child(2) {
-          width: 8%;
-        }
-
-        .column-header th:nth-child(3) {
-          width: 11%;
-        }
-
-        .column-header th:nth-child(4) {
-          width: 17%;
-        }
-
-        .column-header th:nth-child(5) {
-          width: 7%;
-        }
-
-        .column-header th:nth-child(6) {
-          width: 7%;
-        }
-
-        .column-header th:nth-child(7) {
-          width: 15%;
-        }
-
-        .column-header th:nth-child(8) {
-          width: 11%;
-        }
-
-        .column-header th:nth-child(9) {
-          width: 5%;
-        }
-
-        .column-header th:nth-child(10) {
-          width: 5%;
-        }
-
-        .column-header th:nth-child(11) {
-          width: 6%;
-        }
-
-
-        /* =============================================
-           PART REQUIREMENT
-        ============================================= */
-
-        td.part-cell {
-          padding-top: 3px;
-          padding-bottom: 3px;
-        }
-
-
-        .print-part-list {
-          width: 100%;
-
-          display: flex;
-          flex-direction: column;
-
-          gap: 0;
-        }
-
-
-        .print-part-line {
-          min-height: 19px;
-
-          display: flex;
-          align-items: flex-start;
-
-          padding:
-            3px
-            0;
-
-          border-bottom:
-            1px solid #e1e1e1;
-
-          line-height: 13px;
-
-          text-align: left;
-        }
-
-
-        .print-part-line:last-child {
-          border-bottom: 0;
-        }
-
-
-        .print-part-list.quantity
-        .print-part-line {
-          justify-content: center;
-
-          text-align: center;
-        }
-
-
-        td.qty-cell {
-          text-align: center;
-        }
-
-
-        .print-empty {
-          color: #999;
-        }
-
-
-        /* =============================================
-           USER FOOTER
-        ============================================= */
-
-        .print-user-footer {
-          position: fixed;
-
-          left: 0;
-          bottom: -8mm;
-
-          font-size: 7px;
-          line-height: 1;
-
-          color: #555;
-        }
-
-
-        /* =============================================
-           PRINT
-        ============================================= */
-
-        @media print {
-
-          .print-header-row {
-            break-inside: avoid;
-            page-break-inside: avoid;
-          }
-
-          .column-header {
-            break-inside: avoid;
-            page-break-inside: avoid;
-          }
-
-        }
-
-      </style>
-
-    </head>
-
-
-    <body>
-
-
-      <table>
-
-        <thead>
-
-
-          <!-- ========================================
-               HEADER INI DIULANG SETIAP HALAMAN
-          ========================================= -->
-
-          <tr class="print-header-row">
-
-            <th colspan="11">
-
-              <div class="print-header">
-
-                <div class="print-header-left">
-
-                  <div class="print-title">
-                    HEXA - Unit History
-                  </div>
-
-                  <div class="print-meta">
-
-                    ${filteredUnitHistoryData.length}
-                    records
-
-                    &nbsp;•&nbsp;
-
-                    Printed
-                    ${escapeHtml(generatedDate)}
-
-                  </div>
-
-                </div>
-
-
-                <div class="print-header-logos">
-
-                  <img
-                    class="print-logo-hrs"
-                    src="${escapeHtml(hrsLogoUrl)}"
-                    alt="HRS"
-                  >
-
-                  <img
-                    class="print-logo-hexa"
-                    src="${escapeHtml(hexaLogoUrl)}"
-                    alt="HEXA"
-                  >
-
-                </div>
-
-              </div>
-
-            </th>
-
-          </tr>
-
-
-          <!-- ========================================
-               COLUMN HEADER
-          ========================================= -->
-
-          <tr class="column-header">
-
-            <th>Unit Code</th>
-
-            <th>HM Inspection</th>
-
-            <th>Group Component</th>
-
-            <th>Problem Description</th>
-
-            <th>Rating</th>
-
-            <th>Status</th>
-
-            <th>Parts Description</th>
-
-            <th>Part No</th>
-
-            <th>Qty</th>
-
-            <th>MOL</th>
-
-            <th>Parts Status</th>
-
-          </tr>
-
-
-        </thead>
-
-
-        <tbody>
-
-          ${rows}
-
-        </tbody>
-
-
-      </table>
-
-
-      <!-- USER ID FOOTER -->
-
-      <div class="print-user-footer">
-
-        USER ID :
-        ${escapeHtml(printUserId)}
-
-      </div>
-
-
-      <script>
-
-        window.onload = function () {
-
-          /*
-            Tunggu sebentar agar kedua logo selesai
-            dirender sebelum dialog print dibuka.
-          */
-
-          setTimeout(
+          image.onload =
             function () {
 
-              window.print();
+              const maxDimension =
+                1600;
 
-            },
-            300
-          );
+              let width =
+                image.width;
 
+              let height =
+                image.height;
+
+              if (
+                width >
+                  maxDimension ||
+                height >
+                  maxDimension
+              ) {
+
+                const scale =
+                  Math.min(
+
+                    maxDimension /
+                      width,
+
+                    maxDimension /
+                      height
+
+                  );
+
+                width =
+                  Math.round(
+                    width * scale
+                  );
+
+                height =
+                  Math.round(
+                    height * scale
+                  );
+              }
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+              canvas.width =
+                width;
+
+              canvas.height =
+                height;
+
+              const context =
+                canvas.getContext(
+                  "2d"
+                );
+
+              context.drawImage(
+                image,
+                0,
+                0,
+                width,
+                height
+              );
+
+              const dataUrl =
+                canvas.toDataURL(
+                  "image/jpeg",
+                  0.75
+                );
+
+              resolve({
+
+                base64:
+                  dataUrl,
+
+                mimeType:
+                  "image/jpeg",
+
+                previewUrl:
+                  dataUrl
+
+              });
+            };
+
+          image.onerror =
+            function () {
+
+              reject(
+                new Error(
+                  "Gambar tidak dapat dibaca."
+                )
+              );
+            };
+
+          image.src =
+            reader.result;
         };
 
-      <\/script>
+      reader.onerror =
+        function () {
 
+          reject(
+            new Error(
+              "File tidak dapat dibaca."
+            )
+          );
+        };
 
-    </body>
-
-    </html>
-  `);
-
-
-  printWindow.document.close();
-}
-
-/* =====================================================
-   SHORTCUT INITIALIZE
-===================================================== */
-
-function initializeShortcut() {
-
-  if (!startInspectionShortcut) {
-    return;
-  }
-
-
-  restoreShortcutPosition();
-
-
-  startInspectionShortcut.addEventListener(
-    "pointerdown",
-    handleShortcutPointerDown
+      reader.readAsDataURL(
+        file
+      );
+    }
   );
 }
 
 
-/* =====================================================
-   SHORTCUT POINTER DOWN
-===================================================== */
+// =====================================================
+// FILE TO BASE64
+// =====================================================
 
-function handleShortcutPointerDown(
-  event
+function fileToBase64(
+  file
 ) {
 
-  if (
-    event.button !== undefined &&
-    event.button !== 0
-  ) {
+  return new Promise(
+    function (
+      resolve,
+      reject
+    ) {
 
-    return;
-  }
+      const reader =
+        new FileReader();
 
+      reader.onload =
+        function () {
 
-  const rect =
-    startInspectionShortcut
-      .getBoundingClientRect();
+          resolve(
+            reader.result
+          );
+        };
 
+      reader.onerror =
+        function () {
 
-  shortcutDragState = {
+          reject(
+            new Error(
+              "File tidak dapat dibaca."
+            )
+          );
+        };
 
-    pointerId:
-      event.pointerId,
-
-    startX:
-      event.clientX,
-
-    startY:
-      event.clientY,
-
-    startLeft:
-      rect.left,
-
-    startTop:
-      rect.top,
-
-    moved:
-      false
-
-  };
-
-
-  startInspectionShortcut
-    .setPointerCapture(
-      event.pointerId
-    );
-
-
-  startInspectionShortcut
-    .addEventListener(
-      "pointermove",
-      handleShortcutPointerMove
-    );
-
-
-  startInspectionShortcut
-    .addEventListener(
-      "pointerup",
-      handleShortcutPointerUp
-    );
-
-
-  startInspectionShortcut
-    .addEventListener(
-      "pointercancel",
-      handleShortcutPointerUp
-    );
-
-
-  event.preventDefault();
-}
-
-
-/* =====================================================
-   SHORTCUT POINTER MOVE
-===================================================== */
-
-function handleShortcutPointerMove(
-  event
-) {
-
-  if (
-    !shortcutDragState ||
-    event.pointerId !==
-      shortcutDragState.pointerId
-  ) {
-
-    return;
-  }
-
-
-  const deltaX =
-    event.clientX -
-    shortcutDragState.startX;
-
-
-  const deltaY =
-    event.clientY -
-    shortcutDragState.startY;
-
-
-  if (
-    Math.abs(deltaX) > 5 ||
-    Math.abs(deltaY) > 5
-  ) {
-
-    shortcutDragState.moved =
-      true;
-  }
-
-
-  const buttonWidth =
-    startInspectionShortcut
-      .offsetWidth;
-
-
-  const buttonHeight =
-    startInspectionShortcut
-      .offsetHeight;
-
-
-  const margin =
-    8;
-
-
-  const maxLeft =
-    Math.max(
-      margin,
-      window.innerWidth -
-      buttonWidth -
-      margin
-    );
-
-
-  const maxTop =
-    Math.max(
-      margin,
-      window.innerHeight -
-      buttonHeight -
-      margin
-    );
-
-
-  const left =
-    clamp(
-      shortcutDragState.startLeft +
-      deltaX,
-      margin,
-      maxLeft
-    );
-
-
-  const top =
-    clamp(
-      shortcutDragState.startTop +
-      deltaY,
-      margin,
-      maxTop
-    );
-
-
-  startInspectionShortcut.style.left =
-    left + "px";
-
-  startInspectionShortcut.style.top =
-    top + "px";
-
-  startInspectionShortcut.style.right =
-    "auto";
-
-  startInspectionShortcut.style.bottom =
-    "auto";
-}
-
-
-/* =====================================================
-   SHORTCUT POINTER UP
-===================================================== */
-
-function handleShortcutPointerUp(
-  event
-) {
-
-  if (
-    !shortcutDragState ||
-    event.pointerId !==
-      shortcutDragState.pointerId
-  ) {
-
-    return;
-  }
-
-
-  const wasMoved =
-    shortcutDragState.moved;
-
-
-  try {
-
-    startInspectionShortcut
-      .releasePointerCapture(
-        event.pointerId
+      reader.readAsDataURL(
+        file
       );
-
-  } catch (error) {
-
-    /* Ignore */
-  }
-
-
-  startInspectionShortcut
-    .removeEventListener(
-      "pointermove",
-      handleShortcutPointerMove
-    );
-
-
-  startInspectionShortcut
-    .removeEventListener(
-      "pointerup",
-      handleShortcutPointerUp
-    );
-
-
-  startInspectionShortcut
-    .removeEventListener(
-      "pointercancel",
-      handleShortcutPointerUp
-    );
-
-
-  shortcutDragState =
-    null;
-
-
-  if (wasMoved) {
-
-    saveShortcutPosition();
-
-  } else {
-
-    window.location.href =
-      "/start-inspection";
-  }
-}
-
-
-/* =====================================================
-   SAVE SHORTCUT POSITION
-===================================================== */
-
-function saveShortcutPosition() {
-
-  if (!startInspectionShortcut) {
-    return;
-  }
-
-
-  const rect =
-    startInspectionShortcut
-      .getBoundingClientRect();
-
-
-  const position = {
-
-    left:
-      rect.left,
-
-    top:
-      rect.top
-
-  };
-
-
-  try {
-
-    localStorage.setItem(
-      UNIT_HISTORY_SHORTCUT_POSITION_KEY,
-      JSON.stringify(
-        position
-      )
-    );
-
-  } catch (error) {
-
-    console.warn(
-      "Shortcut position tidak dapat disimpan.",
-      error
-    );
-  }
-}
-
-
-/* =====================================================
-   RESTORE SHORTCUT POSITION
-===================================================== */
-
-function restoreShortcutPosition() {
-
-  if (!startInspectionShortcut) {
-    return;
-  }
-
-
-  let savedPosition =
-    null;
-
-
-  try {
-
-    savedPosition =
-      JSON.parse(
-        localStorage.getItem(
-          UNIT_HISTORY_SHORTCUT_POSITION_KEY
-        )
-      );
-
-  } catch (error) {
-
-    savedPosition =
-      null;
-  }
-
-
-  if (
-    !savedPosition ||
-    !Number.isFinite(
-      Number(savedPosition.left)
-    ) ||
-    !Number.isFinite(
-      Number(savedPosition.top)
-    )
-  ) {
-
-    return;
-  }
-
-
-  const width =
-    startInspectionShortcut
-      .offsetWidth ||
-    70;
-
-
-  const height =
-    startInspectionShortcut
-      .offsetHeight ||
-    70;
-
-
-  const margin =
-    8;
-
-
-  const left =
-    clamp(
-      Number(
-        savedPosition.left
-      ),
-      margin,
-      Math.max(
-        margin,
-        window.innerWidth -
-        width -
-        margin
-      )
-    );
-
-
-  const top =
-    clamp(
-      Number(
-        savedPosition.top
-      ),
-      margin,
-      Math.max(
-        margin,
-        window.innerHeight -
-        height -
-        margin
-      )
-    );
-
-
-  startInspectionShortcut.style.left =
-    left + "px";
-
-  startInspectionShortcut.style.top =
-    top + "px";
-
-  startInspectionShortcut.style.right =
-    "auto";
-
-  startInspectionShortcut.style.bottom =
-    "auto";
-}
-
-
-/* =====================================================
-   KEEP SHORTCUT INSIDE VIEWPORT
-===================================================== */
-
-function keepShortcutInsideViewport() {
-
-  if (
-    !startInspectionShortcut ||
-    startInspectionShortcut.hidden
-  ) {
-
-    return;
-  }
-
-
-  const rect =
-    startInspectionShortcut
-      .getBoundingClientRect();
-
-
-  /*
-    Kalau tombol masih menggunakan posisi CSS default,
-    jangan paksa menjadi left/top.
-  */
-
-  const hasCustomPosition =
-    startInspectionShortcut.style.left ||
-    startInspectionShortcut.style.top;
-
-
-  if (!hasCustomPosition) {
-    return;
-  }
-
-
-  const margin =
-    8;
-
-
-  const left =
-    clamp(
-      rect.left,
-      margin,
-      Math.max(
-        margin,
-        window.innerWidth -
-        rect.width -
-        margin
-      )
-    );
-
-
-  const top =
-    clamp(
-      rect.top,
-      margin,
-      Math.max(
-        margin,
-        window.innerHeight -
-        rect.height -
-        margin
-      )
-    );
-
-
-  startInspectionShortcut.style.left =
-    left + "px";
-
-  startInspectionShortcut.style.top =
-    top + "px";
-
-
-  saveShortcutPosition();
-}
-
-
-/* =====================================================
-   SHORTCUT VISIBILITY
-===================================================== */
-
-function setMainShortcutVisible(
-  visible
-) {
-
-  if (!startInspectionShortcut) {
-    return;
-  }
-
-
-  startInspectionShortcut.hidden =
-    !visible;
-}
-
-
-/* =====================================================
-   BODY MODAL STATE
-===================================================== */
-
-function updateBodyModalState() {
-
-  const hasOpenModal =
-
-    (
-      detailModal &&
-      !detailModal.hidden
-    ) ||
-
-    (
-      photoViewer &&
-      !photoViewer.hidden
-    ) ||
-
-    (
-      deleteModal &&
-      !deleteModal.hidden
-    );
-
-
-  document.body.classList.toggle(
-    "modal-open",
-    Boolean(
-      hasOpenModal
-    )
+    }
   );
 }
 
 
-/* =====================================================
-   ESCAPE KEY
-===================================================== */
-
-function handleEscapeKey(
-  event
-) {
-
-  if (
-    event.key !== "Escape"
-  ) {
-
-    return;
-  }
-
-
-  if (
-    photoViewer &&
-    !photoViewer.hidden
-  ) {
-
-    closePhotoViewer();
-
-    return;
-  }
-
-
-  if (
-    deleteModal &&
-    !deleteModal.hidden
-  ) {
-
-    cancelDelete();
-
-    return;
-  }
-
-
-  if (
-    detailModal &&
-    !detailModal.hidden
-  ) {
-
-    closeDetail();
-
-    return;
-  }
-
-
-  if (
-    filterPanel &&
-    !filterPanel.hidden
-  ) {
-
-    closeFilterPanel();
-
-    return;
-  }
-
-
-  if (deleteMode) {
-
-    exitDeleteMode();
-  }
-}
-
-
-/* =====================================================
-   GOOGLE DRIVE IMAGE URL
-===================================================== */
+// =====================================================
+// GOOGLE DRIVE IMAGE URL
+// =====================================================
 
 function getDriveFileId(
   url
@@ -6259,19 +4056,16 @@ function getDriveFileId(
     return "";
   }
 
-
   const value =
     String(
       url
     );
-
 
   let match =
     value.match(
       /\/d\/([a-zA-Z0-9_-]+)/
     );
 
-
   if (
     match &&
     match[1]
@@ -6279,14 +4073,12 @@ function getDriveFileId(
 
     return match[1];
   }
-
 
   match =
     value.match(
       /[?&]id=([a-zA-Z0-9_-]+)/
     );
 
-
   if (
     match &&
     match[1]
@@ -6294,7 +4086,6 @@ function getDriveFileId(
 
     return match[1];
   }
-
 
   return "";
 }
@@ -6309,18 +4100,15 @@ function getDriveImageUrl(
     return createPhotoPlaceholder();
   }
 
-
   const fileId =
     getDriveFileId(
       url
     );
 
-
   if (!fileId) {
 
     return url;
   }
-
 
   return (
     "https://drive.google.com/thumbnail?id=" +
@@ -6332,54 +4120,67 @@ function getDriveImageUrl(
 }
 
 
-/* =====================================================
-   PHOTO PLACEHOLDER
-===================================================== */
+// =====================================================
+// PHOTO PLACEHOLDER
+// =====================================================
 
 function createPhotoPlaceholder() {
 
-  const svg = `
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="600"
-      height="400"
-      viewBox="0 0 600 400"
-    >
-
-      <rect
-        width="600"
-        height="400"
-        fill="#ececec"
-      />
-
-      <text
-        x="300"
-        y="200"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        font-family="Arial"
-        font-size="32"
-        fill="#999999"
-      >
-        No Photo
-      </text>
-
-    </svg>
-  `;
-
-
   return (
     "data:image/svg+xml;charset=UTF-8," +
-    encodeURIComponent(
-      svg
-    )
+    encodeURIComponent(`
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="600"
+        height="400"
+        viewBox="0 0 600 400"
+      >
+        <rect
+          width="600"
+          height="400"
+          fill="#eeeeee"
+        />
+        <path
+          d="M190 280l75-90 55 65 35-40 65 65H190z"
+          fill="#c7c7c7"
+        />
+        <circle
+          cx="235"
+          cy="135"
+          r="30"
+          fill="#c7c7c7"
+        />
+        <text
+          x="300"
+          y="340"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="22"
+          fill="#888888"
+        >
+          No Photo
+        </text>
+      </svg>
+    `)
   );
 }
 
 
-/* =====================================================
-   TEXT HELPER
-===================================================== */
+// =====================================================
+// HELPERS
+// =====================================================
+
+function normalizeText(
+  value
+) {
+
+  return String(
+    value || ""
+  )
+    .trim()
+    .toLowerCase();
+}
+
 
 function setText(
   element,
@@ -6390,152 +4191,56 @@ function setText(
     return;
   }
 
+  element.textContent =
+    value ||
+    "-";
+}
+
+
+function ensureSelectOption(
+  select,
+  value
+) {
 
   if (
-    value === null ||
-    value === undefined ||
-    String(value).trim() === ""
+    !select ||
+    !value
   ) {
-
-    element.textContent =
-      "-";
-
     return;
   }
 
+  const exists =
+    Array.from(
+      select.options
+    ).some(
+      function (option) {
 
-  element.textContent =
-    value;
-}
-
-
-/* =====================================================
-   NORMALIZE TEXT
-===================================================== */
-
-function normalizeText(
-  value
-) {
-
-  return String(
-    value ?? ""
-  )
-    .trim()
-    .toLowerCase();
-}
-
-
-/* =====================================================
-   NUMERIC VALUE
-===================================================== */
-
-function parseNumericValue(
-  value
-) {
-
-  if (
-    value === null ||
-    value === undefined ||
-    value === ""
-  ) {
-
-    return NaN;
-  }
-
-
-  const text =
-    String(value)
-      .trim()
-      .replace(/\s/g, "")
-      .replace(/,/g, "");
-
-
-  return Number(
-    text
-  );
-}
-
-
-/* =====================================================
-   DATE NORMALIZATION
-===================================================== */
-
-function normalizeDateValue(
-  value
-) {
-
-  if (!value) {
-    return "";
-  }
-
-
-  const text =
-    String(value)
-      .trim();
-
-
-  /*
-    YYYY-MM-DD
-  */
-
-  if (
-    /^\d{4}-\d{2}-\d{2}$/
-      .test(text)
-  ) {
-
-    return text;
-  }
-
-
-  const date =
-    new Date(
-      text
+        return (
+          option.value ===
+          value
+        );
+      }
     );
 
+  if (!exists) {
 
-  if (
-    Number.isNaN(
-      date.getTime()
-    )
-  ) {
+    const option =
+      document.createElement(
+        "option"
+      );
 
-    return "";
+    option.value =
+      value;
+
+    option.textContent =
+      value;
+
+    select.appendChild(
+      option
+    );
   }
-
-
-  const year =
-    date.getFullYear();
-
-  const month =
-    String(
-      date.getMonth() + 1
-    ).padStart(
-      2,
-      "0"
-    );
-
-  const day =
-    String(
-      date.getDate()
-    ).padStart(
-      2,
-      "0"
-    );
-
-
-  return (
-    year +
-    "-" +
-    month +
-    "-" +
-    day
-  );
 }
 
-
-/* =====================================================
-   DISPLAY DATE
-===================================================== */
 
 function formatDisplayDate(
   value
@@ -6545,24 +4250,17 @@ function formatDisplayDate(
     return "-";
   }
 
-
-  const normalized =
-    normalizeDateValue(
-      value
-    );
-
-
-  if (!normalized) {
-
-    return String(
-      value
-    );
-  }
-
-
   const parts =
-    normalized.split("-");
+    String(
+      value
+    ).split("-");
 
+  if (
+    parts.length !== 3
+  ) {
+
+    return value;
+  }
 
   return (
     parts[2] +
@@ -6574,124 +4272,112 @@ function formatDisplayDate(
 }
 
 
-/* =====================================================
-   CLAMP
-===================================================== */
+// =====================================================
+// SHORTCUT VISIBILITY
+// =====================================================
 
-function clamp(
-  value,
-  min,
-  max
+function setMainShortcutVisible(
+  visible
 ) {
 
-  return Math.min(
-    Math.max(
-      value,
-      min
-    ),
-    max
-  );
+  if (!startInspectionShortcut) {
+    return;
+  }
+
+  startInspectionShortcut.hidden =
+    !visible;
 }
 
 
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+// =====================================================
+// BODY MODAL STATE
+// =====================================================
 
-function escapeHtml(
-  value
-) {
+function updateBodyModalState() {
 
-  return String(
-    value ?? "-"
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
+  const hasOpenModal =
+    (
+      detailModal &&
+      !detailModal.hidden
+    ) ||
+    (
+      updateModal &&
+      !updateModal.hidden
+    ) ||
+    (
+      photoViewer &&
+      !photoViewer.hidden
     );
-}
-/* =====================================================
-   SHARE CURRENT UNIT HISTORY PDF
-===================================================== */
 
-async function shareCurrentHistoryPdf() {
+  document.body.classList.toggle(
+    "modal-open",
+    Boolean(
+      hasOpenModal
+    )
+  );
+}
+
+
+// =====================================================
+// ESCAPE
+// =====================================================
+
+function handleEscapeKey(
+  event
+) {
 
   if (
-    !filteredUnitHistoryData ||
-    filteredUnitHistoryData.length === 0
+    event.key !==
+    "Escape"
   ) {
-    alert("Tidak ada data untuk dibagikan.");
     return;
   }
 
   if (
-    !window.jspdf ||
-    !window.jspdf.jsPDF
+    photoViewer &&
+    !photoViewer.hidden
   ) {
-    alert("jsPDF belum dimuat.");
+
+    closePhotoViewer();
+
     return;
   }
 
-  const jsPDF = window.jspdf.jsPDF;
+  if (
+    updateModal &&
+    !updateModal.hidden
+  ) {
 
-  const doc = new jsPDF({
-    orientation: "landscape",
-    unit: "mm",
-    format: "a4"
-  });
+    closeUpdateForm();
 
-  doc.setFontSize(18);
+    return;
+  }
 
-  doc.text(
-    "HEXA - Unit History",
-    15,
-    20
-  );
+  if (
+    detailModal &&
+    !detailModal.hidden
+  ) {
 
-  doc.setFontSize(11);
+    closeDetail();
 
-  doc.text(
-    "PDF Test - A4 Landscape",
-    15,
-    30
-  );
+    return;
+  }
 
-  doc.text(
-    "Total Record: " +
-      filteredUnitHistoryData.length,
-    15,
-    38
-  );
+  if (
+    filterPanel &&
+    !filterPanel.hidden
+  ) {
 
-  const pdfBlob = doc.output("blob");
-
-  const pdfUrl =
-    URL.createObjectURL(pdfBlob);
-
-  window.open(
-    pdfUrl,
-    "_blank"
-  );
-
+    closeFilterPanel();
+  }
 }
+
+
+// =====================================================
+// RESIZE
+// =====================================================
+
+window.addEventListener(
+  "resize",
+  updateScrollNavigation
+);
