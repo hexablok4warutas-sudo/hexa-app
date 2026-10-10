@@ -540,3 +540,11 @@ body {
   }
 
 }
+
+/* Greasing submenu: allow long label to wrap on mobile */
+@media (max-width:600px) {
+  .daily-menu-item[data-menu="greasing-anti-lineboring"] > span {
+    white-space:normal; overflow:visible; text-overflow:clip;
+    width:110px; max-width:110px; overflow-wrap:break-word;
+  }
+}
