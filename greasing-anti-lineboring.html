@@ -15,7 +15,7 @@
         <button id="galBack" class="gal-back" type="button" aria-label="Kembali">‹</button>
         <div class="gal-heading"><h1>GREASING ANTI LINEBORING</h1><p>Autolube Problem & Follow Up Monitoring</p></div>
       </div>
-      <div class="gal-notice" id="galNotice">Mode lokal: data dan foto tersimpan hanya pada browser/perangkat ini, belum tersinkron ke database HEXA.</div>
+      <div class="gal-notice" id="galNotice">Memuat koneksi database HEXA...</div>
       <section class="gal-stats" aria-label="Ringkasan">
         <div class="gal-stat"><span>Total Problem</span><strong id="galTotal">0</strong></div>
         <div class="gal-stat"><span>Open</span><strong id="galOpen">0</strong></div>
@@ -37,7 +37,7 @@
   <dialog id="galNewDialog" class="gal-dialog">
     <form id="galNewForm" class="gal-form">
       <div class="gal-dialog-head"><h2>New Autolube Problem</h2><button type="button" data-dismiss="galNewDialog" aria-label="Tutup">✕</button></div>
-      <label>Code Unit <span>*</span><input id="galUnit" maxlength="50" required placeholder="Contoh: HEX 1205"></label>
+      <label>Code Unit <span>*</span><select id="galUnit" required><option value="">Memuat unit RUNNING / STANDBY...</option></select></label>
       <label>Problem Autolube <span>*</span><textarea id="galProblem" required rows="3" placeholder="Jelaskan kerusakan / deviasi"></textarea></label>
       <label>Foto Kerusakan <span>*</span><input id="galDamage" type="file" accept="image/*" required><small>Bisa pilih kamera atau galeri (sesuai perangkat).</small></label>
       <label>Required Part<input id="galPart" placeholder="Nama / nomor part jika diperlukan"></label>
@@ -58,6 +58,7 @@
       <div class="gal-form-actions"><button type="button" class="gal-secondary" data-dismiss="galFollowDialog">Cancel</button><button type="submit" class="gal-primary" id="galSaveFollow">Save Follow Up</button></div>
     </form>
   </dialog>
+  <dialog id="galLightbox" class="gal-lightbox"><button type="button" id="galLightboxClose">Tutup ✕</button><img id="galLightboxImage" alt="Foto diperbesar"></dialog>
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
   <script src="greasing-anti-lineboring.js"></script>
