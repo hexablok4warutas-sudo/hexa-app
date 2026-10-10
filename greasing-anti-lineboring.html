@@ -13,9 +13,8 @@
     <div class="gal-container">
       <div class="gal-top">
         <button id="galBack" class="gal-back" type="button" aria-label="Kembali">‹</button>
-        <div class="gal-heading"><h1>GREASING ANTI LINEBORING</h1><p>Autolube Problem & Follow Up Monitoring</p></div>
+        <div class="gal-heading"><div class="gal-title-row"><h1>GREASING ANTI LINEBORING</h1><span id="galSync" class="gal-sync is-loading" role="status" aria-label="Sedang menyinkronkan data" title="Sedang menyinkronkan data"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="gal-sync-refresh" d="M20 7v5h-5M4 17v-5h5M5.6 9A7 7 0 0 1 18 6l2 1M4 17l2 1a7 7 0 0 0 12.4-3"/><path class="gal-sync-check" d="m5 12 4 4L19 6"/><path class="gal-sync-error" d="M12 7v6m0 4h.01"/></svg></span></div><p>Autolube Problem & Follow Up Monitoring</p></div>
       </div>
-      <div class="gal-notice" id="galNotice">Memuat koneksi database HEXA...</div>
       <section class="gal-stats" aria-label="Ringkasan">
         <div class="gal-stat"><span>Total Problem</span><strong id="galTotal">0</strong></div>
         <div class="gal-stat"><span>Open</span><strong id="galOpen">0</strong></div>
@@ -37,7 +36,14 @@
   <dialog id="galNewDialog" class="gal-dialog">
     <form id="galNewForm" class="gal-form">
       <div class="gal-dialog-head"><h2>New Autolube Problem</h2><button type="button" data-dismiss="galNewDialog" aria-label="Tutup">✕</button></div>
-      <label>Code Unit <span>*</span><select id="galUnit" required><option value="">Memuat unit RUNNING / STANDBY...</option></select></label>
+      <div class="gal-unit-field">
+        <label for="galUnitSearch">UNIT CODE <span>*</span></label>
+        <div class="gal-unit-combobox" id="galUnitCombobox">
+          <input id="galUnitSearch" type="text" placeholder="Search / Select Unit" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="galUnitOptions" aria-autocomplete="list" required>
+          <input id="galUnit" type="hidden" value="">
+          <div id="galUnitOptions" class="gal-unit-options" role="listbox" hidden></div>
+        </div>
+      </div>
       <label>Problem Autolube <span>*</span><textarea id="galProblem" required rows="3" placeholder="Jelaskan kerusakan / deviasi"></textarea></label>
       <label>Foto Kerusakan <span>*</span><input id="galDamage" type="file" accept="image/*" required><small>Bisa pilih kamera atau galeri (sesuai perangkat).</small></label>
       <label>Required Part<input id="galPart" placeholder="Nama / nomor part jika diperlukan"></label>
