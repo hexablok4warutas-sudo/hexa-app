@@ -492,6 +492,9 @@ document.addEventListener(
 
     initializeShortcut();
 
+    // Header awal harus mengikuti konfigurasi kolom yang sama dengan isi tabel.
+    renderUnitHistoryTableHeader();
+
     loadUnitHistory();
 
   }
@@ -1413,6 +1416,8 @@ function createHistoryRow(record) {
 
   deleteCell.hidden =
     !deleteMode;
+
+  deleteCell.style.display = deleteMode ? "" : "none";
 
 
   const checkbox =
@@ -2533,6 +2538,9 @@ function renderUnitHistoryTableHeader() {
 
   deleteTh.hidden =
     !deleteMode;
+
+  // CSS table dapat menimpa atribut hidden; pastikan kolom benar-benar hilang.
+  deleteTh.style.display = deleteMode ? "" : "none";
 
 
   const selectAll =
