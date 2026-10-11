@@ -66,6 +66,9 @@ body {
 .system-settings-card-arrow svg { width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
 .system-settings-menu-card:hover .system-settings-card-arrow { transform:translateX(3px);background:#d9eff9; }
 
+/* KPI DATA MANAGEMENT */
+.kpi-data-management-icon { background:linear-gradient(145deg,#16b8a6,#087f79); }
+
 /* DAILY ACTIVITY ACCESS */
 .system-settings-section-spaced { margin-top:26px; }
 .daily-activity-access-icon { background:linear-gradient(145deg,#ffad2f,#ff7a00); }
