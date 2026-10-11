@@ -949,5 +949,17 @@ console.log(
   function move(dir){const d=parseDate(dateInput.value);if(period==='daily')d.setDate(d.getDate()+dir);else if(period==='weekly')d.setDate(d.getDate()+dir*7);else d.setMonth(d.getMonth()+dir);dateInput.value=toISO(d);refresh()}
   el('dmKpiPrev').addEventListener('click',()=>move(-1));el('dmKpiNext').addEventListener('click',()=>move(1));
   window.addEventListener('hexa:kpi-updated',refresh);
-  refresh();
+  // KPI dimuat setelah panel mendekati viewport, bukan saat halaman pertama dibuka.
+  // Fallback untuk browser lama tetap menjalankan refresh.
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        observer.disconnect();
+        refresh();
+      }
+    }, {rootMargin:'240px 0px'});
+    observer.observe(root);
+  } else {
+    refresh();
+  }
 })();
