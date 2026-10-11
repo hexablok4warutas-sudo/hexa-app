@@ -2,7 +2,8 @@
 
 const SYSTEM_SETTINGS_ROUTES = {
   "population-unit": "population-unit.html",
-  "daily-activity-access": "daily-activity-access.html"
+  "daily-activity-access": "daily-activity-access.html",
+  "kpi-data-management": "kpi-data-management.html"
 };
 
 document.addEventListener("DOMContentLoaded", initializeSystemSettings);
