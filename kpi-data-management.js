@@ -74,11 +74,13 @@
     $("kpiNutVisual").className = "kpi-nut-visual processing";
     $("kpiProgressTitle").textContent = "";
     $("kpiProgressText").textContent = "";
+    $("kpiProgressBar").classList.remove("indeterminate");
     $("kpiProgressBar").style.width = "0%";
   }
   function setStage(stage, percent) {
     // Tahap teknis tidak ditampilkan. Progress hanya jika backend memberikan angka nyata.
     if (Number.isFinite(percent)) {
+      $("kpiProgressBar").classList.remove("indeterminate");
       $("kpiProgressBar").style.width = Math.max(0, Math.min(99, percent)) + "%";
     } else {
       $("kpiProgressBar").classList.add("indeterminate");
@@ -109,12 +111,16 @@
     try {
       const result = await adapter(selectedFile, setStage);
       if (!result || result.success !== true) throw new Error(result && result.message || "Server belum mengonfirmasi keberhasilan sinkronisasi.");
-      finishOverlay(true, result.message || "Data telah tersimpan dan tersinkronisasi.");
+      if (result.synchronized !== true) {
+        finishOverlay(true, "Arsip Excel tersimpan. Angka KPI belum disinkronisasi.");
+      } else {
+        finishOverlay(true, result.message || "Data telah tersimpan dan tersinkronisasi.");
+      }
       $("kpiSourceTitle").textContent = result.fileName || selectedFile.name;
       $("kpiSourceDetail").textContent = "Updated: " + (result.uploadedAt || new Date().toLocaleString("id-ID"));
-      $("kpiSourceStatus").textContent = "Synchronized";
-      $("kpiSourceStatus").classList.add("connected");
-      setNotice("Sinkronisasi berhasil dikonfirmasi server.", "ok");
+      $("kpiSourceStatus").textContent = result.synchronized === true ? "Synchronized" : "Archived";
+      if (result.synchronized === true) $("kpiSourceStatus").classList.add("connected");
+      setNotice(result.synchronized === true ? "Sinkronisasi berhasil dikonfirmasi server." : "Arsip berhasil disimpan. Sinkronisasi KPI masih menunggu proses ekstraksi.", "ok");
     } catch (error) {
       finishOverlay(false, error.message || "Terjadi kesalahan saat upload.");
       setNotice("Upload gagal: " + (error.message || "Unknown error"), "error");
