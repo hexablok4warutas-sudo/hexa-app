@@ -20,3 +20,19 @@ button{font-family:inherit}button:focus-visible{outline:3px solid #00a99a;outlin
 @keyframes kpi-nut-spin{to{transform:rotate(360deg)}}
 @media(max-width:560px){.kpi-page{background-size:auto,600px auto}.kpi-heading{width:94%;min-height:78px;gap:10px;padding:7px 0}.kpi-back{width:36px;height:36px;flex-basis:36px}.kpi-heading-icon{width:52px;height:52px;flex-basis:52px;border-radius:15px}.kpi-heading-icon svg{width:28px;height:28px}.kpi-heading h1{font-size:24px}.kpi-heading p{font-size:10.5px;margin-top:4px}.kpi-container{width:94%;padding:17px 0 35px}.kpi-section-title h2{font-size:14px}.kpi-card{padding:16px;border-radius:17px}.kpi-card h3{font-size:15px}.kpi-card-header{gap:10px}.kpi-file-icon{width:49px;height:49px;flex-basis:49px}.kpi-file-icon svg{width:27px;height:27px}.kpi-source-card{flex-wrap:wrap}.kpi-source-status{margin-left:auto}.kpi-actions>*{flex:1}}
 @media(prefers-reduced-motion:reduce){.kpi-nut g{animation-duration:4s}.kpi-dropzone{transition:none}}
+
+/* Nut berputar selama proses nyata, tanpa teks tahap ataupun tombol demo */
+.kpi-nut-visual{height:125px;display:grid;place-items:center;position:relative}
+.kpi-nut-visual .kpi-nut{grid-area:1/1;width:108px;height:108px;margin:0}
+.kpi-nut-visual .kpi-nut g{transform-origin:60px 60px;animation:none}
+.kpi-nut-visual.processing .kpi-nut g{animation:kpi-nut-spin 1.4s linear infinite}
+.kpi-result-icon{grid-area:1/1;width:88px;height:88px;display:none;border-radius:50%;padding:20px;fill:none;stroke:white;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.kpi-nut-visual.success .kpi-nut,.kpi-nut-visual.failure .kpi-nut{display:none}
+.kpi-nut-visual.success .kpi-result-icon{display:block;background:#13a774}
+.kpi-nut-visual.failure .kpi-result-icon{display:block;background:#dc4c4c}
+.kpi-result-label:empty,.kpi-result-message:empty{display:none}
+.kpi-result-label{margin:12px 0 4px!important;font-weight:800;font-size:17px!important;color:#26313a!important}
+.kpi-result-message{margin:0 0 15px!important}
+.kpi-progress-track{margin-top:15px}
+.kpi-progress-track .indeterminate{width:35%!important;animation:kpi-progress-sweep 1.5s ease-in-out infinite}
+@keyframes kpi-progress-sweep{0%{transform:translateX(-110%)}100%{transform:translateX(310%)}}
