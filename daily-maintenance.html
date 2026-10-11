@@ -1,69 +1,26 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daily Maintenance | HEXA</title>
 
+  <!-- GLOBAL HEXA HEADER CSS -->
+  <link rel="stylesheet" href="hexa-header.css">
 
-  <!-- =====================================
-       GLOBAL HEXA HEADER CSS
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="hexa-header.css"
-  >
-
-
-  <!-- =====================================
-       DAILY MAINTENANCE CSS
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="daily-maintenance.css"
-  >
-
+  <!-- DAILY MAINTENANCE CSS -->
+  <link rel="stylesheet" href="daily-maintenance.css">
 </head>
-
-
 <body>
+  <!-- GLOBAL HEXA HEADER -->
+  <header id="hexaHeader" data-header-type="standard" data-page="daily-maintenance"></header>
 
-
-  <!-- =====================================
-       GLOBAL HEXA HEADER
-       ===================================== -->
-
-  <header
-    id="hexaHeader"
-    data-header-type="standard"
-    data-page="daily-maintenance"
-  ></header>
-
-
-
-  <!-- =====================================
-       DAILY MAINTENANCE CONTENT
-       ===================================== -->
-
+  <!-- DAILY MAINTENANCE CONTENT -->
   <main class="daily-main-content">
-
     <section class="daily-section">
 
-
-      <!-- =================================
-           DESCRIPTION
-           ================================= -->
-
+      <!-- DESCRIPTION -->
       <div class="daily-description">
-
         <p>
           <strong>Daily Maintenance</strong> adalah Garda Terdepan
           dalam aktifitas maintenance unit Tim Roda Besi
@@ -74,7 +31,6 @@
           performa alat mencapai target physical availability (PA)
           dengan MTBF dan redo yang terkontrol.
         </p>
-
         <p>
           Untuk memulai input temuan kerusakan kamu bisa memulai di
           <strong>Start Inspection</strong>. Melihat apa saja temuan
@@ -83,128 +39,41 @@
           memantau keseluruhan histori DM kita bisa langsung review
           di <strong>Unit History</strong>.
         </p>
-
       </div>
 
-
-
-      <!-- =================================
-           DAILY MAINTENANCE MENU
-           ================================= -->
-
-      <div
-        class="daily-menu-grid"
-        id="dailyMenuGrid"
-      >
-
-
-        <!-- ===============================
-             START INSPECTION
-             =============================== -->
-
-        <button
-          type="button"
-          class="daily-menu-item"
-          data-menu="start-inspection"
-        >
-
+      <!-- DAILY MAINTENANCE MENU -->
+      <div class="daily-menu-grid" id="dailyMenuGrid">
+        <!-- START INSPECTION -->
+        <button type="button" class="daily-menu-item" data-menu="start-inspection">
           <div class="daily-icon-card">
-
-            <img
-              src="hexa-icon-startinspection.svg"
-              alt="Start Inspection"
-            >
-
+            <img src="hexa-icon-startinspection.svg" alt="Start Inspection">
           </div>
-
-          <span>
-            Start Inspection
-          </span>
-
+          <span>Start Inspection</span>
         </button>
 
-
-
-        <!-- ===============================
-             DAILY OUTSTANDING
-             =============================== -->
-
-        <button
-          type="button"
-          class="daily-menu-item"
-          data-menu="daily-outstanding"
-        >
-
+        <!-- DAILY OUTSTANDING -->
+        <button type="button" class="daily-menu-item" data-menu="daily-outstanding">
           <div class="daily-icon-card">
-
-            <img
-              src="hexa-icon-dailyoutstanding.svg"
-              alt="Daily Outstanding"
-            >
-
+            <img src="hexa-icon-dailyoutstanding.svg" alt="Daily Outstanding">
           </div>
-
-          <span>
-            Daily Outstanding
-          </span>
-
+          <span>Daily Outstanding</span>
         </button>
 
-
-
-        <!-- ===============================
-             UNIT HISTORY
-             =============================== -->
-
-        <button
-          type="button"
-          class="daily-menu-item"
-          data-menu="unit-history"
-        >
-
+        <!-- UNIT HISTORY -->
+        <button type="button" class="daily-menu-item" data-menu="unit-history">
           <div class="daily-icon-card">
-
-            <img
-              src="hexa-icon-unithistory.svg"
-              alt="Unit History"
-            >
-
+            <img src="hexa-icon-unithistory.svg" alt="Unit History">
           </div>
-
-          <span>
-            Unit History
-          </span>
-
+          <span>Unit History</span>
         </button>
 
-
-
-        <!-- ===============================
-             DAILY ACTIVITY
-             =============================== -->
-
-        <button
-          type="button"
-          class="daily-menu-item"
-          data-menu="daily-activity"
-        >
-
+        <!-- DAILY ACTIVITY -->
+        <button type="button" class="daily-menu-item" data-menu="daily-activity">
           <div class="daily-icon-card">
-
-            <img
-              src="hexa-icon-dailyactivity.svg"
-              alt="Daily Activity"
-            >
-
+            <img src="hexa-icon-dailyactivity.svg" alt="Daily Activity">
           </div>
-
-          <span>
-            Daily Activity
-          </span>
-
+          <span>Daily Activity</span>
         </button>
-
-
 
         <!-- GREASING ANTI LINEBORING -->
         <button type="button" class="daily-menu-item" data-menu="greasing-anti-lineboring">
@@ -213,18 +82,19 @@
           </div>
           <span>Greasing Anti Lineboring</span>
         </button>
-
       </div>
 
       <!-- KPI DAILY MAINTENANCE - SECTION TRACK ONLY -->
       <section class="dm-kpi" id="dmKpi" aria-labelledby="dmKpiHeading">
         <div class="dm-kpi-heading">
-          <div><span class="dm-kpi-eyebrow">HEXA · SECTION TRACK</span>
+          <div>
+            <span class="dm-kpi-eyebrow">HEXA · SECTION TRACK</span>
             <h2 id="dmKpiHeading">Daily Maintenance Achievement</h2>
             <p>Monitoring achievement, Redo DM, MTBF &amp; Suggested PICA</p>
           </div>
           <span id="dmKpiSource" class="dm-kpi-source">Menunggu data KPI</span>
         </div>
+
         <div class="dm-kpi-toolbar">
           <div class="dm-kpi-tabs" role="group" aria-label="Periode KPI">
             <button type="button" class="is-active" data-kpi-period="daily" aria-pressed="true">Daily</button>
@@ -238,71 +108,88 @@
             <button type="button" id="dmKpiNext" aria-label="Periode berikutnya">&#8250;</button>
           </div>
         </div>
+
         <p class="dm-kpi-period-label" id="dmKpiPeriodLabel" aria-live="polite"></p>
+
         <div class="dm-kpi-metrics">
-          <article class="dm-kpi-metric"><span>DM Achievement</span><strong id="dmKpiAchievement">—</strong><small>Actual / Plan × 100%</small><div class="dm-kpi-track"><div id="dmKpiAchievementBar"></div></div></article>
-          <article class="dm-kpi-metric"><span>Plan DM</span><strong id="dmKpiPlan">—</strong><small>Target unit periode terpilih</small></article>
-          <article class="dm-kpi-metric"><span>Actual DM</span><strong id="dmKpiActual">—</strong><small>Pencapaian DM periode terpilih</small></article>
-          <article class="dm-kpi-metric"><span>Redo DM</span><strong id="dmKpiRedo">—</strong><small id="dmKpiRedoDetail">Mengikuti angka resmi Dashboard</small></article>
+          <article class="dm-kpi-metric">
+            <span>DM Achievement</span>
+            <strong id="dmKpiAchievement">—</strong>
+            <small>Actual / Plan × 100%</small>
+            <div class="dm-kpi-track"><div id="dmKpiAchievementBar"></div></div>
+          </article>
+          <article class="dm-kpi-metric">
+            <span>Plan DM</span>
+            <strong id="dmKpiPlan">—</strong>
+            <small>Target unit periode terpilih</small>
+          </article>
+          <article class="dm-kpi-metric">
+            <span>Actual DM</span>
+            <strong id="dmKpiActual">—</strong>
+            <small>Pencapaian DM periode terpilih</small>
+          </article>
+          <article class="dm-kpi-metric">
+            <span>Redo DM</span>
+            <strong id="dmKpiRedo">—</strong>
+            <small id="dmKpiRedoDetail">Mengikuti angka resmi Dashboard</small>
+          </article>
         </div>
+
         <div class="dm-kpi-panels">
-          <article class="dm-kpi-panel"><div class="dm-kpi-panel-head"><h3>Monitoring DM Achievement</h3><span>Plan vs Actual</span></div><div id="dmKpiAchievementChart" class="dm-kpi-chart" role="img" aria-label="Grafik plan dan actual"></div></article>
-          <article class="dm-kpi-panel"><div class="dm-kpi-panel-head"><h3>Redo DM by EGI</h3><span>Section TRACK</span></div><div id="dmKpiEgiChart" class="dm-kpi-chart" role="img" aria-label="Grafik Redo DM berdasarkan EGI"></div></article>
-          <article class="dm-kpi-panel dm-kpi-wide"><div class="dm-kpi-panel-head"><h3>Top Unit Redo DM</h3><span>Pilih unit untuk melihat riwayat</span></div><div id="dmKpiUnitChart" class="dm-kpi-chart" role="group" aria-label="Daftar unit Redo DM"></div><div id="dmKpiUnitHistory" class="dm-kpi-unit-history" aria-live="polite"></div></article>
+          <article class="dm-kpi-panel">
+            <div class="dm-kpi-panel-head">
+              <h3>Monitoring DM Achievement</h3>
+              <span>Plan vs Actual</span>
+            </div>
+            <div id="dmKpiAchievementChart" class="dm-kpi-chart" role="img" aria-label="Grafik plan dan actual"></div>
+          </article>
+          <article class="dm-kpi-panel">
+            <div class="dm-kpi-panel-head">
+              <h3>Redo DM by EGI</h3>
+              <span>Section TRACK</span>
+            </div>
+            <div id="dmKpiEgiChart" class="dm-kpi-chart" role="img" aria-label="Grafik Redo DM berdasarkan EGI"></div>
+          </article>
+          <article class="dm-kpi-panel dm-kpi-wide">
+            <div class="dm-kpi-panel-head">
+              <h3>Top Unit Redo DM</h3>
+              <span>Pilih unit untuk melihat riwayat</span>
+            </div>
+            <div id="dmKpiUnitChart" class="dm-kpi-chart" role="group" aria-label="Daftar unit Redo DM"></div>
+            <div id="dmKpiUnitHistory" class="dm-kpi-unit-history" aria-live="polite"></div>
+          </article>
         </div>
-        <div class="dm-kpi-pica-head"><div><h3>Suggested PICA &amp; MTBF Improvement</h3><p>Top 3 recurring problems · analisis indikasi penyebab dan usulan tindakan</p></div><span class="dm-kpi-advisory">Perlu verifikasi mekanik / GL</span></div>
+
+        <div class="dm-kpi-pica-head">
+          <div>
+            <h3>Suggested PICA &amp; MTBF Improvement</h3>
+            <p>Top 3 recurring problems · analisis indikasi penyebab dan usulan tindakan</p>
+          </div>
+          <span class="dm-kpi-advisory">Perlu verifikasi mekanik / GL</span>
+        </div>
         <div class="dm-kpi-pica-grid" id="dmKpiPicaList" aria-live="polite"></div>
-        <p class="dm-kpi-disclaimer">Suggested PICA adalah hipotesis awal, bukan root cause final. MTBF hanya dihitung apabila data jam operasi dan kejadian breakdown mencukupi.</p>
+        <p class="dm-kpi-disclaimer">
+          Suggested PICA adalah hipotesis awal, bukan root cause final.
+          MTBF hanya dihitung apabila data jam operasi dan kejadian breakdown mencukupi.
+        </p>
       </section>
-
     </section>
-
   </main>
 
-
-
-  <!-- =====================================
-       FLOATING START INSPECTION SHORTCUT
-       ===================================== -->
-
-  <button
-    type="button"
-    id="inspectionShortcut"
-    class="inspection-shortcut"
-    aria-label="Start Inspection"
-    title="Start Inspection"
-  >
-
+  <!-- FLOATING START INSPECTION SHORTCUT -->
+  <button type="button" id="inspectionShortcut" class="inspection-shortcut"
+          aria-label="Start Inspection" title="Start Inspection">
     <span>+</span>
-
   </button>
 
-
-
-  <!-- =====================================
-       GLOBAL HEXA SYSTEM
-       ===================================== -->
-
-  <!--
-    URUTAN INI PENTING:
-
-    1. hexa-menu.js
-       menyediakan data menu
-
-    2. hexa-header.js
-       membangun global header
-
-    3. daily-maintenance.js
-       menangani fungsi khusus halaman
-  -->
-
+  <!-- GLOBAL HEXA SYSTEM: PERTAHANKAN URUTAN SCRIPT -->
   <script src="hexa-menu.js"></script>
-
   <script src="hexa-header.js"></script>
 
+  <!-- KPI FAST ADAPTER: HARUS SEBELUM DAILY-MAINTENANCE.JS -->
+  <script src="hexa-kpi-fast-adapter.js"></script>
+
+  <!-- DAILY MAINTENANCE PAGE CONTROLLER -->
   <script src="daily-maintenance.js"></script>
-
-
 </body>
-
 </html>
