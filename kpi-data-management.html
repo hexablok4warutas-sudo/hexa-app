@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPI Data Management | HEXA</title>
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="kpi-data-management.css">
+</head>
+<body>
+  <header id="hexaHeader" data-header-type="standard" data-page="settings"></header>
+  <main class="kpi-page">
+    <section class="kpi-heading-shell">
+      <div class="kpi-heading">
+        <button id="kpiBack" class="kpi-back" type="button" aria-label="Kembali ke System Settings">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <span class="kpi-heading-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M9 9v12M15 9v12M4 15h16"/></svg>
+        </span>
+        <div><h1>KPI Data Management</h1><p>Daily Maintenance Data Source • TRACK</p></div>
+      </div>
+    </section>
+    <div class="kpi-container">
+      <div class="kpi-section-title"><span></span><h2>EXCEL DATA SOURCE</h2></div>
+      <section class="kpi-card" aria-labelledby="uploadTitle">
+        <div class="kpi-card-header">
+          <div class="kpi-file-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 12l5 6m0-6-5 6"/></svg>
+          </div>
+          <div><h3 id="uploadTitle">Upload Excel Daily Maintenance</h3><p>Sumber Achievement, Redo DM &amp; Breakdown History</p></div>
+        </div>
+        <input id="kpiFileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+        <button type="button" id="kpiChooseFile" class="kpi-dropzone">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5m0 0-4 4m4-4 4 4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          <strong>Choose Excel File</strong>
+          <small>Format .xlsx • Maksimal 20 MB</small>
+        </button>
+        <div id="kpiSelectedFile" class="kpi-selected-file" hidden>
+          <span class="kpi-selected-icon">XLSX</span>
+          <div><strong id="kpiFileName"></strong><small id="kpiFileMeta"></small></div>
+          <button id="kpiRemoveFile" type="button" aria-label="Hapus pilihan file">×</button>
+        </div>
+        <div id="kpiNotice" class="kpi-notice" role="status" aria-live="polite">Pilih file Excel untuk memulai.</div>
+        <div class="kpi-actions">
+          <button id="kpiUploadButton" class="kpi-primary" type="button" disabled>Upload &amp; Synchronize</button>
+          <button id="kpiPreviewAnimation" class="kpi-secondary" type="button">Preview Animation</button>
+        </div>
+      </section>
+      <div class="kpi-section-title kpi-section-spaced"><span></span><h2>CURRENT DATA SOURCE</h2></div>
+      <section class="kpi-card kpi-source-card">
+        <div class="kpi-source-mark" aria-hidden="true">↻</div>
+        <div><h3 id="kpiSourceTitle">Belum terhubung</h3><p id="kpiSourceDetail">Belum ada data tersinkronisasi ke database HEXA.</p></div>
+        <span class="kpi-source-status" id="kpiSourceStatus">Not Connected</span>
+      </section>
+      <p class="kpi-footnote">Settings hanya mengelola sumber Excel. Grafik KPI Daily, Weekly, dan Monthly akan ditampilkan di halaman Daily Maintenance.</p>
+    </div>
+  </main>
+
+  <div id="kpiProgressOverlay" class="kpi-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="kpiProgressTitle">
+    <div class="kpi-progress-card">
+      <svg class="kpi-nut" viewBox="0 0 120 120" aria-label="Nut HEXA berputar">
+        <defs><linearGradient id="hexaNutGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffdc49"/><stop offset=".5" stop-color="#ff9e0c"/><stop offset="1" stop-color="#e86c00"/></linearGradient></defs>
+        <g id="kpiNutSpinner"><path fill="url(#hexaNutGold)" fill-rule="evenodd" d="M60 6 106.8 33 106.8 87 60 114 13.2 87 13.2 33Z M60 37a23 23 0 1 0 0 46 23 23 0 1 0 0-46Z" stroke="#e7a00b" stroke-width="2"/></g>
+      </svg>
+      <h3 id="kpiProgressTitle">Preparing HEXA Data</h3>
+      <p id="kpiProgressText">Mohon tunggu...</p>
+      <div class="kpi-progress-track"><div id="kpiProgressBar"></div></div>
+      <small id="kpiProgressPercent">Memproses...</small>
+      <button id="kpiProgressClose" class="kpi-secondary" type="button" hidden>Tutup</button>
+    </div>
+  </div>
+  <script src="hexa-menu.js"></script>
+  <script src="hexa-header.js"></script>
+  <script src="kpi-data-management.js"></script>
+</body>
+</html>
