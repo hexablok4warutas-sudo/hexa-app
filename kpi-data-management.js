@@ -30,7 +30,6 @@
     $("kpiFileInput").addEventListener("change", (event) => chooseFile(event.target.files[0]));
     $("kpiRemoveFile").addEventListener("click", clearFile);
     $("kpiUploadButton").addEventListener("click", uploadFile);
-    $("kpiPreviewAnimation").addEventListener("click", previewAnimation);
     $("kpiProgressClose").addEventListener("click", closeOverlay);
     const drop = $("kpiChooseFile");
     drop.addEventListener("dragover", (event) => { event.preventDefault(); drop.classList.add("dragover"); });
@@ -69,39 +68,29 @@
     $("kpiSelectedFile").hidden = true;
     $("kpiUploadButton").disabled = true;
   }
-  function openOverlay(title, description) {
+  function openOverlay() {
     $("kpiProgressOverlay").hidden = false;
     $("kpiProgressClose").hidden = true;
-    $("kpiProgressTitle").textContent = title;
-    $("kpiProgressText").textContent = description;
+    $("kpiNutVisual").className = "kpi-nut-visual processing";
+    $("kpiProgressTitle").textContent = "";
+    $("kpiProgressText").textContent = "";
     $("kpiProgressBar").style.width = "0%";
-    $("kpiProgressPercent").textContent = "Memproses...";
-    $("kpiNutSpinner").parentElement.classList.remove("stopped");
   }
   function setStage(stage, percent) {
-    const labels = {
-      uploading: ["Uploading Excel...", "Mengirim file ke server"],
-      validating: ["Validating File...", "Memeriksa struktur workbook"],
-      saving: ["Saving DM Data...", "Menyimpan data ke database"],
-      syncing: ["Synchronizing Database...", "Menunggu konfirmasi sinkronisasi"]
-    };
-    const current = labels[stage] || ["Processing...", "Memproses data"];
-    $("kpiProgressTitle").textContent = current[0];
-    $("kpiProgressText").textContent = current[1];
+    // Tahap teknis tidak ditampilkan. Progress hanya jika backend memberikan angka nyata.
     if (Number.isFinite(percent)) {
-      const safe = Math.max(0, Math.min(99, percent));
-      $("kpiProgressBar").style.width = safe + "%";
-      $("kpiProgressPercent").textContent = safe + "%";
+      $("kpiProgressBar").style.width = Math.max(0, Math.min(99, percent)) + "%";
     } else {
-      $("kpiProgressPercent").textContent = "Sedang diproses...";
+      $("kpiProgressBar").classList.add("indeterminate");
     }
   }
   function finishOverlay(success, message) {
-    $("kpiNutSpinner").parentElement.classList.add("stopped");
-    $("kpiProgressTitle").textContent = success ? "Synchronization Complete!" : "Process Not Completed";
-    $("kpiProgressText").textContent = message;
+    $("kpiProgressBar").classList.remove("indeterminate");
+    $("kpiNutVisual").className = "kpi-nut-visual " + (success ? "success" : "failure");
+    $("kpiResultPath").setAttribute("d", success ? "M5 12l4 4L19 6" : "M6 6l12 12M18 6L6 18");
+    $("kpiProgressTitle").textContent = success ? "Berhasil tersinkronisasi" : "Proses gagal";
+    $("kpiProgressText").textContent = message || "";
     $("kpiProgressBar").style.width = success ? "100%" : "0%";
-    $("kpiProgressPercent").textContent = success ? "100%" : "Belum tersimpan";
     $("kpiProgressClose").hidden = false;
   }
   function closeOverlay() { if (!busy) $("kpiProgressOverlay").hidden = true; }
@@ -110,13 +99,13 @@
     if (busy || !selectedFile) return;
     const adapter = window.HEXA_KPI_UPLOAD_ADAPTER;
     if (typeof adapter !== "function") {
-      setNotice("Backend belum terhubung. File belum diupload atau disimpan. Gunakan Preview Animation untuk melihat animasi.", "error");
+      setNotice("Backend belum terhubung. File belum diupload atau disimpan. Hubungkan backend terlebih dahulu.", "error");
       return;
     }
     busy = true;
     $("kpiUploadButton").disabled = true;
     $("kpiRemoveFile").disabled = true;
-    openOverlay("Uploading Excel...", "Memulai proses upload");
+    openOverlay();
     try {
       const result = await adapter(selectedFile, setStage);
       if (!result || result.success !== true) throw new Error(result && result.message || "Server belum mengonfirmasi keberhasilan sinkronisasi.");
@@ -136,23 +125,4 @@
     }
   }
 
-  // Demo visual saja. Tidak mengirim, membaca, atau menyimpan data.
-  async function previewAnimation() {
-    if (busy) return;
-    busy = true;
-    openOverlay("HEXA Animation Preview", "Simulasi tampilan animasi, bukan proses upload.");
-    const stages = [
-      ["uploading", 20], ["validating", 45], ["saving", 70], ["syncing", 90]
-    ];
-    for (const [stage, progress] of stages) {
-      await new Promise(resolve => setTimeout(resolve, 650));
-      setStage(stage, progress);
-      $("kpiProgressText").textContent += " • Demo only";
-    }
-    await new Promise(resolve => setTimeout(resolve, 600));
-    finishOverlay(false, "Preview selesai. Tidak ada file yang diupload atau disimpan.");
-    $("kpiProgressTitle").textContent = "Animation Preview Finished";
-    $("kpiProgressPercent").textContent = "Demo only";
-    busy = false;
-  }
 })();
