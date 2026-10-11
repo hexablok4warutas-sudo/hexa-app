@@ -44,7 +44,6 @@
         <div id="kpiNotice" class="kpi-notice" role="status" aria-live="polite">Pilih file Excel untuk memulai.</div>
         <div class="kpi-actions">
           <button id="kpiUploadButton" class="kpi-primary" type="button" disabled>Upload &amp; Synchronize</button>
-          <button id="kpiPreviewAnimation" class="kpi-secondary" type="button">Preview Animation</button>
         </div>
       </section>
       <div class="kpi-section-title kpi-section-spaced"><span></span><h2>CURRENT DATA SOURCE</h2></div>
@@ -59,14 +58,16 @@
 
   <div id="kpiProgressOverlay" class="kpi-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="kpiProgressTitle">
     <div class="kpi-progress-card">
-      <svg class="kpi-nut" viewBox="0 0 120 120" aria-label="Nut HEXA berputar">
-        <defs><linearGradient id="hexaNutGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffdc49"/><stop offset=".5" stop-color="#ff9e0c"/><stop offset="1" stop-color="#e86c00"/></linearGradient></defs>
-        <g id="kpiNutSpinner"><path fill="url(#hexaNutGold)" fill-rule="evenodd" d="M60 6 106.8 33 106.8 87 60 114 13.2 87 13.2 33Z M60 37a23 23 0 1 0 0 46 23 23 0 1 0 0-46Z" stroke="#e7a00b" stroke-width="2"/></g>
-      </svg>
-      <h3 id="kpiProgressTitle">Preparing HEXA Data</h3>
-      <p id="kpiProgressText">Mohon tunggu...</p>
-      <div class="kpi-progress-track"><div id="kpiProgressBar"></div></div>
-      <small id="kpiProgressPercent">Memproses...</small>
+      <div id="kpiNutVisual" class="kpi-nut-visual" aria-hidden="true">
+        <svg class="kpi-nut" viewBox="0 0 120 120">
+          <defs><linearGradient id="hexaNutGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffdc49"/><stop offset=".5" stop-color="#ff9e0c"/><stop offset="1" stop-color="#e86c00"/></linearGradient></defs>
+          <g id="kpiNutSpinner"><path fill="url(#hexaNutGold)" fill-rule="evenodd" d="M60 6 106.8 33 106.8 87 60 114 13.2 87 13.2 33Z M60 37a23 23 0 1 0 0 46 23 23 0 1 0 0-46Z" stroke="#e7a00b" stroke-width="2"/></g>
+        </svg>
+        <svg id="kpiResultIcon" class="kpi-result-icon" viewBox="0 0 24 24"><path id="kpiResultPath" d="M5 12l4 4L19 6"/></svg>
+      </div>
+      <div class="kpi-progress-track" aria-hidden="true"><div id="kpiProgressBar"></div></div>
+      <p id="kpiProgressTitle" class="kpi-result-label" role="status" aria-live="polite"></p>
+      <p id="kpiProgressText" class="kpi-result-message"></p>
       <button id="kpiProgressClose" class="kpi-secondary" type="button" hidden>Tutup</button>
     </div>
   </div>
