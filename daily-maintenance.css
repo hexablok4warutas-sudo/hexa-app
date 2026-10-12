@@ -620,3 +620,39 @@ body {
 .dm-kpi-investigation-next{margin-top:13px;background:#eef6fc;border-radius:11px;padding:12px}.dm-kpi-investigation-next ul{padding-left:18px;margin:7px 0 0;line-height:1.8}
 .dm-kpi-unit-priority-card .dm-kpi-priority-detail{margin-top:8px}.dm-kpi-unit-priority-card{display:flex;flex-direction:column;align-items:flex-start}.dm-kpi-unit-priority-card p{width:100%}
 @media(max-width:680px){.dm-kpi-investigation-list{grid-template-columns:1fr}.dm-kpi-investigation{padding:11px}}
+
+/* HEXA Unit Breakdown History — table responsive */
+#dmKpiUnitHistory .dm-kpi-investigation{margin:16px 0;padding:20px;border:1px solid #d8e5ef;border-radius:16px;background:#fff;color:#263e50;font-size:13px;line-height:1.5}
+#dmKpiUnitHistory .dm-kpi-investigation-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+#dmKpiUnitHistory .dm-kpi-investigation-head small{display:block;color:#6d8295;font-size:11px;font-weight:700;letter-spacing:.06em}
+#dmKpiUnitHistory .dm-kpi-investigation-head h4{font-size:19px;margin:4px 0;color:#12314a}
+#dmKpiUnitHistory .dm-kpi-investigation-close{background:#fff;border:1px solid #ccdce7;border-radius:9px;padding:8px 13px;color:#245674;font-weight:700;cursor:pointer}
+#dmKpiUnitHistory .dm-kpi-investigation-intro{color:#64788b;margin:10px 0 14px}
+#dmKpiUnitHistory .dm-kpi-investigation-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 15px}
+#dmKpiUnitHistory .dm-kpi-investigation-stats>div{padding:13px;border:1px solid #e2eaf1;background:#f7fafc;border-radius:12px}
+#dmKpiUnitHistory .dm-kpi-investigation-stats small{display:block;color:#60778b;font-size:11px}
+#dmKpiUnitHistory .dm-kpi-investigation-stats strong{display:block;color:#103b5b;font-size:22px;margin-top:4px}
+#dmKpiUnitHistory .dm-kpi-investigation-note{margin:12px 0;padding:12px;background:#fff7e9;border:1px solid #f2d9ae;border-radius:10px;color:#85530b}
+#dmKpiUnitHistory .dm-kpi-history-scroll{overflow-x:auto;width:100%;border:1px solid #e0e9f0;border-radius:12px}
+#dmKpiUnitHistory .dm-kpi-history-table{width:100%;min-width:880px;border-collapse:collapse;table-layout:fixed;font-size:12px}
+#dmKpiUnitHistory .dm-kpi-history-table th{background:#eef5fa;color:#31536c;text-align:left;padding:12px 10px;font-weight:800;border-bottom:1px solid #d8e5ef}
+#dmKpiUnitHistory .dm-kpi-history-table td{padding:12px 10px;vertical-align:top;border-bottom:1px solid #e6edf2;color:#314c60;overflow-wrap:anywhere}
+#dmKpiUnitHistory .dm-kpi-history-table tr:last-child td{border-bottom:0}
+#dmKpiUnitHistory .dm-kpi-history-table tbody tr:nth-child(even){background:#f9fbfd}
+#dmKpiUnitHistory .dm-kpi-history-table th:nth-child(1){width:5%}
+#dmKpiUnitHistory .dm-kpi-history-table th:nth-child(2){width:15%}
+#dmKpiUnitHistory .dm-kpi-history-table th:nth-child(3){width:20%}
+#dmKpiUnitHistory .dm-kpi-history-table th:nth-child(4){width:15%}
+#dmKpiUnitHistory .dm-kpi-history-table th:nth-child(5){width:32%}
+#dmKpiUnitHistory .dm-kpi-history-table th:nth-child(6){width:13%}
+#dmKpiUnitHistory .dm-kpi-history-table td small{display:block;color:#718598;margin-top:5px}
+#dmKpiUnitHistory .dm-kpi-history-problem{font-weight:700;color:#153f5d}
+#dmKpiUnitHistory .dm-kpi-history-wo{font-variant-numeric:tabular-nums}
+#dmKpiUnitHistory .dm-kpi-match-status{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap;background:#fff1e0;color:#8d5600}
+#dmKpiUnitHistory .dm-kpi-match-status.is-matched{background:#e6f6ee;color:#16734d}
+#dmKpiUnitHistory .dm-kpi-investigation-caption{font-size:11px;color:#758a9b;margin:8px 0}
+#dmKpiUnitHistory .dm-kpi-investigation-analysis{margin-top:16px;padding:15px;background:#f2f7fb;border-radius:12px}
+#dmKpiUnitHistory .dm-kpi-investigation-analysis h5{font-size:14px;color:#153c57;margin:0 0 8px}
+#dmKpiUnitHistory .dm-kpi-investigation-analysis p{margin:0 0 8px}
+#dmKpiUnitHistory .dm-kpi-investigation-analysis ul{margin:0;padding-left:20px;line-height:1.8}
+@media(max-width:650px){#dmKpiUnitHistory .dm-kpi-investigation{padding:12px}#dmKpiUnitHistory .dm-kpi-investigation-stats{gap:6px}#dmKpiUnitHistory .dm-kpi-investigation-stats>div{padding:9px}#dmKpiUnitHistory .dm-kpi-investigation-stats strong{font-size:16px}}
