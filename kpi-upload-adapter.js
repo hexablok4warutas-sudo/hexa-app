@@ -1,4 +1,4 @@
-/* HEXA KPI Upload Adapter v4 — arsip Excel + simpan hasil ekstraksi.
+/* HEXA KPI Upload Adapter v5 — auto replace arsip tanpa konfirmasi + simpan hasil ekstraksi.
  * Ganti seluruh isi kpi-upload-adapter.js dengan file ini.
  * Tidak mengubah kpi-data-management.js.
  */
@@ -118,30 +118,18 @@
     }
 
     if (onStage) onStage('saving', 96);
+    // Auto-replace: satu arsip aktif per jenis laporan dan periode.
+    // Arsip lama tetap berada di Drive; hanya indeks arsip aktif diperbarui.
     const commit = {
       ...user,
       action: 'kpiCommitUpload',
       uploadId: start.uploadId,
       totalChunks: count,
-      replacePeriod: false
+      replacePeriod: true
     };
+    return await request(commit);
 
-    try {
-      return await request(commit);
-    } catch (e) {
-      if (/sudah ada|penggantian/i.test(String(e.message))) {
-        const confirmed = window.confirm(
-          'Arsip ' + reportType + ' periode ' + year + '-' +
-          String(month).padStart(2, '0') +
-          ' sudah ada. Ganti arsip aktif? Arsip lama tidak dihapus.'
-        );
-        if (confirmed) {
-          return request({ ...commit, replacePeriod: true });
-        }
-      }
-      throw e;
-    }
   };
 
-  console.log('[HEXA KPI] Upload Adapter v4 READY');
+  console.log('[HEXA KPI] Upload Adapter v5 READY');
 })();
