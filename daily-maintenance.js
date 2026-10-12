@@ -875,6 +875,53 @@ console.log(
       row.append(name,track,count);node.append(row);
     });
   }
+  function renderPareto(items){
+    const node=el('dmKpiUnitChart');clear(node);
+    const source=safeArr(items).filter(x=>x&&typeof x.label==='string'&&number(x.count)!==null&&x.count>0);
+    const map=new Map();
+    source.forEach(x=>{const key=x.label.trim().toUpperCase().replace(/\s+/g,' ');if(!key)return;
+      if(!map.has(key))map.set(key,{label:key,count:0,history:[]});
+      const v=map.get(key);v.count+=x.count;v.history.push(...safeArr(x.history));
+    });
+    const data=[...map.values()].sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
+    if(!data.length){node.append(empty('Belum ada catatan Redo Event pada periode ini.'));return}
+    const total=data.reduce((s,x)=>s+x.count,0),max=data[0].count;
+    let cumulative=0,cutoff=data.length;
+    data.forEach((x,i)=>{cumulative+=x.count;x.cumulative=cumulative/total*100;x.contribution=x.count/total*100;if(cutoff===data.length&&x.cumulative>=80)cutoff=i+1});
+    const summary=document.createElement('p');summary.className='dm-kpi-pareto-summary';
+    summary.textContent=`${total} catatan Redo Event · ${data.length} unit · ${cutoff} unit mencapai ${data[cutoff-1].cumulative.toFixed(1).replace('.',',')}% kumulatif (target 80%)`;
+    node.append(summary);
+    const scroll=document.createElement('div');scroll.className='dm-kpi-pareto-scroll';
+    const NS='http://www.w3.org/2000/svg', svg=document.createElementNS(NS,'svg');
+    const width=Math.max(660,100+data.length*76),height=335,left=48,right=40,top=35,bottom=80;
+    const plotW=width-left-right,plotH=height-top-bottom;
+    svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('width',width);svg.setAttribute('height',height);
+    svg.setAttribute('role','img');svg.setAttribute('aria-label','Pareto frekuensi Redo Event per unit dengan garis kumulatif dan batas 80 persen');
+    function element(tag,attrs,text){const e=document.createElementNS(NS,tag);Object.entries(attrs||{}).forEach(([k,v])=>e.setAttribute(k,String(v)));if(text!==undefined)e.textContent=text;svg.append(e);return e}
+    for(let i=0;i<=4;i++){
+      const y=top+plotH*(1-i/4);element('line',{x1:left,y1:y,x2:width-right,y2:y,stroke:'#e6edf3','stroke-width':1});
+      element('text',{x:left-8,y:y+4,'text-anchor':'end',fill:'#69788b','font-size':11},String(Math.ceil(max*i/4)));
+    }
+    const y80=top+plotH*.2;
+    element('line',{x1:left,y1:y80,x2:width-right,y2:y80,stroke:'#df8b26','stroke-width':1.5,'stroke-dasharray':'7 5'});
+    element('text',{x:width-right+4,y:y80+4,fill:'#b36c12','font-size':11},'80%');
+    const step=plotW/data.length,barW=Math.min(42,step*.58),points=[];
+    data.forEach((x,i)=>{
+      const cx=left+step*(i+.5),barH=x.count/max*plotH;
+      const rect=element('rect',{x:cx-barW/2,y:top+plotH-barH,width:barW,height:barH,rx:5,fill:i<cutoff?'#008bca':'#aebfcf',tabindex:0,role:'button','aria-label':`${x.label}, ${x.count} catatan, kumulatif ${x.cumulative.toFixed(1)} persen. Lihat riwayat`});
+      const show=()=>renderUnitHistory(x);rect.addEventListener('click',show);rect.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();show()}});
+      const tip=document.createElementNS(NS,'title');tip.textContent=`${x.label}: ${x.count} event (${x.contribution.toFixed(1)}%), kumulatif ${x.cumulative.toFixed(1)}%`;rect.append(tip);
+      element('text',{x:cx,y:top+plotH-barH-7,'text-anchor':'middle',fill:'#234055','font-size':12,'font-weight':700},x.count);
+      element('text',{x:cx,y:top+plotH+20,'text-anchor':'middle',fill:'#455b70','font-size':11},x.label);
+      const py=top+plotH*(1-x.cumulative/100);points.push([cx,py]);
+    });
+    element('polyline',{points:points.map(p=>p.join(',')).join(' '),fill:'none',stroke:'#ef9d26','stroke-width':3,'stroke-linejoin':'round'});
+    points.forEach((p,i)=>{element('circle',{cx:p[0],cy:p[1],r:4,fill:'#ef9d26',stroke:'white','stroke-width':1.5});
+      element('text',{x:p[0],y:p[1]-11,'text-anchor':'middle',fill:'#9a600c','font-size':10,'font-weight':700},`${data[i].cumulative.toFixed(0)}%`);
+    });
+    scroll.append(svg);node.append(scroll);
+    const legend=document.createElement('p');legend.className='dm-kpi-pareto-legend';legend.textContent='Biru: unit hingga batas 80% · Abu-abu: lainnya · Garis oranye: kumulatif · Klik batang untuk riwayat unit';node.append(legend);
+  }
   function renderUnitHistory(item){
     const node=el('dmKpiUnitHistory');clear(node);
     const title=document.createElement('strong');title.textContent=`Riwayat ${item.label}`;node.append(title);
@@ -916,7 +963,7 @@ console.log(
     ['dmKpiAchievement','dmKpiPlan','dmKpiActual','dmKpiRedo'].forEach(id=>setText(id,'—'));
     setText('dmKpiRedoDetail','Mengikuti angka resmi Dashboard');
     el('dmKpiAchievementBar').style.width='0%';
-    renderAchievementChart([]);renderBars('dmKpiEgiChart',[],false);renderBars('dmKpiUnitChart',[],true);
+    renderAchievementChart([]);renderBars('dmKpiEgiChart',[],false);renderPareto([]);
     clear(el('dmKpiUnitHistory'));renderPica([]);
   }
   async function refresh(){
@@ -938,7 +985,7 @@ console.log(
       el('dmKpiAchievementBar').style.width=number(achievement)===null?'0%':`${Math.max(0,Math.min(100,achievement*100))}%`;
       setText('dmKpiRedo',percent(r.rate));
       setText('dmKpiRedoDetail',`${formatNumber(r.count)} Redo / ${formatNumber(r.unitDM)} Unit DM · Dashboard resmi`);
-      renderAchievementChart(a.series);renderBars('dmKpiEgiChart',r.byEgi,false);renderBars('dmKpiUnitChart',r.byUnit,true);renderPica(data.pica);
+      renderAchievementChart(a.series);renderBars('dmKpiEgiChart',r.byEgi,false);renderPareto(r.byUnit);renderPica(data.pica);
     }catch(err){if(current!==seq)return;setText('dmKpiSource','Data belum tersedia');console.warn('HEXA KPI:',err.message)}
   }
   root.querySelectorAll('[data-kpi-period]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -949,17 +996,5 @@ console.log(
   function move(dir){const d=parseDate(dateInput.value);if(period==='daily')d.setDate(d.getDate()+dir);else if(period==='weekly')d.setDate(d.getDate()+dir*7);else d.setMonth(d.getMonth()+dir);dateInput.value=toISO(d);refresh()}
   el('dmKpiPrev').addEventListener('click',()=>move(-1));el('dmKpiNext').addEventListener('click',()=>move(1));
   window.addEventListener('hexa:kpi-updated',refresh);
-  // KPI dimuat setelah panel mendekati viewport, bukan saat halaman pertama dibuka.
-  // Fallback untuk browser lama tetap menjalankan refresh.
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) {
-        observer.disconnect();
-        refresh();
-      }
-    }, {rootMargin:'240px 0px'});
-    observer.observe(root);
-  } else {
-    refresh();
-  }
+  refresh();
 })();
