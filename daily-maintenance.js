@@ -922,14 +922,51 @@ console.log(
     scroll.append(svg);node.append(scroll);
     const legend=document.createElement('p');legend.className='dm-kpi-pareto-legend';legend.textContent='Biru: unit hingga batas 80% · Abu-abu: lainnya · Garis oranye: kumulatif · Klik batang untuk riwayat unit';node.append(legend);
   }
+  // Detail unit: hanya bukti DBR yang telah lolos pencocokan ketat dari backend.
   function renderUnitHistory(item){
     const node=el('dmKpiUnitHistory');clear(node);
-    const title=document.createElement('strong');title.textContent=`Riwayat ${item.label}`;node.append(title);
-    const history=safeArr(item.history);
-    if(!history.length){node.append(empty('Detail riwayat unit belum tersedia dari database.'));return}
-    history.slice(0,30).forEach(x=>{
-      const p=document.createElement('p');p.textContent=[x.date,x.hm===undefined?'':`HM ${x.hm}`,x.problem].filter(Boolean).join(' · ');node.append(p);
-    });
+    const history=safeArr(item.history).slice().sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
+    const wrap=document.createElement('section');wrap.className='dm-kpi-investigation';
+    const head=document.createElement('div');head.className='dm-kpi-investigation-head';
+    const heading=document.createElement('div');
+    const eyebrow=document.createElement('small');eyebrow.textContent='UNIT RELIABILITY INVESTIGATION';
+    const title=document.createElement('h4');title.textContent=item.label+' · '+history.length+' Redo Event';
+    heading.append(eyebrow,title);
+    const close=document.createElement('button');close.type='button';close.className='dm-kpi-investigation-close';close.textContent='Tutup ×';close.addEventListener('click',()=>clear(node));
+    head.append(heading,close);wrap.append(head);
+    const intro=document.createElement('p');intro.textContent='Riwayat kejadian Redo pada periode terpilih. WO dan Actual Action hanya ditampilkan jika cocok dengan DBR. Jumlah event tidak otomatis sama dengan jumlah breakdown unik.';wrap.append(intro);
+    if(!history.length){wrap.append(empty('Belum ada riwayat kejadian unit.'));node.append(wrap);return}
+    const matched=history.filter(x=>x.matchStatus==='MATCHED').length;
+    const ambiguous=history.filter(x=>x.matchStatus==='AMBIGUOUS').length;
+    const stats=document.createElement('div');stats.className='dm-kpi-investigation-stats';
+    [['Redo Event',history.length],['DBR matched',matched],['Perlu verifikasi',history.length-matched]].forEach(([k,v])=>{const b=document.createElement('div');const l=document.createElement('small');l.textContent=k;const strong=document.createElement('strong');strong.textContent=String(v);b.append(l,strong);stats.append(b)});wrap.append(stats);
+    const hms=history.filter(x=>number(x.hm)!==null).map(x=>x.hm);
+    const decreasing=hms.some((v,i)=>i>0&&v<hms[i-1]);
+    const distinctProblems=new Set(history.map(x=>String(x.problem||'').trim().toUpperCase()).filter(Boolean));
+    const warning=document.createElement('div');warning.className='dm-kpi-investigation-note';
+    warning.textContent=(decreasing?'Peringatan kualitas data: HM menurun pada urutan tanggal; periksa pencatatan sebelum menghitung interval. ':'')+
+      (ambiguous?'Ada '+ambiguous+' kejadian dengan kecocokan DBR ambigu. ':'')+
+      'MTBF: belum dapat dihitung dari catatan Redo saja. Diperlukan urutan breakdown unscheduled unik dan HM yang tervalidasi.';
+    wrap.append(warning);
+    const summary=document.createElement('p');summary.className='dm-kpi-investigation-pattern';summary.textContent='Pola awal: '+distinctProblems.size+' deskripsi masalah berbeda dalam '+history.length+' catatan. Kesamaan sistem/komponen dan root cause memerlukan verifikasi mekanik/GL.';wrap.append(summary);
+    const list=document.createElement('div');list.className='dm-kpi-investigation-list';
+    history.forEach((x,i)=>{
+      const card=document.createElement('article');card.className='dm-kpi-investigation-event';
+      const top=document.createElement('div');top.className='dm-kpi-investigation-event-head';
+      const name=document.createElement('strong');name.textContent='Event '+(i+1)+' · '+(x.date||'Tanggal tidak tersedia');
+      const status=document.createElement('span');status.className='dm-kpi-match-status '+(x.matchStatus==='MATCHED'?'is-matched':'is-unmatched');status.textContent=x.matchStatus==='MATCHED'?'DBR MATCHED':x.matchStatus==='AMBIGUOUS'?'DBR AMBIGUOUS':'DBR UNMATCHED';top.append(name,status);card.append(top);
+      const field=(label,value)=>{const line=document.createElement('p');const b=document.createElement('b');b.textContent=label+': ';line.append(b,document.createTextNode(String(value==null||value===''?'—':value)));card.append(line)};
+      field('HM',number(x.hm)===null?'Belum tersedia':formatNumber(x.hm));field('Problem Description',x.problem||'Belum tersedia');
+      field('WO Number',x.matchStatus==='MATCHED'?x.woNumber:'Belum terverifikasi');
+      field('Actual Action',x.matchStatus==='MATCHED'?(x.actualAction||'Tidak tercatat pada baris DBR yang cocok'):'Belum terverifikasi');
+      if(x.matchStatus==='MATCHED'){field('BD Type',x.breakdownType);field('Maintenance Type',x.maintenanceType)}
+      field('Keterangan kecocokan',x.matchNote||'Data belum dapat dipastikan');list.append(card);
+    });wrap.append(list);
+    const next=document.createElement('div');next.className='dm-kpi-investigation-next';
+    const nt=document.createElement('strong');nt.textContent='Arah investigasi PICA';next.append(nt);
+    const ul=document.createElement('ul');
+    ['Kelompokkan problem berdasarkan sistem/komponen setelah verifikasi teknis.','Bandingkan Actual Action dan temuan breakdown berikutnya pada WO yang berbeda.','Periksa penyebab dasar (komponen, metode, inspeksi, material, operasi) memakai evidence lapangan.','Tetapkan corrective/preventive action, PIC, target, lalu ukur kejadian berulang sesudah perbaikan.'].forEach(s=>{const li=document.createElement('li');li.textContent=s;ul.append(li)});next.append(ul);wrap.append(next);
+    node.append(wrap);node.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
   function renderAchievementChart(series){
     const node=el('dmKpiAchievementChart');clear(node);
@@ -947,16 +984,32 @@ console.log(
       const count=document.createElement('b');count.textContent=`${x.actual}/${x.plan}`;row.append(label,track,count);node.append(row);
     });
   }
+  // Prioritas berasal dari unit Pareto sampai titik potong 80%, bukan Top 3 problem.
   function renderPica(items){
     const node=el('dmKpiPicaList');clear(node);
-    const list=safeArr(items).filter(x=>x&&typeof x.problem==='string'&&number(x.count)!==null).sort((a,b)=>b.count-a.count).slice(0,3);
-    if(!list.length){node.append(empty('Top 3 kerusakan dan Suggested PICA menunggu riwayat Redo DM yang tersinkronisasi.'));return}
-    list.forEach((x,i)=>{
-      const card=document.createElement('article');card.className='dm-kpi-pica-card';
-      const rank=document.createElement('span');rank.className='dm-kpi-rank';rank.textContent=`TOP ${i+1} · ${x.count} kejadian`;
-      const h=document.createElement('h4');h.textContent=x.problem;card.append(rank,h);
-      const fields=[['Unit terdampak',safeArr(x.units).join(', ')||'Belum tersedia'],['Possible Cause',x.possibleCause||'Perlu analisis riwayat dan pemeriksaan lapangan'],['Corrective Action',x.corrective||'Belum ada rekomendasi terverifikasi'],['Preventive Action',x.preventive||'Belum ada rekomendasi terverifikasi'],['MTBF',number(x.mtbf)!==null?`${formatNumber(x.mtbf)} HM`:'Belum dapat dihitung'],['PICA Status',x.status||'Belum ditetapkan']];
-      fields.forEach(([name,value])=>{const p=document.createElement('p');const b=document.createElement('b');b.textContent=name+': ';p.append(b,document.createTextNode(String(value)));card.append(p)});node.append(card);
+    const source=safeArr(items).filter(x=>x&&typeof x.label==='string'&&number(x.count)!==null&&x.count>0);
+    const map=new Map();
+    source.forEach(x=>{const key=x.label.trim().toUpperCase().replace(/\s+/g,' ');if(!key)return;
+      if(!map.has(key))map.set(key,{label:key,count:0,history:[]});
+      const item=map.get(key);item.count+=x.count;item.history.push(...safeArr(x.history));
+    });
+    const units=[...map.values()].sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
+    if(!units.length){node.append(empty('Belum ada Redo Event pada periode ini.'));return}
+    const total=units.reduce((s,x)=>s+x.count,0);let sum=0;
+    const priority=[];for(const unit of units){priority.push(unit);sum+=unit.count;if(sum/total>=.8)break}
+    priority.forEach((unit,i)=>{
+      const card=document.createElement('article');card.className='dm-kpi-pica-card dm-kpi-unit-priority-card';
+      const rank=document.createElement('span');rank.className='dm-kpi-rank';rank.textContent='PRIORITAS '+(i+1)+' · '+unit.count+' Redo Event';
+      const title=document.createElement('h4');title.textContent=unit.label;card.append(rank,title);
+      const descriptions=[...new Set(unit.history.map(x=>String(x.problem||'').trim()).filter(Boolean))];
+      const matched=unit.history.filter(x=>x.matchStatus==='MATCHED').length;
+      const line=(label,value)=>{const p=document.createElement('p');const b=document.createElement('b');b.textContent=label+': ';p.append(b,document.createTextNode(value));card.append(p)};
+      line('Kontribusi', (unit.count/total*100).toLocaleString('id-ID',{maximumFractionDigits:1})+'% dari '+total+' event');
+      line('Problem tercatat',descriptions.length?descriptions.slice(0,3).join(' · ')+(descriptions.length>3?' · +'+(descriptions.length-3)+' lainnya':''):'Belum tersedia');
+      line('DBR cocok',matched+' dari '+unit.history.length+' catatan');
+      line('Root Cause','Belum terkonfirmasi — perlu investigasi dan evidence');
+      line('MTBF','Belum dapat dihitung dari data Redo Event saja');
+      const button=document.createElement('button');button.type='button';button.className='dm-kpi-priority-detail';button.textContent='Bedah riwayat & tindakan →';button.addEventListener('click',()=>renderUnitHistory(unit));card.append(button);node.append(card);
     });
   }
   function reset(){
@@ -985,7 +1038,7 @@ console.log(
       el('dmKpiAchievementBar').style.width=number(achievement)===null?'0%':`${Math.max(0,Math.min(100,achievement*100))}%`;
       setText('dmKpiRedo',percent(r.rate));
       setText('dmKpiRedoDetail',`${formatNumber(r.count)} Redo / ${formatNumber(r.unitDM)} Unit DM · Dashboard resmi`);
-      renderAchievementChart(a.series);renderBars('dmKpiEgiChart',r.byEgi,false);renderPareto(r.byUnit);renderPica(data.pica);
+      renderAchievementChart(a.series);renderBars('dmKpiEgiChart',r.byEgi,false);renderPareto(r.byUnit);renderPica(r.byUnit);
     }catch(err){if(current!==seq)return;setText('dmKpiSource','Data belum tersedia');console.warn('HEXA KPI:',err.message)}
   }
   root.querySelectorAll('[data-kpi-period]').forEach(btn=>btn.addEventListener('click',()=>{
