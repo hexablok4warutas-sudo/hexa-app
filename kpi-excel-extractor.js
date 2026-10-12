@@ -162,6 +162,31 @@
     return { type: 'DBR', fileName: file.name, records: await extractDBRFromBook(book) };
   }
 
+  // POP: header pada baris 6, E=SECTION, F=CODE NUMBER, I=MODEL.
+  async function extractPopulationFromBook(book) {
+    if (!book.hasSheet('POP')) throw new Error('Worksheet POP tidak ditemukan');
+    const cols = ['E','F','H','I'];
+    const refs = [];
+    for (let r = 6; r <= 3000; r++) for (const c of cols) refs.push(c+r);
+    const cells = await book.readSheet('POP', refs);
+    if (upper(cells.E6) !== 'SECTION' || upper(cells.F6) !== 'CODE NUMBER' || upper(cells.I6) !== 'MODEL')
+      throw new Error('Header worksheet POP berubah (E6/F6/I6). Periksa format Excel.');
+    const map = new Map();
+    for (let r = 7; r <= 3000; r++) {
+      const section = upper(cells['H'+r] || cells['E'+r]);
+      if (section !== 'TRACK') continue;
+      const unit = upper(cells['F'+r]);
+      const model = upper(cells['I'+r]);
+      if (!unit && !model) continue;
+      if (!unit || !model) throw new Error('POP baris '+r+': CODE NUMBER / MODEL kosong');
+      if (map.has(unit) && map.get(unit).model !== model)
+        throw new Error('POP: konflik MODEL untuk '+unit+' (baris '+map.get(unit).sourceRow+' dan '+r+')');
+      if (!map.has(unit)) map.set(unit,{section:'TRACK',unit,model,sourceRow:r});
+    }
+    if (!map.size) throw new Error('Tidak ada mapping TRACK di worksheet POP');
+    return [...map.values()];
+  }
+
   async function extractRedo(file) {
     const book = await open(file);
     const summary = await book.readSheet('Dashboard', ['T22', 'T23', 'T24']);
@@ -177,7 +202,8 @@
     const unitDM = Number(summary.T22), redo = Number(summary.T23), rate = Number(summary.T24);
     if (![unitDM, redo, rate].every(Number.isFinite) || unitDM <= 0) throw new Error('Angka Dashboard Redo tidak valid');
     const dbr = await extractDBRFromBook(book);
-    return { type: 'REDO', fileName: file.name, summary: { unitDM, redo, rate }, events, dbr };
+    const population = await extractPopulationFromBook(book);
+    return { type: 'REDO', fileName: file.name, summary: { unitDM, redo, rate }, events, dbr, population };
   }
 
   function testPick(type) {
@@ -191,7 +217,7 @@
         console.log('[HEXA KPI] HASIL', result);
         console.table(type === 'DBR' ? result.records.slice(0, 20) :
           type === 'REDO' ? result.events.slice(0, 20) : result.rows);
-        if (type === 'REDO') console.table(result.dbr.slice(0, 20));
+        if (type === 'REDO') { console.table(result.dbr.slice(0, 20)); console.table(result.population.slice(0, 30)); }
         alert('Ekstraksi selesai. Lihat Console. Data DBR belum disimpan ke database.');
       } catch (err) {
         console.error('[HEXA KPI] ERROR', err);
