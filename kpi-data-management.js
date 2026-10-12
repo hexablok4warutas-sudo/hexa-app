@@ -41,6 +41,7 @@
       el.classList.toggle('done', n < stage);
       el.classList.toggle('active', n === stage);
       el.classList.remove('failed');
+      el.textContent = (n < stage ? '✓ ' : n === stage ? '◉ ' : '○ ') + el.textContent.replace(/^[✓◉○]\s*/, '');
     });
   }
   function overlay() {
@@ -71,11 +72,11 @@
       $('kpiProgressPercent').textContent = '100%';
       document.querySelectorAll('[data-kpi-step]').forEach(el => {
         el.classList.remove('active', 'failed'); el.classList.add('done');
+        el.textContent = '✓ ' + el.textContent.replace(/^[✓◉○]\s*/, '');
       });
     } else {
       const active = document.querySelector('[data-kpi-step="' + currentStage + '"]');
       if (active) { active.classList.add('failed'); active.classList.remove('active'); }
-      $('kpiProgressPercent').textContent = lastProgress + '% • terhenti';
     }
     $('kpiProgressClose').hidden = false;
   }
@@ -121,6 +122,10 @@
       result.events = extracted.events.filter(e => String(e.date || '').slice(0, 7) === period).map(e => ({
         date: e.date, unit: e.unit, hm: e.hm, problem: e.problem
       }));
+      // DBR dapat mencakup breakdown yang dimulai sebelum periode upload.
+      // Pertahankan tanggal aslinya; indeks penyimpanan menggunakan period upload.
+      if (Array.isArray(extracted.dbr)) result.dbr = extracted.dbr;
+
     }
     return result;
   }
