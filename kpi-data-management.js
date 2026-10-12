@@ -29,24 +29,55 @@
     rowStatus(type, 'Belum dipilih');
     refreshButton();
   }
+  let currentStage = 1;
+  let lastProgress = 0;
+  function setStage(stage, title, detail) {
+    currentStage = stage;
+    $('kpiProgressStage').textContent = title;
+    $('kpiProgressStep').textContent = 'Tahap ' + stage + ' dari 5';
+    if (detail) $('kpiProgressText').textContent = detail;
+    document.querySelectorAll('[data-kpi-step]').forEach(el => {
+      const n = Number(el.dataset.kpiStep);
+      el.classList.toggle('done', n < stage);
+      el.classList.toggle('active', n === stage);
+      el.classList.remove('failed');
+      el.textContent = (n < stage ? '✓ ' : n === stage ? '◉ ' : '○ ') + el.textContent.replace(/^[✓◉○]\s*/, '');
+    });
+  }
   function overlay() {
     $('kpiProgressOverlay').hidden = false;
     $('kpiProgressClose').hidden = true;
     $('kpiNutVisual').className = 'kpi-nut-visual processing';
-    $('kpiProgressBar').style.width = '0%';
     $('kpiProgressTitle').textContent = '';
     $('kpiProgressText').textContent = '';
+    lastProgress = 0;
+    $('kpiProgressBar').style.width = '0%';
+    $('kpiProgressPercent').textContent = '0%';
+    setStage(1, 'Membaca file Excel', 'Menyiapkan pembacaan kedua file...');
   }
   function progress(percent, text) {
-    $('kpiProgressBar').style.width = Math.min(99, Math.max(0, percent)) + '%';
-    $('kpiProgressText').textContent = text;
+    lastProgress = Math.max(lastProgress, Math.min(99, Math.max(0, Math.floor(percent))));
+    $('kpiProgressBar').style.width = lastProgress + '%';
+    $('kpiProgressPercent').textContent = lastProgress + '%';
+    if (text) $('kpiProgressText').textContent = text;
   }
   function finish(ok, text) {
     $('kpiNutVisual').className = 'kpi-nut-visual ' + (ok ? 'success' : 'failure');
     $('kpiResultPath').setAttribute('d', ok ? 'M5 12l4 4L19 6' : 'M6 6l12 12M18 6L6 18');
     $('kpiProgressTitle').textContent = ok ? 'Data KPI berhasil disimpan' : 'Proses KPI belum lengkap';
+    $('kpiProgressStage').textContent = ok ? 'Sinkronisasi selesai' : 'Proses terhenti';
     $('kpiProgressText').textContent = text;
-    $('kpiProgressBar').style.width = ok ? '100%' : '0%';
+    if (ok) {
+      $('kpiProgressBar').style.width = '100%';
+      $('kpiProgressPercent').textContent = '100%';
+      document.querySelectorAll('[data-kpi-step]').forEach(el => {
+        el.classList.remove('active', 'failed'); el.classList.add('done');
+        el.textContent = '✓ ' + el.textContent.replace(/^[✓◉○]\s*/, '');
+      });
+    } else {
+      const active = document.querySelector('[data-kpi-step="' + currentStage + '"]');
+      if (active) { active.classList.add('failed'); active.classList.remove('active'); }
+    }
     $('kpiProgressClose').hidden = false;
   }
   function rowStatus(type, text, kind = '') {
@@ -113,32 +144,38 @@
     const done = [];
     let activeType = '';
     try {
-      progress(3, 'Mengekstraksi dan memvalidasi kedua file Excel...');
+      setStage(1, 'Membaca file Excel', 'Membaca file Achievement dan Redo DM...');
+      progress(3, 'Membaca file Achievement...');
       rowStatus('ACHIEVEMENT', 'Memvalidasi...');
       rowStatus('REDO', 'Menunggu validasi...');
       const ach = prepare(await window.HEXA_KPI_EXTRACTOR.extractAchievement(selected.ACHIEVEMENT), 'ACHIEVEMENT', period);
       rowStatus('ACHIEVEMENT', 'Valid (' + ach.rows.length + ' hari)', 'ok');
+      progress(6, 'Achievement terbaca. Membaca file Redo DM...');
       rowStatus('REDO', 'Memvalidasi...');
       const redo = prepare(await window.HEXA_KPI_EXTRACTOR.extractRedo(selected.REDO), 'REDO', period);
       rowStatus('REDO', 'Valid (' + redo.events.length + ' event periode)', 'ok');
+      setStage(2, 'Validasi data berhasil', 'Periode ' + period + ': ' + ach.rows.length + ' hari Achievement dan ' + redo.events.length + ' event Redo.');
       const prepared = { ACHIEVEMENT: ach, REDO: redo };
       progress(10, 'Validasi berhasil. Mengarsipkan dan menyimpan KPI...');
       for (const type of ['ACHIEVEMENT', 'REDO']) {
         activeType = type;
         const label = type === 'REDO' ? 'Redo DM' : 'DM Achievement';
         const base = type === 'ACHIEVEMENT' ? 10 : 55;
+        setStage(3, 'Mengarsipkan Excel ke Drive', 'Mengirim ' + label + ' ke Google Drive...');
         rowStatus(type, 'Mengarsipkan...');
         const archive = await window.HEXA_KPI_UPLOAD_ADAPTER(selected[type], (_stage, pc) => {
-          progress(base + pc * 0.34, 'Mengarsipkan ' + label + '...');
+          progress(base + pc * 0.34, 'Mengirim ' + label + ': ' + pc + '% potongan file diterima...');
         }, { reportType: type, year, month });
         if (!archive || archive.success !== true || archive.archived !== true || !archive.fileId) {
           throw new Error('Arsip ' + label + ' belum dikonfirmasi server');
         }
+        setStage(4, 'Menyimpan database KPI', 'Arsip ' + label + ' berhasil. Menunggu konfirmasi penyimpanan database...');
         rowStatus(type, 'Arsip tersimpan; menyimpan KPI...');
         progress(base + 36, 'Menyimpan data ' + label + ' ke database KPI...');
         const saved = await window.HEXA_KPI_SAVE_EXTRACTED({ ...prepared[type], fileId: archive.fileId });
         if (!saved || saved.success !== true || saved.synchronized !== true) throw new Error('Database belum mengonfirmasi sinkronisasi ' + label);
         done.push(type);
+        setStage(5, 'Memeriksa hasil sinkronisasi', label + ' sudah dikonfirmasi database (' + saved.saved + ' baris).');
         rowStatus(type, 'Arsip & database tersimpan', 'ok');
         progress(base + 44, label + ' tersimpan (' + saved.saved + ' baris; ' + saved.events + ' event)');
       }
