@@ -30,37 +30,29 @@
           </div>
           <div><h3 id="uploadTitle">Upload Excel Daily Maintenance</h3><p>Sumber Achievement, Redo DM &amp; Breakdown History</p></div>
         </div>
-        <div class="kpi-period-grid">
-          <label>Bulan periode<select id="kpiMonth" aria-label="Bulan periode"></select></label>
-          <label>Tahun periode<input id="kpiYear" type="number" min="2020" max="2100" step="1" aria-label="Tahun periode"></label>
+        <input id="kpiFileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+        <button type="button" id="kpiChooseFile" class="kpi-dropzone">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V5m0 0-4 4m4-4 4 4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          <strong>Choose Excel File</strong>
+          <small>Format .xlsx • Maksimal 20 MB</small>
+        </button>
+        <div id="kpiSelectedFile" class="kpi-selected-file" hidden>
+          <span class="kpi-selected-icon">XLSX</span>
+          <div><strong id="kpiFileName"></strong><small id="kpiFileMeta"></small></div>
+          <button id="kpiRemoveFile" type="button" aria-label="Hapus pilihan file">×</button>
         </div>
-        <div class="kpi-upload-pair">
-          <div class="kpi-upload-row" data-type="ACHIEVEMENT">
-            <div class="kpi-upload-row-head"><span class="kpi-upload-index">01</span><div><h4>DM Achievement</h4><p>Mainpro DM &amp; Washing • Plan dan Actual TRACK</p></div></div>
-            <input id="kpiAchievementInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
-            <button type="button" class="kpi-dropzone" id="kpiAchievementChoose"><strong>+ Pilih Excel Achievement</strong><small>Format XLSX • Maksimal 20 MB</small></button>
-            <div class="kpi-selected-file" id="kpiAchievementSelected" hidden><span class="kpi-selected-icon">XLSX</span><div><strong id="kpiAchievementName"></strong><small id="kpiAchievementMeta"></small></div><button type="button" id="kpiAchievementRemove" aria-label="Hapus pilihan Achievement">×</button></div>
-            <div class="kpi-row-status" id="kpiAchievementStatus">Belum dipilih</div>
-          </div>
-          <div class="kpi-upload-row" data-type="REDO">
-            <div class="kpi-upload-row-head"><span class="kpi-upload-index">02</span><div><h4>Redo DM</h4><p>Redo DM • Riwayat breakdown dan problem TRACK</p></div></div>
-            <input id="kpiRedoInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
-            <button type="button" class="kpi-dropzone" id="kpiRedoChoose"><strong>+ Pilih Excel Redo DM</strong><small>Format XLSX • Maksimal 20 MB</small></button>
-            <div class="kpi-selected-file" id="kpiRedoSelected" hidden><span class="kpi-selected-icon">XLSX</span><div><strong id="kpiRedoName"></strong><small id="kpiRedoMeta"></small></div><button type="button" id="kpiRedoRemove" aria-label="Hapus pilihan Redo DM">×</button></div>
-            <div class="kpi-row-status" id="kpiRedoStatus">Belum dipilih</div>
-          </div>
+        <div id="kpiNotice" class="kpi-notice" role="status" aria-live="polite">Pilih file Excel untuk memulai.</div>
+        <div class="kpi-actions">
+          <button id="kpiUploadButton" class="kpi-primary" type="button" disabled>Upload &amp; Synchronize</button>
         </div>
-        <div id="kpiNotice" class="kpi-notice" role="status" aria-live="polite">Pilih kedua Excel untuk periode yang sama.</div>
-        <div class="kpi-actions"><button id="kpiUploadButton" class="kpi-primary" type="button" disabled>Upload Data</button></div>
-        <p class="kpi-upload-hint">Kedua file diarsipkan secara berurutan. Sinkronisasi angka KPI merupakan proses backend terpisah dan belum diaktifkan pada tahap ini.</p>
       </section>
       <div class="kpi-section-title kpi-section-spaced"><span></span><h2>CURRENT DATA SOURCE</h2></div>
       <section class="kpi-card kpi-source-card">
         <div class="kpi-source-mark" aria-hidden="true">↻</div>
-        <div><h3 id="kpiSourceTitle">Belum terhubung</h3><p id="kpiSourceDetail">Riwayat arsip KPI akan ditampilkan setelah halaman terhubung ke server.</p></div>
+        <div><h3 id="kpiSourceTitle">Belum terhubung</h3><p id="kpiSourceDetail">Belum ada data tersinkronisasi ke database HEXA.</p></div>
         <span class="kpi-source-status" id="kpiSourceStatus">Not Connected</span>
       </section>
-      <p class="kpi-footnote">Saat ini Settings mengelola arsip dua sumber Excel; sinkronisasi angka KPI belum diaktifkan. Grafik KPI Daily, Weekly, dan Monthly akan ditampilkan di halaman Daily Maintenance.</p>
+      <p class="kpi-footnote">Settings hanya mengelola sumber Excel. Grafik KPI Daily, Weekly, dan Monthly akan ditampilkan di halaman Daily Maintenance.</p>
     </div>
   </main>
 
@@ -73,7 +65,16 @@
         </svg>
         <svg id="kpiResultIcon" class="kpi-result-icon" viewBox="0 0 24 24"><path id="kpiResultPath" d="M5 12l4 4L19 6"/></svg>
       </div>
+      <p id="kpiProgressStage" class="kpi-stage-label" role="status" aria-live="polite">Menyiapkan proses...</p>
       <div class="kpi-progress-track" aria-hidden="true"><div id="kpiProgressBar"></div></div>
+      <div class="kpi-progress-meta"><span id="kpiProgressStep">Tahap 1 dari 5</span><span id="kpiProgressPercent">0%</span></div>
+      <div id="kpiProgressSteps" class="kpi-progress-steps" aria-label="Tahapan proses">
+        <div data-kpi-step="1">○ Membaca kedua file Excel</div>
+        <div data-kpi-step="2">○ Validasi data dan periode</div>
+        <div data-kpi-step="3">○ Mengarsipkan Excel ke Drive</div>
+        <div data-kpi-step="4">○ Menyimpan ke database KPI</div>
+        <div data-kpi-step="5">○ Memeriksa hasil sinkronisasi</div>
+      </div>
       <p id="kpiProgressTitle" class="kpi-result-label" role="status" aria-live="polite"></p>
       <p id="kpiProgressText" class="kpi-result-message"></p>
       <button id="kpiProgressClose" class="kpi-secondary" type="button" hidden>Tutup</button>
@@ -81,14 +82,9 @@
   </div>
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="kpi-excel-extractor.js"></script>
   <script src="kpi-upload-adapter.js"></script>
-  
-<!-- Library untuk membaca struktur XLSX -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-
-<!-- Extractor KPI HEXA -->
-<script src="kpi-excel-extractor.js"></script>
-
   <script src="kpi-data-management.js"></script>
 </body>
 </html>
