@@ -922,50 +922,60 @@ console.log(
     scroll.append(svg);node.append(scroll);
     const legend=document.createElement('p');legend.className='dm-kpi-pareto-legend';legend.textContent='Biru: unit hingga batas 80% · Abu-abu: lainnya · Garis oranye: kumulatif · Klik batang untuk riwayat unit';node.append(legend);
   }
-  // Detail unit: hanya bukti DBR yang telah lolos pencocokan ketat dari backend.
+  // Unit Reliability Investigation: tabel ringkas, data murni dari backend.
   function renderUnitHistory(item){
     const node=el('dmKpiUnitHistory');clear(node);
     const history=safeArr(item.history).slice().sort((a,b)=>String(a.date||'').localeCompare(String(b.date||'')));
     const wrap=document.createElement('section');wrap.className='dm-kpi-investigation';
-    const head=document.createElement('div');head.className='dm-kpi-investigation-head';
-    const heading=document.createElement('div');
-    const eyebrow=document.createElement('small');eyebrow.textContent='UNIT RELIABILITY INVESTIGATION';
-    const title=document.createElement('h4');title.textContent=item.label+' · '+history.length+' Redo Event';
-    heading.append(eyebrow,title);
-    const close=document.createElement('button');close.type='button';close.className='dm-kpi-investigation-close';close.textContent='Tutup ×';close.addEventListener('click',()=>clear(node));
+    const make=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=String(txt);return e};
+    const head=make('div','dm-kpi-investigation-head');
+    const heading=make('div');heading.append(make('small','','UNIT RELIABILITY INVESTIGATION'),make('h4','',item.label+' · Breakdown History'));
+    const close=make('button','dm-kpi-investigation-close','Tutup ×');close.type='button';close.addEventListener('click',()=>clear(node));
     head.append(heading,close);wrap.append(head);
-    const intro=document.createElement('p');intro.textContent='Riwayat kejadian Redo pada periode terpilih. WO dan Actual Action hanya ditampilkan jika cocok dengan DBR. Jumlah event tidak otomatis sama dengan jumlah breakdown unik.';wrap.append(intro);
+    wrap.append(make('p','dm-kpi-investigation-intro','Riwayat Redo Event dalam periode terpilih. Detail WO dan tindakan berasal dari pencocokan DBR; event tidak otomatis sama dengan breakdown unik.'));
     if(!history.length){wrap.append(empty('Belum ada riwayat kejadian unit.'));node.append(wrap);return}
     const matched=history.filter(x=>x.matchStatus==='MATCHED').length;
     const ambiguous=history.filter(x=>x.matchStatus==='AMBIGUOUS').length;
-    const stats=document.createElement('div');stats.className='dm-kpi-investigation-stats';
-    [['Redo Event',history.length],['DBR matched',matched],['Perlu verifikasi',history.length-matched]].forEach(([k,v])=>{const b=document.createElement('div');const l=document.createElement('small');l.textContent=k;const strong=document.createElement('strong');strong.textContent=String(v);b.append(l,strong);stats.append(b)});wrap.append(stats);
+    const stats=make('div','dm-kpi-investigation-stats');
+    [['Redo Event',history.length],['DBR Matched',matched+' / '+history.length],['MTBF','Belum valid']].forEach(([k,v])=>{const card=make('div');card.append(make('small','',k),make('strong','',v));stats.append(card)});wrap.append(stats);
     const hms=history.filter(x=>number(x.hm)!==null).map(x=>x.hm);
     const decreasing=hms.some((v,i)=>i>0&&v<hms[i-1]);
-    const distinctProblems=new Set(history.map(x=>String(x.problem||'').trim().toUpperCase()).filter(Boolean));
-    const warning=document.createElement('div');warning.className='dm-kpi-investigation-note';
-    warning.textContent=(decreasing?'Peringatan kualitas data: HM menurun pada urutan tanggal; periksa pencatatan sebelum menghitung interval. ':'')+
-      (ambiguous?'Ada '+ambiguous+' kejadian dengan kecocokan DBR ambigu. ':'')+
-      'MTBF: belum dapat dihitung dari catatan Redo saja. Diperlukan urutan breakdown unscheduled unik dan HM yang tervalidasi.';
-    wrap.append(warning);
-    const summary=document.createElement('p');summary.className='dm-kpi-investigation-pattern';summary.textContent='Pola awal: '+distinctProblems.size+' deskripsi masalah berbeda dalam '+history.length+' catatan. Kesamaan sistem/komponen dan root cause memerlukan verifikasi mekanik/GL.';wrap.append(summary);
-    const list=document.createElement('div');list.className='dm-kpi-investigation-list';
+    if(decreasing||ambiguous||matched!==history.length){
+      const notes=[];if(decreasing)notes.push('HM menurun menurut urutan tanggal; periksa data sebelum menghitung interval.');
+      if(ambiguous)notes.push(ambiguous+' event memiliki pencocokan DBR ambigu.');
+      if(matched!==history.length)notes.push((history.length-matched)+' event belum terverifikasi dengan DBR.');
+      wrap.append(make('div','dm-kpi-investigation-note','⚠ Kualitas data: '+notes.join(' ')));
+    }
+    const tableWrap=make('div','dm-kpi-history-scroll');const table=make('table','dm-kpi-history-table');
+    const thead=make('thead'),trHead=make('tr');
+    ['No.','Tanggal / HM','Problem Description','WO Number','Actual Action','Status'].forEach(t=>trHead.append(make('th','',t)));
+    thead.append(trHead);table.append(thead);
+    const tbody=make('tbody');
     history.forEach((x,i)=>{
-      const card=document.createElement('article');card.className='dm-kpi-investigation-event';
-      const top=document.createElement('div');top.className='dm-kpi-investigation-event-head';
-      const name=document.createElement('strong');name.textContent='Event '+(i+1)+' · '+(x.date||'Tanggal tidak tersedia');
-      const status=document.createElement('span');status.className='dm-kpi-match-status '+(x.matchStatus==='MATCHED'?'is-matched':'is-unmatched');status.textContent=x.matchStatus==='MATCHED'?'DBR MATCHED':x.matchStatus==='AMBIGUOUS'?'DBR AMBIGUOUS':'DBR UNMATCHED';top.append(name,status);card.append(top);
-      const field=(label,value)=>{const line=document.createElement('p');const b=document.createElement('b');b.textContent=label+': ';line.append(b,document.createTextNode(String(value==null||value===''?'—':value)));card.append(line)};
-      field('HM',number(x.hm)===null?'Belum tersedia':formatNumber(x.hm));field('Problem Description',x.problem||'Belum tersedia');
-      field('WO Number',x.matchStatus==='MATCHED'?x.woNumber:'Belum terverifikasi');
-      field('Actual Action',x.matchStatus==='MATCHED'?(x.actualAction||'Tidak tercatat pada baris DBR yang cocok'):'Belum terverifikasi');
-      if(x.matchStatus==='MATCHED'){field('BD Type',x.breakdownType);field('Maintenance Type',x.maintenanceType)}
-      field('Keterangan kecocokan',x.matchNote||'Data belum dapat dipastikan');list.append(card);
-    });wrap.append(list);
-    const next=document.createElement('div');next.className='dm-kpi-investigation-next';
-    const nt=document.createElement('strong');nt.textContent='Arah investigasi PICA';next.append(nt);
-    const ul=document.createElement('ul');
-    ['Kelompokkan problem berdasarkan sistem/komponen setelah verifikasi teknis.','Bandingkan Actual Action dan temuan breakdown berikutnya pada WO yang berbeda.','Periksa penyebab dasar (komponen, metode, inspeksi, material, operasi) memakai evidence lapangan.','Tetapkan corrective/preventive action, PIC, target, lalu ukur kejadian berulang sesudah perbaikan.'].forEach(s=>{const li=document.createElement('li');li.textContent=s;ul.append(li)});next.append(ul);wrap.append(next);
+      const tr=make('tr');
+      const td=(value,cls)=>{const cell=make('td',cls||'');if(value!==undefined)cell.textContent=String(value);tr.append(cell);return cell};
+      td(i+1,'dm-kpi-history-index');
+      const date=td('');date.append(make('strong','',x.date||'—'),make('small','',number(x.hm)===null?'HM belum tersedia':formatNumber(x.hm)+' HM'));
+      td(x.problem||'—','dm-kpi-history-problem');
+      const ok=x.matchStatus==='MATCHED';
+      td(ok?(x.woNumber||'—'):'Belum terverifikasi','dm-kpi-history-wo');
+      td(ok?(x.actualAction||'Tidak tercatat pada DBR'):'Belum terverifikasi','dm-kpi-history-action');
+      const status=td('');status.append(make('span','dm-kpi-match-status '+(ok?'is-matched':'is-unmatched'),ok?'MATCHED':x.matchStatus==='AMBIGUOUS'?'AMBIGUOUS':'UNMATCHED'));
+      if(x.matchNote)tr.title=x.matchNote;
+      tbody.append(tr);
+    });
+    table.append(tbody);tableWrap.append(table);wrap.append(tableWrap);
+    wrap.append(make('p','dm-kpi-investigation-caption','Geser tabel ke samping pada layar kecil. Arahkan kursor ke baris untuk melihat keterangan kecocokan.'));
+    const distinct=new Set(history.map(x=>String(x.problem||'').trim().toUpperCase()).filter(Boolean));
+    const analysis=make('div','dm-kpi-investigation-analysis');
+    analysis.append(make('h5','','Analisis awal & arah investigasi'));
+    analysis.append(make('p','','Terdapat '+distinct.size+' deskripsi problem berbeda dalam '+history.length+' event. Kesamaan sistem/komponen belum otomatis membuktikan akar penyebab yang sama.'));
+    const ul=make('ul');[
+      'Kelompokkan masalah menurut sistem dan komponen yang benar-benar mengalami kegagalan.',
+      'Bandingkan Actual Action dan kejadian berikutnya untuk menilai efektivitas perbaikan.',
+      'Verifikasi HM dan breakdown unscheduled unik sebelum menghitung MTBF.',
+      'Tentukan root cause dan PICA berdasarkan evidence lapangan, PIC, target, serta monitoring setelah perbaikan.'
+    ].forEach(t=>ul.append(make('li','',t)));analysis.append(ul);wrap.append(analysis);
     node.append(wrap);node.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
   function renderAchievementChart(series){
