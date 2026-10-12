@@ -592,3 +592,11 @@ body {
 .dm-kpi-disclaimer{font-size:11px;color:#728398;line-height:1.6;margin-top:13px}
 @media(max-width:900px){.dm-kpi-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.dm-kpi-pica-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.dm-kpi{margin-top:40px}.dm-kpi-toolbar{align-items:stretch}.dm-kpi-tabs{width:100%}.dm-kpi-tabs button{flex:1}.dm-kpi-date-controls{width:100%;justify-content:space-between}.dm-kpi-panels{grid-template-columns:1fr}.dm-kpi-metric{padding:14px}.dm-kpi-panel{padding:14px}.dm-kpi-bar-row{grid-template-columns:92px 1fr 28px}.dm-kpi-source{font-size:10px}}
+
+/* Pareto Redo DM: grafik batang + garis kumulatif 80% */
+.dm-kpi-pareto-summary{font-size:12px;color:#42566a;font-weight:700;margin:0 0 8px}
+.dm-kpi-pareto-scroll{max-width:100%;overflow-x:auto;overflow-y:hidden;padding:6px 0 4px}
+.dm-kpi-pareto-scroll svg{display:block;max-width:none;height:auto}
+.dm-kpi-pareto-scroll rect[role="button"]{cursor:pointer;outline:none}
+.dm-kpi-pareto-scroll rect[role="button"]:focus{stroke:#183f62;stroke-width:3}
+.dm-kpi-pareto-legend{font-size:11px;color:#677b8d;line-height:1.6;margin:5px 0 0}
