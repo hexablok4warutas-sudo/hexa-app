@@ -4,14 +4,15 @@
  */
 (function () {
   'use strict';
+  const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec';
   const memory = new Map();
   const inflight = new Map();
   const TTL = 5 * 60 * 1000;
-  const TIMEOUT = 12000;
+  const TIMEOUT = 25000;
   const MAX_ITEMS = 36;
   const keyOf = q => ['TRACK',q.period,q.startDate,q.endDate].join('|');
   window.HEXA_DM_KPI_ADAPTER = async function (query) {
-    const api = String(window.HEXA_KPI_API_URL || '').trim();
+    const api = String(window.HEXA_KPI_API_URL || DEFAULT_API_URL).trim();
     if (!api) throw Error('Endpoint KPI belum dikonfigurasi.');
     if (query.section !== 'TRACK') throw Error('KPI hanya untuk Section TRACK.');
     const key = keyOf(query), now = Date.now();
@@ -32,7 +33,7 @@
         if (!response.ok) throw Error('HTTP '+response.status);
         const data = await response.json();
         if (!data || data.success !== true || data.section !== 'TRACK')
-          throw Error(data?.message || 'Data KPI TRACK belum tersinkronisasi.');
+          throw Error(data?.message || data?.error || 'API KPI belum mengembalikan data TRACK dari database baru.');
         if (memory.size >= MAX_ITEMS) memory.delete(memory.keys().next().value);
         memory.set(key,{time:Date.now(),data});
         return data;
