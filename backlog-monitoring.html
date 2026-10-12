@@ -1,292 +1,103 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Backlog Monitoring | HEXA</title>
-
-
-  <!-- =====================================
-       GLOBAL HEXA HEADER CSS
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="hexa-header.css"
-  >
-
-
-  <!-- =====================================
-       BACKLOG MONITORING CSS
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="backlog-monitoring.css"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KPI Data Management | HEXA</title>
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="kpi-data-management.css">
 </head>
-
-
 <body>
-
-
-  <!-- =====================================
-       GLOBAL HEXA HEADER
-       ===================================== -->
-
-  <header
-    id="hexaHeader"
-    data-header-type="standard"
-    data-page="backlog-monitoring"
-  ></header>
-
-
-
-  <!-- =====================================
-       BACKLOG MONITORING CONTENT
-       ===================================== -->
-
-  <main class="backlog-main-content">
-
-    <section class="backlog-section">
-
-
-      <!-- =================================
-           DESCRIPTION
-           ================================= -->
-
-      <div class="backlog-description">
-
-        <p>
-          <strong>Backlog Monitoring</strong> merupakan sistem
-          pengelolaan temuan inspeksi yang membutuhkan tindak lanjut,
-          perencanaan spare part, registrasi backlog dan monitoring
-          progres pekerjaan.
-        </p>
-
-        <p>
-          Gunakan <strong>Registrasi Backlog</strong> untuk membuat
-          registrasi dari temuan inspeksi, melakukan proses approval
-          hingga penerbitan dokumen registrasi. Gunakan
-          <strong>Backlog Control</strong> untuk memonitor backlog,
-          reservasi dan status kebutuhan spare part.
-        </p>
-
-      </div>
-
-
-
-      <!-- =================================
-           BACKLOG MENU
-           ================================= -->
-
-      <div
-        class="backlog-menu-grid"
-        id="backlogMenuGrid"
-      >
-
-
-        <!-- ===============================
-             REGISTRASI BACKLOG
-             =============================== -->
-
-        <button
-          type="button"
-          class="backlog-menu-item"
-          data-menu="backlog-registration"
-        >
-
-          <div class="backlog-icon-card">
-
-            <img
-              src="hexa-icon-backlogregistration.svg"
-              alt="Registrasi Backlog"
-            >
-
-          </div>
-
-          <span>
-            Registrasi Backlog
-          </span>
-
+  <header id="hexaHeader" data-header-type="standard" data-page="settings"></header>
+  <main class="kpi-page">
+    <section class="kpi-heading-shell">
+      <div class="kpi-heading">
+        <button id="kpiBack" class="kpi-back" type="button" aria-label="Kembali ke System Settings">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
-
-
-
-        <!-- ===============================
-             BACKLOG CONTROL
-             =============================== -->
-
-        <button
-          type="button"
-          class="backlog-menu-item"
-          data-menu="backlog-control"
-        >
-
-          <div class="backlog-icon-card">
-
-            <img
-              src="hexa-icon-backlogcontrol.svg"
-              alt="Backlog Control"
-            >
-
-          </div>
-
-          <span>
-            Backlog Control
-          </span>
-
-        </button>
-
-
+        <span class="kpi-heading-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M9 9v12M15 9v12M4 15h16"/></svg>
+        </span>
+        <div><h1>KPI Data Management</h1><p>Daily Maintenance Data Source • TRACK</p></div>
       </div>
-
-
-
-      <!-- KPI PERFORMANCE: data aktif dan histori upload -->
-      <section class="backlog-performance" aria-labelledby="bcPerfTitle">
-        <div class="bc-perf-head">
-          <div><h2 id="bcPerfTitle">Backlog KPI</h2>
-          <p>Material readiness dan pergerakan backlog dari Upload Source</p></div>
-          <div class="bc-perf-actions">
-            <div class="bc-period-selector">
-              <div class="bc-period-tabs" role="group" aria-label="Jenis periode">
-                <button type="button" id="bcWeeklyBtn" class="is-active" aria-pressed="true">Weekly</button>
-                <button type="button" id="bcMonthlyBtn" aria-pressed="false">Monthly</button>
-              </div>
-              <select id="bcYear" aria-label="Tahun"></select>
-              <select id="bcMonth" aria-label="Bulan"></select>
-              <select id="bcWeek" aria-label="Minggu"></select>
-            </div>
-            <button id="bcKpiRefresh" type="button">Refresh</button>
-          </div>
-        </div>
-        <div class="bc-period-information"><span id="bcSelectedRange">Periode belum dipilih</span><span id="bcLastSource">Last Source Update: —</span></div>
-        <p id="bcKpiStatus" class="bc-perf-status" role="status">Memuat KPI...</p>
-        <h3 class="bc-perf-subtitle bc-first-subtitle">Inspection & Registration</h3>
-        <div class="bc-perf-grid">
-<article class="backlog-kpi-card">
-
-            <span class="backlog-kpi-label">
-              Inspection Findings
-            </span>
-
-            <strong
-              class="backlog-kpi-value"
-              id="kpiInspectionFindings"
-            >
-              --
-            </strong>
-
-            <small>
-              Total temuan inspeksi
-            </small>
-
-          </article>
-<article class="backlog-kpi-card">
-
-            <span class="backlog-kpi-label">
-              Registered
-            </span>
-
-            <strong
-              class="backlog-kpi-value"
-              id="kpiRegistered"
-            >
-              --
-            </strong>
-
-            <small>
-              Temuan telah diregistrasi
-            </small>
-
-          </article>
-<article class="backlog-kpi-card">
-
-            <span class="backlog-kpi-label">
-              Approved
-            </span>
-
-            <strong
-              class="backlog-kpi-value"
-              id="kpiApproved"
-            >
-              --
-            </strong>
-
-            <small>
-              Registrasi full approved
-            </small>
-
-          </article>
-        </div>
-        <h3 class="bc-perf-subtitle">Material Status & Current Backlog</h3>
-        <div class="bc-perf-grid">
-          <article><span>Total Records</span><strong id="bcKpiTotal">—</strong><small>Baris kebutuhan part aktif</small></article>
-          <article><span>Waiting Part</span><strong id="bcKpiWaiting">—</strong><small>Belum tersedia di logistik</small></article>
-          <article><span>Part Ready</span><strong id="bcKpiReady">—</strong><small>Tersedia, belum dikeluarkan</small></article>
-          <article><span>Supply</span><strong id="bcKpiSupply">—</strong><small>Sudah dikeluarkan logistik</small></article>
-          <article><span>Supply Ratio</span><strong id="bcKpiSupplyRatio">—</strong><small>Supply / total record aktif</small></article>
-          <article><span>Aging &gt; 30 Days</span><strong id="bcKpiAging">—</strong><small>Baris dengan aging WO di atas 30 hari</small></article>
-        </div>
-        <h3 class="bc-perf-subtitle">Backlog Movement <span id="bcPeriodLabel">Weekly</span></h3>
-        <div class="bc-perf-grid">
-          <article><span>Opening</span><strong id="bcKpiOpening">—</strong><small>Awal periode terdata</small></article>
-          <article><span>Incoming</span><strong id="bcKpiIncoming">—</strong><small>Record baru terdeteksi</small></article>
-          <article><span>Removed Pending</span><strong id="bcKpiRemoved">—</strong><small>Hilang dari source; belum dianggap selesai</small></article>
-          <article><span>Changed</span><strong id="bcKpiChanged">—</strong><small>Record yang mengalami perubahan</small></article>
-          <article><span>Closing</span><strong id="bcKpiClosing">—</strong><small>Akhir periode terdata</small></article>
-          <article><span>Upload Count</span><strong id="bcKpiUploads">—</strong><small>Jumlah upload pada periode</small></article>
-        </div>
-        <div class="bc-perf-note">Outgoing terkonfirmasi, Absorption Rate, dan Material Issued (Rp) belum dihitung sampai data penyelesaian serta nilai transaksi material tervalidasi. Status SUPPLY tidak berarti pekerjaan selesai.</div>
-        <div class="bc-perf-history"><h3>Grafik Incoming vs Removed Pending</h3><p class="bc-chart-caption">Berdasarkan histori upload; Removed Pending belum berarti selesai.</p><div id="bcMovementChart" class="bc-chart" aria-label="Grafik pergerakan backlog"></div><h3>Grafik Status Material Aktif</h3><div id="bcMaterialChart" class="bc-chart" aria-label="Grafik distribusi material"></div>
-          <h3>Riwayat Periode</h3>
-          <div class="bc-perf-table-wrap"><table><thead><tr><th>Periode</th><th>Uploads</th><th>Opening</th><th>Incoming</th><th>Removed Pending</th><th>Changed</th><th>Closing</th></tr></thead><tbody id="bcKpiHistory"><tr><td colspan="7">Memuat histori...</td></tr></tbody></table></div>
-        </div>
-      </section>
-
     </section>
-
+    <div class="kpi-container">
+      <div class="kpi-section-title"><span></span><h2>EXCEL DATA SOURCE</h2></div>
+      <section class="kpi-card" aria-labelledby="uploadTitle">
+        <div class="kpi-card-header">
+          <div class="kpi-file-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v5h5M9 12l5 6m0-6-5 6"/></svg>
+          </div>
+          <div><h3 id="uploadTitle">Upload Excel Daily Maintenance</h3><p>Sumber Achievement, Redo DM &amp; Breakdown History</p></div>
+        </div>
+        <div class="kpi-period-grid">
+          <label>Bulan periode<select id="kpiMonth" aria-label="Bulan periode"></select></label>
+          <label>Tahun periode<input id="kpiYear" type="number" min="2020" max="2100" step="1" aria-label="Tahun periode"></label>
+        </div>
+        <div class="kpi-upload-pair">
+          <div class="kpi-upload-row" data-type="ACHIEVEMENT">
+            <div class="kpi-upload-row-head"><span class="kpi-upload-index">01</span><div><h4>DM Achievement</h4><p>Mainpro DM &amp; Washing • Plan dan Actual TRACK</p></div></div>
+            <input id="kpiAchievementInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+            <button type="button" class="kpi-dropzone" id="kpiAchievementChoose"><strong>+ Pilih Excel Achievement</strong><small>Format XLSX • Maksimal 20 MB</small></button>
+            <div class="kpi-selected-file" id="kpiAchievementSelected" hidden><span class="kpi-selected-icon">XLSX</span><div><strong id="kpiAchievementName"></strong><small id="kpiAchievementMeta"></small></div><button type="button" id="kpiAchievementRemove" aria-label="Hapus pilihan Achievement">×</button></div>
+            <div class="kpi-row-status" id="kpiAchievementStatus">Belum dipilih</div>
+          </div>
+          <div class="kpi-upload-row" data-type="REDO">
+            <div class="kpi-upload-row-head"><span class="kpi-upload-index">02</span><div><h4>Redo DM</h4><p>Redo DM • Riwayat breakdown dan problem TRACK</p></div></div>
+            <input id="kpiRedoInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden>
+            <button type="button" class="kpi-dropzone" id="kpiRedoChoose"><strong>+ Pilih Excel Redo DM</strong><small>Format XLSX • Maksimal 20 MB</small></button>
+            <div class="kpi-selected-file" id="kpiRedoSelected" hidden><span class="kpi-selected-icon">XLSX</span><div><strong id="kpiRedoName"></strong><small id="kpiRedoMeta"></small></div><button type="button" id="kpiRedoRemove" aria-label="Hapus pilihan Redo DM">×</button></div>
+            <div class="kpi-row-status" id="kpiRedoStatus">Belum dipilih</div>
+          </div>
+        </div>
+        <div id="kpiNotice" class="kpi-notice" role="status" aria-live="polite">Pilih kedua Excel untuk periode yang sama.</div>
+        <div class="kpi-actions"><button id="kpiUploadButton" class="kpi-primary" type="button" disabled>Upload Data</button></div>
+        <p class="kpi-upload-hint">Kedua file diarsipkan secara berurutan. Kedua file akan divalidasi, diarsipkan, dan disinkronkan ke database KPI.</p>
+      </section>
+      <div class="kpi-section-title kpi-section-spaced"><span></span><h2>CURRENT DATA SOURCE</h2></div>
+      <section class="kpi-card kpi-source-card">
+        <div class="kpi-source-mark" aria-hidden="true">↻</div>
+        <div><h3 id="kpiSourceTitle">Belum terhubung</h3><p id="kpiSourceDetail">Riwayat arsip KPI akan ditampilkan setelah halaman terhubung ke server.</p></div>
+        <span class="kpi-source-status" id="kpiSourceStatus">Not Connected</span>
+      </section>
+      <p class="kpi-footnote">Settings mengelola arsip dan sinkronisasi dua sumber Excel. Grafik KPI Daily, Weekly, dan Monthly akan ditampilkan di halaman Daily Maintenance.</p>
+    </div>
   </main>
 
-
-
-  <!-- =====================================
-       FLOATING START INSPECTION
-       ===================================== -->
-
-  <button
-    type="button"
-    id="inspectionShortcut"
-    class="inspection-shortcut"
-    aria-label="Start Inspection"
-    title="Start Inspection"
-  >
-
-    <span>+</span>
-
-  </button>
-
-
-
-  <!-- =====================================
-       GLOBAL HEXA SYSTEM
-       ===================================== -->
-
+  <div id="kpiProgressOverlay" class="kpi-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="kpiProgressTitle">
+    <div class="kpi-progress-card">
+      <div id="kpiNutVisual" class="kpi-nut-visual" aria-hidden="true">
+        <svg class="kpi-nut" viewBox="0 0 120 120">
+          <defs><linearGradient id="hexaNutGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffdc49"/><stop offset=".5" stop-color="#ff9e0c"/><stop offset="1" stop-color="#e86c00"/></linearGradient></defs>
+          <g id="kpiNutSpinner"><path fill="url(#hexaNutGold)" fill-rule="evenodd" d="M60 6 106.8 33 106.8 87 60 114 13.2 87 13.2 33Z M60 37a23 23 0 1 0 0 46 23 23 0 1 0 0-46Z" stroke="#e7a00b" stroke-width="2"/></g>
+        </svg>
+        <svg id="kpiResultIcon" class="kpi-result-icon" viewBox="0 0 24 24"><path id="kpiResultPath" d="M5 12l4 4L19 6"/></svg>
+      </div>
+      <p id="kpiProgressStage" class="kpi-stage-label" role="status" aria-live="polite">Menyiapkan proses...</p>
+      <div class="kpi-progress-track" aria-hidden="true"><div id="kpiProgressBar"></div></div>
+      <div class="kpi-progress-meta"><span id="kpiProgressStep">Tahap 1 dari 5</span><span id="kpiProgressPercent">0%</span></div>
+      <div id="kpiProgressSteps" class="kpi-progress-steps" aria-label="Tahapan proses">
+        <div data-kpi-step="1">Membaca kedua file Excel</div>
+        <div data-kpi-step="2">Validasi data dan periode</div>
+        <div data-kpi-step="3">Mengarsipkan Excel ke Drive</div>
+        <div data-kpi-step="4">Menyimpan ke database KPI</div>
+        <div data-kpi-step="5">Memeriksa hasil sinkronisasi</div>
+      </div>
+      <p id="kpiProgressTitle" class="kpi-result-label" role="status" aria-live="polite"></p>
+      <p id="kpiProgressText" class="kpi-result-message"></p>
+      <button id="kpiProgressClose" class="kpi-secondary" type="button" hidden>Tutup</button>
+    </div>
+  </div>
   <script src="hexa-menu.js"></script>
-
   <script src="hexa-header.js"></script>
+  <script src="kpi-upload-adapter.js"></script>
+  
+<!-- Library untuk membaca struktur XLSX -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
-  <script src="backlog-monitoring.js"></script>
+<!-- Extractor KPI HEXA -->
+<script src="kpi-excel-extractor.js"></script>
 
-
+  <script src="kpi-data-management.js"></script>
 </body>
-
 </html>
