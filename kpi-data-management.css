@@ -37,18 +37,14 @@ button{font-family:inherit}button:focus-visible{outline:3px solid #00a99a;outlin
 .kpi-progress-track .indeterminate{width:35%!important;animation:kpi-progress-sweep 1.5s ease-in-out infinite}
 @keyframes kpi-progress-sweep{0%{transform:translateX(-110%)}100%{transform:translateX(310%)}}
 
-/* DUAL SOURCE UPLOAD */
-.kpi-period-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
-.kpi-period-grid label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:700;color:#40515a}
-.kpi-period-grid input,.kpi-period-grid select{width:100%;border:1px solid #cddfe2;border-radius:11px;padding:12px;background:#fff;color:#26313a;font:inherit;font-size:14px}
-.kpi-upload-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
-.kpi-upload-row{min-width:0;border:1px solid #e0eaed;border-radius:16px;padding:17px;background:#fcfefe}
-.kpi-upload-row-head{display:flex;gap:11px;align-items:center;margin-bottom:14px}
-.kpi-upload-index{background:#e2f5f1;color:#087e70;border-radius:10px;padding:10px;font-weight:800;font-size:13px}
-.kpi-upload-row h4{margin:0 0 5px;font-size:16px}
-.kpi-upload-row .kpi-dropzone{min-height:104px;gap:7px;padding:12px}
-.kpi-upload-row .kpi-dropzone strong{font-size:13px}
-.kpi-row-status{font-size:12px;color:#71828b;margin-top:11px}
-.kpi-row-status.ok{color:#138260}.kpi-row-status.error{color:#bd3939}
-.kpi-upload-hint{margin-top:12px!important;font-size:12px!important;color:#75838a!important}
-@media(max-width:680px){.kpi-upload-pair{grid-template-columns:1fr}.kpi-period-grid{grid-template-columns:1fr 1fr}}
+/* KPI progress detail — real process states, no simulated timer */
+.kpi-progress-card{width:min(100%,440px);max-height:calc(100vh - 32px);overflow-y:auto}
+.kpi-stage-label{font-size:15px!important;font-weight:800;color:#273c49!important;margin:7px 0 12px!important}
+.kpi-progress-meta{display:flex;justify-content:space-between;gap:12px;margin:7px 0 14px;font-size:12px;font-weight:700;color:#71828b}
+.kpi-progress-steps{text-align:left;padding:12px 14px;border:1px solid #e2ebee;background:#f8fbfc;border-radius:13px;display:grid;gap:8px;margin:0 0 14px}
+.kpi-progress-steps>div{font-size:12px;line-height:1.35;color:#7a8991}
+.kpi-progress-steps>div.active{color:#bd6c00;font-weight:800}
+.kpi-progress-steps>div.done{color:#118464;font-weight:700}
+.kpi-progress-steps>div.failed{color:#c83f3f;font-weight:800}
+#kpiProgressText{overflow-wrap:anywhere}
+@media(max-width:560px){.kpi-progress-card{padding:22px 18px}.kpi-progress-steps{padding:10px 12px}}
