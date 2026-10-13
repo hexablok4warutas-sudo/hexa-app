@@ -126,6 +126,31 @@
       // Pertahankan tanggal aslinya; indeks penyimpanan menggunakan period upload.
       if (Array.isArray(extracted.dbr)) result.dbr = extracted.dbr;
 
+      // Mapping EGI berasal dari worksheet POP pada Excel Redo DM.
+      // Kirim MODEL asli; normalisasi PC1250/PC200/PC210 dilakukan di backend.
+      if (!Array.isArray(extracted.population) || !extracted.population.length) {
+        throw new Error('Mapping unit worksheet POP tidak tersedia');
+      }
+      const mappingByUnit = new Map();
+      for (const item of extracted.population) {
+        const section = String(item.section || '').trim().toUpperCase();
+        const unit = String(item.unit || '').trim().toUpperCase().replace(/\s+/g, ' ');
+        const model = String(item.model || '').trim().toUpperCase().replace(/\s+/g, ' ');
+        if (section !== 'TRACK' || !unit || !model) {
+          throw new Error('Mapping POP tidak lengkap untuk Code Unit: ' + (unit || '(kosong)'));
+        }
+        if (mappingByUnit.has(unit) && mappingByUnit.get(unit).model !== model) {
+          throw new Error('MODEL POP bertentangan untuk Code Unit: ' + unit);
+        }
+        mappingByUnit.set(unit, {
+          section, unit, model,
+          activity: String(item.activity || ''),
+          engineModel: String(item.engineModel || '')
+        });
+      }
+      result.population = [...mappingByUnit.values()];
+      console.log('[HEXA KPI] POP mapping siap dikirim:', result.population.length, 'unit');
+
     }
     return result;
   }
