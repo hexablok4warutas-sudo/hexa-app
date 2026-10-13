@@ -1986,6 +1986,12 @@
           </header>
 
           <div style="padding:20px 20px 0;">
+            <label for="dailyActivityInspectionStartTime" style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:7px;">
+              <span aria-hidden="true">🕒</span> Start Inspection <span style="color:#c62828;">*</span>
+            </label>
+            <input id="dailyActivityInspectionStartTime" type="time" step="60"
+                   style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+            <div style="font-size:11px;color:#777;margin:6px 0 16px;">Pilih jam dan menit mulai inspeksi (WITA).</div>
             <label for="dailyActivityInspectionHourMeter"
                    style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
               Hour Meter <span style="color:#c62828;">*</span>
@@ -2002,6 +2008,12 @@
           <div id="dailyActivityInspectionBody" style="padding:20px;"></div>
 
           <div style="padding:0 20px 20px;">
+            <label for="dailyActivityInspectionFinishTime" style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:7px;">
+              <span aria-hidden="true">⏱️</span> Finish Inspection <span style="color:#c62828;">*</span>
+            </label>
+            <input id="dailyActivityInspectionFinishTime" type="time" step="60"
+                   style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+            <div style="font-size:11px;color:#777;margin:6px 0 16px;">Pilih jam dan menit selesai inspeksi (WITA). Jika melewati tengah malam, tanggal aktual akan ditangani backend.</div>
             <label for="dailyActivityInspectionNotes"
                    style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
               Activity Notes
@@ -2112,6 +2124,10 @@
         document.getElementById("dailyActivityInspectionPhotoName");
 
       if (hourMeter) hourMeter.value = "";
+      const startTimeInput = document.getElementById("dailyActivityInspectionStartTime");
+      const finishTimeInput = document.getElementById("dailyActivityInspectionFinishTime");
+      if (startTimeInput) startTimeInput.value = "";
+      if (finishTimeInput) finishTimeInput.value = "";
       if (notes) notes.value = "";
       if (photo) photo.value = "";
       if (photoName) photoName.textContent = "No photo selected";
@@ -2316,6 +2332,17 @@
 
 
     function validateDailyActivityInspectionBeforeSubmit() {
+      const start = document.getElementById("dailyActivityInspectionStartTime");
+      const finish = document.getElementById("dailyActivityInspectionFinishTime");
+      for (const [field, label] of [[start, "Start Inspection"], [finish, "Finish Inspection"]]) {
+        if (!field?.value || !/^([01]\d|2[0-3]):[0-5]\d$/.test(field.value)) {
+          if (field) { field.style.borderColor = "#c62828"; field.focus(); }
+          alert(label + " wajib diisi dengan jam dan menit sebelum Submit.");
+          return;
+        }
+        field.style.borderColor = "#d9d9d9";
+      }
+
       const body =
         document.getElementById("dailyActivityInspectionBody");
 
@@ -2468,6 +2495,8 @@
             scheduleUnitId: scheduleUnitId,
             inspectedById: inspectorId,
             hourMeter: hourMeter,
+            startInspectionTime: document.getElementById("dailyActivityInspectionStartTime")?.value || "",
+            finishInspectionTime: document.getElementById("dailyActivityInspectionFinishTime")?.value || "",
             activityNotes: activityNotes,
             photo: "",
             answers: answers
@@ -2571,6 +2600,8 @@
           scheduleUnitId: scheduleUnitId,
           inspectedById: inspectorId,
           hourMeter: hourMeter,
+          startInspectionTime: document.getElementById("dailyActivityInspectionStartTime")?.value || "",
+          finishInspectionTime: document.getElementById("dailyActivityInspectionFinishTime")?.value || "",
           activityNotes: activityNotes,
           photo: "",
           answers: answers
