@@ -2153,3 +2153,20 @@ button[id^="approvalApproveButton"]:disabled {
 .da-time-actions button{border:1px solid #ddd;background:white;padding:11px 15px;border-radius:10px;font-weight:700;cursor:pointer}
 #daPickerSet{background:#ff9800;color:white;border-color:#ff9800}
 #daPickerClear{margin-right:auto;color:#c62828}
+
+/* HEXA Approval Review — visual status synchronization */
+.approval-action-button.is-approved-state,
+.approval-action-button.is-approved-state:disabled {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+  opacity: 1;
+  cursor: default;
+}
+.approval-action-button.is-document-ready:not(:disabled) {
+  border-color: #16a34a;
+  background: #ecfdf3;
+  color: #16783b;
+}
+.approval-review-table td { vertical-align: middle; }
+.approval-action-button { white-space: nowrap; transition: background .15s ease; }
