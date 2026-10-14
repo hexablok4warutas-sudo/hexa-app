@@ -179,6 +179,10 @@
             return;
           }
 
+          // Hide stale cards immediately when the selected date changes.
+          dailyActivitySchedules = [];
+          resetLubeTruckCard(15);
+          resetLubeTruckCard(16);
           setDailyActivityLoadingState();
 
           try {
@@ -304,6 +308,25 @@
           renderDailyActivityApprovalReview();
         }
 
+        function formatDAScheduleBadgeDate(value) {
+          const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+          const raw = String(value || "").trim();
+          let day, month;
+          let m = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+          if (m) { month = Number(m[2]); day = Number(m[3]); }
+          else {
+            m = raw.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/);
+            if (m) { day = Number(m[1]); month = Number(m[2]); }
+          }
+          if ((!day || !month) && raw) {
+            const parsed = new Date(raw);
+            if (!Number.isNaN(parsed.getTime())) {
+              day = parsed.getDate(); month = parsed.getMonth() + 1;
+            }
+          }
+          return day >= 1 && day <= 31 && month >= 1 && month <= 12 ? `${day} ${months[month-1]}'` : "";
+        }
+
         function renderLubeTruckSchedule(truckNumber, schedule) {
           const editButton =
             document.getElementById(`lubeTruck${truckNumber}EditButton`);
@@ -313,6 +336,23 @@
               !hasDailyActivityPermission("EDIT_SCHEDULE");
           }
 
+          // Create the badge if the published HTML is still an older version.
+          const actions = document.querySelector(`#lubeTruck${truckNumber}Card .lube-truck-header-actions`);
+          let badge = document.getElementById(`lubeTruck${truckNumber}ScheduleDate`);
+          if (!badge && actions) {
+            badge = document.createElement("span");
+            badge.id = `lubeTruck${truckNumber}ScheduleDate`;
+            badge.className = "lube-truck-schedule-date";
+            actions.insertBefore(badge, document.getElementById(`lubeTruck${truckNumber}ScheduleStatus`));
+          }
+          // The date filter is the date used to fetch these cards; prefer it
+          // over inconsistent API date serialization.
+          const scheduleDate = document.getElementById("activityDate")?.value || schedule?.activityDate || "";
+          if (badge) {
+            const shortDate = formatDAScheduleBadgeDate(scheduleDate);
+            badge.textContent = shortDate ? `▦ ${shortDate}` : "";
+            badge.hidden = !shortDate;
+          }
           setDailyActivityText(
             `lubeTruck${truckNumber}ScheduleStatus`,
             cleanDailyActivityValue(schedule?.status) || "-"
@@ -420,6 +460,8 @@
         }
 
         function resetLubeTruckCard(truckNumber) {
+          const dateBadge = document.getElementById(`lubeTruck${truckNumber}ScheduleDate`);
+          if (dateBadge) { dateBadge.textContent = ""; dateBadge.hidden = true; }
           setDailyActivityText(`lubeTruck${truckNumber}ScheduleStatus`, "-");
           setDailyActivityText(`lubeTruck${truckNumber}Mechanic1`, "-");
           setDailyActivityText(`lubeTruck${truckNumber}Mechanic2`, "-");
@@ -1989,8 +2031,9 @@
             <label for="dailyActivityInspectionStartTime" style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:7px;">
               <span aria-hidden="true">🕒</span> Start Inspection <span style="color:#c62828;">*</span>
             </label>
-            <input id="dailyActivityInspectionStartTime" type="time" step="60"
-                   style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+            <div class="daily-inspection-time-row"><input id="dailyActivityInspectionStartTime" type="time" step="60" readonly class="da-time-display"
+                   style="box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+            <button type="button" class="daily-inspection-now-button" id="dailyActivityStartNow" title="Ambil waktu perangkat sekarang">◷ Start</button></div>
             <div style="font-size:11px;color:#777;margin:6px 0 16px;">Pilih jam dan menit mulai inspeksi (WITA).</div>
             <label for="dailyActivityInspectionHourMeter"
                    style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
@@ -2011,8 +2054,9 @@
             <label for="dailyActivityInspectionFinishTime" style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:7px;">
               <span aria-hidden="true">⏱️</span> Finish Inspection <span style="color:#c62828;">*</span>
             </label>
-            <input id="dailyActivityInspectionFinishTime" type="time" step="60"
-                   style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+            <div class="daily-inspection-time-row"><input id="dailyActivityInspectionFinishTime" type="time" step="60" readonly class="da-time-display"
+                   style="box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
+            <button type="button" class="daily-inspection-now-button" id="dailyActivityFinishNow" title="Ambil waktu perangkat sekarang">◷ Finish</button></div>
             <div style="font-size:11px;color:#777;margin:6px 0 16px;">Pilih jam dan menit selesai inspeksi (WITA). Jika melewati tengah malam, tanggal aktual akan ditangani backend.</div>
             <label for="dailyActivityInspectionNotes"
                    style="display:block;font-size:13px;font-weight:700;margin-bottom:7px;">
@@ -2074,6 +2118,72 @@
           if (event.target === backdrop) closeModal();
         });
 
+        // Desktop/mobile consistent time selection with Setel / Hapus.
+        function openDATimePicker(input) {
+          if (!input || input.disabled) return;
+          document.getElementById("daTimePickerOverlay")?.remove();
+          const now = new Date();
+          const [hour, minute] = /^\d{2}:\d{2}$/.test(input.value)
+            ? input.value.split(":").map(Number) : [now.getHours(), now.getMinutes()];
+          const overlay = document.createElement("div");
+          overlay.id = "daTimePickerOverlay";
+          overlay.className = "da-time-overlay";
+          overlay.innerHTML = `<div class="da-time-dialog" role="dialog" aria-modal="true" aria-label="Setel waktu">
+            <div class="da-time-title">◷ Setel Waktu</div>
+            <div class="da-time-wheel-row">
+              <div class="da-time-wheel"><label>JAM</label><select id="daPickerHour" size="5"></select></div>
+              <span class="da-time-colon">:</span>
+              <div class="da-time-wheel"><label>MENIT</label><select id="daPickerMinute" size="5"></select></div>
+            </div>
+            <div class="da-time-actions"><button type="button" id="daPickerClear">Hapus</button>
+            <button type="button" id="daPickerCancel">Batal</button>
+            <button type="button" id="daPickerSet">Setel</button></div>
+          </div>`;
+          document.body.appendChild(overlay);
+          const h = overlay.querySelector("#daPickerHour");
+          const m = overlay.querySelector("#daPickerMinute");
+          for (let i = 0; i < 24; i++) h.add(new Option(String(i).padStart(2,"0"), String(i).padStart(2,"0")));
+          for (let i = 0; i < 60; i++) m.add(new Option(String(i).padStart(2,"0"), String(i).padStart(2,"0")));
+          h.value = String(hour).padStart(2,"0");
+          m.value = String(minute).padStart(2,"0");
+          const close = () => overlay.remove();
+          overlay.addEventListener("click", e => { if (e.target === overlay) close(); });
+          overlay.querySelector("#daPickerCancel").onclick = close;
+          overlay.querySelector("#daPickerClear").onclick = () => {
+            input.value = ""; delete input.dataset.actualIso;
+            input.dispatchEvent(new Event("change", {bubbles:true})); close();
+          };
+          overlay.querySelector("#daPickerSet").onclick = () => {
+            input.value = `${h.value}:${m.value}`;
+            input.dispatchEvent(new Event("change", {bubbles:true})); close();
+          };
+          h.focus();
+        }
+        for (const name of ["Start", "Finish"]) {
+          const timeInput = document.getElementById(`dailyActivityInspection${name}Time`);
+          timeInput?.addEventListener("click", () => openDATimePicker(timeInput));
+          timeInput?.addEventListener("keydown", e => {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDATimePicker(timeInput); }
+          });
+
+          document.getElementById(`dailyActivity${name}Now`)?.addEventListener("click", () => {
+            const input = document.getElementById(`dailyActivityInspection${name}Time`);
+            if (!input || input.disabled) return;
+            const now = new Date();
+            input.value = `${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
+            input.dataset.actualIso = now.toISOString();
+          });
+          document.getElementById(`dailyActivityInspection${name}Time`)?.addEventListener("change", event => {
+            const input = event.target;
+            // Preserve captured calendar day when a draft time is edited.
+            const base = input.dataset.actualIso ? new Date(input.dataset.actualIso) : new Date();
+            if (/^([01]\d|2[0-3]):[0-5]\d$/.test(input.value)) {
+              const [h,m] = input.value.split(":").map(Number);
+              base.setHours(h,m,0,0);
+              input.dataset.actualIso = base.toISOString();
+            }
+          });
+        }
         const photoInput =
           document.getElementById("dailyActivityInspectionPhoto");
 
@@ -2126,8 +2236,11 @@
       if (hourMeter) hourMeter.value = "";
       const startTimeInput = document.getElementById("dailyActivityInspectionStartTime");
       const finishTimeInput = document.getElementById("dailyActivityInspectionFinishTime");
-      if (startTimeInput) startTimeInput.value = "";
-      if (finishTimeInput) finishTimeInput.value = "";
+      if (startTimeInput) { startTimeInput.value = ""; delete startTimeInput.dataset.actualIso; startTimeInput.disabled = false; }
+      if (finishTimeInput) { finishTimeInput.value = ""; delete finishTimeInput.dataset.actualIso; finishTimeInput.disabled = false; }
+      for (const id of ["dailyActivityStartNow", "dailyActivityFinishNow", "saveDailyActivityInspectionDraft", "submitDailyActivityInspection"]) {
+        const control = document.getElementById(id); if (control) control.disabled = false;
+      }
       if (notes) notes.value = "";
       if (photo) photo.value = "";
       if (photoName) photoName.textContent = "No photo selected";
@@ -2496,7 +2609,9 @@
             inspectedById: inspectorId,
             hourMeter: hourMeter,
             startInspectionTime: document.getElementById("dailyActivityInspectionStartTime")?.value || "",
+            startInspectionAt: document.getElementById("dailyActivityInspectionStartTime")?.dataset.actualIso || "",
             finishInspectionTime: document.getElementById("dailyActivityInspectionFinishTime")?.value || "",
+            finishInspectionAt: document.getElementById("dailyActivityInspectionFinishTime")?.dataset.actualIso || "",
             activityNotes: activityNotes,
             photo: "",
             answers: answers
@@ -2602,6 +2717,8 @@
           hourMeter: hourMeter,
           startInspectionTime: document.getElementById("dailyActivityInspectionStartTime")?.value || "",
           finishInspectionTime: document.getElementById("dailyActivityInspectionFinishTime")?.value || "",
+          startInspectionAt: document.getElementById("dailyActivityInspectionStartTime")?.dataset.actualIso || "",
+          finishInspectionAt: document.getElementById("dailyActivityInspectionFinishTime")?.dataset.actualIso || "",
           activityNotes: activityNotes,
           photo: "",
           answers: answers
@@ -2688,6 +2805,22 @@
             );
         }
 
+        for (const [name, field] of [["Start","startedAt"],["Finish","finishedAt"]]) {
+          const input = document.getElementById(`dailyActivityInspection${name}Time`);
+          if (!input) continue;
+          const raw = draft?.[field];
+          if (raw) {
+            const date = new Date(raw);
+            if (!Number.isNaN(date.getTime())) {
+              input.value = `${String(date.getHours()).padStart(2,"0")}:${String(date.getMinutes()).padStart(2,"0")}`;
+              input.dataset.actualIso = date.toISOString();
+            }
+          }
+        }
+        if (String(draft.status || "").toUpperCase() === "SUBMITTED") {
+          const backdrop = document.getElementById("dailyActivityInspectionBackdrop");
+          backdrop?.querySelectorAll("input,textarea,button:not(#closeDailyActivityInspection)").forEach(el => {el.disabled=true;});
+        }
         const answers =
           extractDailyActivityDraftAnswers(result, draft);
 
