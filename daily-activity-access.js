@@ -308,6 +308,25 @@
           renderDailyActivityApprovalReview();
         }
 
+        function formatDAScheduleBadgeDate(value) {
+          const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+          const raw = String(value || "").trim();
+          let day, month;
+          let m = raw.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+          if (m) { month = Number(m[2]); day = Number(m[3]); }
+          else {
+            m = raw.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})/);
+            if (m) { day = Number(m[1]); month = Number(m[2]); }
+          }
+          if ((!day || !month) && raw) {
+            const parsed = new Date(raw);
+            if (!Number.isNaN(parsed.getTime())) {
+              day = parsed.getDate(); month = parsed.getMonth() + 1;
+            }
+          }
+          return day >= 1 && day <= 31 && month >= 1 && month <= 12 ? `${day} ${months[month-1]}'` : "";
+        }
+
         function renderLubeTruckSchedule(truckNumber, schedule) {
           const editButton =
             document.getElementById(`lubeTruck${truckNumber}EditButton`);
@@ -318,11 +337,11 @@
           }
 
           const badge = document.getElementById(`lubeTruck${truckNumber}ScheduleDate`);
-          const rawDate = cleanDailyActivityValue(schedule?.activityDate || document.getElementById("activityDate")?.value);
-          const dateMatch = rawDate.match(/^(\d{4})-(\d{2})-(\d{2})/);
+          const scheduleDate = schedule?.activityDate || document.getElementById("activityDate")?.value || "";
           if (badge) {
-            badge.textContent = dateMatch ? `${Number(dateMatch[3])} ${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][Number(dateMatch[2])-1]}'` : "";
-            badge.hidden = !dateMatch;
+            const shortDate = formatDAScheduleBadgeDate(scheduleDate);
+            badge.textContent = shortDate ? `▦ ${shortDate}` : "";
+            badge.hidden = !shortDate;
           }
           setDailyActivityText(
             `lubeTruck${truckNumber}ScheduleStatus`,
@@ -2002,7 +2021,7 @@
             <label for="dailyActivityInspectionStartTime" style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:7px;">
               <span aria-hidden="true">🕒</span> Start Inspection <span style="color:#c62828;">*</span>
             </label>
-            <div class="daily-inspection-time-row"><input id="dailyActivityInspectionStartTime" type="time" step="60"
+            <div class="daily-inspection-time-row"><input id="dailyActivityInspectionStartTime" type="time" step="60" readonly class="da-time-display"
                    style="box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
             <button type="button" class="daily-inspection-now-button" id="dailyActivityStartNow" title="Ambil waktu perangkat sekarang">◷ Start</button></div>
             <div style="font-size:11px;color:#777;margin:6px 0 16px;">Pilih jam dan menit mulai inspeksi (WITA).</div>
@@ -2025,7 +2044,7 @@
             <label for="dailyActivityInspectionFinishTime" style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin-bottom:7px;">
               <span aria-hidden="true">⏱️</span> Finish Inspection <span style="color:#c62828;">*</span>
             </label>
-            <div class="daily-inspection-time-row"><input id="dailyActivityInspectionFinishTime" type="time" step="60"
+            <div class="daily-inspection-time-row"><input id="dailyActivityInspectionFinishTime" type="time" step="60" readonly class="da-time-display"
                    style="box-sizing:border-box;padding:12px 14px;border:1px solid #d9d9d9;border-radius:10px;font:inherit;">
             <button type="button" class="daily-inspection-now-button" id="dailyActivityFinishNow" title="Ambil waktu perangkat sekarang">◷ Finish</button></div>
             <div style="font-size:11px;color:#777;margin:6px 0 16px;">Pilih jam dan menit selesai inspeksi (WITA). Jika melewati tengah malam, tanggal aktual akan ditangani backend.</div>
@@ -2089,7 +2108,54 @@
           if (event.target === backdrop) closeModal();
         });
 
+        // Desktop/mobile consistent time selection with Setel / Hapus.
+        function openDATimePicker(input) {
+          if (!input || input.disabled) return;
+          document.getElementById("daTimePickerOverlay")?.remove();
+          const now = new Date();
+          const [hour, minute] = /^\d{2}:\d{2}$/.test(input.value)
+            ? input.value.split(":").map(Number) : [now.getHours(), now.getMinutes()];
+          const overlay = document.createElement("div");
+          overlay.id = "daTimePickerOverlay";
+          overlay.className = "da-time-overlay";
+          overlay.innerHTML = `<div class="da-time-dialog" role="dialog" aria-modal="true" aria-label="Setel waktu">
+            <div class="da-time-title">◷ Setel Waktu</div>
+            <div class="da-time-wheel-row">
+              <div class="da-time-wheel"><label>JAM</label><select id="daPickerHour" size="5"></select></div>
+              <span class="da-time-colon">:</span>
+              <div class="da-time-wheel"><label>MENIT</label><select id="daPickerMinute" size="5"></select></div>
+            </div>
+            <div class="da-time-actions"><button type="button" id="daPickerClear">Hapus</button>
+            <button type="button" id="daPickerCancel">Batal</button>
+            <button type="button" id="daPickerSet">Setel</button></div>
+          </div>`;
+          document.body.appendChild(overlay);
+          const h = overlay.querySelector("#daPickerHour");
+          const m = overlay.querySelector("#daPickerMinute");
+          for (let i = 0; i < 24; i++) h.add(new Option(String(i).padStart(2,"0"), String(i).padStart(2,"0")));
+          for (let i = 0; i < 60; i++) m.add(new Option(String(i).padStart(2,"0"), String(i).padStart(2,"0")));
+          h.value = String(hour).padStart(2,"0");
+          m.value = String(minute).padStart(2,"0");
+          const close = () => overlay.remove();
+          overlay.addEventListener("click", e => { if (e.target === overlay) close(); });
+          overlay.querySelector("#daPickerCancel").onclick = close;
+          overlay.querySelector("#daPickerClear").onclick = () => {
+            input.value = ""; delete input.dataset.actualIso;
+            input.dispatchEvent(new Event("change", {bubbles:true})); close();
+          };
+          overlay.querySelector("#daPickerSet").onclick = () => {
+            input.value = `${h.value}:${m.value}`;
+            input.dispatchEvent(new Event("change", {bubbles:true})); close();
+          };
+          h.focus();
+        }
         for (const name of ["Start", "Finish"]) {
+          const timeInput = document.getElementById(`dailyActivityInspection${name}Time`);
+          timeInput?.addEventListener("click", () => openDATimePicker(timeInput));
+          timeInput?.addEventListener("keydown", e => {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDATimePicker(timeInput); }
+          });
+
           document.getElementById(`dailyActivity${name}Now`)?.addEventListener("click", () => {
             const input = document.getElementById(`dailyActivityInspection${name}Time`);
             if (!input || input.disabled) return;
