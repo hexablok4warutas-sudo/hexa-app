@@ -2133,3 +2133,23 @@ button[id^="approvalApproveButton"]:disabled {
 .daily-inspection-time-row input{flex:1;min-width:0}
 .daily-inspection-now-button{min-height:45px;padding:0 13px;border:1px solid #ff9800;border-radius:10px;background:#fff8eb;color:#a55d00;font-weight:700;cursor:pointer}
 .daily-inspection-now-button:disabled{opacity:.5;cursor:not-allowed}
+
+/* HEXA schedule date visibility */
+.lube-truck-schedule-date[hidden]{display:none!important}
+.lube-truck-schedule-date{display:inline-flex!important}
+.lube-truck-schedule-date[hidden]{display:none!important}
+/* Consistent interactive time picker */
+.da-time-display{cursor:pointer!important;background:#fff!important}
+.da-time-overlay{position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:18px}
+.da-time-dialog{width:min(360px,100%);padding:22px;border-radius:22px;background:#fff;box-shadow:0 18px 60px rgba(0,0,0,.2)}
+.da-time-title{font-size:18px;font-weight:800;margin-bottom:18px}
+.da-time-wheel-row{display:flex;align-items:center;gap:14px;justify-content:center}
+.da-time-wheel{flex:1;min-width:0;display:flex;flex-direction:column;gap:7px}
+.da-time-wheel label{font-size:11px;color:#777;font-weight:700;text-align:center}
+.da-time-wheel select{width:100%;height:170px;overflow:auto;text-align:center;font-size:23px;font-weight:700;border:1px solid #ddd;border-radius:12px;background:#fafafa;padding:4px}
+.da-time-wheel select option{padding:5px}
+.da-time-colon{font-size:30px;font-weight:700}
+.da-time-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end}
+.da-time-actions button{border:1px solid #ddd;background:white;padding:11px 15px;border-radius:10px;font-weight:700;cursor:pointer}
+#daPickerSet{background:#ff9800;color:white;border-color:#ff9800}
+#daPickerClear{margin-right:auto;color:#c62828}
