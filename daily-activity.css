@@ -2125,3 +2125,11 @@ button[id^="approvalApproveButton"]:disabled {
   cursor: not-allowed !important;
 }
 
+
+/* Schedule date beside ACTIVE */
+.lube-truck-schedule-date{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:5px 10px;border-radius:999px;background:#fff3e0;color:#b86600;font-size:11px;font-weight:700;white-space:nowrap}
+.lube-truck-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+.daily-inspection-time-row{display:flex;align-items:center;gap:9px}
+.daily-inspection-time-row input{flex:1;min-width:0}
+.daily-inspection-now-button{min-height:45px;padding:0 13px;border:1px solid #ff9800;border-radius:10px;background:#fff8eb;color:#a55d00;font-weight:700;cursor:pointer}
+.daily-inspection-now-button:disabled{opacity:.5;cursor:not-allowed}
