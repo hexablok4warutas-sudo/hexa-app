@@ -2934,7 +2934,10 @@
 
             document
               .getElementById(`approvalIssueButton${truckNumber}`)
-              ?.addEventListener("click", () => issueDailyActivityResume(truckNumber));
+              ?.addEventListener("click", () => openDailyActivityIssuedDocument(truckNumber));
+
+            document.getElementById(`approvalPdfButton${truckNumber}`)
+              ?.addEventListener("click", () => openDailyActivityIssuedDocument(truckNumber));
           });
 
           document
@@ -2952,6 +2955,22 @@
                 closeDailyActivityApprovalResume();
               }
             });
+        }
+
+        function getDailyActivityDocumentUrl(state) {
+          if (!state || typeof state !== "object") return "";
+          const candidates = [state.pdfUrl, state.pdfURL, state.documentUrl, state.resumePdfUrl, state.fileUrl];
+          const url = candidates.find(value => typeof value === "string" && /^https:\/\//i.test(value.trim()));
+          return url ? url.trim() : "";
+        }
+
+        function openDailyActivityIssuedDocument(truckNumber) {
+          const schedule = dailyActivitySchedules.find(item =>
+            getLubeTruckNumber(item?.lubeTruck) === truckNumber
+          );
+          const scheduleId = cleanDailyActivityValue(schedule?.scheduleId || schedule?.scheduleID || schedule?.id);
+          const url = getDailyActivityDocumentUrl(dailyActivityApprovalStates.get(scheduleId));
+          if (url) window.open(url, "_blank", "noopener,noreferrer");
         }
 
         function hasDailyActivityApprovalAccess(user) {
@@ -3047,24 +3066,25 @@
           }
 
           if (approveButton) {
+            const approved = status === "APPROVED" || status === "RESUME ISSUED";
+            approveButton.textContent = status === "RESUME ISSUED" ? "Issued" : (approved ? "Approved" : "Approve");
+            approveButton.classList.toggle("is-approved-state", approved);
             approveButton.disabled =
-              !schedule ||
-              status !== "APPROVAL" ||
-              !reviewed ||
+              approved || !schedule || status !== "APPROVAL" || !reviewed ||
               !hasDailyActivityPermission("APPROVE");
           }
 
-          // Stage 4C-1 — Issue Resume.
-          // Generate PDF first; backend changes status to RESUME ISSUED only after the PDF is saved.
+          // Dokumen hanya bisa dibuka jika link PDF sudah tersimpan.
+          // Jangan panggil generator lama dari tombol View Document.
+          const documentUrl = getDailyActivityDocumentUrl(approvalState);
           if (issueButton) {
-            issueButton.disabled =
-              !schedule ||
-              status !== "APPROVED" ||
-              !hasDailyActivityPermission("ISSUE_RESUME");
+            issueButton.textContent = "View Document";
+            issueButton.disabled = !documentUrl;
+            issueButton.classList.toggle("is-document-ready", Boolean(documentUrl));
           }
-
-          // Print / Download remains locked for Stage 4C-2.
-          if (pdfButton) pdfButton.disabled = true;
+          if (pdfButton) {
+            pdfButton.disabled = !documentUrl;
+          }
         }
 
         async function openDailyActivityApprovalResume(truckNumber) {
