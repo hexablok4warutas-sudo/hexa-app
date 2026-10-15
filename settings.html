@@ -13,6 +13,12 @@
   <title>Settings | HEXA</title>
 
 
+  <!-- Cegah placeholder profil terlihat sebelum session dirender -->
+  <style>
+    html:not(.settings-profile-ready) .settings-profile-card { visibility: hidden; }
+    html:not(.settings-profile-ready) .settings-section { visibility: hidden; }
+  </style>
+
   <!-- GLOBAL HEXA HEADER -->
   <link
     rel="stylesheet"
