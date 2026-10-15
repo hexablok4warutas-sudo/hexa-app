@@ -561,45 +561,11 @@ const menuItems =
 
 
 function searchMenu() {
-
-  if (!searchInput) {
-    return;
-  }
-
-
-  const keyword =
-    searchInput.value
-      .trim()
-      .toLowerCase();
-
-
-  menuItems.forEach(
-    function (item) {
-
-      const menuName =
-        item.textContent
-          .trim()
-          .toLowerCase();
-
-
-      if (
-        keyword === "" ||
-        menuName.includes(keyword)
-      ) {
-
-        item.style.display =
-          "flex";
-
-      } else {
-
-        item.style.display =
-          "none";
-
-      }
-
-    }
-  );
-
+  const keyword = (searchInput?.value || "").trim().toLowerCase();
+  menuItems.forEach(item => {
+    item.dataset.searchHidden = String(!item.textContent.trim().toLowerCase().includes(keyword));
+  });
+  rebuildMenuPages();
 }
 
 
@@ -1256,6 +1222,89 @@ window.addEventListener(
 
 
 // ======================================================
+// MENU CAROUSEL - 6 ICONS PER PAGE (DESKTOP/MOBILE)
+// ======================================================
+const menuPrev = document.getElementById("menuPrev");
+const menuNext = document.getElementById("menuNext");
+const menuDots = document.getElementById("menuDots");
+let activeMenuPage = 0;
+
+function showMenuPage(index) {
+  const pages = [...menuGrid.querySelectorAll(".menu-page")];
+  if (!pages.length) return;
+  activeMenuPage = Math.max(0, Math.min(index, pages.length - 1));
+  menuGrid.scrollTo({ left: pages[activeMenuPage].offsetLeft - menuGrid.offsetLeft, behavior: "smooth" });
+  if (menuPrev) menuPrev.disabled = activeMenuPage === 0;
+  if (menuNext) menuNext.disabled = activeMenuPage === pages.length - 1;
+  if (menuDots) [...menuDots.children].forEach((dot, i) => {
+    dot.classList.toggle("active", i === activeMenuPage);
+    dot.setAttribute("aria-current", i === activeMenuPage ? "page" : "false");
+  });
+}
+
+function rebuildMenuPages() {
+  if (!menuGrid) return;
+  // Ambil semua tombol, termasuk yang sebelumnya sudah berada di halaman carousel.
+  const items = [...menuGrid.querySelectorAll(".menu-item")];
+  menuGrid.replaceChildren();
+  const visible = items.filter(item => item.dataset.searchHidden !== "true");
+  items.forEach(item => { item.style.removeProperty("display"); });
+  for (let i = 0; i < visible.length; i += 6) {
+    const page = document.createElement("div");
+    page.className = "menu-page";
+    visible.slice(i, i + 6).forEach(item => page.appendChild(item));
+    menuGrid.appendChild(page);
+  }
+  // Simpan item hasil pencarian yang tidak cocok, agar dapat muncul lagi saat pencarian dihapus.
+  const hiddenStore = document.createElement("div");
+  hiddenStore.hidden = true;
+  hiddenStore.className = "menu-hidden-store";
+  items.filter(item => item.dataset.searchHidden === "true").forEach(item => hiddenStore.appendChild(item));
+  menuGrid.appendChild(hiddenStore);
+  const count = menuGrid.querySelectorAll(".menu-page").length;
+  if (menuDots) {
+    menuDots.replaceChildren();
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "menu-dot";
+      dot.setAttribute("aria-label", `Halaman menu ${i + 1}`);
+      dot.addEventListener("click", () => showMenuPage(i));
+      menuDots.appendChild(dot);
+    }
+  }
+  if (menuPrev) menuPrev.hidden = count <= 1;
+  if (menuNext) menuNext.hidden = count <= 1;
+  if (menuDots) menuDots.hidden = count <= 1;
+  activeMenuPage = 0;
+  showMenuPage(0);
+}
+
+menuPrev?.addEventListener("click", () => showMenuPage(activeMenuPage - 1));
+menuNext?.addEventListener("click", () => showMenuPage(activeMenuPage + 1));
+let menuTouchStart = 0;
+menuGrid?.addEventListener("touchstart", e => {
+  menuTouchStart = e.changedTouches[0].clientX;
+}, {passive:true});
+menuGrid?.addEventListener("touchend", e => {
+  const dx = e.changedTouches[0].clientX - menuTouchStart;
+  if (Math.abs(dx) > 45) showMenuPage(activeMenuPage + (dx < 0 ? 1 : -1));
+}, {passive:true});
+menuGrid?.addEventListener("scroll", () => {
+  const pages = [...menuGrid.querySelectorAll(".menu-page")];
+  if (!pages.length) return;
+  const closest = pages.reduce((best, page, i) =>
+    Math.abs(page.offsetLeft - menuGrid.offsetLeft - menuGrid.scrollLeft) <
+    Math.abs(pages[best].offsetLeft - menuGrid.offsetLeft - menuGrid.scrollLeft) ? i : best, 0);
+  if (closest !== activeMenuPage) {
+    activeMenuPage = closest;
+    if (menuPrev) menuPrev.disabled = closest === 0;
+    if (menuNext) menuNext.disabled = closest === pages.length - 1;
+    if (menuDots) [...menuDots.children].forEach((dot,i)=>dot.classList.toggle("active",i===closest));
+  }
+}, {passive:true});
+
+// ======================================================
 // 21. INITIALIZE HEXA MAIN PAGE
 // ======================================================
 
@@ -1277,6 +1326,7 @@ function initializeHexaMain() {
 
   // Master access Authorized
   applySettingsAccess();
+  rebuildMenuPages();
 
 
   // Load posisi floating button
