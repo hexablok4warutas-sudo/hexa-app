@@ -1,32 +1,42 @@
-/* ==========================================================
-   HEXA — BACKLOG MONITORING
-   Replacement stylesheet for backlog-monitoring.css
-   ========================================================== */
-:root{--bc-ink:#263544;--bc-muted:#6b7d8d;--bc-blue:#1768ba;--bc-blue-dark:#104e8b;--bc-orange:#f7941d;--bc-border:#dbe6f0;--bc-shadow:0 8px 24px rgba(24,65,100,.09)}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:var(--bc-ink);background:#f5f8fc;overflow-x:hidden}
-button,select{font:inherit}
+/* HEXA BACKLOG MONITORING — aligned to Daily Maintenance CSS reference */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%}
+body{font-family:Arial,Helvetica,sans-serif;background:#fff;overflow-x:hidden;color:#151515}
+button,select{font-family:inherit}
 button{cursor:pointer}
-button:focus-visible,select:focus-visible{outline:3px solid #ffb53d;outline-offset:3px}
-/* Main layout: reserve room for HEXA's 88px global header */
-.backlog-main-content{padding-top:88px;min-height:100vh;background:linear-gradient(rgba(255,255,255,.82),rgba(255,255,255,.82)),url('hexa-doodleblue.png') center top / auto,760px auto repeat}
-.backlog-section{width:min(1200px,92%);margin:0 auto;padding:34px 0 76px}
-.backlog-description{background:rgba(255,255,255,.95);border:1px solid var(--bc-border);border-left:5px solid var(--bc-orange);border-radius:16px;padding:20px 25px;box-shadow:var(--bc-shadow);line-height:1.65;font-size:14px;color:#405365}
-.backlog-description p{margin:0 0 11px}
+button:focus-visible,select:focus-visible{outline:3px solid #f8a51c;outline-offset:3px}
+
+/* Header spacing: identical to Daily Maintenance */
+.backlog-main-content{width:100%;min-height:100vh;padding-top:88px}
+.backlog-section{
+ position:relative;width:100%;min-height:calc(100vh - 88px);
+ padding:36px 45px 100px;background-color:#fff;
+ background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)),url("hexa-doodleblue.png");
+ background-size:cover;background-position:center;background-repeat:repeat;
+}
+/* Description: same geometry and typography as Daily Maintenance */
+.backlog-description{width:min(1180px,100%);margin:0 auto 52px;color:#151515;font-size:15px;line-height:1.6;text-align:justify;background:transparent;border:0;box-shadow:none}
+.backlog-description p{margin-bottom:14px}
 .backlog-description p:last-child{margin-bottom:0}
-.backlog-description strong{color:#1b4f7f}
-/* Two primary menu cards */
-.backlog-menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin:26px auto 36px;max-width:800px}
-.backlog-menu-item{border:1px solid var(--bc-border);background:#fff;border-radius:22px;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 18px 19px;box-shadow:var(--bc-shadow);color:#203d5c;font-size:17px;font-weight:800;text-align:center;transition:transform .18s,box-shadow .18s,border-color .18s}
-.backlog-menu-item:hover{transform:translateY(-4px);border-color:#80b9ed;box-shadow:0 13px 32px rgba(24,65,100,.15)}
-.backlog-icon-card{width:min(100%,195px);aspect-ratio:1/1;display:grid;place-items:center;border-radius:18px;overflow:hidden;background:#f6faff}
-.backlog-icon-card img{width:100%;height:100%;object-fit:contain;display:block}
+.backlog-description strong{font-weight:700}
+
+/* Menu: use Daily Maintenance's 4-column grid, icons only */
+.backlog-menu-grid{width:min(980px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:45px;align-items:start;justify-items:stretch}
+.backlog-menu-item{position:relative;border:0;outline:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:12px;cursor:pointer;transition:transform .2s ease,filter .2s ease;-webkit-tap-highlight-color:transparent;color:#222}
+.backlog-menu-item:hover{transform:translateY(-6px)}
+.backlog-menu-item:active{transform:scale(.96)}
+.backlog-icon-card{width:135px;height:135px;display:flex;align-items:center;justify-content:center;border-radius:24px;background:rgba(255,255,255,.10);filter:drop-shadow(0 7px 8px rgba(0,0,0,.18));transition:filter .2s ease,transform .2s ease}
+.backlog-menu-item:hover .backlog-icon-card{filter:drop-shadow(0 11px 12px rgba(0,0,0,.24))}
+.backlog-icon-card img{display:block;width:125px;height:125px;object-fit:contain;pointer-events:none}
+.backlog-menu-item>span{max-width:150px;text-align:center;font-size:14px;font-weight:600;line-height:1.25;color:#222}
+.backlog-menu-item.search-hidden{display:none}
+
+/* KPI begins below menu, matching Daily Maintenance KPI spacing */
 /* KPI shell */
-.backlog-performance{background:rgba(255,255,255,.97);border:1px solid var(--bc-border);border-radius:24px;padding:28px;box-shadow:var(--bc-shadow)}
+.backlog-performance{width:min(1200px,100%);margin:55px auto 0;background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;color:#17283b}
 .bc-perf-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px}
-.bc-perf-head h2{font-size:clamp(23px,2.6vw,31px);margin:0 0 8px;color:#183b60}
-.bc-perf-head p{font-size:13px;color:var(--bc-muted);margin:0;line-height:1.5}
+.bc-perf-head h2{font-size:clamp(24px,2.6vw,32px);margin:0 0 8px;color:#122d43}
+.bc-perf-head p{font-size:13px;color:#506778;margin:0;line-height:1.5}
 .bc-perf-actions{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
 .bc-period-selector{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .bc-period-tabs{display:flex;gap:3px;background:#eaf2fa;padding:4px;border-radius:11px}
@@ -41,8 +51,8 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffb53d;outline-offs
 .bc-perf-subtitle{font-size:17px;color:#244a6e;margin:27px 0 14px;padding-left:11px;border-left:4px solid var(--bc-orange)}
 .bc-first-subtitle{margin-top:15px}
 /* KPI metric cards, including the inspection cards */
-.bc-perf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.bc-perf-grid>article,.backlog-kpi-card{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:linear-gradient(160deg,#fff,#f7fbff);border:1px solid #dce8f2;border-radius:16px;padding:19px 18px;box-shadow:0 3px 10px rgba(29,71,109,.045);transition:transform .18s,border-color .18s}
+.bc-perf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.bc-perf-grid>article,.backlog-kpi-card{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:#fff;border:1px solid #dce8f2;border-radius:16px;padding:19px 18px;box-shadow:0 3px 10px rgba(29,71,109,.045);transition:transform .18s,border-color .18s}
 .bc-perf-grid>article:hover{transform:translateY(-2px);border-color:#a8cde9}
 .bc-perf-grid>article>span,.backlog-kpi-label{font-size:12px;color:#637e96;font-weight:800;line-height:1.35}
 .bc-perf-grid>article>strong,.backlog-kpi-value{font-size:clamp(26px,3vw,36px);font-weight:800;line-height:1.15;color:#155e9c;letter-spacing:-.7px;font-variant-numeric:tabular-nums}
@@ -67,11 +77,48 @@ button:focus-visible,select:focus-visible{outline:3px solid #ffb53d;outline-offs
 .bc-perf-table-wrap th{background:#eaf3fb;color:#2e5a7c;text-align:left;padding:13px 12px;font-weight:800;white-space:nowrap}
 .bc-perf-table-wrap td{padding:12px;border-top:1px solid #e7edf2;color:#435b6f}
 .bc-perf-table-wrap tbody tr:nth-child(even){background:#f8fbfe}
-/* Floating inspection shortcut */
-.inspection-shortcut{position:fixed;right:23px;bottom:23px;width:57px;height:57px;border-radius:50%;border:3px solid white;background:linear-gradient(145deg,#ffad32,#ed7e00);color:#fff;box-shadow:0 6px 20px rgba(188,103,8,.33);z-index:200;display:grid;place-items:center}
-.inspection-shortcut span{font-size:32px;font-weight:400;line-height:1}
-.inspection-shortcut:hover{transform:translateY(-2px)}
-@media(max-width:1000px){.bc-perf-head{flex-direction:column}.bc-perf-actions{width:100%}.bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.backlog-main-content{padding-top:72px;background-size:auto,600px auto}.backlog-section{width:94%;padding:20px 0 75px}.backlog-description{padding:15px;font-size:12px}.backlog-menu-grid{gap:11px;margin:17px 0 23px}.backlog-menu-item{padding:12px 8px;gap:9px;border-radius:15px;font-size:12px}.backlog-icon-card{border-radius:11px}.backlog-performance{padding:16px 12px;border-radius:17px}.bc-perf-head h2{font-size:23px}.bc-perf-actions{flex-direction:column}.bc-period-selector{width:100%;gap:6px}.bc-period-tabs{width:100%;justify-content:center}.bc-period-tabs button{flex:1}.bc-period-selector select{max-width:100%;flex:1 1 95px}.bc-period-selector #bcWeek{flex-basis:100%}#bcKpiRefresh{width:100%}.bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.bc-perf-grid>article{padding:13px 11px;border-radius:12px}.bc-perf-grid>article>strong{font-size:26px}.bc-perf-grid>article>span{font-size:11px}.bc-perf-grid>article>small{font-size:10px}.bc-perf-subtitle{font-size:15px}.bc-chart{padding:14px 9px}.inspection-shortcut{width:50px;height:50px;right:14px;bottom:15px}}
-@media(max-width:360px){.bc-perf-grid{grid-template-columns:1fr}.backlog-menu-item{font-size:11px}}
-@media(prefers-reduced-motion:reduce){.backlog-menu-item,.bc-perf-grid>article,.inspection-shortcut,.bc-chart-bar{transition:none}}
+/* Floating Start Inspection — same as Daily Maintenance */
+.inspection-shortcut{position:fixed;right:34px;bottom:28px;width:72px;height:72px;border:none;border-radius:50%;background:rgba(255,152,0,.72);box-shadow:0 8px 22px rgba(0,0,0,.20);display:flex;align-items:center;justify-content:center;cursor:grab;z-index:1500;user-select:none;touch-action:none;backdrop-filter:blur(4px);transition:box-shadow .2s ease,background .2s ease}
+.inspection-shortcut:hover{background:rgba(255,152,0,.88);box-shadow:0 10px 28px rgba(0,0,0,.26)}
+.inspection-shortcut:active{cursor:grabbing}
+.inspection-shortcut span{color:#fff;font-size:46px;font-weight:300;line-height:1;pointer-events:none}
+@media(max-width:1000px){
+ .backlog-menu-grid{width:min(850px,100%);gap:30px}
+ .bc-perf-head{flex-direction:column}
+ .bc-perf-actions{width:100%}
+ .bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+ .backlog-main-content{padding-top:72px}
+ .backlog-section{min-height:calc(100vh - 72px);padding:25px 18px 100px;background-size:auto 100%}
+ .backlog-description{width:100%;margin-bottom:38px;font-size:13px;line-height:1.55;text-align:justify}
+ .backlog-description p{margin-bottom:12px}
+ .backlog-menu-grid{width:100%;grid-template-columns:repeat(3,1fr);column-gap:12px;row-gap:28px}
+ .backlog-icon-card{width:98px;height:98px;border-radius:19px;filter:drop-shadow(0 6px 7px rgba(0,0,0,.18))}
+ .backlog-icon-card img{width:90px;height:90px}
+ .backlog-menu-item>span{display:block;width:90px;max-width:90px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:center;font-size:12px;font-weight:600;line-height:1.25;color:#222}
+ .backlog-performance{margin-top:40px}
+ .bc-perf-head h2{font-size:23px}
+ .bc-perf-actions{flex-direction:column;align-items:stretch}
+ .bc-period-selector{width:100%;gap:6px}
+ .bc-period-tabs{width:100%}
+ .bc-period-tabs button{flex:1}
+ .bc-period-selector select{max-width:100%;flex:1 1 95px}
+ .bc-period-selector #bcWeek{flex-basis:100%}
+ #bcKpiRefresh{width:100%}
+ .bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .bc-perf-grid>article{padding:14px;border-radius:14px}
+ .bc-perf-grid>article>strong{font-size:26px}
+ .bc-perf-subtitle{font-size:15px}
+ .bc-chart{padding:14px 9px}
+ .inspection-shortcut{width:62px;height:62px;right:18px;bottom:20px}
+ .inspection-shortcut span{font-size:40px}
+}
+@media(max-width:380px){
+ .backlog-section{padding-left:12px;padding-right:12px}
+ .backlog-description{font-size:12px}
+ .backlog-icon-card{width:86px;height:86px;border-radius:17px}
+ .backlog-icon-card img{width:78px;height:78px}
+ .backlog-menu-item>span{width:78px;max-width:78px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){.backlog-menu-item,.backlog-icon-card,.bc-perf-grid>article{transition:none}}
