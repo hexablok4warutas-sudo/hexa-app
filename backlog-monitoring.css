@@ -1,124 +1,747 @@
-/* HEXA BACKLOG MONITORING — aligned to Daily Maintenance CSS reference */
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;min-height:100%}
-body{font-family:Arial,Helvetica,sans-serif;background:#fff;overflow-x:hidden;color:#151515}
-button,select{font-family:inherit}
-button{cursor:pointer}
-button:focus-visible,select:focus-visible{outline:3px solid #f8a51c;outline-offset:3px}
+/* =========================================
+   HEXA - BACKLOG MONITORING
+   ========================================= */
 
-/* Header spacing: identical to Daily Maintenance */
-.backlog-main-content{width:100%;min-height:100vh;padding-top:88px}
-.backlog-section{
- position:relative;width:100%;min-height:calc(100vh - 88px);
- padding:36px 45px 100px;background-color:#fff;
- background-image:linear-gradient(rgba(255,255,255,.16),rgba(255,255,255,.16)),url("hexa-doodleblue.png");
- background-size:cover;background-position:center;background-repeat:repeat;
-}
-/* Description: same geometry and typography as Daily Maintenance */
-.backlog-description{width:min(1180px,100%);margin:0 auto 52px;color:#151515;font-size:15px;line-height:1.6;text-align:justify;background:transparent;border:0;box-shadow:none}
-.backlog-description p{margin-bottom:14px}
-.backlog-description p:last-child{margin-bottom:0}
-.backlog-description strong{font-weight:700}
 
-/* Menu: use Daily Maintenance's 4-column grid, icons only */
-.backlog-menu-grid{width:min(980px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:45px;align-items:start;justify-items:stretch}
-.backlog-menu-item{position:relative;border:0;outline:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:12px;cursor:pointer;transition:transform .2s ease,filter .2s ease;-webkit-tap-highlight-color:transparent;color:#222}
-.backlog-menu-item:hover{transform:translateY(-6px)}
-.backlog-menu-item:active{transform:scale(.96)}
-.backlog-icon-card{width:135px;height:135px;display:flex;align-items:center;justify-content:center;border-radius:24px;background:rgba(255,255,255,.10);filter:drop-shadow(0 7px 8px rgba(0,0,0,.18));transition:filter .2s ease,transform .2s ease}
-.backlog-menu-item:hover .backlog-icon-card{filter:drop-shadow(0 11px 12px rgba(0,0,0,.24))}
-.backlog-icon-card img{display:block;width:125px;height:125px;object-fit:contain;pointer-events:none}
-.backlog-menu-item>span{max-width:150px;text-align:center;font-size:14px;font-weight:600;line-height:1.25;color:#222}
-.backlog-menu-item.search-hidden{display:none}
+/* =========================================
+   GLOBAL
+   ========================================= */
 
-/* KPI begins below menu, matching Daily Maintenance KPI spacing */
-/* KPI shell */
-.backlog-performance{width:min(1200px,100%);margin:55px auto 0;background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;color:#17283b}
-.bc-perf-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px}
-.bc-perf-head h2{font-size:clamp(24px,2.6vw,32px);margin:0 0 8px;color:#122d43}
-.bc-perf-head p{font-size:13px;color:#506778;margin:0;line-height:1.5}
-.bc-perf-actions{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
-.bc-period-selector{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.bc-period-tabs{display:flex;gap:3px;background:#eaf2fa;padding:4px;border-radius:11px}
-.bc-period-tabs button{background:transparent;border:0;border-radius:8px;padding:10px 13px;color:#496781;font-size:12px;font-weight:800}
-.bc-period-tabs button.is-active{background:linear-gradient(135deg,#2688df,#125da6);color:#fff;box-shadow:0 3px 8px rgba(19,95,169,.2)}
-.bc-period-selector select{height:41px;max-width:320px;border:1px solid #cbdde9;border-radius:10px;padding:0 10px;background:#fff;color:#28445c;font-size:12px;font-weight:700}
-.bc-period-selector select[hidden]{display:none}
-#bcKpiRefresh{height:41px;padding:0 17px;background:linear-gradient(135deg,#ffa529,#e9830a);border:0;border-radius:10px;color:white;font-size:12px;font-weight:800;box-shadow:0 3px 9px rgba(232,131,10,.2)}
-#bcKpiRefresh:hover{filter:brightness(.96)}
-.bc-period-information{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 18px;border-bottom:1px solid #e4edf4;padding:19px 0 15px;margin-bottom:13px;font-size:12px;font-weight:700;color:#607b92}
-.bc-perf-status{font-size:12px;line-height:1.6;color:#718396;background:#f3f8fc;border-radius:10px;padding:10px 13px;margin:0 0 22px;overflow-wrap:anywhere}
-.bc-perf-subtitle{font-size:17px;color:#244a6e;margin:27px 0 14px;padding-left:11px;border-left:4px solid var(--bc-orange)}
-.bc-first-subtitle{margin-top:15px}
-/* KPI metric cards, including the inspection cards */
-.bc-perf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.bc-perf-grid>article,.backlog-kpi-card{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:8px;background:#fff;border:1px solid #dce8f2;border-radius:16px;padding:19px 18px;box-shadow:0 3px 10px rgba(29,71,109,.045);transition:transform .18s,border-color .18s}
-.bc-perf-grid>article:hover{transform:translateY(-2px);border-color:#a8cde9}
-.bc-perf-grid>article>span,.backlog-kpi-label{font-size:12px;color:#637e96;font-weight:800;line-height:1.35}
-.bc-perf-grid>article>strong,.backlog-kpi-value{font-size:clamp(26px,3vw,36px);font-weight:800;line-height:1.15;color:#155e9c;letter-spacing:-.7px;font-variant-numeric:tabular-nums}
-.bc-perf-grid>article>small{font-size:11px;color:#8091a0;line-height:1.5}
-.bc-perf-note{margin-top:18px;border-left:4px solid #f6ad38;background:#fff8ec;color:#796344;padding:13px 16px;border-radius:0 10px 10px 0;font-size:12px;line-height:1.65}
-/* Charts and history */
-.bc-perf-history{margin-top:25px}
-.bc-perf-history>h3{font-size:16px;color:#244a6e;margin:26px 0 10px}
-.bc-chart-caption{font-size:12px;color:#7c8d9d;margin:0 0 12px}
-.bc-chart{min-height:205px;border:1px solid var(--bc-border);border-radius:16px;background:#fbfdff;padding:22px 15px 16px;display:flex;align-items:flex-end;justify-content:flex-start;gap:17px;overflow-x:auto;color:#8193a4;font-size:12px}
-.bc-chart-group{flex:1 0 100px;max-width:180px;min-width:92px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:9px;min-height:170px}
-.bc-chart-count{font-size:11px;font-weight:800;color:#526b80;text-align:center;white-space:nowrap}
-.bc-chart-bars{height:150px;display:flex;align-items:flex-end;justify-content:center;gap:7px;width:100%}
-.bc-chart-bar{width:27px;min-height:2px;border-radius:6px 6px 0 0;background:#3e95dc;transition:height .2s}
-.bc-chart-bar.incoming,.bc-chart-bar.waiting{background:#328bd3}
-.bc-chart-bar.removed,.bc-chart-bar.ready{background:#f4b62d}
-.bc-chart-bar.supply{background:#26ae84}
-.bc-chart-label{font-size:11px;color:#617a8e;font-weight:700;text-align:center;overflow-wrap:anywhere}
-.bc-chart-legend{font-size:11px;color:#7a8d9f;margin:9px 0 16px}
-.bc-perf-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--bc-border);border-radius:14px}
-.bc-perf-table-wrap table{width:100%;min-width:720px;border-collapse:collapse;font-size:12px}
-.bc-perf-table-wrap th{background:#eaf3fb;color:#2e5a7c;text-align:left;padding:13px 12px;font-weight:800;white-space:nowrap}
-.bc-perf-table-wrap td{padding:12px;border-top:1px solid #e7edf2;color:#435b6f}
-.bc-perf-table-wrap tbody tr:nth-child(even){background:#f8fbfe}
-/* Floating Start Inspection — same as Daily Maintenance */
-.inspection-shortcut{position:fixed;right:34px;bottom:28px;width:72px;height:72px;border:none;border-radius:50%;background:rgba(255,152,0,.72);box-shadow:0 8px 22px rgba(0,0,0,.20);display:flex;align-items:center;justify-content:center;cursor:grab;z-index:1500;user-select:none;touch-action:none;backdrop-filter:blur(4px);transition:box-shadow .2s ease,background .2s ease}
-.inspection-shortcut:hover{background:rgba(255,152,0,.88);box-shadow:0 10px 28px rgba(0,0,0,.26)}
-.inspection-shortcut:active{cursor:grabbing}
-.inspection-shortcut span{color:#fff;font-size:46px;font-weight:300;line-height:1;pointer-events:none}
-@media(max-width:1000px){
- .backlog-menu-grid{width:min(850px,100%);gap:30px}
- .bc-perf-head{flex-direction:column}
- .bc-perf-actions{width:100%}
- .bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-@media(max-width:600px){
- .backlog-main-content{padding-top:72px}
- .backlog-section{min-height:calc(100vh - 72px);padding:25px 18px 100px;background-size:auto 100%}
- .backlog-description{width:100%;margin-bottom:38px;font-size:13px;line-height:1.55;text-align:justify}
- .backlog-description p{margin-bottom:12px}
- .backlog-menu-grid{width:100%;grid-template-columns:repeat(3,1fr);column-gap:12px;row-gap:28px}
- .backlog-icon-card{width:98px;height:98px;border-radius:19px;filter:drop-shadow(0 6px 7px rgba(0,0,0,.18))}
- .backlog-icon-card img{width:90px;height:90px}
- .backlog-menu-item>span{display:block;width:90px;max-width:90px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-align:center;font-size:12px;font-weight:600;line-height:1.25;color:#222}
- .backlog-performance{margin-top:40px}
- .bc-perf-head h2{font-size:23px}
- .bc-perf-actions{flex-direction:column;align-items:stretch}
- .bc-period-selector{width:100%;gap:6px}
- .bc-period-tabs{width:100%}
- .bc-period-tabs button{flex:1}
- .bc-period-selector select{max-width:100%;flex:1 1 95px}
- .bc-period-selector #bcWeek{flex-basis:100%}
- #bcKpiRefresh{width:100%}
- .bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .bc-perf-grid>article{padding:14px;border-radius:14px}
- .bc-perf-grid>article>strong{font-size:26px}
- .bc-perf-subtitle{font-size:15px}
- .bc-chart{padding:14px 9px}
- .inspection-shortcut{width:62px;height:62px;right:18px;bottom:20px}
- .inspection-shortcut span{font-size:40px}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
 }
-@media(max-width:380px){
- .backlog-section{padding-left:12px;padding-right:12px}
- .backlog-description{font-size:12px}
- .backlog-icon-card{width:86px;height:86px;border-radius:17px}
- .backlog-icon-card img{width:78px;height:78px}
- .backlog-menu-item>span{width:78px;max-width:78px;font-size:11px}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  overflow-x: hidden;
 }
-@media(prefers-reduced-motion:reduce){.backlog-menu-item,.backlog-icon-card,.bc-perf-grid>article{transition:none}}
+
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+.backlog-main-content {
+  width: 100%;
+  min-height: 100vh;
+
+  padding-top: 88px;
+}
+
+
+/* =========================================
+   BACKLOG SECTION
+   ========================================= */
+
+.backlog-section {
+  position: relative;
+
+  width: 100%;
+
+  min-height:
+    calc(100vh - 88px);
+
+  padding:
+    36px
+    45px
+    110px;
+
+  background-color: #ffffff;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.16)
+    ),
+    url("hexa-doodle.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+}
+
+
+/* =========================================
+   DESCRIPTION
+   ========================================= */
+
+.backlog-description {
+  width: min(
+    1180px,
+    100%
+  );
+
+  margin:
+    0 auto 52px;
+
+  color: #151515;
+
+  font-size: 15px;
+
+  line-height: 1.6;
+
+  text-align: justify;
+}
+
+.backlog-description p {
+  margin-bottom: 14px;
+}
+
+.backlog-description p:last-child {
+  margin-bottom: 0;
+}
+
+.backlog-description strong {
+  font-weight: 700;
+}
+
+
+/* =========================================
+   BACKLOG MENU GRID
+   ========================================= */
+
+.backlog-menu-grid {
+  width: min(
+    620px,
+    100%
+  );
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap: 70px;
+
+  align-items: start;
+}
+
+
+/* =========================================
+   MENU ITEM
+   ========================================= */
+
+.backlog-menu-item {
+  position: relative;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: flex-start;
+
+  gap: 12px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+.backlog-menu-item:hover {
+  transform:
+    translateY(-6px);
+}
+
+.backlog-menu-item:active {
+  transform:
+    scale(0.96);
+}
+
+
+/* =========================================
+   ICON CARD
+   ========================================= */
+
+.backlog-icon-card {
+  width: 135px;
+  height: 135px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 24px;
+
+  background:
+    rgba(255, 255, 255, 0.10);
+
+  filter:
+    drop-shadow(
+      0 7px 8px
+      rgba(0, 0, 0, 0.18)
+    );
+
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.backlog-menu-item:hover
+.backlog-icon-card {
+  filter:
+    drop-shadow(
+      0 11px 12px
+      rgba(0, 0, 0, 0.24)
+    );
+}
+
+
+/* =========================================
+   ICON
+   ========================================= */
+
+.backlog-icon-card img {
+  display: block;
+
+  width: 125px;
+  height: 125px;
+
+  object-fit: contain;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   MENU LABEL
+   ========================================= */
+
+.backlog-menu-item > span {
+  max-width: 170px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  line-height: 1.25;
+
+  color: #222222;
+}
+
+
+/* =========================================
+   KPI SECTION
+   ========================================= */
+
+.backlog-kpi-section {
+  width: min(
+    1100px,
+    100%
+  );
+
+  margin:
+    70px auto 0;
+}
+
+
+/* =========================================
+   KPI HEADING
+   ========================================= */
+
+.backlog-kpi-heading {
+  margin-bottom: 20px;
+
+  padding-bottom: 14px;
+
+  border-bottom:
+    1px solid
+    rgba(0, 0, 0, 0.10);
+}
+
+.backlog-kpi-heading h2 {
+  margin-bottom: 5px;
+
+  color: #1d1d1d;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+.backlog-kpi-heading p {
+  color: #666666;
+
+  font-size: 13px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================
+   KPI GRID
+   ========================================= */
+
+.backlog-kpi-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      1fr
+    );
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   KPI CARD
+   ========================================= */
+
+.backlog-kpi-card {
+  min-height: 135px;
+
+  padding:
+    20px;
+
+  border:
+    1px solid
+    rgba(0, 0, 0, 0.08);
+
+  border-radius: 18px;
+
+  background:
+    rgba(255, 255, 255, 0.82);
+
+  box-shadow:
+    0 6px 18px
+    rgba(0, 0, 0, 0.08);
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+
+/* =========================================
+   KPI LABEL
+   ========================================= */
+
+.backlog-kpi-label {
+  margin-bottom: 7px;
+
+  color: #555555;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.4px;
+}
+
+
+/* =========================================
+   KPI VALUE
+   ========================================= */
+
+.backlog-kpi-value {
+  color: #1c1c1c;
+
+  font-size: 31px;
+
+  font-weight: 700;
+
+  line-height: 1.1;
+}
+
+.backlog-kpi-card small {
+  margin-top: 8px;
+
+  color: #777777;
+
+  font-size: 11px;
+
+  line-height: 1.35;
+}
+
+
+/* =========================================
+   FLOATING START INSPECTION
+   ========================================= */
+
+.inspection-shortcut {
+  position: fixed;
+
+  right: 34px;
+  bottom: 28px;
+
+  width: 72px;
+  height: 72px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 152, 0, 0.72);
+
+  box-shadow:
+    0 8px 22px
+    rgba(0, 0, 0, 0.20);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 1500;
+
+  user-select: none;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  backdrop-filter:
+    blur(4px);
+
+  transition:
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.inspection-shortcut:hover {
+  background:
+    rgba(255, 152, 0, 0.88);
+
+  box-shadow:
+    0 10px 28px
+    rgba(0, 0, 0, 0.26);
+}
+
+.inspection-shortcut:active {
+  transform:
+    scale(0.96);
+}
+
+.inspection-shortcut span {
+  color: #ffffff;
+
+  font-size: 46px;
+
+  font-weight: 300;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (max-width: 1000px) {
+
+  .backlog-kpi-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .backlog-main-content {
+    padding-top: 72px;
+  }
+
+
+  .backlog-section {
+    min-height:
+      calc(100vh - 72px);
+
+    padding:
+      25px
+      18px
+      100px;
+
+    background-size:
+      auto 100%;
+  }
+
+
+  .backlog-description {
+    width: 100%;
+
+    margin-bottom: 38px;
+
+    font-size: 13px;
+
+    line-height: 1.55;
+
+    text-align: justify;
+  }
+
+
+  .backlog-description p {
+    margin-bottom: 12px;
+  }
+
+
+  /* =====================================
+     TWO MENU CARDS
+     ===================================== */
+
+  .backlog-menu-grid {
+    width: 100%;
+
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+
+    column-gap: 24px;
+
+    row-gap: 28px;
+  }
+
+
+  .backlog-icon-card {
+    width: 98px;
+    height: 98px;
+
+    border-radius: 19px;
+
+    filter:
+      drop-shadow(
+        0 6px 7px
+        rgba(0, 0, 0, 0.18)
+      );
+  }
+
+
+  .backlog-icon-card img {
+    width: 90px;
+    height: 90px;
+  }
+
+
+  .backlog-menu-item > span {
+    display: block;
+
+    width: 125px;
+
+    max-width: 125px;
+
+    text-align: center;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    line-height: 1.25;
+
+    color: #222222;
+  }
+
+
+  /* =====================================
+     KPI
+     ===================================== */
+
+  .backlog-kpi-section {
+    margin-top: 52px;
+  }
+
+
+  .backlog-kpi-heading h2 {
+    font-size: 18px;
+  }
+
+
+  .backlog-kpi-heading p {
+    font-size: 12px;
+  }
+
+
+  .backlog-kpi-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
+
+    gap: 12px;
+  }
+
+
+  .backlog-kpi-card {
+    min-height: 120px;
+
+    padding: 15px;
+
+    border-radius: 15px;
+  }
+
+
+  .backlog-kpi-label {
+    font-size: 10px;
+  }
+
+
+  .backlog-kpi-value {
+    font-size: 26px;
+  }
+
+
+  .backlog-kpi-card small {
+    font-size: 10px;
+  }
+
+
+  .inspection-shortcut {
+    width: 62px;
+    height: 62px;
+
+    right: 18px;
+    bottom: 20px;
+  }
+
+
+  .inspection-shortcut span {
+    font-size: 40px;
+  }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 380px) {
+
+  .backlog-section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+
+  .backlog-description {
+    font-size: 12px;
+  }
+
+
+  .backlog-menu-grid {
+    column-gap: 10px;
+  }
+
+
+  .backlog-icon-card {
+    width: 86px;
+    height: 86px;
+
+    border-radius: 17px;
+  }
+
+
+  .backlog-icon-card img {
+    width: 78px;
+    height: 78px;
+  }
+
+
+  .backlog-menu-item > span {
+    width: 110px;
+
+    max-width: 110px;
+
+    font-size: 11px;
+  }
+
+
+  .backlog-kpi-grid {
+    gap: 9px;
+  }
+
+
+  .backlog-kpi-card {
+    padding: 12px;
+  }
+
+}
+
+
+/* BACKLOG PERFORMANCE — independent from existing KPI/menu */
+.backlog-performance{width:min(1100px,100%);margin:34px auto 0;padding:24px;border:1px solid #e1e7ef;border-radius:20px;background:rgba(255,255,255,.95);box-shadow:0 6px 18px #15253b0b}
+.bc-perf-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.bc-perf-head h2{font-size:20px;color:#1e293b}
+.bc-perf-head p,.bc-perf-status{font-size:13px;color:#64748b;margin-top:5px}
+.bc-perf-actions{display:flex;gap:8px}
+.bc-perf-actions select,.bc-perf-actions button{padding:10px 12px;border:1px solid #d6e0eb;border-radius:10px;background:white;color:#26364c;cursor:pointer}
+.bc-perf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.bc-perf-grid article{padding:17px;border:1px solid #e1e7ef;border-radius:14px;background:#f8fafc;min-width:0}
+.bc-perf-grid span{display:block;color:#64748b;font-size:12px;font-weight:700}
+.bc-perf-grid strong{display:block;margin-top:9px;font-size:26px;color:#1e293b;overflow-wrap:anywhere}
+.bc-perf-grid small{display:block;margin-top:7px;color:#64748b;font-size:11px;line-height:1.4}
+.bc-perf-subtitle,.bc-perf-history h3{font-size:16px;color:#26364c;margin-top:28px}
+.bc-perf-note{font-size:12px;line-height:1.6;color:#64748b;margin-top:16px}
+.bc-perf-table-wrap{overflow-x:auto;margin-top:12px}
+.bc-perf-table-wrap table{width:100%;border-collapse:collapse;min-width:720px;font-size:12px}
+.bc-perf-table-wrap th,.bc-perf-table-wrap td{padding:12px;text-align:left;border-bottom:1px solid #e2e8f0;white-space:nowrap}
+.bc-perf-table-wrap th{background:#f1f5f9;color:#334155}
+@media(max-width:650px){.backlog-performance{padding:15px}.bc-perf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bc-perf-grid article{padding:12px}.bc-perf-grid strong{font-size:22px}}
+
+/* KPI charts */
+.bc-chart{display:flex;align-items:flex-end;gap:12px;overflow-x:auto;padding:16px 8px 12px;min-height:130px;border-bottom:1px solid #e2e8f0}.bc-chart-group{min-width:75px;flex:1;max-width:160px;text-align:center}.bc-chart-bars{height:165px;display:flex;align-items:flex-end;justify-content:center;gap:5px;border-bottom:1px solid #cbd5e1}.bc-chart-bar{width:30%;min-width:12px;border-radius:5px 5px 0 0;min-height:2px}.bc-chart-bar.incoming{background:#2563eb}.bc-chart-bar.removed{background:#f59e0b}.bc-chart-bar.waiting{background:#ef4444}.bc-chart-bar.ready{background:#10b981}.bc-chart-bar.supply{background:#64748b}.bc-chart-label{font-size:11px;color:#64748b;margin-top:8px;overflow-wrap:anywhere}.bc-chart-count{font-size:11px;font-weight:700;color:#334155}.bc-chart-legend{font-size:12px;color:#64748b;margin-top:10px}.bc-chart-caption{font-size:12px;color:#64748b;margin-top:7px}
+
+/* KPI terpadu: kartu legacy berada dalam grid performance */
+.backlog-performance .backlog-kpi-card{min-height:120px;background:#f8fafc;box-shadow:none;padding:17px;border:1px solid #e1e7ef;border-radius:14px}
+.backlog-performance .backlog-kpi-value{font-size:26px}
+.bc-first-subtitle{margin-top:16px}
+
+
+/* WEEKLY / MONTHLY DATE PICKER */
+.bc-period-selector{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.bc-period-tabs{display:flex;padding:3px;border:1px solid #d6e0eb;border-radius:11px;background:#f1f5f9}
+.bc-period-tabs button{padding:8px 13px;border:0;border-radius:8px;background:transparent;color:#475569;cursor:pointer;font-size:13px}
+.bc-period-tabs button.is-active{background:#fff;color:#1d4ed8;box-shadow:0 1px 4px #1e293b1a;font-weight:700}
+.bc-period-information{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-top:15px;font-size:12px;color:#64748b}
+#bcSelectedRange{font-weight:700;color:#334155}
+@media(max-width:650px){.bc-period-selector{width:100%}.bc-period-selector select{flex:1;min-width:0}.bc-perf-actions{width:100%;flex-wrap:wrap}}
