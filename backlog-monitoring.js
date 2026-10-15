@@ -327,6 +327,7 @@ async function bcKpiLoad(){
   ]);
   if(active.status==='fulfilled'){
     const data=active.value,rows=Array.isArray(data.rows)?data.rows:[];
+    bcValueRender(rows);
     const count=s=>rows.filter(r=>String(r.N||'').trim().toUpperCase()===s).length;
     const waiting=count('WAITING PART'),ready=count('PART READY'),supply=count('SUPPLY');
     bcKpiSet('bcKpiTotal',bcKpiNumber(rows.length));
@@ -340,6 +341,7 @@ async function bcKpiLoad(){
     bcKpiSet('bcLastSource','Last Source Update: '+(data.updatedAt||'Belum tersedia'));
   }else{
     ['bcKpiTotal','bcKpiWaiting','bcKpiReady','bcKpiSupply','bcKpiSupplyRatio','bcKpiAging'].forEach(id=>bcKpiSet(id,'—'));
+    bcValueError();
   }
   if(movement.status==='fulfilled'){
     bcKpiGroups=Array.isArray(movement.value.groups)?movement.value.groups:[];
@@ -383,4 +385,71 @@ function bcKpiMaterialChart(waiting,ready,supply){
   const root=bcKpiEl('bcMaterialChart');if(!root)return;root.replaceChildren();
   const max=Math.max(1,waiting,ready,supply);
   [['Waiting Part','waiting',waiting],['Part Ready','ready',ready],['Supply','supply',supply]].forEach(([label,kind,value])=>bcKpiChartGroup(root,label,[{kind,value}],max));
+}
+
+
+// ======================================================
+// BACKLOG MATERIAL VALUE — read-only, uses current getBacklogControl rows
+// PRICE = column S, Status Part = N, Aging WO = X
+// ======================================================
+let bcValueLastRows=[];
+let bcValueMode='money';
+const bcValueColors={'WAITING PART':'#e58d26','PART READY':'#16a34a','SUPPLY':'#64748b'};
+function bcValueMoney(n){return 'Rp'+new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(n);}
+function bcValuePrice(v){
+  if(typeof v==='number')return Number.isFinite(v)?v:null;
+  if(v===null||v===undefined||String(v).trim()==='')return null;
+  let s=String(v).replace(/\s|Rp/gi,'').trim();
+  if(!s||s==='-'||s==='#N/A')return null;
+  // Indonesia format: 1.234.567,89; plain integer or decimal strings supported
+  if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',','.');
+  else if(s.includes(','))s=s.replace(',','.');
+  else if(/^-?\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,'');
+  const n=Number(s);return Number.isFinite(n)?n:null;
+}
+function bcValueRender(rows){
+  bcValueLastRows=rows;
+  const statusNames=['WAITING PART','PART READY','SUPPLY'];
+  const totals=Object.fromEntries(statusNames.map(s=>[s,{value:0,count:0}]));
+  let total=0,aging=0,valid=0,other=0;
+  const waitingItems=[];
+  for(const r of rows){
+    const price=bcValuePrice(r.S);
+    if(price===null)continue;
+    valid++;total+=price;
+    const status=String(r.N||'').trim().toUpperCase();
+    if(totals[status]){totals[status].value+=price;totals[status].count++;}else other+=price;
+    const days=bcValuePrice(r.X);
+    if(days!==null&&days>30)aging+=price;
+    if(status==='WAITING PART')waitingItems.push({unit:r.E||'',part:r.I||'',desc:r.J||'',price,aging:days});
+  }
+  const waiting=totals['WAITING PART'].value,ready=totals['PART READY'].value,supply=totals.SUPPLY.value;
+  const pct=(a,b)=>b>0?(100*a/b).toLocaleString('id-ID',{maximumFractionDigits:2})+'%':'—';
+  const set=(id,v)=>bcKpiSet(id,v);
+  set('bcValueTotal',valid?bcValueMoney(total):'—');
+  set('bcValueWaiting',bcValueMoney(waiting));set('bcValueReady',bcValueMoney(ready));set('bcValueSupply',bcValueMoney(supply));
+  set('bcValueReadiness',pct(ready,waiting+ready));set('bcValueSupplyRatio',pct(supply,total));set('bcValueReadyRatio',pct(ready,total));
+  set('bcValueAging',bcValueMoney(aging));set('bcValueCoverage',pct(valid,rows.length));
+  const stack=bcKpiEl('bcValueStack');if(stack){stack.replaceChildren();
+    [...statusNames,'OTHER'].forEach(s=>{const value=s==='OTHER'?other:totals[s].value;const part=document.createElement('span');part.style.width=(total>0?100*value/total:0)+'%';part.style.background=bcValueColors[s]||'#b9c3d0';part.title=s+': '+bcValueMoney(value);stack.append(part);});}
+  const bars=bcKpiEl('bcValueBars');if(bars){bars.replaceChildren();
+    const denom=bcValueMode==='money'?total:rows.length;
+    [...statusNames].forEach(s=>{const value=bcValueMode==='money'?totals[s].value:totals[s].count;
+      const row=document.createElement('div');row.className='bc-value-bar-row';
+      const label=document.createElement('div');label.className='bc-value-bar-label';
+      const left=document.createElement('span');left.textContent=s;
+      const right=document.createElement('strong');right.textContent=bcValueMode==='money'?bcValueMoney(value):bcKpiNumber(value)+' records';
+      label.append(left,right);const track=document.createElement('div');track.className='bc-value-track';
+      const fill=document.createElement('div');fill.className='bc-value-fill';fill.style.background=bcValueColors[s];fill.style.width=(denom>0?Math.max(0,100*value/denom):0)+'%';
+      track.append(fill);row.append(label,track);bars.append(row);
+    });}
+  const tbody=bcKpiEl('bcValueTopWaiting');if(tbody){tbody.replaceChildren();
+    waitingItems.sort((a,b)=>b.price-a.price).slice(0,10).forEach(item=>{const tr=document.createElement('tr');
+      [item.unit,item.part,item.desc,bcValueMoney(item.price),item.aging===null?'—':String(Math.round(item.aging))].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.append(td)});tbody.append(tr);});
+    if(!tbody.children.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=5;td.textContent='Tidak ada Waiting Part dengan PRICE valid';tr.append(td);tbody.append(tr);}}
+  set('bcValueNote',`Sumber: snapshot Backlog Control terbaru • ${valid} dari ${rows.length} record memiliki PRICE valid. PRICE dijumlahkan langsung tanpa dikalikan Qty. Nilai SUPPLY tidak berarti biaya terealisasi. Filter Weekly/Monthly tidak mengubah snapshot ini.`);
+}
+function bcValueError(){['bcValueTotal','bcValueWaiting','bcValueReady','bcValueSupply','bcValueReadiness','bcValueSupplyRatio','bcValueReadyRatio','bcValueAging','bcValueCoverage'].forEach(id=>bcKpiSet(id,'—'));bcKpiSet('bcValueNote','Data PRICE belum tersedia dari sumber Backlog Control.');}
+if(bcKpiEl('bcValueModeMoney')){
+  [['bcValueModeMoney','money'],['bcValueModeRecords','records']].forEach(([id,mode])=>bcKpiEl(id).addEventListener('click',()=>{bcValueMode=mode;bcKpiEl('bcValueModeMoney').classList.toggle('is-active',mode==='money');bcKpiEl('bcValueModeRecords').classList.toggle('is-active',mode==='records');bcValueRender(bcValueLastRows);}));
 }
