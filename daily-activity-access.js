@@ -637,7 +637,7 @@
             document.getElementById(`lubeTruck${truckNumber}EditButton`);
 
           const scheduleLocked =
-            status === "APPROVAL" || status === "APPROVED";
+                ["APPROVAL", "APPROVED", "RESUME ISSUED"].includes(status);
 
           if (editButton) {
             editButton.disabled = scheduleLocked;
@@ -651,7 +651,7 @@
           button.hidden =
             !hasDailyActivityPermission("COMPLETE_ACTIVITY");
 
-          if (status === "APPROVAL" || status === "APPROVED") {
+         if (scheduleLocked) {
             button.disabled = true;
             button.classList.add("is-completed");
             button.textContent = "✓ COMPLETED";
