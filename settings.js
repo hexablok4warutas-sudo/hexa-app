@@ -71,6 +71,11 @@ async function initializeSettings() {
   currentSettingsUser =
     sessionUser;
 
+  // Tampilkan profil dari session seketika, tanpa menunggu API.
+  applyRoleTheme(sessionUser.kode);
+  renderSettingsProfile(sessionUser);
+  document.documentElement.classList.add("settings-profile-ready");
+
   initializeSettingsNavigation();
   initializeSettingsLogout();
 
