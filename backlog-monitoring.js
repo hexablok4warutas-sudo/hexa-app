@@ -398,14 +398,37 @@ const bcValueColors={'WAITING PART':'#e58d26','PART READY':'#16a34a','SUPPLY':'#
 function bcValueMoney(n){return 'Rp'+new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(n);}
 function bcValuePrice(v){
   if(typeof v==='number')return Number.isFinite(v)?v:null;
-  if(v===null||v===undefined||String(v).trim()==='')return null;
-  let s=String(v).replace(/\s|Rp/gi,'').trim();
-  if(!s||s==='-'||s==='#N/A')return null;
-  // Indonesia format: 1.234.567,89; plain integer or decimal strings supported
-  if(s.includes(',')&&s.includes('.'))s=s.replace(/\./g,'').replace(',','.');
-  else if(s.includes(','))s=s.replace(',','.');
-  else if(/^-?\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,'');
-  const n=Number(s);return Number.isFinite(n)?n:null;
+  if(v===null||v===undefined)return null;
+  let s=String(v).replace(/\u00a0/g,'').replace(/\s/g,'').replace(/rp/gi,'').trim();
+  if(!s||s==='-'||/^#(N\/A|VALUE!|REF!|DIV\/0!)$/i.test(s))return null;
+  let negative=false;
+  if(/^\(.*\)$/.test(s)){negative=true;s=s.slice(1,-1);}
+  s=s.replace(/[^0-9.,+-]/g,'');
+  if(!s||!/[0-9]/.test(s))return null;
+  const dot=s.lastIndexOf('.'),comma=s.lastIndexOf(',');
+  if(dot>=0&&comma>=0){
+    // Separator paling kanan adalah desimal; separator lain ribuan.
+    const decimal=dot>comma?'.':',';
+    const thousand=decimal==='.'?',':'.';
+    s=s.split(thousand).join('').replace(decimal,'.');
+  }else if(dot>=0||comma>=0){
+    const sep=dot>=0?'.':',';
+    const parts=s.split(sep);
+    if(parts.length>2){
+      // Contoh: 6.138.502.868 / 6,138,502,868
+      if(parts.slice(1).every(x=>/^\d{3}$/.test(x)))s=parts.join('');
+      else if(parts.slice(1,-1).every(x=>/^\d{3}$/.test(x))&&/^\d{1,2}$/.test(parts.at(-1)))s=parts.slice(0,-1).join('')+'.'+parts.at(-1);
+      else return null;
+    }else{
+      const [whole,fraction]=parts;
+      // PRICE adalah nominal rupiah: 1.234 / 1,234 = 1234.
+      // Satu/two digit terakhir diperlakukan sebagai desimal.
+      if(/^[-+]?\d{1,3}$/.test(whole)&&/^\d{3}$/.test(fraction))s=whole+fraction;
+      else s=whole+'.'+fraction;
+    }
+  }
+  const n=Number(s);
+  return Number.isFinite(n)?(negative?-Math.abs(n):n):null;
 }
 function bcValueRender(rows){
   bcValueLastRows=rows;
@@ -413,9 +436,15 @@ function bcValueRender(rows){
   const totals=Object.fromEntries(statusNames.map(s=>[s,{value:0,count:0}]));
   let total=0,aging=0,valid=0,other=0;
   const waitingItems=[];
+  const invalidPriceExamples=[];
+  const validPriceExamples=[];
   for(const r of rows){
     const price=bcValuePrice(r.S);
-    if(price===null)continue;
+    if(price===null){
+      if(invalidPriceExamples.length<8)invalidPriceExamples.push({raw:r.S,unit:r.E,status:r.N});
+      continue;
+    }
+    if(validPriceExamples.length<8)validPriceExamples.push({raw:r.S,parsed:price,unit:r.E});
     valid++;total+=price;
     const status=String(r.N||'').trim().toUpperCase();
     if(totals[status]){totals[status].value+=price;totals[status].count++;}else other+=price;
@@ -423,6 +452,11 @@ function bcValueRender(rows){
     if(days!==null&&days>30)aging+=price;
     if(status==='WAITING PART')waitingItems.push({unit:r.E||'',part:r.I||'',desc:r.J||'',price,aging:days});
   }
+  console.info('[HEXA PRICE Audit]',{
+    totalRecords:rows.length,validPriceRecords:valid,
+    invalidPriceRecords:rows.length-valid,totalParsedRupiah:total,
+    validPriceExamples,invalidPriceExamples
+  });
   const waiting=totals['WAITING PART'].value,ready=totals['PART READY'].value,supply=totals.SUPPLY.value;
   const pct=(a,b)=>b>0?(100*a/b).toLocaleString('id-ID',{maximumFractionDigits:2})+'%':'—';
   const set=(id,v)=>bcKpiSet(id,v);
@@ -447,7 +481,7 @@ function bcValueRender(rows){
     waitingItems.sort((a,b)=>b.price-a.price).slice(0,10).forEach(item=>{const tr=document.createElement('tr');
       [item.unit,item.part,item.desc,bcValueMoney(item.price),item.aging===null?'—':String(Math.round(item.aging))].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.append(td)});tbody.append(tr);});
     if(!tbody.children.length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=5;td.textContent='Tidak ada Waiting Part dengan PRICE valid';tr.append(td);tbody.append(tr);}}
-  set('bcValueNote',`Sumber: snapshot Backlog Control terbaru • ${valid} dari ${rows.length} record memiliki PRICE valid. PRICE dijumlahkan langsung tanpa dikalikan Qty. Nilai SUPPLY tidak berarti biaya terealisasi. Filter Weekly/Monthly tidak mengubah snapshot ini.`);
+  set('bcValueNote',`Sumber: snapshot Backlog Control terbaru • ${valid} dari ${rows.length} record memiliki PRICE valid. PRICE dijumlahkan langsung tanpa dikalikan Qty. ${rows.length-valid} record tanpa PRICE valid (lihat Console: HEXA PRICE Audit). Nilai SUPPLY tidak berarti biaya terealisasi. Filter Weekly/Monthly tidak mengubah snapshot ini.`);
 }
 function bcValueError(){['bcValueTotal','bcValueWaiting','bcValueReady','bcValueSupply','bcValueReadiness','bcValueSupplyRatio','bcValueReadyRatio','bcValueAging','bcValueCoverage'].forEach(id=>bcKpiSet(id,'—'));bcKpiSet('bcValueNote','Data PRICE belum tersedia dari sumber Backlog Control.');}
 if(bcKpiEl('bcValueModeMoney')){
