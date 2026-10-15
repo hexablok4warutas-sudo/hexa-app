@@ -130,10 +130,9 @@
 
     <section class="menu-section">
 
-      <div
-        class="menu-grid"
-        id="menuGrid"
-      >
+      <div class="menu-carousel" id="menuCarousel">
+        <button type="button" class="menu-carousel-arrow menu-carousel-prev" id="menuPrev" aria-label="Menu sebelumnya">&#10094;</button>
+        <div class="menu-grid" id="menuGrid">
 
 
         <!-- DAILY MAINTENANCE -->
@@ -249,7 +248,7 @@
           data-menu="hexa-games"
           title="HEXA Games — segera hadir"
         >
-          <span class="hexa-games-icon" aria-hidden="true">🎮</span>
+          <img src="hexa-icon-svg-games.svg" alt="HEXA GAMES">
           <span>HEXA GAMES</span>
         </button>
 
@@ -275,7 +274,10 @@
         </button>
 
 
+        </div>
+        <button type="button" class="menu-carousel-arrow menu-carousel-next" id="menuNext" aria-label="Menu berikutnya">&#10095;</button>
       </div>
+      <div class="menu-carousel-dots" id="menuDots" aria-label="Halaman menu"></div>
 
     </section>
 
