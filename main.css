@@ -289,6 +289,17 @@ body {
 }
 
 
+/* HEXA GAMES: icon sementara tanpa file gambar tambahan */
+.hexa-games-icon {
+  width: 125px;
+  height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 76px !important;
+  line-height: 1;
+}
+
 /* =========================================
    SETTINGS SELALU TERAKHIR
    ========================================= */
@@ -479,6 +490,8 @@ body {
     height: 90px;
   }
 
+  .hexa-games-icon { width: 90px; height: 90px; font-size: 56px !important; }
+
 
   /* =======================================
      MENU LABEL
@@ -577,3 +590,5 @@ body {
   }
 
 }
+
+@media (max-width: 380px) { .hexa-games-icon { width:78px; height:78px; font-size:48px !important; } }
