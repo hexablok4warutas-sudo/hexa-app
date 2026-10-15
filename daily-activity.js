@@ -205,6 +205,10 @@
               .then(function() {
                 // Setelah approval state selesai, update hanya panel Approval Review.
                 renderDailyActivityApprovalReview();
+                [15, 16].forEach(truckNumber => {
+                  const schedule = dailyActivitySchedules.find(item => getLubeTruckNumber(item?.lubeTruck) === truckNumber);
+                  if (schedule) renderLubeTruckClosingState(truckNumber, schedule);
+                });
               })
               .catch(function(error) {
                 console.error(
@@ -436,6 +440,12 @@
           card.append(unitCode);
 
           card.addEventListener("click", () => {
+            const parent = dailyActivitySchedules.find(schedule =>
+              (schedule.units || []).some(item =>
+                cleanDailyActivityValue(item.scheduleUnitId) === cleanDailyActivityValue(unit.scheduleUnitId)
+              )
+            );
+            if (["APPROVAL", "APPROVED", "RESUME ISSUED"].includes(normalizeDailyActivityStatus(parent?.status))) return;
             openDailyActivityInspection(unit);
           });
 
@@ -609,10 +619,10 @@
 
         function initializeDailyActivityClosing() {
           document.getElementById("lubeTruck15CompleteButton")
-            ?.addEventListener("click", () => openDailyActivityClosing(15));
+            ?.addEventListener("click", () => handleDailyActivityBottomButton(15));
 
           document.getElementById("lubeTruck16CompleteButton")
-            ?.addEventListener("click", () => openDailyActivityClosing(16));
+            ?.addEventListener("click", () => handleDailyActivityBottomButton(16));
 
           document.getElementById("closeDailyActivityClosing")
             ?.addEventListener("click", closeDailyActivityClosing);
@@ -631,52 +641,71 @@
             });
         }
 
+        function handleDailyActivityBottomButton(truckNumber) {
+          const schedule = dailyActivitySchedules.find(item => getLubeTruckNumber(item?.lubeTruck) === truckNumber);
+          const status = normalizeDailyActivityStatus(schedule?.status);
+          if (status === "RESUME ISSUED") {
+            openDailyActivityIssuedDocument(truckNumber);
+            return;
+          }
+          if (["APPROVAL", "APPROVED"].includes(status)) return;
+          openDailyActivityClosing(truckNumber);
+        }
+
         function renderLubeTruckClosingState(truckNumber, schedule) {
-          const button =
-            document.getElementById(`lubeTruck${truckNumber}CompleteButton`);
-
-          const statusElement =
-            document.getElementById(`lubeTruck${truckNumber}ScheduleStatus`);
-
+          const button = document.getElementById(`lubeTruck${truckNumber}CompleteButton`);
+          const editButton = document.getElementById(`lubeTruck${truckNumber}EditButton`);
+          const statusElement = document.getElementById(`lubeTruck${truckNumber}ScheduleStatus`);
           if (!button) return;
 
-          const status =
-            normalizeDailyActivityStatus(schedule?.status);
-
-          const editButton =
-            document.getElementById(`lubeTruck${truckNumber}EditButton`);
-
-          const scheduleLocked =
-            status === "APPROVAL" || status === "APPROVED";
+          const status = normalizeDailyActivityStatus(schedule?.status);
+          const locked = ["APPROVAL", "APPROVED", "RESUME ISSUED"].includes(status);
+          const issued = status === "RESUME ISSUED";
+          const scheduleId = cleanDailyActivityValue(schedule?.scheduleId || schedule?.scheduleID || schedule?.id);
+          const pdfUrl = getDailyActivityDocumentUrl(dailyActivityApprovalStates.get(scheduleId));
 
           if (editButton) {
-            editButton.disabled = scheduleLocked;
-            editButton.classList.toggle("is-locked", scheduleLocked);
-            editButton.title =
-              scheduleLocked
-                ? "Schedule sudah Complete dan menunggu/selesai Approval."
-                : "";
+            editButton.disabled = locked;
+            editButton.classList.toggle("is-locked", locked);
+            editButton.title = locked ? "Schedule sudah selesai dan terkunci." : "";
           }
 
-          button.hidden =
-            !hasDailyActivityPermission("COMPLETE_ACTIVITY");
+          button.hidden = !hasDailyActivityPermission("COMPLETE_ACTIVITY") && !issued;
+          button.classList.toggle("is-completed", locked);
+          button.style.setProperty("opacity", "1", "important");
+          button.style.setProperty("color", "#ffffff", "important");
 
-          if (status === "APPROVAL" || status === "APPROVED") {
+          if (issued) {
+            button.textContent = "DOWNLOAD RESUME";
+            button.disabled = !pdfUrl;
+            button.title = pdfUrl ? "Buka PDF resume yang sudah diterbitkan" : "Link PDF belum tersedia";
+            button.style.setProperty("background", "#16a34a", "important");
+            button.style.setProperty("background-color", "#16a34a", "important");
+            button.style.setProperty("cursor", pdfUrl ? "pointer" : "not-allowed");
+          } else if (status === "APPROVED") {
+            button.textContent = "GENERATE FILE...";
             button.disabled = true;
-            button.classList.add("is-completed");
+            button.style.setProperty("background", "#86cfa0", "important");
+            button.style.setProperty("background-color", "#86cfa0", "important");
+            button.style.setProperty("cursor", "not-allowed");
+          } else if (status === "APPROVAL") {
             button.textContent = "✓ COMPLETED";
+            button.disabled = true;
+            button.style.setProperty("background", "#16a34a", "important");
+            button.style.setProperty("background-color", "#16a34a", "important");
+            button.style.setProperty("cursor", "not-allowed");
           } else {
-            button.disabled = false;
-            button.classList.remove("is-completed");
             button.textContent = "COMPLETE DAILY ACTIVITY";
+            button.disabled = false;
+            button.title = "";
+            button.style.removeProperty("background");
+            button.style.removeProperty("background-color");
+            button.style.removeProperty("color");
+            button.style.removeProperty("opacity");
+            button.style.removeProperty("cursor");
           }
 
-          if (statusElement) {
-            statusElement.classList.toggle(
-              "is-approval",
-              status === "APPROVAL"
-            );
-          }
+          if (statusElement) statusElement.classList.toggle("is-approval", status === "APPROVAL");
         }
 
         function openDailyActivityClosing(truckNumber) {
@@ -693,7 +722,7 @@
           const status =
             normalizeDailyActivityStatus(schedule?.status);
 
-          if (status === "APPROVAL" || status === "APPROVED") {
+          if (["APPROVAL", "APPROVED", "RESUME ISSUED"].includes(status)) {
             return;
           }
 
