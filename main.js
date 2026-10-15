@@ -94,8 +94,13 @@ const HEXA_PAGES = {
     enabled: false
   },
 
+  "hexa-games": {
+    url: "/hexa-games",
+    enabled: false // Aktifkan setelah halaman HEXA Games tersedia
+  },
+
   "settings": {
-    url: "settings.html",
+    url: "/settings",
     enabled: true
   }
 
@@ -665,28 +670,14 @@ function keepSettingsLast() {
 }
 
 // ======================================================
-// SETTINGS ACCESS - MASTER ONLY
+// SETTINGS ACCESS - SEMUA LEVEL PENGGUNA
+// Hak akses submenu diatur pada halaman Settings.
 // ======================================================
 
 function applySettingsAccess() {
-
-  if (!settingsMenu) {
-    return;
-  }
-
-  const userKode =
-    Number(currentUser?.kode);
-
-  if (userKode === 1) {
-
-    settingsMenu.style.display = "";
-
-  } else {
-
-    settingsMenu.style.display = "none";
-
-  }
-
+  if (!settingsMenu) return;
+  settingsMenu.hidden = false;
+  settingsMenu.style.removeProperty("display");
 }
 
 // ======================================================
