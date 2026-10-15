@@ -236,6 +236,25 @@
           <article><span>Supply Ratio</span><strong id="bcKpiSupplyRatio">—</strong><small>Supply / total record aktif</small></article>
           <article><span>Aging &gt; 30 Days</span><strong id="bcKpiAging">—</strong><small>Baris dengan aging WO di atas 30 hari</small></article>
         </div>
+
+        <!-- BACKLOG MATERIAL VALUE — source: PRICE column S, no Qty multiplication -->
+        <section class="bc-value-section" aria-labelledby="bcValueTitle">
+          <div class="bc-value-heading"><div><h3 id="bcValueTitle">Backlog Material Value</h3><p>Nilai material berdasarkan kolom PRICE pada sumber Backlog Control terbaru</p></div><span class="bc-value-tag">Latest Snapshot</span></div>
+          <div class="bc-value-main"><span>Total Backlog Material Value</span><strong id="bcValueTotal">—</strong><small>Penjumlahan PRICE seluruh record valid pada sumber</small><div class="bc-value-stack" id="bcValueStack" aria-label="Distribusi nilai material"></div></div>
+          <div class="bc-value-grid">
+            <article><span>Waiting Part Value</span><strong id="bcValueWaiting">—</strong><small>Nilai part belum tersedia</small></article>
+            <article><span>Part Ready Value</span><strong id="bcValueReady">—</strong><small>Nilai part tersedia di logistik</small></article>
+            <article><span>Supply Value</span><strong id="bcValueSupply">—</strong><small>Nilai part berstatus SUPPLY</small></article>
+            <article><span>Material Readiness Ratio</span><strong id="bcValueReadiness">—</strong><small>Part Ready / (Waiting + Part Ready)</small></article>
+            <article><span>Supply Value Ratio</span><strong id="bcValueSupplyRatio">—</strong><small>Supply / Total Value; bukan realisasi biaya</small></article>
+            <article><span>Ready Value Ratio</span><strong id="bcValueReadyRatio">—</strong><small>Part Ready / Total Value</small></article>
+            <article><span>Aging Value &gt; 30 Days</span><strong id="bcValueAging">—</strong><small>Nilai PRICE untuk record dengan aging WO &gt; 30 hari</small></article>
+            <article><span>Value Coverage</span><strong id="bcValueCoverage">—</strong><small>Record dengan nilai PRICE valid / seluruh record</small></article>
+          </div>
+          <div class="bc-value-distribution"><div class="bc-value-heading"><h4>Material Value Distribution</h4><div class="bc-value-tabs"><button type="button" id="bcValueModeMoney" class="is-active">Rupiah</button><button type="button" id="bcValueModeRecords">Records</button></div></div><div id="bcValueBars" class="bc-value-bars"></div></div>
+          <div class="bc-value-ranking"><h4>Top 10 High Value Waiting Parts</h4><p>Prioritas berdasarkan PRICE terbesar pada status WAITING PART</p><div class="bc-perf-table-wrap"><table><thead><tr><th>Unit</th><th>Part No</th><th>Part Description</th><th>PRICE</th><th>Aging WO</th></tr></thead><tbody id="bcValueTopWaiting"><tr><td colspan="5">Menunggu data...</td></tr></tbody></table></div></div>
+          <p id="bcValueNote" class="bc-value-note">Mengambil nilai PRICE dari sumber terbaru. Filter Weekly/Monthly di atas hanya berlaku untuk KPI pergerakan dan registrasi.</p>
+        </section>
         <h3 class="bc-perf-subtitle">Backlog Movement <span id="bcPeriodLabel">Weekly</span></h3>
         <div class="bc-perf-grid">
           <article><span>Opening</span><strong id="bcKpiOpening">—</strong><small>Awal periode terdata</small></article>
