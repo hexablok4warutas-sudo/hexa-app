@@ -613,3 +613,25 @@ body {
   .menu-carousel-prev { left:-13px; } .menu-carousel-next { right:-13px; }
   .menu-item span { white-space:normal; overflow:visible; text-overflow:clip; }
 }
+
+/* HEXA GAMES - samakan ukuran visual frame dengan ikon menu lain */
+.menu-item.hexa-games-item > img {
+  width: 116px;
+  height: 116px;
+  object-fit: contain;
+  margin: 4.5px 0;
+}
+@media (max-width: 600px) {
+  .menu-item.hexa-games-item > img {
+    width: 84px;
+    height: 84px;
+    margin: 3px 0;
+  }
+}
+@media (max-width: 380px) {
+  .menu-item.hexa-games-item > img {
+    width: 73px;
+    height: 73px;
+    margin: 2.5px 0;
+  }
+}
