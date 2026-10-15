@@ -6,7 +6,7 @@ window.HEXA_MENU = [
   {id:"fui",name:"FUI",icon:"hexa-icon-svg-fui.svg",url:"/fui",order:3,enabled:false},
   {id:"rotable",name:"Rotable",icon:"hexa-icon-svg-rotable.svg",url:"/rotable",order:4,enabled:false},
   {id:"news",name:"News",icon:"hexa-icon-svg-news.svg",url:"/news",order:5,enabled:false},
-  {id:"hexa-games",name:"HEXA GAMES",icon:"",url:"/hexa-games",order:6,enabled:false},
+  {id:"hexa-games",name:"HEXA GAMES",icon:"hexa-icon-svg-games.svg",url:"/hexa-games",order:6,enabled:false},
   {id:"settings",name:"Settings",icon:"hexa-icon-svg-settings.svg",url:"/settings",order:7,enabled:true}
 ];
 window.HEXA_MENU.sort((a,b)=>a.order-b.order);
