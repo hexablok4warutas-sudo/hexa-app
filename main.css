@@ -592,3 +592,24 @@ body {
 }
 
 @media (max-width: 380px) { .hexa-games-icon { width:78px; height:78px; font-size:48px !important; } }
+
+/* HEXA MENU CAROUSEL: 6 menu per halaman */
+.menu-carousel { position:relative; width:min(1220px,100%); margin:0 auto; }
+.menu-grid { display:flex; width:100%; gap:0; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; scrollbar-width:none; position:relative; }
+.menu-grid::-webkit-scrollbar { display:none; }
+.menu-page { flex:0 0 100%; width:100%; display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:20px; align-items:start; scroll-snap-align:start; padding:4px 24px 12px; }
+.menu-page .menu-item { width:100%; min-width:0; }
+.menu-carousel-arrow { position:absolute; top:65px; z-index:5; border:0; border-radius:50%; width:38px; height:38px; background:rgba(255,255,255,.95); color:#1683a0; box-shadow:0 2px 10px #0002; font-size:23px; cursor:pointer; }
+.menu-carousel-prev { left:-17px; } .menu-carousel-next { right:-17px; }
+.menu-carousel-arrow:disabled { opacity:.25; cursor:default; }
+.menu-carousel-arrow[hidden], .menu-carousel-dots[hidden] { display:none!important; }
+.menu-carousel-dots { display:flex; justify-content:center; gap:9px; padding:14px 0 0; }
+.menu-dot { width:10px; height:10px; border:0; border-radius:50%; background:#c9c9c9; cursor:pointer; padding:0; }
+.menu-dot.active { background:#ff9800; }
+.menu-hidden-store { display:none!important; }
+@media(max-width:600px) {
+  .menu-page { grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:repeat(2,auto); gap:22px 10px; padding:4px 16px 12px; }
+  .menu-carousel-arrow { top:125px; width:30px; height:36px; font-size:18px; }
+  .menu-carousel-prev { left:-13px; } .menu-carousel-next { right:-13px; }
+  .menu-item span { white-space:normal; overflow:visible; text-overflow:clip; }
+}
