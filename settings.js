@@ -65,23 +65,8 @@ async function initializeSettings() {
     return;
   }
 
-  // =====================================================
-  // SETTINGS HANYA UNTUK MASTER
-  // KODE 1 = MASTER
-  // =====================================================
-
-  if (Number(sessionUser.kode) !== 1) {
-
-    alert(
-      "You are not authorized to access this page."
-    );
-
-    window.location.replace(
-      "main.html"
-    );
-
-    return;
-  }
+  // Semua role boleh membuka Settings. Submenu admin tetap dibatasi.
+  applySettingsRoleVisibility(sessionUser);
 
   currentSettingsUser =
     sessionUser;
@@ -372,6 +357,8 @@ async function syncSettingsProfile() {
 
     currentSettingsUser =
       freshUser;
+
+    applySettingsRoleVisibility(freshUser);
 
 
     // Perbarui session agar halaman berikutnya juga
@@ -986,4 +973,18 @@ function handleInactiveAccount(
 
   redirectToLogin();
 
+}
+
+// Batasi submenu administrasi tanpa membatasi halaman Settings.
+function applySettingsRoleVisibility(user) {
+  const master = Number(user && user.kode) === 1;
+  document.querySelectorAll('[data-settings-page="access-settings"], [data-settings-page="user-management"], [data-settings-page="system-settings"]').forEach(function(el) {
+    el.hidden = !master;
+  });
+  const section = document.getElementById('settingsAdministrationSection');
+  if (section) section.hidden = !master;
+  document.querySelectorAll('.settings-section').forEach(function(section) {
+    if (section.id === 'settingsAdministrationSection') return;
+    if (section.querySelector('[data-settings-page="system-settings"]')) section.hidden = !master;
+  });
 }
