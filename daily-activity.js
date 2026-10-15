@@ -2912,6 +2912,7 @@
 
         const dailyActivityReviewedSchedules = new Set();
         const dailyActivityApprovalStates = new Map();
+        const dailyActivityPdfBusy = new Map();
         let currentApprovalReviewScheduleId = "";
         let currentApprovalReviewTruckNumber = null;
 
@@ -3066,12 +3067,20 @@
           }
 
           if (approveButton) {
-            const approved = status === "APPROVED" || status === "RESUME ISSUED";
-            approveButton.textContent = status === "RESUME ISSUED" ? "Issued" : (approved ? "Approved" : "Approve");
-            approveButton.classList.toggle("is-approved-state", approved);
-            approveButton.disabled =
-              approved || !schedule || status !== "APPROVAL" || !reviewed ||
-              !hasDailyActivityPermission("APPROVE");
+            const documentReady = status === "RESUME ISSUED" &&
+              Boolean(getDailyActivityDocumentUrl(approvalState));
+            const needsPdfRetry = status === "APPROVED" && !documentReady;
+            const busy = dailyActivityPdfBusy.has(scheduleId);
+            approveButton.textContent = busy
+              ? dailyActivityPdfBusy.get(scheduleId)
+              : documentReady ? "Doc. Available"
+              : needsPdfRetry ? "Generate File"
+              : "Approve";
+            approveButton.classList.toggle("is-approved-state", documentReady || busy);
+            approveButton.classList.toggle("is-document-status", documentReady || busy || needsPdfRetry);
+            approveButton.disabled = busy || documentReady || !schedule ||
+              !(status === "APPROVAL" && reviewed && hasDailyActivityPermission("APPROVE") ||
+                needsPdfRetry && hasDailyActivityPermission("ISSUE_RESUME"));
           }
 
           // Dokumen hanya bisa dibuka jika link PDF sudah tersimpan.
@@ -3269,89 +3278,61 @@
         }
 
         async function approveDailyActivitySchedule(truckNumber) {
-          if (!hasDailyActivityPermission("APPROVE")) {
-            alert("Anda tidak memiliki akses Approve.");
-            return;
-          }
-
-          const schedule =
-            dailyActivitySchedules.find(item =>
-              getLubeTruckNumber(item?.lubeTruck) === truckNumber
-            );
-
+          const schedule = dailyActivitySchedules.find(item =>
+            getLubeTruckNumber(item?.lubeTruck) === truckNumber);
           if (!schedule) return;
-
-          const scheduleId =
-            cleanDailyActivityValue(
-              schedule?.scheduleId ||
-              schedule?.scheduleID ||
-              schedule?.id
-            );
-
-          if (!scheduleId) return;
-
-          const approvalState =
-            dailyActivityApprovalStates.get(scheduleId);
-
-          if (approvalState?.reviewed !== true) {
-            alert(
-              "Review Resume harus diselesaikan sebelum Approve."
-            );
-            return;
+          const scheduleId = cleanDailyActivityValue(schedule?.scheduleId || schedule?.scheduleID || schedule?.id);
+          if (!scheduleId || dailyActivityPdfBusy.has(scheduleId)) return;
+          const status = normalizeDailyActivityStatus(schedule?.status);
+          const state = dailyActivityApprovalStates.get(scheduleId);
+          const user = getDailyActivitySessionUser();
+          if (!user) return;
+          const button = document.getElementById(`approvalApproveButton${truckNumber}`);
+          if (status === "RESUME ISSUED" && getDailyActivityDocumentUrl(state)) return;
+          if (status !== "APPROVAL" && status !== "APPROVED") return;
+          if (status === "APPROVAL") {
+            if (!hasDailyActivityPermission("APPROVE")) return;
+            if (state?.reviewed !== true) {
+              alert("Review Resume harus diselesaikan sebelum Approve."); return;
+            }
+            if (!window.confirm(`Approve Daily Activity Lube Truck ${truckNumber}?`)) return;
+          } else if (!hasDailyActivityPermission("ISSUE_RESUME")) {
+            alert("PDF belum tersedia. Akun ini memerlukan izin ISSUE_RESUME untuk mencoba lagi."); return;
           }
-
-          const approved =
-            window.confirm(
-              `Approve Daily Activity Lube Truck ${truckNumber}?`
-            );
-
-          if (!approved) return;
-
-          const button =
-            document.getElementById(
-              `approvalApproveButton${truckNumber}`
-            );
-
-          const originalText =
-            button?.textContent || "Approve";
-
-          if (button) {
-            button.disabled = true;
-            button.textContent = "Approving...";
-          }
-
           try {
-            const user =
-              getDailyActivitySessionUser();
-
-            const result = await dailyActivityApiRequest({
-              action: "approveDMSchedule",
-              scheduleId,
-              approvedById: cleanDailyActivityValue(user?.uniqId)
+            if (status === "APPROVAL") {
+              dailyActivityPdfBusy.set(scheduleId, "Approving...");
+              renderDailyActivityApprovalRow(truckNumber, schedule);
+              const approved = await dailyActivityApiRequest({
+                action: "approveDMSchedule", scheduleId,
+                approvedById: cleanDailyActivityValue(user.uniqId)
+              });
+              if (!approved || approved.success !== true) {
+                throw new Error(approved?.message || "Approval gagal.");
+              }
+            }
+            dailyActivityPdfBusy.set(scheduleId, "Generate File...");
+            if (button) { button.disabled = true; button.textContent = "Generate File..."; }
+            const issued = await dailyActivityApiRequest({
+              action: "issueDMResume", scheduleId,
+              issuedById: cleanDailyActivityValue(user.uniqId)
             });
-
-            if (!result || result.success !== true) {
-              throw new Error(
-                result?.message ||
-                "Daily Activity gagal di-approve."
-              );
+            if (!issued || issued.success !== true || !issued.pdfUrl) {
+              throw new Error(issued?.message || "PDF belum berhasil disimpan.");
             }
-
+            dailyActivityApprovalStates.set(scheduleId, {
+              ...(dailyActivityApprovalStates.get(scheduleId) || {}),
+              approved: true, issued: true, pdfUrl: issued.pdfUrl
+            });
+            if (button) { button.textContent = "Doc. Available"; button.disabled = true; }
             await loadDailyActivitySchedule();
-
           } catch (error) {
-            console.error(
-              "HEXA Daily Activity approve error:",
-              error
-            );
-            alert(
-              error?.message ||
-              "Daily Activity gagal di-approve."
-            );
+            console.error("HEXA Approval/PDF:", error);
+            alert(error?.message || "Proses gagal. Periksa status sebelum mencoba kembali.");
+            await loadDailyActivitySchedule();
           } finally {
-            if (button) {
-              button.textContent = originalText;
-            }
+            dailyActivityPdfBusy.delete(scheduleId);
+            renderDailyActivityApprovalReview();
           }
         }
 
