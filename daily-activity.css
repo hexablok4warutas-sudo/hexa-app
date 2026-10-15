@@ -2170,3 +2170,20 @@ button[id^="approvalApproveButton"]:disabled {
 }
 .approval-review-table td { vertical-align: middle; }
 .approval-action-button { white-space: nowrap; transition: background .15s ease; }
+/* HEXA: status approval dan tombol dokumen, seragam hijau */
+.approval-action-button.is-document-status,
+.approval-action-button.is-document-status:disabled {
+  background: #e7f5ea;
+  border: 1px solid #16a34a;
+  color: #15803d;
+  opacity: 1;
+  cursor: default;
+}
+.approval-action-button.is-document-ready:not(:disabled),
+#approvalPdfButton15:not(:disabled),
+#approvalPdfButton16:not(:disabled) {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+  cursor: pointer;
+}
