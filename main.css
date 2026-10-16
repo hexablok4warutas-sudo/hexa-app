@@ -635,3 +635,8 @@ body {
     margin: 2.5px 0;
   }
 }
+/* HYBRID VIDEO / IMAGE BANNER */
+.banner-slide { pointer-events: none; }
+.banner-slide.active { pointer-events: auto; z-index: 1; }
+.banner-slide video { display:block; width:100%; height:100%; object-fit:cover; object-position:center; background:#111; }
+.slider-button { z-index: 10; }
