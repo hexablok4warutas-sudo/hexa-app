@@ -35,7 +35,7 @@
   </main>
   <dialog id="galNewDialog" class="gal-dialog">
     <form id="galNewForm" class="gal-form">
-      <div class="gal-dialog-head"><h2>New Autolube Problem</h2><button type="button" data-dismiss="galNewDialog" aria-label="Tutup">✕</button></div>
+      <div class="gal-dialog-head"><h2 id="galFormTitle">New Autolube Problem</h2><button type="button" data-dismiss="galNewDialog" aria-label="Tutup">✕</button></div>
       <div class="gal-unit-field">
         <label for="galUnitSearch">UNIT CODE <span>*</span></label>
         <div class="gal-unit-combobox" id="galUnitCombobox">
@@ -45,13 +45,14 @@
         </div>
       </div>
       <label>Problem Autolube <span>*</span><textarea id="galProblem" required rows="3" placeholder="Jelaskan kerusakan / deviasi"></textarea></label>
-      <label>Foto Kerusakan <span>*</span><input id="galDamage" type="file" accept="image/*" required><small>Bisa pilih kamera atau galeri (sesuai perangkat).</small></label>
-      <label>Required Part<input id="galPart" placeholder="Nama / nomor part jika diperlukan"></label>
+      <label>Foto Kerusakan<input id="galDamage" type="file" accept="image/*"><small>Bisa pilih kamera atau galeri (sesuai perangkat).</small></label>
+      <section class="gal-parts-section"><div class="gal-parts-title"><strong>Required Part</strong><small>Opsional</small></div><div id="galParts"></div><button type="button" id="galAddPart" class="gal-secondary gal-add-part">+ Add Part</button></section>
       <label>Recommended Follow Up <span>*</span><textarea id="galRecommendation" required rows="3" placeholder="Rekomendasi tindakan"></textarea></label>
       <p class="gal-message" id="galNewMessage" role="status"></p>
       <div class="gal-form-actions"><button type="button" class="gal-secondary" data-dismiss="galNewDialog">Cancel</button><button type="submit" class="gal-primary" id="galSaveNew">Save Problem</button></div>
     </form>
   </dialog>
+  <dialog id="galDeleteDialog" class="gal-dialog"><div class="gal-form"><div class="gal-dialog-head"><h2>Hapus Problem?</h2><button type="button" data-dismiss="galDeleteDialog">✕</button></div><p id="galDeleteDescription"></p><p class="gal-hint">Problem disembunyikan dari dashboard, tetapi riwayat tetap disimpan untuk audit.</p><p class="gal-message" id="galDeleteMessage"></p><div class="gal-form-actions"><button type="button" class="gal-secondary" data-dismiss="galDeleteDialog">Cancel</button><button type="button" id="galConfirmDelete" class="gal-primary gal-danger">Hapus Problem</button></div></div></dialog>
   <dialog id="galFollowDialog" class="gal-dialog">
     <form id="galFollowForm" class="gal-form">
       <div class="gal-dialog-head"><h2>Input Follow Up</h2><button type="button" data-dismiss="galFollowDialog" aria-label="Tutup">✕</button></div>
