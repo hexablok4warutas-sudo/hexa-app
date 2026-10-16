@@ -15,6 +15,14 @@ const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt
 const username = () => String(galUser.nama || galUser.NAMA || galUser.name || galUser.userId || galUser.USER_ID || 'HEXA User');
 const date = s => { if (!s) return '-'; const d = new Date(s); return isNaN(d.getTime()) ? String(s) : d.toLocaleString('id-ID', {dateStyle:'medium',timeStyle:'short'}); };
 let records = [], selectedId = '', apiReady = false;
+let galEditingId = '', galDeletingId = '';
+const galLevel = String(galUser.level ?? galUser.LEVEL ?? galUser.roleCode ?? galUser.role ?? galUser.ROLE ?? '').trim().toUpperCase();
+const galCanManage = ['1','2','3','MASTER','SECTION','SECTION HEAD','GROUP LEADER'].includes(galLevel);
+const galCanEdit = galCanManage || ['4','5','ADMIN','MECHANIC'].includes(galLevel);
+const galCanFollow = galLevel !== '6' && galLevel !== 'VISITOR';
+// Untuk mutasi backend, isi token autentikasi yang benar dari sistem login HEXA.
+const galAuthToken = () => sessionStorage.getItem('hexaAuthToken') || '';
+
 const configured = () => GAL_API_URL.startsWith('https://script.google.com/macros/s/') && GAL_API_URL.endsWith('/exec');
 
 async function api(payload) {
@@ -68,10 +76,56 @@ function photo(url, alt, fallbackId = '') {
     ? galThumbnail(fallbackId) : '';
   return `<button type="button" class="gal-photo-button" data-photo="${esc(primary)}" data-photo-fallback="${esc(fallback)}"><img loading="lazy" class="gal-photo" src="${esc(primary)}" alt="${esc(alt)}"></button>`;
 }
+function galPartsFromValue(value) {
+  if (Array.isArray(value)) return value;
+  const s = String(value || '').trim();
+  if (!s) return [];
+  try { const parsed = JSON.parse(s); if (Array.isArray(parsed)) return parsed; } catch (_) {}
+  return [{name:s, spec:'', qty:1}];
+}
+function galPartsLabel(value) {
+  const parts = galPartsFromValue(value);
+  return parts.length ? parts.map(p => [p.name, p.spec ? '(' + p.spec + ')' : '', p.qty ? '× ' + p.qty : ''].filter(Boolean).join(' ')).join('\n') : '-';
+}
+function galAddPartRow(part = {}) {
+  const row = document.createElement('div'); row.className = 'gal-part-row';
+  row.innerHTML = `<div class="gal-part-head"><strong>Part</strong><button type="button" class="gal-remove-part" aria-label="Hapus part">✕</button></div><div class="gal-part-grid"><label>Nama Part<input class="gal-part-name" placeholder="Elbow Connector" required></label><label>Part No / Spesifikasi<input class="gal-part-spec" placeholder="Nomor / ukuran"></label><label>Jumlah<input class="gal-part-qty" type="number" min="1" step="1" required></label></div>`;
+  row.querySelector('.gal-part-name').value = part.name || '';
+  row.querySelector('.gal-part-spec').value = part.spec || '';
+  row.querySelector('.gal-part-qty').value = part.qty || 1;
+  row.querySelector('.gal-remove-part').onclick = () => row.remove();
+  el('galParts').appendChild(row);
+}
+function galReadParts() {
+  return [...el('galParts').querySelectorAll('.gal-part-row')].map(row => ({
+    name:row.querySelector('.gal-part-name').value.trim(),
+    spec:row.querySelector('.gal-part-spec').value.trim(),
+    qty:Number(row.querySelector('.gal-part-qty').value)
+  }));
+}
+function galOpenEditor(r = null) {
+  galEditingId = r?.id || '';
+  el('galNewForm').reset(); el('galParts').replaceChildren();
+  el('galFormTitle').textContent = r ? 'Edit Autolube Problem' : 'New Autolube Problem';
+  el('galSaveNew').textContent = r ? 'Save Changes' : 'Save Problem';
+  el('galSaveNew').dataset.label = el('galSaveNew').textContent;
+  el('galUnit').value = r?.unit || '';
+  el('galUnitSearch').value = r?.unit || '';
+  el('galProblem').value = r?.problem || '';
+  el('galRecommendation').value = r?.recommendation || '';
+  galPartsFromValue(r?.part).forEach(galAddPartRow);
+  closeGalUnitOptions(); el('galNewMessage').textContent = '';
+  el('galNewDialog').showModal();
+  if (!galUnitsLoaded && !galUnitsLoading) galUnitsLoading = loadUnits().catch(error => {
+    el('galNewMessage').textContent = 'Gagal memuat Code Unit: ' + error.message;
+  }).finally(() => {galUnitsLoading = null;});
+}
 function card(r) {
   const histories = r.followUps || [], closed = r.status === 'CLOSE';
-  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div><span class="gal-badge ${closed?'close':'open'}">${esc(r.status)}</span></div><div class="gal-field"><small>Problem Autolube</small><p><strong>${esc(r.problem)}</strong></p></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan',r.unit==='HEX 1212' && /leaking injector/i.test(r.problem) ? '1pedIEH3FjZefc7bTd1Kjay779K_fZl0j' : '')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(r.part || '-')}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}${closed ? '' : `<div class="gal-card-footer"><button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button></div>`}</article>`;
+  const actions = `<div class="gal-card-top-actions"><span class="gal-badge ${closed?'close':'open'}">${esc(r.status)}</span>${galCanEdit ? `<button type="button" class="gal-icon-action" data-edit="${esc(r.id)}" title="Edit problem" aria-label="Edit problem">✎</button>` : ''}${galCanManage ? `<button type="button" class="gal-icon-action delete" data-delete="${esc(r.id)}" title="Hapus problem" aria-label="Hapus problem">🗑</button>` : ''}</div>`;
+  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div>${actions}</div><div class="gal-field"><small>Problem Autolube</small><p><strong>${esc(r.problem)}</strong></p></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan',r.unit==='HEX 1212' && /leaking injector/i.test(r.problem) ? '1pedIEH3FjZefc7bTd1Kjay779K_fZl0j' : '')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(galPartsLabel(r.part))}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}<div class="gal-card-footer">${!closed && galCanFollow ? `<button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button>` : ''}</div></article>`;
 }
+
 function render() {
   el('galTotal').textContent = records.length;
   el('galOpen').textContent = records.filter(r => r.status === 'OPEN').length;
@@ -232,19 +286,21 @@ async function init() {
   document.querySelectorAll('[data-dismiss]').forEach(b => b.onclick = () => close(b.dataset.dismiss));
   setupGalUnitCombobox();
   galInstallPhotoFallback();
-  el('galNew').onclick = () => {
-    el('galNewForm').reset(); el('galUnit').value = ''; closeGalUnitOptions();
-    el('galNewMessage').textContent = ''; el('galNewDialog').showModal();
-    if (!galUnitsLoaded && !galUnitsLoading) {
-      galUnitsLoading = loadUnits().catch(error => {
-        el('galNewMessage').textContent = 'Gagal memuat Code Unit: ' + error.message;
-      }).finally(() => {galUnitsLoading = null;});
-    }
+  el('galNew').onclick = () => galOpenEditor();
+  el('galAddPart').onclick = () => galAddPartRow();
+  el('galConfirmDelete').onclick = async () => {
+    const b = el('galConfirmDelete'); busy(b,true);
+    try { await api({action:'deleteGALProblem',problemId:galDeletingId,authToken:galAuthToken()}); close('galDeleteDialog'); await refresh(); }
+    catch(error) {el('galDeleteMessage').textContent = error.message;} finally {busy(b,false);}
   };
   el('galLightboxClose').onclick = () => close('galLightbox');
   el('galCards').addEventListener('click', e => {
     const p = e.target.closest('[data-photo]');
     if (p) { el('galLightboxImage').src = p.dataset.photo; el('galLightbox').showModal(); return; }
+    const edit = e.target.closest('[data-edit]');
+    if (edit) { const r = records.find(x => x.id === edit.dataset.edit); if (r && galCanEdit) galOpenEditor(r); return; }
+    const del = e.target.closest('[data-delete]');
+    if (del) { const r = records.find(x => x.id === del.dataset.delete); if (!r || !galCanManage) return; galDeletingId = r.id; el('galDeleteDescription').textContent = r.unit + ' — ' + r.problem; el('galDeleteMessage').textContent=''; el('galDeleteDialog').showModal(); return; }
     const b = e.target.closest('[data-follow]');
     if (!b) return;
     const r = records.find(x => x.id === b.dataset.follow);
@@ -262,10 +318,12 @@ async function init() {
     try {
       const unit = el('galUnit').value;
       if (!unit || el('galUnitSearch').value.trim() !== unit) throw Error('Pilih Code Unit dari daftar pencarian.');
+      const parts = galReadParts();
+      if (parts.some(p => !p.name || !Number.isInteger(p.qty) || p.qty < 1)) throw Error('Isi nama part dan jumlah bilangan bulat minimal 1 untuk setiap part.');
       const file = el('galDamage').files[0];
       // New Problem: foto boleh kosong; bila dipilih harus valid.
       const photoData = file ? await fileData(file) : '';
-      await api({action:'createGALProblem',unitCode:unit,problem:el('galProblem').value.trim(),requiredPart:el('galPart').value.trim(),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username()});
+      await api({action:galEditingId ? 'updateGALProblem' : 'createGALProblem',problemId:galEditingId,unitCode:unit,problem:el('galProblem').value.trim(),requiredPart:JSON.stringify(parts),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username(),authToken:galAuthToken()});
       close('galNewDialog');
       await refresh();
     } catch (error) { el('galNewMessage').textContent = error.message; }
@@ -292,7 +350,7 @@ async function init() {
   try {
     await refresh();
     apiReady = true;
-    el('galNew').disabled = false;
+    el('galNew').disabled = !galCanFollow;
     setGalSync('success', 'Data tersinkron dengan Google Sheets HEXA.');
   } catch (error) {
     apiReady = false;
