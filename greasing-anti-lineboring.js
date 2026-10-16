@@ -16,6 +16,8 @@ const username = () => String(galUser.nama || galUser.NAMA || galUser.name || ga
 const date = s => { if (!s) return '-'; const d = new Date(s); return isNaN(d.getTime()) ? String(s) : d.toLocaleString('id-ID', {dateStyle:'medium',timeStyle:'short'}); };
 let records = [], selectedId = '', apiReady = false;
 let galEditingId = '', galDeletingId = '';
+let galExpanded = false, galPage = 0, galMasterRows = [];
+const galComponentFields = [['greasePump','Grease Pump'],['oilPump','Oil Pump'],['controlUnit','Control Unit'],['lines','Lines'],['injectors','Injectors'],['greaseDrum','Grease Drum']];
 const galLevel = String(galUser.level ?? galUser.LEVEL ?? galUser.roleCode ?? galUser.role ?? galUser.ROLE ?? '').trim().toUpperCase();
 const galCanManage = ['1','2','3','MASTER','SECTION','SECTION HEAD','GROUP LEADER'].includes(galLevel);
 const galCanEdit = galCanManage || ['4','5','ADMIN','MECHANIC'].includes(galLevel);
@@ -112,6 +114,7 @@ function galOpenEditor(r = null) {
   el('galUnit').value = r?.unit || '';
   el('galUnitSearch').value = r?.unit || '';
   el('galProblem').value = r?.problem || '';
+  el('galCategory').value = r?.category || '';
   el('galRecommendation').value = r?.recommendation || '';
   galPartsFromValue(r?.part).forEach(galAddPartRow);
   closeGalUnitOptions(); el('galNewMessage').textContent = '';
@@ -123,7 +126,7 @@ function galOpenEditor(r = null) {
 function card(r) {
   const histories = r.followUps || [], closed = r.status === 'CLOSE';
   const actions = `<div class="gal-card-top-actions"><span class="gal-badge ${closed?'close':'open'}">${esc(r.status)}</span>${galCanEdit ? `<button type="button" class="gal-icon-action" data-edit="${esc(r.id)}" title="Edit problem" aria-label="Edit problem">✎</button>` : ''}${galCanManage ? `<button type="button" class="gal-icon-action delete" data-delete="${esc(r.id)}" title="Hapus problem" aria-label="Hapus problem">🗑</button>` : ''}</div>`;
-  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div>${actions}</div><div class="gal-field"><small>Problem Autolube</small><p><strong>${esc(r.problem)}</strong></p></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan',r.unit==='HEX 1212' && /leaking injector/i.test(r.problem) ? '1pedIEH3FjZefc7bTd1Kjay779K_fZl0j' : '')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(galPartsLabel(r.part))}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}<div class="gal-card-footer">${!closed && galCanFollow ? `<button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button>` : ''}</div></article>`;
+  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div>${actions}</div><div class="gal-field"><small>Problem Autolube</small><p class="gal-problem-text" role="button" tabindex="0" aria-label="Tampilkan atau ringkas deskripsi problem" title="Klik untuk baca seluruhnya"><strong>${esc(r.problem)}</strong></p></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan',r.unit==='HEX 1212' && /leaking injector/i.test(r.problem) ? '1pedIEH3FjZefc7bTd1Kjay779K_fZl0j' : '')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(galPartsLabel(r.part))}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}<div class="gal-card-footer">${!closed && galCanFollow ? `<button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button>` : ''}</div></article>`;
 }
 
 function render() {
@@ -132,14 +135,22 @@ function render() {
   el('galClose').textContent = records.filter(r => r.status === 'CLOSE').length;
   const q = el('galSearch').value.trim().toLowerCase(), status = el('galStatus').value;
   const visible = records.filter(r => (status === 'ALL' || r.status === status) && (!q || [r.unit,r.problem,r.part,r.recommendation].some(s => String(s || '').toLowerCase().includes(q))));
-  el('galCards').innerHTML = visible.length ? visible.map(card).join('') : '<div class="gal-empty">Belum ada problem yang sesuai.</div>';
+  const pageSize = galExpanded ? 6 : 3;
+  const pages = Math.max(1, Math.ceil(visible.length / pageSize));
+  galPage = Math.min(galPage, pages - 1);
+  const shown = visible.slice(galPage * pageSize, (galPage + 1) * pageSize);
+  el('galCards').innerHTML = shown.length ? shown.map(card).join('') : '<div class="gal-empty">Belum ada problem yang sesuai.</div>';
+  el('galPageLabel').textContent = `${visible.length ? galPage+1 : 0} / ${visible.length ? pages : 0} · ${visible.length} problem`;
+  el('galPrev').disabled = galPage === 0; el('galNext').disabled = galPage >= pages-1;
+  el('galExpand').textContent = galExpanded ? '⤡' : '⛶';
+  el('galExpand').title = galExpanded ? 'Collapse: 3 card' : 'Expand: 6 card';
 }
 async function refresh() {
   const data = await api({action:'getGALProblems',includeFollowUps:true});
   records = (data.problems || []).map(r => ({
     id:r.id,unit:r.unitCode,problem:r.problem,damagePhoto:r.photo,
     part:r.requiredPart,recommendation:r.recommendedFollowUp,
-    status:String(r.status||'').toUpperCase(),createdAt:r.createdAt,createdBy:r.createdBy,
+    status:String(r.status||'').toUpperCase(),category:r.category || '',createdAt:r.createdAt,createdBy:r.createdBy,
     followUps:(r.followUps||[]).map(h=>({...h,by:h.createdBy}))
   }));
   render();
@@ -281,12 +292,21 @@ function busy(button, value) {
 function close(id) { el(id).close(); }
 async function init() {
   el('galBack').onclick = () => location.href = '/daily-maintenance';
-  el('galSearch').oninput = render;
-  el('galStatus').onchange = render;
+  el('galSearch').oninput = () => {galPage=0;render();};
+  el('galStatus').onchange = () => {galPage=0;render();};
+  el('galExpand').onclick = () => {galExpanded=!galExpanded;galPage=0;render();};
+  el('galPrev').onclick = () => {galPage=Math.max(0,galPage-1);render();};
+  el('galNext').onclick = () => {galPage++;render();};
+  let touchX=0;el('galCards').addEventListener('touchstart',e=>{touchX=e.changedTouches[0].screenX},{passive:true});
+  el('galCards').addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-touchX;if(Math.abs(dx)>65){galPage=Math.max(0,galPage+(dx<0?1:-1));render();}},{passive:true});
+  el('galCards').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.gal-problem-text')){e.preventDefault();e.target.classList.toggle('is-expanded');}});
   document.querySelectorAll('[data-dismiss]').forEach(b => b.onclick = () => close(b.dataset.dismiss));
   setupGalUnitCombobox();
   galInstallPhotoFallback();
   el('galNew').onclick = () => galOpenEditor();
+  el('galAddMaster').onclick=()=>openMasterForm();
+  el('galMasterForm').onsubmit=saveMasterForm;
+  el('galMasterRows').addEventListener('click',e=>{const edit=e.target.closest('[data-master-edit]');const del=e.target.closest('[data-master-delete]');if(edit)openMasterForm(galMasterRows.find(r=>r.unitCode===edit.dataset.masterEdit));if(del)deleteMasterUnit(del.dataset.masterDelete);});
   el('galAddPart').onclick = () => galAddPartRow();
   el('galConfirmDelete').onclick = async () => {
     const b = el('galConfirmDelete'); busy(b,true);
@@ -295,6 +315,7 @@ async function init() {
   };
   el('galLightboxClose').onclick = () => close('galLightbox');
   el('galCards').addEventListener('click', e => {
+    const desc=e.target.closest('.gal-problem-text'); if(desc){desc.classList.toggle('is-expanded');return;}
     const p = e.target.closest('[data-photo]');
     if (p) { el('galLightboxImage').src = p.dataset.photo; el('galLightbox').showModal(); return; }
     const edit = e.target.closest('[data-edit]');
@@ -323,9 +344,9 @@ async function init() {
       const file = el('galDamage').files[0];
       // New Problem: foto boleh kosong; bila dipilih harus valid.
       const photoData = file ? await fileData(file) : '';
-      await api({action:galEditingId ? 'updateGALProblem' : 'createGALProblem',problemId:galEditingId,unitCode:unit,problem:el('galProblem').value.trim(),requiredPart:JSON.stringify(parts),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username(),authToken:galAuthToken()});
+      await api({action:galEditingId ? 'updateGALProblem' : 'createGALProblem',problemId:galEditingId,unitCode:unit,problem:el('galProblem').value.trim(),category:el('galCategory').value,requiredPart:JSON.stringify(parts),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username(),authToken:galAuthToken()});
       close('galNewDialog');
-      await refresh();
+      await refresh(); await loadMaster();
     } catch (error) { el('galNewMessage').textContent = error.message; }
     finally { busy(b, false); }
   };
@@ -340,7 +361,7 @@ async function init() {
       const evidenceData = file ? await fileData(file) : '';
       await api({action:'createGALFollowUp',problemId:selectedId,followUpAction:el('galAction').value.trim(),result,evidenceData,createdBy:username()});
       close('galFollowDialog');
-      await refresh();
+      await refresh(); await loadMaster();
     } catch (error) { el('galFollowMessage').textContent = error.message; }
     finally { busy(b, false); }
   };
@@ -349,8 +370,10 @@ async function init() {
   setGalSync('loading', 'Sedang menyinkronkan data HEXA...');
   try {
     await refresh();
+    await loadMaster();
     apiReady = true;
     el('galNew').disabled = !galCanFollow;
+    el('galAddMaster').disabled = !galCanFollow;
     setGalSync('success', 'Data tersinkron dengan Google Sheets HEXA.');
   } catch (error) {
     apiReady = false;
@@ -362,3 +385,35 @@ async function init() {
   }
 }
 init();
+
+
+/* MASTER AUTOLUBE — Tahap B */
+function masterCell(value,drum=false,dateValue=''){
+  const s=String(value?.status||'UNASSESSED').toUpperCase();
+  const klass=({OK:'ok',WARNING:'warning',BROKEN:'broken',FULL:'full',LOW:'low',REPLACE:'replace'})[s]||'unassessed';
+  const details=[s, value?.subcomponent, value?.note, drum&&dateValue?'Tanggal: '+dateValue:''].filter(Boolean).join(' — ');
+  return `<span class="gal-status-dot ${klass}" tabindex="0" role="img" aria-label="${esc(details)}" title="${esc(details)}"></span>`;
+}
+async function loadMaster(){
+  try{const result=await api({action:'getMasterAutolube'});galMasterRows=result.rows||[];renderMaster();el('galMasterMessage').textContent='';}
+  catch(e){el('galMasterMessage').textContent='Gagal membaca Master Autolube: '+e.message;}
+}
+function renderMaster(){
+  const rows=galMasterRows.slice().sort((a,b)=>a.unitCode.localeCompare(b.unitCode,undefined,{numeric:true}));
+  el('galMasterRows').innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.unitCode)}</td><td>${esc((r.performance||'Belum dinilai').replaceAll('_',' '))}</td>${galComponentFields.map(([key])=>`<td>${masterCell(r[key],key==='greaseDrum',r.drumDate)}</td>`).join('')}<td><div class="gal-master-actions">${galCanFollow?`<button class="gal-icon-action" data-master-edit="${esc(r.unitCode)}" title="Edit mapping">✎</button>`:''}${['1','MASTER'].includes(galLevel)?`<button class="gal-icon-action delete" data-master-delete="${esc(r.unitCode)}" title="Hapus mapping">🗑</button>`:''}</div></td></tr>`).join(''):'<tr><td colspan="9">Belum ada data mapping.</td></tr>';
+}
+function openMasterForm(row=null){
+  if(!galCanFollow)return;el('galMasterForm').reset();el('galMasterFormMessage').textContent='';
+  el('galMasterUnit').value=row?.unitCode||'';el('galMasterUnit').readOnly=!!row;
+  el('galMasterPerformance').value=row?.performance||'';el('galMasterDrumDate').value=row?.drumDate||'';
+  const opts=(arr,current)=>arr.map(([v,label])=>`<option value="${v}" ${v===current?'selected':''}>${label}</option>`).join('');
+  el('galMasterFields').innerHTML=galComponentFields.map(([key,label])=>{const v=row?.[key]||{};const drum=key==='greaseDrum';return `<section class="gal-master-field" data-master-field="${key}"><h3>${label}</h3><div class="gal-master-field-grid"><label>Kondisi<select class="ma-status"><option value="">Belum dinilai / Tidak diubah</option>${opts(drum?[['FULL','Full'],['LOW','Low'],['REPLACE','Replace']]:[['OK','OK'],['WARNING','Function with notes'],['BROKEN','Not Function']],v.status)}</select></label>${key==='controlUnit'?`<label>Komponen<select class="ma-subcomponent">${opts([['','Pilih komponen'],['Timer','Timer'],['Solenoid','Solenoid'],['Controller','Controller'],['Control Valve','Control Valve']],v.subcomponent)}</select></label>`:''}<label>Catatan<input class="ma-note" placeholder="Penjelasan kondisi" value="${esc(v.note||'')}"></label>${['1','3','MASTER','GROUP LEADER'].includes(galLevel)&&!drum?`<label><input type="checkbox" class="ma-override" ${v.manualOverride?'checked':''}> Override Manual Master/GL</label>`:''}</div></section>`}).join('');
+  el('galMasterUnitList').innerHTML=(typeof galUnits!=='undefined'?galUnits:[]).map(u=>`<option value="${esc(u.unitCode||u)}"></option>`).join('');
+  el('galMasterDialog').showModal();
+}
+async function saveMasterForm(e){e.preventDefault();const button=el('galMasterSave');busy(button,true);try{
+ const payload={action:'saveMasterAutolube',authToken:galAuthToken(),unitCode:el('galMasterUnit').value.trim().toUpperCase(),performance:el('galMasterPerformance').value,drumDate:el('galMasterDrumDate').value};
+ for(const field of el('galMasterFields').querySelectorAll('[data-master-field]')){const key=field.dataset.masterField,status=field.querySelector('.ma-status').value;if(!status)continue;payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:!!field.querySelector('.ma-override')?.checked};}
+ await api(payload);close('galMasterDialog');await loadMaster();
+ }catch(err){el('galMasterFormMessage').textContent=err.message;}finally{busy(button,false);}}
+async function deleteMasterUnit(unit){if(!['1','MASTER'].includes(galLevel)||!confirm('Hapus mapping '+unit+'?'))return;try{await api({action:'deleteMasterAutolube',unitCode:unit,authToken:galAuthToken(),reason:'Deleted via Master Autolube UI'});await loadMaster();}catch(e){el('galMasterMessage').textContent=e.message;}}
