@@ -60,3 +60,24 @@ body {
 .gal-section {
   background-color: transparent;
 }
+
+/* Revisi layout card, editor dan required parts */
+.gal-card{display:flex;flex-direction:column;min-height:100%}
+.gal-card-footer{margin-top:auto;padding-top:15px;display:flex;justify-content:flex-end}
+.gal-card-top-actions{display:flex;align-items:center;gap:5px;flex-shrink:0}
+.gal-icon-action{display:inline-flex;align-items:center;justify-content:center;width:29px;height:29px;border:1px solid #eed8c1;background:#fff;border-radius:8px;cursor:pointer;font-size:15px;color:#bd6414}
+.gal-icon-action:hover{background:#fff3e5}
+.gal-icon-action.delete{color:#b63e36}
+.gal-card-cols{margin-bottom:8px}
+.gal-parts-section{display:grid;gap:9px;min-width:0}
+.gal-parts-title{display:flex;justify-content:space-between;align-items:center}
+.gal-parts-title small{font-size:11px;color:#8a7866}
+.gal-part-row{border:1px solid #efddc8;background:#fffcf8;border-radius:10px;padding:12px;display:grid;gap:9px}
+.gal-part-head{display:flex;justify-content:space-between;align-items:center}
+.gal-part-head button{border:0;background:transparent;color:#b63e36;cursor:pointer}
+.gal-part-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 80px;gap:8px}
+.gal-part-grid label{font-size:12px}
+.gal-add-part{border:1px dashed #d99b5c;background:#fff8ef;color:#a75b11}
+.gal-danger{background:#bf3e35}.gal-danger:hover{background:#9e2c26}
+.gal-part-summary{display:block;margin-bottom:3px}
+@media(max-width:650px){.gal-part-grid{grid-template-columns:1fr 1fr}.gal-part-grid label:first-child{grid-column:1/-1}}
