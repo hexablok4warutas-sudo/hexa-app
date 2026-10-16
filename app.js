@@ -203,6 +203,11 @@ if (loginForm) {
           result.success &&
           result.user
         ) {
+          // Simpan status login
+  sessionStorage.setItem(
+    "hexaLoggedIn",
+    "true"
+  );
 
           // ==================================
           // SIMPAN SESSION USER
