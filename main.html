@@ -1,329 +1,49 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HEXA</title>
-
-
-  <!-- =====================================
-       GLOBAL HEXA HEADER
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="hexa-header.css"
-  >
-
-
-  <!-- =====================================
-       MAIN PAGE STYLE
-       ===================================== -->
-
-  <link
-    rel="stylesheet"
-    href="main.css"
-  >
-
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="main.css">
 </head>
-
-
 <body>
-
-
-  <!-- =====================================
-       GLOBAL HEXA HEADER
-       MAIN PAGE MODE
-       Dropdown hanya Logout
-       ===================================== -->
-
-  <header
-    id="hexaHeader"
-    data-header-type="main"
-    data-page="main"
-  ></header>
-
-
-
-  <!-- =====================================
-       MAIN CONTENT
-       ===================================== -->
-
-  <main class="main-content">
-
-
-    <!-- ===================================
-         BANNER SLIDER
-         =================================== -->
-
-    <section class="banner-section">
-
-      <div
-        class="banner-slider"
-        id="bannerSlider"
-      >
-
-
-        <!-- BANNER 01 -->
-
-        <div class="banner-slide active">
-
-          <img
-            src="banner-01.jpg"
-            alt="HEXA Banner 1"
-          >
-
-        </div>
-
-
-        <!-- BANNER 02 -->
-
-        <div class="banner-slide">
-
-          <img
-            src="banner-02.jpg"
-            alt="HEXA Banner 2"
-          >
-
-        </div>
-
-
-        <!-- PREVIOUS -->
-
-        <button
-          type="button"
-          class="slider-button slider-prev"
-          id="sliderPrev"
-          aria-label="Previous banner"
-        >
-          &#8592;
-        </button>
-
-
-        <!-- NEXT -->
-
-        <button
-          type="button"
-          class="slider-button slider-next"
-          id="sliderNext"
-          aria-label="Next banner"
-        >
-          &#8594;
-        </button>
-
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ===================================
-         MENU AREA
-         =================================== -->
-
-    <section class="menu-section">
-
-      <div class="menu-carousel" id="menuCarousel">
-        <button type="button" class="menu-carousel-arrow menu-carousel-prev" id="menuPrev" aria-label="Menu sebelumnya">&#10094;</button>
-        <div class="menu-grid" id="menuGrid">
-
-
-        <!-- DAILY MAINTENANCE -->
-
-        <button
-          type="button"
-          class="menu-item"
-          data-menu="daily-maintenance"
-        >
-
-          <img
-            src="hexa-icon-svg-dailymaintenance.svg"
-            alt="Daily Maintenance"
-          >
-
-          <span>
-            Daily Maintenance
-          </span>
-
-        </button>
-
-
-
-        <!-- BACKLOG MONITORING -->
-
-        <button
-          type="button"
-          class="menu-item"
-          data-menu="backlog-monitoring"
-        >
-
-          <img
-            src="hexa-icon-svg-backlogmonitoring.svg"
-            alt="Backlog Monitoring"
-          >
-
-          <span>
-            Backlog Monitoring
-          </span>
-
-        </button>
-
-
-
-        <!-- FUI -->
-
-        <button
-          type="button"
-          class="menu-item"
-          data-menu="fui"
-        >
-
-          <img
-            src="hexa-icon-svg-fui.svg"
-            alt="FUI"
-          >
-
-          <span>
-            FUI
-          </span>
-
-        </button>
-
-
-
-        <!-- ROTABLE -->
-
-        <button
-          type="button"
-          class="menu-item"
-          data-menu="rotable"
-        >
-
-          <img
-            src="hexa-icon-svg-rotable.svg"
-            alt="Rotable"
-          >
-
-          <span>
-            Rotable
-          </span>
-
-        </button>
-
-
-
-        <!-- NEWS -->
-
-        <button
-          type="button"
-          class="menu-item"
-          data-menu="news"
-        >
-
-          <img
-            src="hexa-icon-svg-news.svg"
-            alt="News"
-          >
-
-          <span>
-            News
-          </span>
-
-        </button>
-
-
-
-        <!-- HEXA GAMES -->
-
-        <button
-          type="button"
-          class="menu-item hexa-games-item"
-          data-menu="hexa-games"
-          title="HEXA Games — segera hadir"
-        >
-          <img src="hexa-icon-svg-games.svg" alt="HEXA GAMES">
-          <span>HEXA GAMES</span>
-        </button>
-
-
-        <!-- SETTINGS -->
-
-        <button
-          type="button"
-          class="menu-item settings-item"
-          data-menu="settings"
-          id="settingsMenu"
-        >
-
-          <img
-            src="hexa-icon-svg-settings.svg"
-            alt="Settings"
-          >
-
-          <span>
-            Settings
-          </span>
-
-        </button>
-
-
-        </div>
-        <button type="button" class="menu-carousel-arrow menu-carousel-next" id="menuNext" aria-label="Menu berikutnya">&#10095;</button>
-      </div>
-      <div class="menu-carousel-dots" id="menuDots" aria-label="Halaman menu"></div>
-
-    </section>
-
-
-  </main>
-
-
-
-  <!-- =====================================
-       FLOATING START INSPECTION
-       ===================================== -->
-
-  <button
-    type="button"
-    id="inspectionShortcut"
-    class="inspection-shortcut"
-    aria-label="Start Inspection"
-    title="Start Inspection"
-  >
-
-    <span>+</span>
-
-  </button>
-
-
-
-  <!-- =====================================
-       JAVASCRIPT
-       ===================================== -->
-
-
-  <!-- GLOBAL MENU DATA -->
-
-  <script src="hexa-menu.js"></script>
-
-
-  <!-- GLOBAL HEADER -->
-
-  <script src="hexa-header.js"></script>
-
-
-  <!-- MAIN PAGE -->
-
-  <script src="main.js"></script>
-
-
+<header id="hexaHeader" data-header-type="main" data-page="main"></header>
+<main class="main-content">
+<section class="banner-section">
+  <div class="banner-slider" id="bannerSlider">
+    <!-- Video HEXA: hexa-video-banner01.mp4 di folder yang sama -->
+    <div class="banner-slide active" data-type="video">
+      <video id="hexaBannerVideo" muted autoplay playsinline preload="metadata" poster="banner-01.jpg" aria-label="Video banner HEXA">
+        <source src="hexa-video-banner01.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="banner-slide" data-type="image"><img src="banner-01.jpg" alt="HEXA Banner 1"></div>
+    <div class="banner-slide" data-type="image"><img src="banner-02.jpg" alt="HEXA Banner 2"></div>
+    <button type="button" class="slider-button slider-prev" id="sliderPrev" aria-label="Previous banner">&#8592;</button>
+    <button type="button" class="slider-button slider-next" id="sliderNext" aria-label="Next banner">&#8594;</button>
+  </div>
+</section>
+<section class="menu-section">
+  <div class="menu-carousel" id="menuCarousel">
+    <button type="button" class="menu-carousel-arrow menu-carousel-prev" id="menuPrev" aria-label="Menu sebelumnya">&#10094;</button>
+    <div class="menu-grid" id="menuGrid">
+      <button type="button" class="menu-item" data-menu="daily-maintenance"><img src="hexa-icon-svg-dailymaintenance.svg" alt="Daily Maintenance"><span>Daily Maintenance</span></button>
+      <button type="button" class="menu-item" data-menu="backlog-monitoring"><img src="hexa-icon-svg-backlogmonitoring.svg" alt="Backlog Monitoring"><span>Backlog Monitoring</span></button>
+      <button type="button" class="menu-item" data-menu="fui"><img src="hexa-icon-svg-fui.svg" alt="FUI"><span>FUI</span></button>
+      <button type="button" class="menu-item" data-menu="rotable"><img src="hexa-icon-svg-rotable.svg" alt="Rotable"><span>Rotable</span></button>
+      <button type="button" class="menu-item" data-menu="news"><img src="hexa-icon-svg-news.svg" alt="News"><span>News</span></button>
+      <button type="button" class="menu-item hexa-games-item" data-menu="hexa-games" title="HEXA Games — segera hadir"><img src="hexa-icon-svg-games.svg" alt="HEXA GAMES"><span>HEXA GAMES</span></button>
+      <button type="button" class="menu-item settings-item" data-menu="settings" id="settingsMenu"><img src="hexa-icon-svg-settings.svg" alt="Settings"><span>Settings</span></button>
+    </div>
+    <button type="button" class="menu-carousel-arrow menu-carousel-next" id="menuNext" aria-label="Menu berikutnya">&#10095;</button>
+  </div>
+  <div class="menu-carousel-dots" id="menuDots" aria-label="Halaman menu"></div>
+</section>
+</main>
+<button type="button" id="inspectionShortcut" class="inspection-shortcut" aria-label="Start Inspection" title="Start Inspection"><span>+</span></button>
+<script src="hexa-menu.js"></script>
+<script src="hexa-header.js"></script>
+<script src="main.js"></script>
 </body>
-
 </html>
