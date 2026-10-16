@@ -249,272 +249,115 @@ if (logoutButton) {
 
 
 // ======================================================
-// 6. BANNER SLIDER
+// 6-7. HYBRID BANNER VIDEO + IMAGE + SWIPE
 // ======================================================
-
-const slides =
-  document.querySelectorAll(
-    ".banner-slide"
-  );
-
-const prevButton =
-  document.getElementById(
-    "sliderPrev"
-  );
-
-const nextButton =
-  document.getElementById(
-    "sliderNext"
-  );
-
-const bannerSlider =
-  document.getElementById(
-    "bannerSlider"
-  );
-
-
+const slides = [...document.querySelectorAll(".banner-slide")];
+const prevButton = document.getElementById("sliderPrev");
+const nextButton = document.getElementById("sliderNext");
+const bannerSlider = document.getElementById("bannerSlider");
+const bannerVideo = document.getElementById("hexaBannerVideo");
+const IMAGE_DURATION_MS = 5000;
+const VIDEO_FALLBACK_MS = 30000; // Hanya jika video macet/tidak bisa dimainkan
 let currentSlide = 0;
-
 let autoSlideTimer = null;
-
-
-// ======================================================
-// TAMPILKAN SLIDE
-// ======================================================
-
-function showSlide(index) {
-
-  if (!slides.length) {
-    return;
-  }
-
-
-  if (index >= slides.length) {
-
-    currentSlide = 0;
-
-  } else if (index < 0) {
-
-    currentSlide =
-      slides.length - 1;
-
-  } else {
-
-    currentSlide = index;
-
-  }
-
-
-  slides.forEach(
-    function (slide, slideIndex) {
-
-      if (
-        slideIndex === currentSlide
-      ) {
-
-        slide.classList.add(
-          "active"
-        );
-
-      } else {
-
-        slide.classList.remove(
-          "active"
-        );
-
-      }
-
-    }
-  );
-
-}
-
-
-// ======================================================
-// NEXT SLIDE
-// ======================================================
-
-function nextSlide() {
-
-  showSlide(
-    currentSlide + 1
-  );
-
-}
-
-
-// ======================================================
-// PREVIOUS SLIDE
-// ======================================================
-
-function previousSlide() {
-
-  showSlide(
-    currentSlide - 1
-  );
-
-}
-
-
-// ======================================================
-// AUTO SLIDE
-// ======================================================
+let touchStartX = 0;
+let touchEndX = 0;
+let bannerRun = 0;
 
 function stopAutoSlide() {
-
-  if (autoSlideTimer) {
-
-    clearInterval(
-      autoSlideTimer
-    );
-
+  if (autoSlideTimer !== null) {
+    clearTimeout(autoSlideTimer);
     autoSlideTimer = null;
-
   }
-
 }
 
-
-function startAutoSlide() {
-
+function scheduleNextSlide(delay, runId) {
   stopAutoSlide();
+  if (slides.length < 2) return;
+  autoSlideTimer = setTimeout(() => {
+    if (runId === bannerRun && !document.hidden) nextSlide();
+  }, delay);
+}
 
-
-  if (slides.length <= 1) {
-    return;
+function showSlide(index) {
+  if (!slides.length) return;
+  bannerRun += 1;
+  const runId = bannerRun;
+  stopAutoSlide();
+  if (bannerVideo) {
+    bannerVideo.pause();
+    try { bannerVideo.currentTime = 0; } catch (error) {}
   }
-
-
-  autoSlideTimer =
-    setInterval(
-      function () {
-
-        nextSlide();
-
-      },
-      5000
-    );
-
-}
-
-
-function resetAutoSlide() {
-
-  startAutoSlide();
-
-}
-
-
-// ======================================================
-// SLIDER BUTTON
-// ======================================================
-
-if (prevButton) {
-
-  prevButton.addEventListener(
-    "click",
-    function () {
-
-      previousSlide();
-
-      resetAutoSlide();
-
+  currentSlide = ((index % slides.length) + slides.length) % slides.length;
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === currentSlide);
+    slide.setAttribute("aria-hidden", i === currentSlide ? "false" : "true");
+  });
+  if (document.hidden) return;
+  const activeSlide = slides[currentSlide];
+  if (activeSlide.dataset.type === "video" && bannerVideo) {
+    bannerVideo.muted = true;
+    bannerVideo.loop = false;
+    // Watchdog hanya digunakan bila video tidak mengirim event ended.
+    scheduleNextSlide(VIDEO_FALLBACK_MS, runId);
+    const result = bannerVideo.play();
+    if (result && typeof result.catch === "function") {
+      result.catch(() => {
+        if (runId === bannerRun) scheduleNextSlide(IMAGE_DURATION_MS, runId);
+      });
     }
-  );
-
-}
-
-
-if (nextButton) {
-
-  nextButton.addEventListener(
-    "click",
-    function () {
-
-      nextSlide();
-
-      resetAutoSlide();
-
-    }
-  );
-
-}
-
-
-// ======================================================
-// 7. SWIPE BANNER
-// ======================================================
-
-let touchStartX = 0;
-
-let touchEndX = 0;
-
-
-if (bannerSlider) {
-
-  bannerSlider.addEventListener(
-    "touchstart",
-    function (event) {
-
-      touchStartX =
-        event.changedTouches[0].screenX;
-
-    },
-    {
-      passive: true
-    }
-  );
-
-
-  bannerSlider.addEventListener(
-    "touchend",
-    function (event) {
-
-      touchEndX =
-        event.changedTouches[0].screenX;
-
-
-      handleBannerSwipe();
-
-    },
-    {
-      passive: true
-    }
-  );
-
-}
-
-
-function handleBannerSwipe() {
-
-  const swipeDistance =
-    touchStartX - touchEndX;
-
-
-  if (
-    Math.abs(swipeDistance) < 50
-  ) {
-
-    return;
-
-  }
-
-
-  if (swipeDistance > 0) {
-
-    nextSlide();
-
   } else {
-
-    previousSlide();
-
+    scheduleNextSlide(IMAGE_DURATION_MS, runId);
   }
-
-
-  resetAutoSlide();
-
 }
+function nextSlide() { showSlide(currentSlide + 1); }
+function previousSlide() { showSlide(currentSlide - 1); }
+function startAutoSlide() { showSlide(currentSlide); }
+function resetAutoSlide() { startAutoSlide(); }
 
+if (bannerVideo) {
+  bannerVideo.addEventListener("ended", () => {
+    if (slides[currentSlide]?.contains(bannerVideo)) nextSlide();
+  });
+  bannerVideo.addEventListener("error", () => {
+    if (slides[currentSlide]?.contains(bannerVideo)) {
+      scheduleNextSlide(IMAGE_DURATION_MS, bannerRun);
+    }
+  });
+  bannerVideo.addEventListener("playing", () => {
+    if (slides[currentSlide]?.contains(bannerVideo)) {
+      // Durasi video yang valid + buffer, agar tidak terpotong sebelum selesai.
+      const remaining = Number.isFinite(bannerVideo.duration) && bannerVideo.duration > 0
+        ? Math.max(5000, (bannerVideo.duration - bannerVideo.currentTime) * 1000 + 5000)
+        : VIDEO_FALLBACK_MS;
+      scheduleNextSlide(remaining, bannerRun);
+    }
+  });
+}
+prevButton?.addEventListener("click", previousSlide);
+nextButton?.addEventListener("click", nextSlide);
+if (bannerSlider) {
+  bannerSlider.addEventListener("touchstart", event => {
+    touchStartX = event.changedTouches[0].screenX;
+  }, { passive: true });
+  bannerSlider.addEventListener("touchend", event => {
+    touchEndX = event.changedTouches[0].screenX;
+    handleBannerSwipe();
+  }, { passive: true });
+}
+function handleBannerSwipe() {
+  const dx = touchStartX - touchEndX;
+  if (Math.abs(dx) < 50) return;
+  if (dx > 0) nextSlide(); else previousSlide();
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopAutoSlide();
+    bannerVideo?.pause();
+  } else {
+    showSlide(currentSlide);
+  }
+});
 
 // ======================================================
 // 8. REFRESH BUTTON
