@@ -87,3 +87,9 @@ body {
 
 /* Auto condition label for Problem List */
 .gal-condition-label{font-size:11px;font-weight:700;margin-top:6px;color:#8b6240}
+
+/* Required Part otomatis dari Part Bermasalah */
+.gal-auto-required-toggle{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:13px;font-weight:600}
+.gal-auto-required-toggle input{width:17px;height:17px;flex:none}
+.gal-part-row[data-auto-required="yes"]{border-left:3px solid #16a34a}
+.gal-part-row[data-auto-required="yes"] .gal-part-name{background:#f0fdf4}
