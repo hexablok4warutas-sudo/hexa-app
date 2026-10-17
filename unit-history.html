@@ -1122,6 +1122,10 @@
       <div class="unit-history-detail-actions">
 
 
+        <button type="button" id="unitHistoryEditDetailButton" class="unit-history-detail-action-button edit" aria-label="Edit temuan" title="Edit Temuan" hidden>
+          ✎
+        </button>
+
         <button
           type="button"
           id="unitHistoryCloseDetailButton"
@@ -1153,6 +1157,22 @@
   <!-- ==================================================
        FULLSCREEN PHOTO VIEWER
        ================================================== -->
+
+  <!-- EDIT TEMUAN: hanya level 1, 2, 3; validasi final wajib di server -->
+  <div id="unitHistoryEditModal" class="unit-history-modal-overlay" hidden>
+    <section class="unit-history-edit-modal" role="dialog" aria-modal="true" aria-labelledby="unitHistoryEditTitle">
+      <h2 id="unitHistoryEditTitle">Edit Temuan</h2>
+      <p class="unit-history-edit-subtitle" id="unitHistoryEditUnit">-</p>
+      <form id="unitHistoryEditForm">
+        <div id="unitHistoryEditFields" class="unit-history-edit-fields"></div>
+        <p id="unitHistoryEditMessage" role="status" class="unit-history-edit-message"></p>
+        <div class="unit-history-edit-actions">
+          <button type="button" id="unitHistoryEditCancel" class="unit-history-edit-cancel">Cancel</button>
+          <button type="submit" id="unitHistoryEditSave" class="unit-history-edit-save">Save Changes</button>
+        </div>
+      </form>
+    </section>
+  </div>
 
   <div
     id="unitHistoryPhotoViewer"
@@ -1319,6 +1339,7 @@
 
 
 <script src="unit-history.js"></script>
+  <script src="unit-history-edit.js"></script>
 
 </body>
 
