@@ -90,14 +90,47 @@ function galPartsLabel(value) {
   const parts = galPartsFromValue(value);
   return parts.length ? parts.map(p => [p.name, p.spec ? '(' + p.spec + ')' : '', p.qty ? '× ' + p.qty : ''].filter(Boolean).join(' ')).join('\n') : '-';
 }
-function galAddPartRow(part = {}) {
+function galAddPartRow(part = {}, automatic = false) {
   const row = document.createElement('div'); row.className = 'gal-part-row';
   row.innerHTML = `<div class="gal-part-head"><strong>Part</strong><button type="button" class="gal-remove-part" aria-label="Hapus part">✕</button></div><div class="gal-part-grid"><label>Nama Part<input class="gal-part-name" placeholder="Elbow Connector" required></label><label>Part No / Spesifikasi<input class="gal-part-spec" placeholder="Nomor / ukuran"></label><label>Jumlah<input class="gal-part-qty" type="number" min="1" step="1" required></label></div>`;
+  row.dataset.autoRequired = automatic ? 'yes' : 'no';
   row.querySelector('.gal-part-name').value = part.name || '';
+  if (automatic) { row.querySelector('.gal-part-head strong').textContent = 'Part Bermasalah (otomatis)'; row.querySelector('.gal-remove-part').hidden = true; row.querySelector('.gal-part-name').readOnly = true; }
   row.querySelector('.gal-part-spec').value = part.spec || '';
   row.querySelector('.gal-part-qty').value = part.qty || 1;
   row.querySelector('.gal-remove-part').onclick = () => row.remove();
   el('galParts').appendChild(row);
+}
+// Satu baris Required Part otomatis mengikuti Part Bermasalah; tambahan manual tidak berubah.
+function galSyncRequiredPart() {
+  const needs = el('galNeedsPart').checked;
+  const part = galAffectedPartValue().trim();
+  const container = el('galParts');
+  const automatic = container.querySelector('[data-auto-required="yes"]');
+  el('galNoPartHint').hidden = needs;
+  el('galAddPart').disabled = !needs;
+  if (!needs || !part) {
+    if (automatic) automatic.remove();
+    if (!needs) container.replaceChildren();
+    return;
+  }
+  if (automatic) {
+    automatic.querySelector('.gal-part-name').value = part;
+    return;
+  }
+  // Hindari duplikasi saat mengedit problem lama yang sudah memiliki nama part sama.
+  const existing = [...container.querySelectorAll('.gal-part-row')].find(row =>
+    row.querySelector('.gal-part-name').value.trim().toLowerCase() === part.toLowerCase());
+  if (existing) {
+    existing.dataset.autoRequired = 'yes';
+    existing.querySelector('.gal-part-head strong').textContent = 'Part Bermasalah (otomatis)';
+    existing.querySelector('.gal-remove-part').hidden = true;
+    existing.querySelector('.gal-part-name').readOnly = true;
+    container.prepend(existing);
+  } else {
+    galAddPartRow({name:part,qty:1}, true);
+    container.prepend(container.lastElementChild);
+  }
 }
 function galReadParts() {
   return [...el('galParts').querySelectorAll('.gal-part-row')].map(row => ({
@@ -138,7 +171,10 @@ function galOpenEditor(r = null) {
   el('galCondition').value = r?.condition === 'BROKEN' ? 'BROKEN' : 'WARNING';
   galRenderAffectedParts(r?.affectedPart || '');
   el('galRecommendation').value = r?.recommendation || '';
-  galPartsFromValue(r?.part).forEach(galAddPartRow);
+  const savedParts = galPartsFromValue(r?.part);
+  el('galNeedsPart').checked = r ? savedParts.length > 0 : true;
+  savedParts.forEach(p => galAddPartRow(p));
+  galSyncRequiredPart();
   closeGalUnitOptions(); el('galNewMessage').textContent = '';
   el('galNewDialog').showModal();
   if (!galUnitsLoaded && !galUnitsLoading) galUnitsLoading = loadUnits().catch(error => {
@@ -324,14 +360,16 @@ async function init() {
   el('galCards').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.gal-problem-text')){e.preventDefault();e.target.classList.toggle('is-expanded');}});
   document.querySelectorAll('[data-dismiss]').forEach(b => b.onclick = () => close(b.dataset.dismiss));
   setupGalUnitCombobox();
-  el('galCategory').addEventListener('change',()=>galRenderAffectedParts());
-  el('galAffectedPart').addEventListener('change',()=>{const other=el('galAffectedPart').value==='__OTHER__';el('galAffectedPartNew').hidden=!other;el('galAffectedPartNew').required=other;});
+  el('galCategory').addEventListener('change',()=>{galRenderAffectedParts();galSyncRequiredPart();});
+  el('galAffectedPart').addEventListener('change',()=>{const other=el('galAffectedPart').value==='__OTHER__';el('galAffectedPartNew').hidden=!other;el('galAffectedPartNew').required=other;galSyncRequiredPart();});
+  el('galAffectedPartNew').addEventListener('input',galSyncRequiredPart);
+  el('galNeedsPart').addEventListener('change',galSyncRequiredPart);
   galInstallPhotoFallback();
   el('galNew').onclick = () => galOpenEditor();
   el('galAddMaster').onclick=()=>openMasterForm();
   el('galMasterForm').onsubmit=saveMasterForm;
   el('galMasterRows').addEventListener('click',e=>{const edit=e.target.closest('[data-master-edit]');const del=e.target.closest('[data-master-delete]');if(edit)openMasterForm(galMasterRows.find(r=>r.unitCode===edit.dataset.masterEdit));if(del)deleteMasterUnit(del.dataset.masterDelete);});
-  el('galAddPart').onclick = () => galAddPartRow();
+  el('galAddPart').onclick = () => {if(el('galNeedsPart').checked)galAddPartRow();};
   el('galConfirmDelete').onclick = async () => {
     const b = el('galConfirmDelete'); busy(b,true);
     try { await api({action:'deleteGALProblem',problemId:galDeletingId,authToken:galAuthToken()}); close('galDeleteDialog'); await refresh(); await loadMaster(); }
@@ -363,6 +401,7 @@ async function init() {
     try {
       const unit = el('galUnit').value;
       if (!unit || el('galUnitSearch').value.trim() !== unit) throw Error('Pilih Code Unit dari daftar pencarian.');
+      galSyncRequiredPart();
       const parts = galReadParts();
       if (parts.some(p => !p.name || !Number.isInteger(p.qty) || p.qty < 1)) throw Error('Isi nama part dan jumlah bilangan bulat minimal 1 untuk setiap part.');
       const file = el('galDamage').files[0];
