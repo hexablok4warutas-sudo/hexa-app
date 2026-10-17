@@ -45,16 +45,16 @@ const existingLogin =
 const existingUser =
   sessionStorage.getItem("hexaUser");
 
+const existingToken =
+  sessionStorage.getItem("hexaAuthToken");
 
 if (
   existingLogin === "true" &&
-  existingUser
+  existingUser &&
+  existingToken
 ) {
 
-  // Jika user kembali membuka halaman login
-  // dalam tab yang sama dan session masih aktif,
-  // langsung arahkan ke Main Page.
-
+  // Session lengkap: arahkan ke Main Page.
   window.location.replace("main.html");
 
 }
@@ -73,17 +73,14 @@ if (togglePassword && passwordInput) {
       const passwordHidden =
         passwordInput.type === "password";
 
-
       if (passwordHidden) {
 
         passwordInput.type = "text";
-
         togglePassword.textContent = "🙈";
 
       } else {
 
         passwordInput.type = "password";
-
         togglePassword.textContent = "👁";
 
       }
@@ -104,9 +101,7 @@ if (loginForm) {
     "submit",
     async function (event) {
 
-      // Mencegah form melakukan reload
       event.preventDefault();
-
 
       // ==================================
       // AMBIL USER ID DAN PASSWORD
@@ -117,7 +112,6 @@ if (loginForm) {
 
       const password =
         passwordInput.value.trim();
-
 
       // ==================================
       // VALIDASI INPUT
@@ -134,7 +128,6 @@ if (loginForm) {
 
       }
 
-
       // ==================================
       // LOADING
       // ==================================
@@ -146,7 +139,6 @@ if (loginForm) {
         "loading"
       );
 
-
       try {
 
         // ==================================
@@ -157,29 +149,17 @@ if (loginForm) {
           await fetch(
             API_URL,
             {
-
               method: "POST",
-
               headers: {
-
-                "Content-Type":
-                  "text/plain;charset=utf-8"
-
+                "Content-Type": "text/plain;charset=utf-8"
               },
-
               body: JSON.stringify({
-
                 action: "login",
-
                 userId: userId,
-
                 password: password
-
               })
-
             }
           );
-
 
         // ==================================
         // BACA RESPONSE
@@ -188,12 +168,7 @@ if (loginForm) {
         const result =
           await response.json();
 
-
-        console.log(
-          "Response HEXA API:",
-          result
-        );
-
+        // Jangan log seluruh result karena berisi authToken.
 
         // ==================================
         // LOGIN BERHASIL
@@ -203,11 +178,16 @@ if (loginForm) {
           result.success &&
           result.user
         ) {
-          // Simpan status login
-  sessionStorage.setItem(
-    "hexaLoggedIn",
-    "true"
-  );
+
+          // Pastikan backend benar-benar mengirim token.
+          if (
+            typeof result.authToken !== "string" ||
+            !result.authToken.trim()
+          ) {
+            throw new Error(
+              "Token autentikasi tidak diterima dari server."
+            );
+          }
 
           // ==================================
           // SIMPAN SESSION USER
@@ -218,12 +198,23 @@ if (loginForm) {
             JSON.stringify(result.user)
           );
 
+          // ==================================
+          // SIMPAN TOKEN AUTENTIKASI
+          // ==================================
+
+          sessionStorage.setItem(
+            "hexaAuthToken",
+            result.authToken
+          );
+
+          // ==================================
+          // SIMPAN STATUS LOGIN
+          // ==================================
 
           sessionStorage.setItem(
             "hexaLoggedIn",
             "true"
           );
-
 
           // ==================================
           // MESSAGE
@@ -236,22 +227,16 @@ if (loginForm) {
             "success"
           );
 
-
           // ==================================
           // REDIRECT KE MAIN PAGE
           // ==================================
 
           setTimeout(
             function () {
-
-              window.location.replace(
-                "main.html"
-              );
-
+              window.location.replace("main.html");
             },
             700
           );
-
 
         // ==================================
         // LOGIN GAGAL
@@ -259,16 +244,9 @@ if (loginForm) {
 
         } else {
 
-          // Bersihkan kemungkinan session lama
-
-          sessionStorage.removeItem(
-            "hexaLoggedIn"
-          );
-
-          sessionStorage.removeItem(
-            "hexaUser"
-          );
-
+          sessionStorage.removeItem("hexaLoggedIn");
+          sessionStorage.removeItem("hexaUser");
+          sessionStorage.removeItem("hexaAuthToken");
 
           showMessage(
             result.message ||
@@ -278,24 +256,28 @@ if (loginForm) {
 
         }
 
-
       // ==================================
-      // ERROR KONEKSI
+      // ERROR KONEKSI / TOKEN
       // ==================================
 
       } catch (error) {
 
+        // Jangan pertahankan session parsial.
+        sessionStorage.removeItem("hexaLoggedIn");
+        sessionStorage.removeItem("hexaUser");
+        sessionStorage.removeItem("hexaAuthToken");
+
         console.error(
           "HEXA Login Error:",
-          error
+          error.message
         );
-
 
         showMessage(
-          "Tidak dapat terhubung ke server.",
+          error.message === "Token autentikasi tidak diterima dari server."
+            ? error.message
+            : "Tidak dapat terhubung ke server.",
           "error"
         );
-
 
       } finally {
 
@@ -326,26 +308,20 @@ function showMessage(
     return;
   }
 
-
   loginMessage.textContent =
     message;
-
 
   if (type === "success") {
 
     loginMessage.style.color =
       "#16803c";
 
-  }
-
-  else if (type === "error") {
+  } else if (type === "error") {
 
     loginMessage.style.color =
       "#d93025";
 
-  }
-
-  else {
+  } else {
 
     loginMessage.style.color =
       "#555555";
@@ -367,7 +343,6 @@ function setLoading(
     return;
   }
 
-
   if (isLoading) {
 
     loginButton.disabled =
@@ -382,9 +357,7 @@ function setLoading(
     loginButton.style.cursor =
       "not-allowed";
 
-  }
-
-  else {
+  } else {
 
     loginButton.disabled =
       false;
