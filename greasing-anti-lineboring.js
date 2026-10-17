@@ -115,6 +115,7 @@ function galOpenEditor(r = null) {
   el('galUnitSearch').value = r?.unit || '';
   el('galProblem').value = r?.problem || '';
   el('galCategory').value = r?.category || '';
+  el('galCondition').value = r?.condition === 'BROKEN' ? 'BROKEN' : 'WARNING';
   el('galRecommendation').value = r?.recommendation || '';
   galPartsFromValue(r?.part).forEach(galAddPartRow);
   closeGalUnitOptions(); el('galNewMessage').textContent = '';
@@ -126,7 +127,7 @@ function galOpenEditor(r = null) {
 function card(r) {
   const histories = r.followUps || [], closed = r.status === 'CLOSE';
   const actions = `<div class="gal-card-top-actions"><span class="gal-badge ${closed?'close':'open'}">${esc(r.status)}</span>${galCanEdit ? `<button type="button" class="gal-icon-action" data-edit="${esc(r.id)}" title="Edit problem" aria-label="Edit problem">✎</button>` : ''}${galCanManage ? `<button type="button" class="gal-icon-action delete" data-delete="${esc(r.id)}" title="Hapus problem" aria-label="Hapus problem">🗑</button>` : ''}</div>`;
-  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div>${actions}</div><div class="gal-field"><small>Problem Autolube</small><p class="gal-problem-text" role="button" tabindex="0" aria-label="Tampilkan atau ringkas deskripsi problem" title="Klik untuk baca seluruhnya"><strong>${esc(r.problem)}</strong></p></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan',r.unit==='HEX 1212' && /leaking injector/i.test(r.problem) ? '1pedIEH3FjZefc7bTd1Kjay779K_fZl0j' : '')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(galPartsLabel(r.part))}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}<div class="gal-card-footer">${!closed && galCanFollow ? `<button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button>` : ''}</div></article>`;
+  return `<article class="gal-card"><div class="gal-card-top"><div><h3>${esc(r.unit)}</h3><div class="gal-date">${date(r.createdAt)} · ${esc(r.createdBy)}</div></div>${actions}</div><div class="gal-field"><small>Problem Autolube</small><p class="gal-problem-text" role="button" tabindex="0" aria-label="Tampilkan atau ringkas deskripsi problem" title="Klik untuk baca seluruhnya"><strong>${esc(r.problem)}</strong></p><div class="gal-condition-label">${!closed ? (r.condition==='BROKEN'?'🔴 Not Function':'🟠 Function with Notes') : '🟢 Closed'}</div></div><div class="gal-field">${photo(r.damagePhoto,'Foto kerusakan',r.unit==='HEX 1212' && /leaking injector/i.test(r.problem) ? '1pedIEH3FjZefc7bTd1Kjay779K_fZl0j' : '')}</div><div class="gal-card-cols"><div class="gal-field"><small>Required Part</small><p>${esc(galPartsLabel(r.part))}</p></div><div class="gal-field"><small>Recommended Follow Up</small><p>${esc(r.recommendation || '-')}</p></div></div>${histories.length ? `<details class="gal-history"><summary>Follow Up (${histories.length})</summary>${histories.map(h => `<div class="gal-history-item"><small>${date(h.date)} · ${esc(h.by)}</small><p>${esc(h.action)}</p><span class="gal-result ${esc(String(h.result).toLowerCase())}">${esc(h.result)}</span>${photo(h.evidence,'Evidence follow up')}</div>`).join('')}</details>` : ''}<div class="gal-card-footer">${!closed && galCanFollow ? `<button type="button" class="gal-primary" data-follow="${esc(r.id)}">+ Follow Up</button>` : ''}</div></article>`;
 }
 
 function render() {
@@ -150,7 +151,7 @@ async function refresh() {
   records = (data.problems || []).map(r => ({
     id:r.id,unit:r.unitCode,problem:r.problem,damagePhoto:r.photo,
     part:r.requiredPart,recommendation:r.recommendedFollowUp,
-    status:String(r.status||'').toUpperCase(),category:r.category || '',createdAt:r.createdAt,createdBy:r.createdBy,
+    status:String(r.status||'').toUpperCase(),category:r.category || '',condition:r.condition||'WARNING',createdAt:r.createdAt,createdBy:r.createdBy,
     followUps:(r.followUps||[]).map(h=>({...h,by:h.createdBy}))
   }));
   render();
@@ -310,7 +311,7 @@ async function init() {
   el('galAddPart').onclick = () => galAddPartRow();
   el('galConfirmDelete').onclick = async () => {
     const b = el('galConfirmDelete'); busy(b,true);
-    try { await api({action:'deleteGALProblem',problemId:galDeletingId,authToken:galAuthToken()}); close('galDeleteDialog'); await refresh(); }
+    try { await api({action:'deleteGALProblem',problemId:galDeletingId,authToken:galAuthToken()}); close('galDeleteDialog'); await refresh(); await loadMaster(); }
     catch(error) {el('galDeleteMessage').textContent = error.message;} finally {busy(b,false);}
   };
   el('galLightboxClose').onclick = () => close('galLightbox');
@@ -344,7 +345,7 @@ async function init() {
       const file = el('galDamage').files[0];
       // New Problem: foto boleh kosong; bila dipilih harus valid.
       const photoData = file ? await fileData(file) : '';
-      await api({action:galEditingId ? 'updateGALProblem' : 'createGALProblem',problemId:galEditingId,unitCode:unit,problem:el('galProblem').value.trim(),category:el('galCategory').value,requiredPart:JSON.stringify(parts),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username(),authToken:galAuthToken()});
+      await api({action:galEditingId ? 'updateGALProblem' : 'createGALProblem',problemId:galEditingId,unitCode:unit,problem:el('galProblem').value.trim(),category:el('galCategory').value,condition:el('galCondition').value,requiredPart:JSON.stringify(parts),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username(),authToken:galAuthToken()});
       close('galNewDialog');
       await refresh(); await loadMaster();
     } catch (error) { el('galNewMessage').textContent = error.message; }
@@ -413,7 +414,7 @@ function openMasterForm(row=null){
 }
 async function saveMasterForm(e){e.preventDefault();const button=el('galMasterSave');busy(button,true);try{
  const payload={action:'saveMasterAutolube',authToken:galAuthToken(),unitCode:el('galMasterUnit').value.trim().toUpperCase(),performance:el('galMasterPerformance').value,drumDate:el('galMasterDrumDate').value};
- for(const field of el('galMasterFields').querySelectorAll('[data-master-field]')){const key=field.dataset.masterField,status=field.querySelector('.ma-status').value;if(!status)continue;payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:!!field.querySelector('.ma-override')?.checked};}
+ for(const field of el('galMasterFields').querySelectorAll('[data-master-field]')){const key=field.dataset.masterField,status=field.querySelector('.ma-status').value;if(!status)continue;if(key!=='greaseDrum'&&!field.querySelector('.ma-override')?.checked){const old=galMasterRows.find(r=>r.unitCode===payload.unitCode)?.[key];if(!old?.manualOverride)continue;payload[key]={status:'OK',note:'',subcomponent:'',manualOverride:false};continue;}payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:!!field.querySelector('.ma-override')?.checked};}
  await api(payload);close('galMasterDialog');await loadMaster();
  }catch(err){el('galMasterFormMessage').textContent=err.message;}finally{busy(button,false);}}
-async function deleteMasterUnit(unit){if(!['1','MASTER'].includes(galLevel)||!confirm('Hapus mapping '+unit+'?'))return;try{await api({action:'deleteMasterAutolube',unitCode:unit,authToken:galAuthToken(),reason:'Deleted via Master Autolube UI'});await loadMaster();}catch(e){el('galMasterMessage').textContent=e.message;}}
+async function deleteMasterUnit(unit){if(!['1','MASTER'].includes(galLevel)||!confirm('Reset mapping '+unit+'? Jika masih ada Problem List, unit tetap ditampilkan.'))return;try{await api({action:'deleteMasterAutolube',unitCode:unit,authToken:galAuthToken(),reason:'Deleted via Master Autolube UI'});await loadMaster();el('galMasterMessage').textContent='Mapping berhasil direset. Unit dengan riwayat Problem List tetap ditampilkan.';}catch(e){el('galMasterMessage').textContent=e.message;}}
