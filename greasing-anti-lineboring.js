@@ -17,6 +17,7 @@ const date = s => { if (!s) return '-'; const d = new Date(s); return isNaN(d.ge
 let records = [], selectedId = '', apiReady = false;
 let galEditingId = '', galDeletingId = '';
 let galExpanded = false, galPage = 0, galMasterRows = [];
+let galPartOptions = {};
 const galComponentFields = [['greasePump','Grease Pump'],['oilPump','Oil Pump'],['controlUnit','Control Unit'],['lines','Lines'],['injectors','Injectors'],['greaseDrum','Grease Drum']];
 const galLevel = String(galUser.level ?? galUser.LEVEL ?? galUser.roleCode ?? galUser.role ?? galUser.ROLE ?? '').trim().toUpperCase();
 const galCanManage = ['1','2','3','MASTER','SECTION','SECTION HEAD','GROUP LEADER'].includes(galLevel);
@@ -105,6 +106,25 @@ function galReadParts() {
     qty:Number(row.querySelector('.gal-part-qty').value)
   }));
 }
+function galRenderAffectedParts(selected=''){
+  const cat=el('galCategory').value,select=el('galAffectedPart');
+  const opts=galPartOptions[cat]||[];
+  select.innerHTML='<option value="">Pilih part bermasalah</option>'+opts.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('')+'<option value="__OTHER__">+ Tambah Part Baru...</option>';
+  if(selected && !opts.some(x=>x.toLowerCase()===selected.toLowerCase())){
+    select.insertAdjacentHTML('beforeend',`<option value="${esc(selected)}">${esc(selected)} (lama)</option>`);
+  }
+  select.value=selected||'';
+  el('galAffectedPartNew').hidden=select.value!=='__OTHER__';
+  el('galAffectedPartNew').required=select.value==='__OTHER__';
+}
+function galAffectedPartValue(){
+  const selected=el('galAffectedPart').value;
+  return selected==='__OTHER__'?el('galAffectedPartNew').value.trim():selected;
+}
+async function galLoadPartOptions(){
+  const result=await api({action:'getGALPartOptions'});
+  galPartOptions=result.options||{};
+}
 function galOpenEditor(r = null) {
   galEditingId = r?.id || '';
   el('galNewForm').reset(); el('galParts').replaceChildren();
@@ -116,6 +136,7 @@ function galOpenEditor(r = null) {
   el('galProblem').value = r?.problem || '';
   el('galCategory').value = r?.category || '';
   el('galCondition').value = r?.condition === 'BROKEN' ? 'BROKEN' : 'WARNING';
+  galRenderAffectedParts(r?.affectedPart || '');
   el('galRecommendation').value = r?.recommendation || '';
   galPartsFromValue(r?.part).forEach(galAddPartRow);
   closeGalUnitOptions(); el('galNewMessage').textContent = '';
@@ -303,6 +324,8 @@ async function init() {
   el('galCards').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.gal-problem-text')){e.preventDefault();e.target.classList.toggle('is-expanded');}});
   document.querySelectorAll('[data-dismiss]').forEach(b => b.onclick = () => close(b.dataset.dismiss));
   setupGalUnitCombobox();
+  el('galCategory').addEventListener('change',()=>galRenderAffectedParts());
+  el('galAffectedPart').addEventListener('change',()=>{const other=el('galAffectedPart').value==='__OTHER__';el('galAffectedPartNew').hidden=!other;el('galAffectedPartNew').required=other;});
   galInstallPhotoFallback();
   el('galNew').onclick = () => galOpenEditor();
   el('galAddMaster').onclick=()=>openMasterForm();
@@ -345,9 +368,9 @@ async function init() {
       const file = el('galDamage').files[0];
       // New Problem: foto boleh kosong; bila dipilih harus valid.
       const photoData = file ? await fileData(file) : '';
-      await api({action:galEditingId ? 'updateGALProblem' : 'createGALProblem',problemId:galEditingId,unitCode:unit,problem:el('galProblem').value.trim(),category:el('galCategory').value,condition:el('galCondition').value,requiredPart:JSON.stringify(parts),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username(),authToken:galAuthToken()});
+      await api({action:galEditingId ? 'updateGALProblem' : 'createGALProblem',problemId:galEditingId,unitCode:unit,problem:el('galProblem').value.trim(),category:el('galCategory').value,condition:el('galCondition').value,affectedPart:galAffectedPartValue(),requiredPart:JSON.stringify(parts),recommendedFollowUp:el('galRecommendation').value.trim(),photoData,createdBy:username(),authToken:galAuthToken()});
       close('galNewDialog');
-      await refresh(); await loadMaster();
+      await refresh(); await loadMaster(); await galLoadPartOptions();
     } catch (error) { el('galNewMessage').textContent = error.message; }
     finally { busy(b, false); }
   };
@@ -372,6 +395,7 @@ async function init() {
   try {
     await refresh();
     await loadMaster();
+    await galLoadPartOptions();
     apiReady = true;
     el('galNew').disabled = !galCanFollow;
     el('galAddMaster').disabled = !galCanFollow;
@@ -389,11 +413,13 @@ init();
 
 
 /* MASTER AUTOLUBE — Tahap B */
-function masterCell(value,drum=false,dateValue='',controlUnit=false){
+function masterCell(value,drum=false,dateValue=''){
   const s=String(value?.status||'UNASSESSED').toUpperCase();
   const klass=({OK:'ok',WARNING:'warning',BROKEN:'broken',FULL:'full',LOW:'low',REPLACE:'replace'})[s]||'unassessed';
-  const details=drum?[s,value?.note,dateValue?'Tanggal: '+dateValue:'']:[s,value?.subcomponent,value?.note];
-  const tooltip=controlUnit ? (value?.subcomponent || s) : details.filter(Boolean).join(' — ');
+  const parts=Array.isArray(value?.openParts)?value.openParts:[];
+  const tooltip=drum?[s,value?.note,dateValue?'Tanggal: '+dateValue:''].filter(Boolean).join(' — '):
+    (parts.length?parts.map(p=>`${p.name} — ${p.condition}`).join('\n'):
+     (value?.manualOverride?`Override Manual: ${s}`:'Tidak ada problem OPEN'));
   return `<span class="gal-status-dot ${klass}" tabindex="0" role="img" aria-label="${esc(tooltip)}" title="${esc(tooltip)}"></span>`;
 }
 async function loadMaster(){
@@ -409,13 +435,13 @@ function openMasterForm(row=null){
   el('galMasterUnit').value=row?.unitCode||'';el('galMasterUnit').readOnly=!!row;
   el('galMasterPerformance').value=row?.performance||'';el('galMasterDrumDate').value=row?.drumDate||'';
   const opts=(arr,current)=>arr.map(([v,label])=>`<option value="${v}" ${v===current?'selected':''}>${label}</option>`).join('');
-  el('galMasterFields').innerHTML=galComponentFields.map(([key,label])=>{const v=row?.[key]||{};const drum=key==='greaseDrum';return `<section class="gal-master-field" data-master-field="${key}"><h3>${label}</h3><div class="gal-master-field-grid"><label>Kondisi<select class="ma-status"><option value="">Belum dinilai / Tidak diubah</option>${opts(drum?[['FULL','Full'],['LOW','Low'],['REPLACE','Replace']]:[['OK','OK'],['WARNING','Function with notes'],['BROKEN','Not Function']],v.status)}</select></label>${key==='controlUnit'?`<label>Komponen<select class="ma-subcomponent">${opts([['','Pilih komponen'],['Timer','Timer'],['Solenoid','Solenoid'],['Controller','Controller'],['Control Valve','Control Valve']],v.subcomponent)}</select></label>`:''}<label>Catatan<input class="ma-note" placeholder="Penjelasan kondisi" value="${esc(v.note||'')}"></label>${['1','3','MASTER','GROUP LEADER'].includes(galLevel)&&!drum?`<label><input type="checkbox" class="ma-override" ${v.manualOverride?'checked':''}> Override Manual Master/GL</label>`:''}</div></section>`}).join('');
+  el('galMasterFields').innerHTML=galComponentFields.map(([key,label])=>{const v=row?.[key]||{};const drum=key==='greaseDrum';return `<section class="gal-master-field" data-master-field="${key}"><h3>${label}</h3><div class="gal-master-field-grid"><label>Kondisi<select class="ma-status"><option value="">Belum dinilai / Tidak diubah</option>${opts(drum?[['FULL','Full'],['LOW','Low'],['REPLACE','Replace']]:[['OK','OK'],['WARNING','Function with notes'],['BROKEN','Not Function']],v.status)}</select></label><label>Catatan<input class="ma-note" placeholder="Penjelasan kondisi" value="${esc(v.note||'')}"></label>${['1','3','MASTER','GROUP LEADER'].includes(galLevel)&&!drum?`<label><input type="checkbox" class="ma-override" ${v.manualOverride?'checked':''}> Override Manual Master/GL</label>`:''}</div></section>`}).join('');
   el('galMasterUnitList').innerHTML=(typeof galUnits!=='undefined'?galUnits:[]).map(u=>`<option value="${esc(u.unitCode||u)}"></option>`).join('');
   el('galMasterDialog').showModal();
 }
 async function saveMasterForm(e){e.preventDefault();const button=el('galMasterSave');busy(button,true);try{
  const payload={action:'saveMasterAutolube',authToken:galAuthToken(),unitCode:el('galMasterUnit').value.trim().toUpperCase(),performance:el('galMasterPerformance').value,drumDate:el('galMasterDrumDate').value};
- for(const field of el('galMasterFields').querySelectorAll('[data-master-field]')){const key=field.dataset.masterField,status=field.querySelector('.ma-status').value;if(!status)continue;if(key!=='greaseDrum'&&!field.querySelector('.ma-override')?.checked){const old=galMasterRows.find(r=>r.unitCode===payload.unitCode)?.[key];if(key==='controlUnit'){payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:false};continue;}if(!old?.manualOverride)continue;payload[key]={status:'OK',note:'',subcomponent:'',manualOverride:false};continue;}payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:!!field.querySelector('.ma-override')?.checked};}
+ for(const field of el('galMasterFields').querySelectorAll('[data-master-field]')){const key=field.dataset.masterField,status=field.querySelector('.ma-status').value;if(!status)continue;if(key!=='greaseDrum'&&!field.querySelector('.ma-override')?.checked){const old=galMasterRows.find(r=>r.unitCode===payload.unitCode)?.[key];if(!old?.manualOverride)continue;payload[key]={status:'OK',note:'',subcomponent:'',manualOverride:false};continue;}payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:!!field.querySelector('.ma-override')?.checked};}
  await api(payload);close('galMasterDialog');await loadMaster();
  }catch(err){el('galMasterFormMessage').textContent=err.message;}finally{busy(button,false);}}
 async function deleteMasterUnit(unit){if(!['1','MASTER'].includes(galLevel)||!confirm('Reset mapping '+unit+'? Jika masih ada Problem List, unit tetap ditampilkan.'))return;try{await api({action:'deleteMasterAutolube',unitCode:unit,authToken:galAuthToken(),reason:'Deleted via Master Autolube UI'});await loadMaster();el('galMasterMessage').textContent='Mapping berhasil direset. Unit dengan riwayat Problem List tetap ditampilkan.';}catch(e){el('galMasterMessage').textContent=e.message;}}
