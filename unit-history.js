@@ -6673,3 +6673,1991 @@ async function shareCurrentHistoryPdf() {
   );
 
 }
+
+/* =====================================================
+   UNIT HISTORY - UPDATE DATA (DAILY OUTSTANDING FORM)
+   ===================================================== */
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const updateModal = $('unitHistoryUpdateModal');
+const detailModal = $('unitHistoryDetailModal');
+const editButton = $('unitHistoryEditDetailButton');
+const updateOutstandingForm = $('updateOutstandingForm');
+if (!updateModal || !editButton || !updateOutstandingForm) return;
+const rawLevel = String(currentUser?.level ?? currentUser?.levelUser ?? '').trim().toUpperCase();
+const canEdit = ['1','2','3','MASTER','SECTION HEAD','SECTION','GROUP LEADER','GL'].includes(rawLevel);
+editButton.hidden = !canEdit;
+let replacementPhoto = null;
+let evidenceFile = null;
+let selectedRating = '';
+let selectedPartsStatus = '';
+const updateInspectionId = $("updateInspectionId");
+const updateUnitCode = $("updateUnitCode");
+const updateHmInspection = $("updateHmInspection");
+const updateDateInspection = $("updateDateInspection");
+const updateInspectionPhoto = $("updateInspectionPhoto");
+const updateInspectionPhotoPreview = $("updateInspectionPhotoPreview");
+const updateGroupComponent = $("updateGroupComponent");
+const updateProblemDescription = $("updateProblemDescription");
+const updateRating = $("updateRating");
+const updateRatingGrid = $("updateRatingGrid");
+const updatePartsDescription = $("updatePartsDescription");
+const updatePartNo = $("updatePartNo");
+const updateQuantity = $("updateQuantity");
+const updatePartRequirementList = $("updatePartRequirementList");
+const updateAddPartButton = $("updateAddPartButton");
+const updateNotes = $("updateNotes");
+const updateMol = $("updateMol");
+const updateEvidence = $("updateEvidence");
+const evidenceFileText = $("evidenceFileText");
+const existingEvidence = $("existingEvidence");
+const partsStatusGrid = $("partsStatusGrid");
+const updatePartsStatus = $("updatePartsStatus");
+const updateStatus = $("updateStatus");
+const updateActionProblems = $("updateActionProblems");
+const updateHmAction = $("updateHmAction");
+const updateDateAction = $("updateDateAction");
+const updateManPower = $("updateManPower");
+const updateHmMinus = $("updateHmMinus");
+const updateHmPlus = $("updateHmPlus");
+const updateHmActionMinus = $("updateHmActionMinus");
+const updateHmActionPlus = $("updateHmActionPlus");
+const cancelUpdateButton = $("cancelUpdateButton");
+const submitUpdateButton = $("submitUpdateButton");
+
+function openUpdateForm() {
+  if (!canEdit || !selectedRecord) return;
+  populateUpdateUnitOptions();
+  fillUpdateForm(selectedRecord);
+  if (detailModal) detailModal.hidden = true;
+  updateModal.hidden = false;
+  updateModal.scrollTop = 0;
+  document.body.classList.add("modal-open");
+}
+function closeUpdateForm() {
+  updateModal.hidden = true;
+  replacementPhoto = null;
+  evidenceFile = null;
+  if (selectedRecord && detailModal) detailModal.hidden = false;
+  updateBodyModalState();
+}
+editButton.addEventListener('click', openUpdateForm);
+cancelUpdateButton?.addEventListener('click', closeUpdateForm);
+updateOutstandingForm.addEventListener('submit', submitOutstandingUpdate);
+updateInspectionPhoto?.addEventListener('change', handleReplacementPhoto);
+updateEvidence?.addEventListener('change', handleEvidenceFile);
+updateRatingGrid?.addEventListener('click', handleRatingSelection);
+partsStatusGrid?.addEventListener('click', handlePartsStatusSelection);
+updateAddPartButton?.addEventListener('click', () => addUpdatePart());
+updatePartRequirementList?.addEventListener('click', event => {
+  const btn = event.target.closest('.update-remove-part-button');
+  if (!btn) return;
+  const item = btn.closest('.update-part-requirement-item');
+  if (!item) return;
+  if (getUpdatePartItems().length <= 1) clearUpdatePartItem(item);
+  else { item.remove(); renumberUpdateParts(); syncUpdatePartDatabaseFields(); }
+});
+updatePartRequirementList?.addEventListener('input', syncUpdatePartDatabaseFields);
+bindNumberControl(updateHmMinus, updateHmPlus, updateHmInspection);
+bindNumberControl(updateHmActionMinus, updateHmActionPlus, updateHmAction);
+function fillUpdateForm(
+  record
+) {
+
+  replacementPhoto =
+    null;
+
+  evidenceFile =
+    null;
+
+  if (updateInspectionPhoto) {
+    updateInspectionPhoto.value =
+      "";
+  }
+
+  if (updateEvidence) {
+    updateEvidence.value =
+      "";
+  }
+
+  updateInspectionId.value =
+    record.id ||
+    "";
+
+  ensureSelectOption(
+    updateUnitCode,
+    record.unitCode
+  );
+
+  updateUnitCode.value =
+    record.unitCode ||
+    "";
+
+  updateHmInspection.value =
+    record.hmInspection ||
+    "";
+
+  updateDateInspection.value =
+    record.dateInspection ||
+    "";
+
+  updateInspectionPhotoPreview.src =
+    getDriveImageUrl(
+      record.photo
+    );
+
+  updateInspectionPhotoPreview.onerror =
+    function () {
+
+      this.onerror =
+        null;
+
+      this.src =
+        createPhotoPlaceholder();
+    };
+
+  ensureSelectOption(
+    updateGroupComponent,
+    record.groupComponent
+  );
+
+  updateGroupComponent.value =
+    record.groupComponent ||
+    "";
+
+  updateProblemDescription.value =
+    record.problemDescription ||
+    "";
+
+  setRatingSelection(
+    record.rating
+  );
+
+  // ===================================================
+  // PART REQUIREMENT
+  // DATABASE MULTILINE -> REPEATING FIELD
+  // ===================================================
+
+  loadUpdatePartRequirements(
+
+    record.partsDescription || "",
+
+    record.partNo || "",
+
+    record.quantity || ""
+
+  );
+
+  updateNotes.value =
+    record.notes ||
+    "";
+
+  updateMol.value =
+    record.mol ||
+    "Belum";
+
+  setPartsStatusSelection(
+    record.partsStatus
+  );
+
+  updateStatus.value =
+    record.status ||
+    "OPEN";
+
+  updateActionProblems.value =
+    record.actionProblems ||
+    "";
+
+  updateHmAction.value =
+    record.hmAction ||
+    "";
+
+  updateDateAction.value =
+    record.dateAction ||
+    "";
+
+  updateManPower.value =
+    record.manPower ||
+    "";
+
+  updateEvidenceDisplay(
+    record.evidence
+  );
+}
+
+
+// =====================================================
+// UNIT OPTIONS
+// =====================================================
+
+function populateUpdateUnitOptions() {
+
+  if (!updateUnitCode) {
+    return;
+  }
+
+  const units =
+    [
+      ...new Set(
+
+        unitHistoryData
+          .map(
+            function (item) {
+
+              return (
+                item.unitCode ||
+                ""
+              ).trim();
+            }
+          )
+          .filter(Boolean)
+
+      )
+    ].sort();
+
+  updateUnitCode.innerHTML =
+    `<option value="">Select Unit</option>`;
+
+  units.forEach(
+    function (unit) {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        unit;
+
+      option.textContent =
+        unit;
+
+      updateUnitCode.appendChild(
+        option
+      );
+    }
+  );
+}
+
+
+// =====================================================
+// RATING
+// =====================================================
+
+function handleRatingSelection(
+  event
+) {
+
+  const button =
+    event.target.closest(
+      ".rating-button"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  setRatingSelection(
+    button.dataset.rating ||
+    ""
+  );
+}
+
+
+function setRatingSelection(
+  rating
+) {
+
+  selectedRating =
+    rating ||
+    "";
+
+  if (updateRating) {
+
+    updateRating.value =
+      selectedRating;
+  }
+
+  updateRatingGrid
+    ?.querySelectorAll(
+      ".rating-button"
+    )
+    .forEach(
+      function (button) {
+
+        button.classList.toggle(
+          "selected",
+          button.dataset.rating ===
+            selectedRating
+        );
+      }
+    );
+}
+
+// =====================================================
+// PART REQUIREMENT
+// =====================================================
+
+function splitMultilineValue(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+
+    return [];
+  }
+
+
+  return String(value)
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .split("\n");
+}
+
+
+// =====================================================
+// CREATE PART ITEM
+// =====================================================
+
+function createUpdatePartItem(
+  partDescription = "",
+  partNo = "",
+  quantity = ""
+) {
+
+  const item =
+    document.createElement(
+      "div"
+    );
+
+
+  item.className =
+    "update-part-requirement-item";
+
+
+  item.innerHTML = `
+
+    <div class="update-part-item-header">
+
+      <div class="update-part-item-title">
+        Part
+      </div>
+
+      <button
+        type="button"
+        class="update-remove-part-button"
+        aria-label="Remove Part"
+      >
+        Remove Part
+      </button>
+
+    </div>
+
+
+    <div class="update-part-field">
+
+      <label>
+        Part Description
+      </label>
+
+      <input
+        type="text"
+        class="update-part-description-input"
+        autocomplete="off"
+        placeholder="Input Part Description"
+      >
+
+    </div>
+
+
+    <div class="update-part-row">
+
+
+      <div
+        class="
+          update-part-field
+          update-part-no-field
+        "
+      >
+
+        <label>
+          Part No.
+        </label>
+
+        <input
+          type="text"
+          class="update-part-no-input"
+          autocomplete="off"
+          placeholder="Input Part No."
+        >
+
+      </div>
+
+
+      <div
+        class="
+          update-part-field
+          update-part-quantity-field
+        "
+      >
+
+        <label>
+          Qty
+        </label>
+
+        <input
+          type="number"
+          class="update-part-quantity-input"
+          min="0"
+          step="1"
+          inputmode="numeric"
+          placeholder="0"
+        >
+
+      </div>
+
+
+    </div>
+
+  `;
+
+
+  const descriptionInput =
+    item.querySelector(
+      ".update-part-description-input"
+    );
+
+
+  const partNoInput =
+    item.querySelector(
+      ".update-part-no-input"
+    );
+
+
+  const quantityInput =
+    item.querySelector(
+      ".update-part-quantity-input"
+    );
+
+
+  if (descriptionInput) {
+
+    descriptionInput.value =
+      partDescription || "";
+  }
+
+
+  if (partNoInput) {
+
+    partNoInput.value =
+      partNo || "";
+  }
+
+
+  if (quantityInput) {
+
+    quantityInput.value =
+      quantity || "";
+  }
+
+
+  return item;
+}
+
+
+// =====================================================
+// GET ALL PART ITEMS
+// =====================================================
+
+function getUpdatePartItems() {
+
+  if (!updatePartRequirementList) {
+    return [];
+  }
+
+
+  return Array.from(
+    updatePartRequirementList
+      .querySelectorAll(
+        ".update-part-requirement-item"
+      )
+  );
+}
+
+
+// =====================================================
+// RENUMBER PARTS
+// =====================================================
+
+function renumberUpdateParts() {
+
+  const items =
+    getUpdatePartItems();
+
+
+  items.forEach(
+    function (
+      item,
+      index
+    ) {
+
+      const number =
+        index + 1;
+
+
+      item.dataset.partIndex =
+        String(number);
+
+
+      const title =
+        item.querySelector(
+          ".update-part-item-title"
+        );
+
+
+      if (title) {
+
+        title.textContent =
+          "Part " + number;
+      }
+
+
+      const removeButton =
+        item.querySelector(
+          ".update-remove-part-button"
+        );
+
+
+      if (removeButton) {
+
+        removeButton.setAttribute(
+          "aria-label",
+          "Remove Part " + number
+        );
+      }
+
+    }
+  );
+}
+
+
+// =====================================================
+// CLEAR ONE PART
+// =====================================================
+
+function clearUpdatePartItem(
+  item
+) {
+
+  if (!item) {
+    return;
+  }
+
+
+  const descriptionInput =
+    item.querySelector(
+      ".update-part-description-input"
+    );
+
+
+  const partNoInput =
+    item.querySelector(
+      ".update-part-no-input"
+    );
+
+
+  const quantityInput =
+    item.querySelector(
+      ".update-part-quantity-input"
+    );
+
+
+  if (descriptionInput) {
+    descriptionInput.value = "";
+  }
+
+
+  if (partNoInput) {
+    partNoInput.value = "";
+  }
+
+
+  if (quantityInput) {
+    quantityInput.value = "";
+  }
+
+
+  syncUpdatePartDatabaseFields();
+}
+
+
+// =====================================================
+// ADD NEW PART
+// =====================================================
+
+function addUpdatePart(
+  partDescription = "",
+  partNo = "",
+  quantity = ""
+) {
+
+  if (!updatePartRequirementList) {
+    return;
+  }
+
+
+  const item =
+    createUpdatePartItem(
+      partDescription,
+      partNo,
+      quantity
+    );
+
+
+  updatePartRequirementList
+    .appendChild(
+      item
+    );
+
+
+  renumberUpdateParts();
+
+  syncUpdatePartDatabaseFields();
+
+
+  /*
+    Jika Add Part ditekan manual,
+    fokus langsung ke Part Description baru.
+  */
+
+  if (
+    !partDescription &&
+    !partNo &&
+    !quantity
+  ) {
+
+    item
+      .querySelector(
+        ".update-part-description-input"
+      )
+      ?.focus();
+  }
+}
+
+
+// =====================================================
+// LOAD DATABASE -> REPEATING PART
+// =====================================================
+
+function loadUpdatePartRequirements(
+  partsDescription,
+  partNo,
+  quantity
+) {
+
+  if (!updatePartRequirementList) {
+    return;
+  }
+
+
+  const descriptions =
+    splitMultilineValue(
+      partsDescription
+    );
+
+
+  const partNumbers =
+    splitMultilineValue(
+      partNo
+    );
+
+
+  const quantities =
+    splitMultilineValue(
+      quantity
+    );
+
+
+  /*
+    Jumlah card mengikuti field dengan
+    jumlah baris terbanyak.
+
+    Contoh:
+
+    Description = 3
+    Part No      = 2
+    Quantity     = 3
+
+    Maka tetap dibuat 3 Part.
+  */
+
+  const totalParts =
+    Math.max(
+      1,
+      descriptions.length,
+      partNumbers.length,
+      quantities.length
+    );
+
+
+  updatePartRequirementList.innerHTML =
+    "";
+
+
+  for (
+    let index = 0;
+    index < totalParts;
+    index++
+  ) {
+
+    const item =
+      createUpdatePartItem(
+
+        descriptions[index] || "",
+
+        partNumbers[index] || "",
+
+        quantities[index] || ""
+
+      );
+
+
+    updatePartRequirementList
+      .appendChild(
+        item
+      );
+  }
+
+
+  renumberUpdateParts();
+
+  syncUpdatePartDatabaseFields();
+}
+
+
+// =====================================================
+// COLLECT REPEATING PART
+// =====================================================
+
+function collectUpdatePartRequirements() {
+
+  const items =
+    getUpdatePartItems();
+
+
+  const validParts =
+    [];
+
+
+  items.forEach(
+    function (item) {
+
+      const partDescription =
+        item
+          .querySelector(
+            ".update-part-description-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      const partNo =
+        item
+          .querySelector(
+            ".update-part-no-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      const quantity =
+        item
+          .querySelector(
+            ".update-part-quantity-input"
+          )
+          ?.value
+          .trim() || "";
+
+
+      /*
+        Card yang benar-benar kosong
+        tidak perlu masuk database.
+
+        Card yang hanya terisi salah satu
+        field tetap dipertahankan agar
+        alignment tidak rusak.
+      */
+
+      if (
+        !partDescription &&
+        !partNo &&
+        !quantity
+      ) {
+
+        return;
+      }
+
+
+      validParts.push({
+
+        partDescription:
+          partDescription,
+
+        partNo:
+          partNo,
+
+        quantity:
+          quantity
+
+      });
+
+    }
+  );
+
+
+  return {
+
+    partsDescription:
+      validParts
+        .map(
+          function (part) {
+
+            return part.partDescription;
+
+          }
+        )
+        .join("\n"),
+
+
+    partNo:
+      validParts
+        .map(
+          function (part) {
+
+            return part.partNo;
+
+          }
+        )
+        .join("\n"),
+
+
+    quantity:
+      validParts
+        .map(
+          function (part) {
+
+            return part.quantity;
+
+          }
+        )
+        .join("\n")
+
+  };
+}
+
+
+// =====================================================
+// SYNC REPEATING PART -> HIDDEN DATABASE FIELD
+// =====================================================
+
+function syncUpdatePartDatabaseFields() {
+
+  const parts =
+    collectUpdatePartRequirements();
+
+
+  if (updatePartsDescription) {
+
+    updatePartsDescription.value =
+      parts.partsDescription;
+  }
+
+
+  if (updatePartNo) {
+
+    updatePartNo.value =
+      parts.partNo;
+  }
+
+
+  if (updateQuantity) {
+
+    updateQuantity.value =
+      parts.quantity;
+  }
+
+
+  return parts;
+}
+
+
+// =====================================================
+// DETAIL PART SUMMARY
+// =====================================================
+
+function formatPartSummary(
+  value
+) {
+
+  if (!value) {
+    return "-";
+  }
+
+
+  const parts =
+    String(value)
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n")
+      .split("\n")
+      .map(
+        function (item) {
+
+          return item.trim();
+
+        }
+      )
+      .filter(Boolean);
+
+
+  if (parts.length === 0) {
+    return "-";
+  }
+
+
+  if (parts.length <= 3) {
+
+    return parts.join(
+      ", "
+    );
+  }
+
+
+  return (
+    parts
+      .slice(
+        0,
+        3
+      )
+      .join(", ") +
+    ", ...."
+  );
+}
+
+// =====================================================
+// PARTS STATUS
+// =====================================================
+
+function handlePartsStatusSelection(
+  event
+) {
+
+  const button =
+    event.target.closest(
+      ".parts-status-button"
+    );
+
+  if (!button) {
+    return;
+  }
+
+  setPartsStatusSelection(
+    button.dataset.status ||
+    ""
+  );
+}
+
+
+function setPartsStatusSelection(
+  status
+) {
+
+  selectedPartsStatus =
+    status ||
+    "";
+
+  if (updatePartsStatus) {
+
+    updatePartsStatus.value =
+      selectedPartsStatus;
+  }
+
+  partsStatusGrid
+    ?.querySelectorAll(
+      ".parts-status-button"
+    )
+    .forEach(
+      function (button) {
+
+        button.classList.toggle(
+          "selected",
+          button.dataset.status ===
+            selectedPartsStatus
+        );
+      }
+    );
+}
+
+
+// =====================================================
+// HM + / -
+// =====================================================
+
+function bindNumberControl(
+  minusButton,
+  plusButton,
+  input
+) {
+
+  if (
+    !minusButton ||
+    !plusButton ||
+    !input
+  ) {
+    return;
+  }
+
+  minusButton.addEventListener(
+    "click",
+    function () {
+
+      const value =
+        Number(
+          input.value ||
+          0
+        );
+
+      input.value =
+        Math.max(
+          0,
+          value - 1
+        );
+    }
+  );
+
+  plusButton.addEventListener(
+    "click",
+    function () {
+
+      const value =
+        Number(
+          input.value ||
+          0
+        );
+
+      input.value =
+        value + 1;
+    }
+  );
+}
+
+
+// =====================================================
+// REPLACEMENT PHOTO
+// =====================================================
+
+async function handleReplacementPhoto(
+  event
+) {
+
+  const file =
+    event.target.files?.[0];
+
+  if (!file) {
+
+    replacementPhoto =
+      null;
+
+    return;
+  }
+
+  if (
+    !file.type.startsWith(
+      "image/"
+    )
+  ) {
+
+    alert(
+      "Photo harus berupa file gambar."
+    );
+
+    event.target.value =
+      "";
+
+    replacementPhoto =
+      null;
+
+    return;
+  }
+
+  try {
+
+    replacementPhoto =
+      await compressImageFile(
+        file
+      );
+
+    updateInspectionPhotoPreview.src =
+      replacementPhoto.previewUrl;
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Photo gagal diproses."
+    );
+
+    event.target.value =
+      "";
+
+    replacementPhoto =
+      null;
+  }
+}
+
+
+// =====================================================
+// EVIDENCE
+// =====================================================
+
+async function handleEvidenceFile(
+  event
+) {
+
+  const file =
+    event.target.files?.[0];
+
+  if (!file) {
+
+    evidenceFile =
+      null;
+
+    evidenceFileText.textContent =
+      "Upload Photo / PDF";
+
+    return;
+  }
+
+  const allowed =
+    [
+
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "application/pdf"
+
+    ];
+
+  if (
+    !allowed.includes(
+      file.type
+    )
+  ) {
+
+    alert(
+      "Evidence hanya mendukung JPG, PNG, WEBP atau PDF."
+    );
+
+    event.target.value =
+      "";
+
+    evidenceFile =
+      null;
+
+    return;
+  }
+
+  try {
+
+    /*
+      Evidence image juga dikompres supaya payload
+      Apps Script lebih ringan.
+
+      PDF dibaca langsung tanpa kompresi.
+    */
+
+    if (
+      file.type.startsWith(
+        "image/"
+      )
+    ) {
+
+      const compressed =
+        await compressImageFile(
+          file
+        );
+
+      evidenceFile = {
+
+        base64:
+          compressed.base64,
+
+        mimeType:
+          compressed.mimeType,
+
+        name:
+          file.name
+
+      };
+
+    } else {
+
+      const base64 =
+        await fileToBase64(
+          file
+        );
+
+      evidenceFile = {
+
+        base64:
+          base64,
+
+        mimeType:
+          file.type,
+
+        name:
+          file.name
+
+      };
+    }
+
+    evidenceFileText.textContent =
+      file.name;
+
+    /*
+      Preview MOL di form.
+      Backend tetap penentu final.
+    */
+
+    if (updateMol) {
+
+      updateMol.value =
+        "Submitted";
+    }
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    alert(
+      "Evidence gagal diproses."
+    );
+
+    event.target.value =
+      "";
+
+    evidenceFile =
+      null;
+  }
+}
+
+
+function updateEvidenceDisplay(
+  evidenceUrl
+) {
+
+  if (!existingEvidence) {
+    return;
+  }
+
+  existingEvidence.innerHTML =
+    "";
+
+  if (!evidenceUrl) {
+
+    existingEvidence.hidden =
+      true;
+
+    if (evidenceFileText) {
+
+      evidenceFileText.textContent =
+        "Upload Photo / PDF";
+    }
+
+    return;
+  }
+
+  existingEvidence.hidden =
+    false;
+
+  const label =
+    document.createElement(
+      "span"
+    );
+
+  label.textContent =
+    "Evidence sudah tersedia";
+
+  existingEvidence.appendChild(
+    label
+  );
+
+  if (evidenceFileText) {
+
+    evidenceFileText.textContent =
+      "Replace Evidence";
+  }
+}
+
+
+// =====================================================
+// SUBMIT UPDATE
+// =====================================================
+
+
+async function submitOutstandingUpdate(
+  event
+) {
+
+  event.preventDefault();
+
+  if (!selectedRecord) {
+
+    alert(
+      "Data Outstanding tidak ditemukan."
+    );
+
+    return;
+  }
+
+  const inspectionId =
+    updateInspectionId.value
+      .trim();
+
+  const unitCode =
+    updateUnitCode.value
+      .trim();
+
+  const hmInspection =
+    updateHmInspection.value
+      .trim();
+
+  const dateInspection =
+    updateDateInspection.value
+      .trim();
+
+  const groupComponent =
+    updateGroupComponent.value
+      .trim();
+
+  const problemDescription =
+    updateProblemDescription.value
+      .trim();
+
+  const rating =
+    updateRating.value
+      .trim();
+
+  if (!unitCode) {
+
+    alert(
+      "Unit Code wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!hmInspection) {
+
+    alert(
+      "HM Inspection wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!dateInspection) {
+
+    alert(
+      "Date Inspection wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!groupComponent) {
+
+    alert(
+      "Group Component wajib diisi."
+    );
+
+    return;
+  }
+
+  if (!problemDescription) {
+
+    alert(
+      "Problem Description wajib diisi."
+    );
+
+    return;
+  }
+
+   if (!rating) {
+
+    alert(
+      "Rating wajib dipilih."
+    );
+
+    return;
+  }
+
+
+  // ===================================================
+  // PART REQUIREMENT
+  // REPEATING FIELD -> MULTILINE DATABASE
+  // ===================================================
+
+  const partRequirement =
+    syncUpdatePartDatabaseFields();
+
+
+  const payload = {
+
+    action:
+      "updateDailyOutstanding",
+
+    inspectionId:
+      inspectionId,
+
+    unitCode:
+      unitCode,
+
+    hmInspection:
+      hmInspection,
+
+    dateInspection:
+      dateInspection,
+
+    groupComponent:
+      groupComponent,
+
+    problemDescription:
+      problemDescription,
+
+    rating:
+      rating,
+
+    partsDescription:
+      partRequirement
+        .partsDescription,
+
+    partNo:
+      partRequirement
+        .partNo,
+
+    quantity:
+      partRequirement
+        .quantity,
+
+    notes:
+      updateNotes.value
+        .trim(),
+
+    partsStatus:
+      updatePartsStatus.value
+        .trim(),
+
+    actionProblems:
+      updateActionProblems.value
+        .trim(),
+
+    hmAction:
+      updateHmAction.value
+        .trim(),
+
+    dateAction:
+      updateDateAction.value
+        .trim(),
+
+    manPower:
+      updateManPower.value
+        .trim()
+
+  };
+
+
+  // PHOTO BARU
+
+  if (replacementPhoto) {
+
+    payload.photoBase64 =
+      replacementPhoto.base64;
+
+    payload.photoMimeType =
+      replacementPhoto.mimeType;
+  }
+
+
+  // EVIDENCE BARU
+
+  if (evidenceFile) {
+
+    payload.evidenceBase64 =
+      evidenceFile.base64;
+
+    payload.evidenceMimeType =
+      evidenceFile.mimeType;
+  }
+
+
+  setUpdateLoading(
+    true
+  );
+
+  try {
+
+    const result =
+      await apiRequest(
+        payload
+      );
+
+    if (
+      !result ||
+      result.success !== true
+    ) {
+
+      throw new Error(
+        result?.message ||
+        "Update Data gagal."
+      );
+    }
+
+    /*
+      Backend yang menentukan MOL dan Status.
+    */
+
+    const finalStatus =
+      result.status ||
+      result.data?.status ||
+      "OPEN";
+
+    const finalMol =
+      result.mol ||
+      result.data?.mol ||
+      "Belum";
+
+
+    updateModal.hidden = true;
+    detailModal.hidden = true;
+    selectedRecord = null;
+    replacementPhoto = null;
+    evidenceFile = null;
+    updateBodyModalState();
+    await loadUnitHistory();
+    applyAllFilters();
+    // Data diperbarui tanpa pop-up yang menghalangi tampilan.
+
+  } catch (error) {
+
+    console.error(
+      "Update Outstanding:",
+      error
+    );
+
+    alert(
+      error.message ||
+      "Update Data gagal."
+    );
+
+  } finally {
+
+    setUpdateLoading(
+      false
+    );
+  }
+}
+
+
+
+function setUpdateLoading(
+  loading
+) {
+
+  if (!submitUpdateButton) {
+    return;
+  }
+
+  submitUpdateButton.disabled =
+    loading;
+
+  submitUpdateButton.textContent =
+    loading
+      ? "Updating..."
+      : "Update";
+
+  if (cancelUpdateButton) {
+
+    cancelUpdateButton.disabled =
+      loading;
+  }
+}
+
+
+// =====================================================
+// IMAGE COMPRESSION
+// =====================================================
+
+function compressImageFile(
+  file
+) {
+
+  return new Promise(
+    function (
+      resolve,
+      reject
+    ) {
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        function () {
+
+          const image =
+            new Image();
+
+          image.onload =
+            function () {
+
+              const maxDimension =
+                1600;
+
+              let width =
+                image.width;
+
+              let height =
+                image.height;
+
+              if (
+                width >
+                  maxDimension ||
+                height >
+                  maxDimension
+              ) {
+
+                const scale =
+                  Math.min(
+
+                    maxDimension /
+                      width,
+
+                    maxDimension /
+                      height
+
+                  );
+
+                width =
+                  Math.round(
+                    width * scale
+                  );
+
+                height =
+                  Math.round(
+                    height * scale
+                  );
+              }
+
+              const canvas =
+                document.createElement(
+                  "canvas"
+                );
+
+              canvas.width =
+                width;
+
+              canvas.height =
+                height;
+
+              const context =
+                canvas.getContext(
+                  "2d"
+                );
+
+              context.drawImage(
+                image,
+                0,
+                0,
+                width,
+                height
+              );
+
+              const dataUrl =
+                canvas.toDataURL(
+                  "image/jpeg",
+                  0.75
+                );
+
+              resolve({
+
+                base64:
+                  dataUrl,
+
+                mimeType:
+                  "image/jpeg",
+
+                previewUrl:
+                  dataUrl
+
+              });
+            };
+
+          image.onerror =
+            function () {
+
+              reject(
+                new Error(
+                  "Gambar tidak dapat dibaca."
+                )
+              );
+            };
+
+          image.src =
+            reader.result;
+        };
+
+      reader.onerror =
+        function () {
+
+          reject(
+            new Error(
+              "File tidak dapat dibaca."
+            )
+          );
+        };
+
+      reader.readAsDataURL(
+        file
+      );
+    }
+  );
+}
+
+
+// =====================================================
+// FILE TO BASE64
+// =====================================================
+
+function fileToBase64(
+  file
+) {
+
+  return new Promise(
+    function (
+      resolve,
+      reject
+    ) {
+
+      const reader =
+        new FileReader();
+
+      reader.onload =
+        function () {
+
+          resolve(
+            reader.result
+          );
+        };
+
+      reader.onerror =
+        function () {
+
+          reject(
+            new Error(
+              "File tidak dapat dibaca."
+            )
+          );
+        };
+
+      reader.readAsDataURL(
+        file
+      );
+    }
+  );
+}
+
+
+// =====================================================
+// GOOGLE DRIVE IMAGE URL
+// =====================================================
+
+function getDriveFileId(
+  url
+) {
+
+  if (!url) {
+    return "";
+  }
+
+  const value =
+    String(
+      url
+    );
+
+  let match =
+    value.match(
+      /\/d\/([a-zA-Z0-9_-]+)/
+    );
+
+  if (
+    match &&
+    match[1]
+  ) {
+
+    return match[1];
+  }
+
+  match =
+    value.match(
+      /[?&]id=([a-zA-Z0-9_-]+)/
+    );
+
+  if (
+    match &&
+    match[1]
+  ) {
+
+    return match[1];
+  }
+
+  return "";
+}
+
+
+function getDriveImageUrl(
+  url
+) {
+
+  if (!url) {
+
+    return createPhotoPlaceholder();
+  }
+
+  const fileId =
+    getDriveFileId(
+      url
+    );
+
+  if (!fileId) {
+
+    return url;
+  }
+
+  return (
+    "https://drive.google.com/thumbnail?id=" +
+    encodeURIComponent(
+      fileId
+    ) +
+    "&sz=w1200"
+  );
+}
+
+
+// =====================================================
+// PHOTO PLACEHOLDER
+// =====================================================
+
+function createPhotoPlaceholder() {
+
+  return (
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(`
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="600"
+        height="400"
+        viewBox="0 0 600 400"
+      >
+        <rect
+          width="600"
+          height="400"
+          fill="#eeeeee"
+        />
+        <path
+          d="M190 280l75-90 55 65 35-40 65 65H190z"
+          fill="#c7c7c7"
+        />
+        <circle
+          cx="235"
+          cy="135"
+          r="30"
+          fill="#c7c7c7"
+        />
+        <text
+          x="300"
+          y="340"
+          text-anchor="middle"
+          font-family="Arial"
+          font-size="22"
+          fill="#888888"
+        >
+          No Photo
+        </text>
+      </svg>
+    `)
+  );
+}
+
+
+// =====================================================
+// HELPERS
+// =====================================================
+
+
+function ensureSelectOption(
+  select,
+  value
+) {
+
+  if (
+    !select ||
+    !value
+  ) {
+    return;
+  }
+
+  const exists =
+    Array.from(
+      select.options
+    ).some(
+      function (option) {
+
+        return (
+          option.value ===
+          value
+        );
+      }
+    );
+
+  if (!exists) {
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+    option.value =
+      value;
+
+    option.textContent =
+      value;
+
+    select.appendChild(
+      option
+    );
+  }
+}
+
+
+
+})();
