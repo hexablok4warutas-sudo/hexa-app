@@ -389,11 +389,12 @@ init();
 
 
 /* MASTER AUTOLUBE — Tahap B */
-function masterCell(value,drum=false,dateValue=''){
+function masterCell(value,drum=false,dateValue='',controlUnit=false){
   const s=String(value?.status||'UNASSESSED').toUpperCase();
   const klass=({OK:'ok',WARNING:'warning',BROKEN:'broken',FULL:'full',LOW:'low',REPLACE:'replace'})[s]||'unassessed';
-  const details=[s, value?.subcomponent, value?.note, drum&&dateValue?'Tanggal: '+dateValue:''].filter(Boolean).join(' — ');
-  return `<span class="gal-status-dot ${klass}" tabindex="0" role="img" aria-label="${esc(details)}" title="${esc(details)}"></span>`;
+  const details=drum?[s,value?.note,dateValue?'Tanggal: '+dateValue:'']:[s,value?.subcomponent,value?.note];
+  const tooltip=controlUnit ? (value?.subcomponent || s) : details.filter(Boolean).join(' — ');
+  return `<span class="gal-status-dot ${klass}" tabindex="0" role="img" aria-label="${esc(tooltip)}" title="${esc(tooltip)}"></span>`;
 }
 async function loadMaster(){
   try{const result=await api({action:'getMasterAutolube'});galMasterRows=result.rows||[];renderMaster();el('galMasterMessage').textContent='';}
@@ -401,7 +402,7 @@ async function loadMaster(){
 }
 function renderMaster(){
   const rows=galMasterRows.slice().sort((a,b)=>a.unitCode.localeCompare(b.unitCode,undefined,{numeric:true}));
-  el('galMasterRows').innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.unitCode)}</td><td>${esc((r.performance||'Belum dinilai').replaceAll('_',' '))}</td>${galComponentFields.map(([key])=>`<td>${masterCell(r[key],key==='greaseDrum',r.drumDate)}</td>`).join('')}<td><div class="gal-master-actions">${galCanFollow?`<button class="gal-icon-action" data-master-edit="${esc(r.unitCode)}" title="Edit mapping">✎</button>`:''}${['1','MASTER'].includes(galLevel)?`<button class="gal-icon-action delete" data-master-delete="${esc(r.unitCode)}" title="Hapus mapping">🗑</button>`:''}</div></td></tr>`).join(''):'<tr><td colspan="9">Belum ada data mapping.</td></tr>';
+  el('galMasterRows').innerHTML=rows.length?rows.map(r=>`<tr><td>${esc(r.unitCode)}</td><td>${esc((r.performance||'Belum dinilai').replaceAll('_',' '))}</td>${galComponentFields.map(([key])=>`<td>${masterCell(r[key],key==='greaseDrum',r.drumDate,key==='controlUnit')}</td>`).join('')}<td><div class="gal-master-actions">${galCanFollow?`<button class="gal-icon-action" data-master-edit="${esc(r.unitCode)}" title="Edit mapping">✎</button>`:''}${['1','MASTER'].includes(galLevel)?`<button class="gal-icon-action delete" data-master-delete="${esc(r.unitCode)}" title="Hapus mapping">🗑</button>`:''}</div></td></tr>`).join(''):'<tr><td colspan="9">Belum ada data mapping.</td></tr>';
 }
 function openMasterForm(row=null){
   if(!galCanFollow)return;el('galMasterForm').reset();el('galMasterFormMessage').textContent='';
@@ -414,7 +415,7 @@ function openMasterForm(row=null){
 }
 async function saveMasterForm(e){e.preventDefault();const button=el('galMasterSave');busy(button,true);try{
  const payload={action:'saveMasterAutolube',authToken:galAuthToken(),unitCode:el('galMasterUnit').value.trim().toUpperCase(),performance:el('galMasterPerformance').value,drumDate:el('galMasterDrumDate').value};
- for(const field of el('galMasterFields').querySelectorAll('[data-master-field]')){const key=field.dataset.masterField,status=field.querySelector('.ma-status').value;if(!status)continue;if(key!=='greaseDrum'&&!field.querySelector('.ma-override')?.checked){const old=galMasterRows.find(r=>r.unitCode===payload.unitCode)?.[key];if(!old?.manualOverride)continue;payload[key]={status:'OK',note:'',subcomponent:'',manualOverride:false};continue;}payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:!!field.querySelector('.ma-override')?.checked};}
+ for(const field of el('galMasterFields').querySelectorAll('[data-master-field]')){const key=field.dataset.masterField,status=field.querySelector('.ma-status').value;if(!status)continue;if(key!=='greaseDrum'&&!field.querySelector('.ma-override')?.checked){const old=galMasterRows.find(r=>r.unitCode===payload.unitCode)?.[key];if(key==='controlUnit'){payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:false};continue;}if(!old?.manualOverride)continue;payload[key]={status:'OK',note:'',subcomponent:'',manualOverride:false};continue;}payload[key]={status,note:field.querySelector('.ma-note').value.trim(),subcomponent:field.querySelector('.ma-subcomponent')?.value||'',manualOverride:!!field.querySelector('.ma-override')?.checked};}
  await api(payload);close('galMasterDialog');await loadMaster();
  }catch(err){el('galMasterFormMessage').textContent=err.message;}finally{busy(button,false);}}
 async function deleteMasterUnit(unit){if(!['1','MASTER'].includes(galLevel)||!confirm('Reset mapping '+unit+'? Jika masih ada Problem List, unit tetap ditampilkan.'))return;try{await api({action:'deleteMasterAutolube',unitCode:unit,authToken:galAuthToken(),reason:'Deleted via Master Autolube UI'});await loadMaster();el('galMasterMessage').textContent='Mapping berhasil direset. Unit dengan riwayat Problem List tetap ditampilkan.';}catch(e){el('galMasterMessage').textContent=e.message;}}
