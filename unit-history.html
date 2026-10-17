@@ -1154,25 +1154,793 @@
 
 
 
+  <div
+    id="unitHistoryUpdateModal"
+    class="modal-overlay update-overlay"
+    hidden
+  >
+
+
+    <section
+      class="update-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="updateFormTitle"
+    >
+
+
+      <!-- UPDATE TITLE -->
+
+      <div class="update-title">
+
+        <h2 id="updateFormTitle">
+          Update Data
+        </h2>
+
+      </div>
+
+
+
+      <!-- UPDATE FORM -->
+
+      <form
+        id="updateOutstandingForm"
+        class="update-form"
+      >
+
+
+        <!-- INTERNAL ID -->
+
+        <input
+          type="hidden"
+          id="updateInspectionId"
+        >
+
+
+
+        <!-- UNIT CODE -->
+
+        <div class="form-group">
+
+          <label for="updateUnitCode">
+            UNIT CODE <span>*</span>
+          </label>
+
+          <select
+            id="updateUnitCode"
+            required
+          >
+
+            <option value="">
+              Select Unit
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <!-- HM INSPECTION -->
+
+        <div class="form-group">
+
+          <label for="updateHmInspection">
+            HM Inspection <span>*</span>
+          </label>
+
+
+          <div class="number-control">
+
+
+            <button
+              type="button"
+              id="updateHmMinus"
+              class="number-button"
+            >
+              −
+            </button>
+
+
+            <input
+              type="number"
+              id="updateHmInspection"
+              min="0"
+              step="1"
+              required
+            >
+
+
+            <button
+              type="button"
+              id="updateHmPlus"
+              class="number-button"
+            >
+              +
+            </button>
+
+
+          </div>
+
+        </div>
+
+
+
+        <!-- DATE INSPECTION -->
+
+        <div class="form-group">
+
+          <label for="updateDateInspection">
+            Date Inspection
+          </label>
+
+          <input
+            type="date"
+            id="updateDateInspection"
+          >
+
+        </div>
+
+
+
+        <!-- INSPECTION PHOTO -->
+
+        <div class="form-group">
+
+          <label>
+            Photo <span>*</span>
+          </label>
+
+
+          <div class="existing-photo">
+
+            <img
+              id="updateInspectionPhotoPreview"
+              src=""
+              alt="Inspection Photo"
+            >
+
+          </div>
+
+
+          <label
+            class="file-upload-button"
+            for="updateInspectionPhoto"
+          >
+
+            Retake / Replace Photo
+
+          </label>
+
+
+          <input
+            type="file"
+            id="updateInspectionPhoto"
+            accept="image/*"
+            capture="environment"
+            hidden
+          >
+
+        </div>
+
+
+
+        <!-- GROUP COMPONENT -->
+
+        <div class="form-group">
+
+          <label for="updateGroupComponent">
+            Group Component <span>*</span>
+          </label>
+
+          <select
+            id="updateGroupComponent"
+            required
+          >
+
+            <option value="">
+              Select Component
+            </option>
+
+            <option value="ENGINE">
+              ENGINE
+            </option>
+
+            <option value="TRANSMISSION">
+              TRANSMISSION
+            </option>
+
+            <option value="HYDRAULIC SYSTEM">
+              HYDRAULIC SYSTEM
+            </option>
+
+            <option value="SWING & TRAVEL">
+              SWING &amp; TRAVEL
+            </option>
+
+            <option value="FINAL DRIVE">
+              FINAL DRIVE
+            </option>
+
+            <option value="UNDER CARRIAGE">
+              UNDER CARRIAGE
+            </option>
+
+          </select>
+
+        </div>
+
+
+
+        <!-- PROBLEM DESCRIPTION -->
+
+        <div class="form-group">
+
+          <label for="updateProblemDescription">
+            Problem Description <span>*</span>
+          </label>
+
+          <textarea
+            id="updateProblemDescription"
+            rows="3"
+            required
+          ></textarea>
+
+        </div>
+
+
+
+        <!-- RATING -->
+
+        <div class="form-group">
+
+          <label>
+            Rating <span>*</span>
+          </label>
+
+
+          <div
+            id="updateRatingGrid"
+            class="rating-grid"
+          >
+
+            <button
+              type="button"
+              class="rating-button"
+              data-rating="RATE A"
+            >
+              RATE A
+            </button>
+
+            <button
+              type="button"
+              class="rating-button"
+              data-rating="RATE B"
+            >
+              RATE B
+            </button>
+
+            <button
+              type="button"
+              class="rating-button"
+              data-rating="RATE C"
+            >
+              RATE C
+            </button>
+
+            <button
+              type="button"
+              class="rating-button"
+              data-rating="RATE X"
+            >
+              RATE X
+            </button>
+
+          </div>
+
+
+          <input
+            type="hidden"
+            id="updateRating"
+            required
+          >
+
+        </div>
+
+
+
+        <!-- ==========================================
+             PART REQUIREMENT
+             ========================================== -->
+
+        <div
+          class="form-group update-part-requirement-group"
+          id="updatePartRequirementGroup"
+        >
+
+          <label class="update-part-requirement-main-label">
+            Part Requirement
+          </label>
+
+
+          <!-- ========================================
+               REPEATING PART LIST
+               ======================================== -->
+
+          <div
+            id="updatePartRequirementList"
+            class="update-part-requirement-list"
+          >
+
+
+            <!-- ======================================
+                 PART 1
+
+                 Data aktual akan dibentuk ulang
+                 oleh daily-outstanding.js ketika
+                 Edit Outstanding dibuka.
+                 ====================================== -->
+
+            <div
+              class="update-part-requirement-item"
+              data-part-index="1"
+            >
+
+
+              <!-- PART HEADER -->
+
+              <div class="update-part-item-header">
+
+                <div class="update-part-item-title">
+                  Part 1
+                </div>
+
+
+                <button
+                  type="button"
+                  class="update-remove-part-button"
+                  aria-label="Remove Part 1"
+                >
+                  Remove Part
+                </button>
+
+              </div>
+
+
+
+              <!-- PART DESCRIPTION -->
+
+              <div class="update-part-field">
+
+                <label>
+                  Part Description
+                </label>
+
+                <input
+                  type="text"
+                  class="update-part-description-input"
+                  autocomplete="off"
+                  placeholder="Input Part Description"
+                >
+
+              </div>
+
+
+
+              <!-- PART NO + QTY -->
+
+              <div class="update-part-row">
+
+
+                <div class="update-part-field update-part-no-field">
+
+                  <label>
+                    Part No.
+                  </label>
+
+                  <input
+                    type="text"
+                    class="update-part-no-input"
+                    autocomplete="off"
+                    placeholder="Input Part No."
+                  >
+
+                </div>
+
+
+                <div class="update-part-field update-part-quantity-field">
+
+                  <label>
+                    Qty
+                  </label>
+
+                  <input
+                    type="number"
+                    class="update-part-quantity-input"
+                    min="0"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="0"
+                  >
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+
+          <!-- ========================================
+               ADD PART
+               ======================================== -->
+
+          <div class="update-add-part-area">
+
+            <button
+              type="button"
+              id="updateAddPartButton"
+              class="update-add-part-button"
+            >
+
+              <span
+                class="update-add-part-icon"
+                aria-hidden="true"
+              >
+                +
+              </span>
+
+              <span>
+                Add Part
+              </span>
+
+            </button>
+
+          </div>
+
+
+
+          <!-- ========================================
+               HIDDEN DATABASE FIELDS
+
+               ID lama tetap dipertahankan supaya
+               integrasi JS/API tetap menggunakan:
+
+               updatePartsDescription
+               updatePartNo
+               updateQuantity
+               ======================================== -->
+
+          <input
+            type="hidden"
+            id="updatePartsDescription"
+          >
+
+          <input
+            type="hidden"
+            id="updatePartNo"
+          >
+
+          <input
+            type="hidden"
+            id="updateQuantity"
+          >
+
+
+        </div>
+
+
+
+        <!-- NOTES -->
+
+        <div class="form-group">
+
+          <label for="updateNotes">
+            Notes
+          </label>
+
+          <textarea
+            id="updateNotes"
+            rows="3"
+          ></textarea>
+
+        </div>
+
+
+
+        <!-- MOL READ ONLY -->
+
+        <div class="form-group">
+
+          <label for="updateMol">
+            MOL
+          </label>
+
+          <input
+            type="text"
+            id="updateMol"
+            readonly
+          >
+
+        </div>
+
+
+
+        <!-- EVIDENCE -->
+
+        <div class="form-group">
+
+          <label for="updateEvidence">
+            Evidence
+          </label>
+
+
+          <label
+            class="evidence-upload"
+            for="updateEvidence"
+          >
+
+            <svg viewBox="0 0 24 24">
+
+              <path
+                d="M9 4l1.5-2h3L15 4h4a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h4z"
+              ></path>
+
+              <circle
+                cx="12"
+                cy="12"
+                r="4"
+              ></circle>
+
+            </svg>
+
+
+            <span id="evidenceFileText">
+              Upload Photo / PDF
+            </span>
+
+          </label>
+
+
+          <input
+            type="file"
+            id="updateEvidence"
+            accept="image/*,.pdf,application/pdf"
+            hidden
+          >
+
+
+          <div
+            id="existingEvidence"
+            class="existing-evidence"
+            hidden
+          ></div>
+
+        </div>
+
+
+
+        <!-- PARTS STATUS -->
+
+        <div class="form-group">
+
+          <label>
+            Parts Status
+          </label>
+
+
+          <div
+            id="partsStatusGrid"
+            class="parts-status-grid"
+          >
+
+            <button
+              type="button"
+              class="parts-status-button"
+              data-status="Not Process"
+            >
+              Not Process
+            </button>
+
+
+            <button
+              type="button"
+              class="parts-status-button"
+              data-status="Waiting Parts"
+            >
+              Waiting Parts
+            </button>
+
+
+            <button
+              type="button"
+              class="parts-status-button"
+              data-status="Ready"
+            >
+              Ready
+            </button>
+
+
+            <button
+              type="button"
+              class="parts-status-button"
+              data-status="Supply"
+            >
+              Supply
+            </button>
+
+          </div>
+
+
+          <input
+            type="hidden"
+            id="updatePartsStatus"
+          >
+
+        </div>
+
+
+
+        <!-- STATUS READ ONLY -->
+
+        <div class="form-group">
+
+          <label for="updateStatus">
+            Status
+          </label>
+
+          <input
+            type="text"
+            id="updateStatus"
+            readonly
+          >
+
+        </div>
+
+
+
+        <!-- ACTION PROBLEMS -->
+
+        <div class="form-group">
+
+          <label for="updateActionProblems">
+            Action Problems
+          </label>
+
+          <textarea
+            id="updateActionProblems"
+            rows="3"
+          ></textarea>
+
+        </div>
+
+
+
+        <!-- HM ACTION -->
+
+        <div class="form-group">
+
+          <label for="updateHmAction">
+            HM Action
+          </label>
+
+
+          <div class="number-control">
+
+
+            <button
+              type="button"
+              id="updateHmActionMinus"
+              class="number-button"
+            >
+              −
+            </button>
+
+
+            <input
+              type="number"
+              id="updateHmAction"
+              min="0"
+              step="1"
+              value="0"
+            >
+
+
+            <button
+              type="button"
+              id="updateHmActionPlus"
+              class="number-button"
+            >
+              +
+            </button>
+
+
+          </div>
+
+        </div>
+
+
+
+        <!-- DATE ACTION -->
+
+        <div class="form-group">
+
+          <label for="updateDateAction">
+            Date Action
+          </label>
+
+          <input
+            type="date"
+            id="updateDateAction"
+          >
+
+        </div>
+
+
+
+        <!-- MAN POWER -->
+
+        <div class="form-group">
+
+          <label for="updateManPower">
+            Man Power
+          </label>
+
+          <input
+            type="text"
+            id="updateManPower"
+          >
+
+        </div>
+
+
+
+        <!-- UPDATE ACTIONS -->
+
+        <div class="update-form-actions">
+
+
+          <button
+            type="button"
+            id="cancelUpdateButton"
+            class="cancel-update-button"
+          >
+            Cancel
+          </button>
+
+
+          <button
+            type="submit"
+            id="submitUpdateButton"
+            class="submit-update-button"
+          >
+            Update Data
+          </button>
+
+
+        </div>
+
+
+      </form>
+
+
+    </section>
+
+
+  </div>
+
+
+
+
+
   <!-- ==================================================
        FULLSCREEN PHOTO VIEWER
        ================================================== -->
-
-  <!-- EDIT TEMUAN: hanya level 1, 2, 3; validasi final wajib di server -->
-  <div id="unitHistoryEditModal" class="unit-history-modal-overlay" hidden>
-    <section class="unit-history-edit-modal" role="dialog" aria-modal="true" aria-labelledby="unitHistoryEditTitle">
-      <h2 id="unitHistoryEditTitle">Edit Temuan</h2>
-      <p class="unit-history-edit-subtitle" id="unitHistoryEditUnit">-</p>
-      <form id="unitHistoryEditForm">
-        <div id="unitHistoryEditFields" class="unit-history-edit-fields"></div>
-        <p id="unitHistoryEditMessage" role="status" class="unit-history-edit-message"></p>
-        <div class="unit-history-edit-actions">
-          <button type="button" id="unitHistoryEditCancel" class="unit-history-edit-cancel">Cancel</button>
-          <button type="submit" id="unitHistoryEditSave" class="unit-history-edit-save">Save Changes</button>
-        </div>
-      </form>
-    </section>
-  </div>
 
   <div
     id="unitHistoryPhotoViewer"
@@ -1339,7 +2107,6 @@
 
 
 <script src="unit-history.js"></script>
-  <script src="unit-history-edit.js"></script>
 
 </body>
 
