@@ -1,3 +1,142 @@
+
+Loading older messages…
+
+daily-outstanding.js
+Code
+
+daily-outstanding (1).css
+Code
+
+daily-outstanding.html
+HTML
+Judulnya juga Update Data, isinya sama kayak yang di daily outstanding
+Setuju. Judul form di Unit History adalah “Update Data”, bukan “Edit Temuan” atau “Updates Form”.
+
+Saya sudah menerima ketiga file Daily Outstanding (HTML, CSS, JS) yang kamu kirim. Kita gunakan form tersebut sebagai acuan langsung.
+
+Ketentuannya:
+
+Tampilan dan urutan field sama persis dengan Updates Form di Daily Outstanding.
+
+Termasuk Unit Code, HM Inspection dengan tombol −/+, Date Inspection, preview foto dan Retake/Replace Photo, Group Component, Problem Description, pilihan Rating A/B/C/X, Part Requirement yang bisa tambah/hapus part, serta seluruh field lanjutan hingga Evidence dan Man Power.
+
+Saat Edit diklik dari Unit History, seluruh data temuan otomatis terisi.
+
+Tombol Update Data menyimpan perubahan pada ID temuan yang sama di database.
+
+Hanya Master, Section Head, dan Group Leader yang boleh mengedit.
+
+Form oranye sebelumnya kita hapus sepenuhnya. Fitur Unit History lainnya tetap dipertahankan.
+
+Untuk implementasinya, saya akan menggunakan struktur form asli Daily Outstanding, bukan membuat desain tiruan. Penyimpanan ke database juga harus mengikuti mekanisme update dan validasi akses di Apps Script agar tidak menghasilkan record ganda.
+
+ya kan sumber penyimpanannya sama, sebenarnya itu sama saja fitur yang ada di daily outstanding, hanya saja dimunculkan di unit history
+Betul. Berarti kita tidak perlu membuat fitur Edit baru di Unit History. Cukup menggunakan kembali fitur Update Outstanding yang sudah berjalan di Daily Outstanding.
+
+Karena keduanya menggunakan database DM DATABASE yang sama, perbedaannya hanya dari mana pengguna membuka form.
+
+Daily Outstanding
+
+Unit History
+
+Klik Edit Outstanding
+
+Klik Edit pada temuan
+
+Membuka form update
+
+Membuka form update yang sama
+
+Data terisi berdasarkan ID
+
+Data terisi berdasarkan ID yang dipilih
+
+Simpan ke DM DATABASE
+
+Simpan ke DM DATABASE yang sama
+
+Jadi konsep finalnya:
+
+Satu form: judul Update Data, dengan desain dan seluruh fungsi asli Daily Outstanding.
+
+Satu proses penyimpanan: menggunakan fungsi update backend yang sudah berjalan, tanpa membuat record baru.
+
+Dua pintu akses: Daily Outstanding dan Unit History.
+
+Setelah berhasil update: data Unit History otomatis dimuat ulang agar perubahan langsung terlihat.
+
+Hak akses Unit History: Master, Section Head, dan Group Leader.
+
+Dengan cara ini, fitur seperti penggantian foto, penambahan part, rating, status part, MOL, evidence, dan action problem tidak perlu dibuat ulang.
+
+Saya akan pertahankan mekanisme update yang sudah terbukti berfungsi di Daily Outstanding. Yang perlu kita sesuaikan hanya pemanggilan form dari Unit History, pengisian data terpilih, dan penyegaran tampilan setelah penyimpanan.
+
+Hasil akhirnya tetap berupa 3 file TXT lengkap (HTML, CSS, JS) untuk hapus-paste, bukan potongan kode.
+
+begitu selesai update card tertutup langsung hasil terlihat,
+Betul. Setelah pengguna menekan Update Data dan database berhasil menyimpan perubahan, alurnya harus seperti ini:
+
+Tombol menampilkan Updating... selama proses penyimpanan.
+
+Setelah backend mengonfirmasi berhasil, form Update Data langsung tertutup otomatis.
+
+Modal detail temuan juga tertutup, sehingga pengguna kembali ke halaman Unit History.
+
+Data Unit History dimuat ulang secara otomatis.
+
+Hasil perubahan langsung terlihat pada card atau baris unit yang bersangkutan, tanpa refresh halaman manual.
+
+Posisi daftar, filter, dan unit yang sedang dipilih tetap dipertahankan agar pengguna tidak perlu mencari ulang.
+
+Penting: Form hanya tertutup jika penyimpanan benar-benar berhasil. Jika gagal, form tetap terbuka dengan data yang sudah diisi dan muncul pesan kesalahan.
+
+Ini kita jadikan perilaku standar Update Data di Unit History.
+
+ya
+Oke, kita tetapkan alur tersebut sebagai standar Update Data di Unit History.
+
+Form menggunakan fitur asli Daily Outstanding. Setelah penyimpanan berhasil, form dan modal detail otomatis tertutup, data dimuat ulang, dan hasil perubahan langsung terlihat tanpa refresh manual.
+
+Jika penyimpanan gagal, form tetap terbuka agar data yang sudah diisi tidak hilang.
+
+Selanjutnya kita terapkan pada file HTML, CSS, dan JS Unit History, dengan seluruh fitur lama tetap dipertahankan.
+
+ya
+
+Worked for 58s
+
+Sudah saya siapkan versi Unit History dengan form Update Data yang mengambil struktur dan fungsi dari Daily Outstanding.
+
+Ketiganya berupa file TXT lengkap, bukan kode tambahan.
+
+HTML — versi lengkap
+
+Download unit-history-UPDATE-DATA-HTML.txt
+
+CSS — versi lengkap
+
+Download unit-history-UPDATE-DATA-CSS.txt
+
+JavaScript — versi lengkap
+
+Download unit-history-UPDATE-DATA-JS.txt
+
+Cara memasang: ganti seluruh isi unit-history.html, unit-history.css, dan unit-history.js menggunakan masing-masing file TXT di atas.
+
+Perubahan yang disiapkan:
+
+Judul form Update Data.
+
+Field, pilihan rating, Part Requirement, foto, dan evidence mengikuti Daily Outstanding.
+
+Penyimpanan menggunakan action updateDailyOutstanding berdasarkan ID temuan.
+
+Setelah berhasil, form tertutup dan Unit History dimuat ulang otomatis.
+
+Jika gagal, form tetap terbuka.
+
+Catatan penting: Pemeriksaan sintaks JS sudah lolos, tetapi belum diuji langsung di HEXA. Backend updateDailyOutstanding yang kamu kirim juga masih perlu pengamanan hak akses di sisi server. Jadi sebaiknya uji pada salinan database terlebih dahulu sebelum digunakan untuk data produksi.
+
 /* =====================================================
    HEXA - UNIT HISTORY
    =====================================================
@@ -2283,3 +2422,745 @@ body.modal-open {
 .unit-history-edit-save:disabled { opacity:.5; cursor:not-allowed; }
 .unit-history-edit-message { font-size:13px; min-height:1em; }
 @media(max-width:600px){ .unit-history-edit-fields{grid-template-columns:1fr;} .unit-history-edit-field.wide{grid-column:auto;} .unit-history-edit-modal{padding:16px;} }
+
+
+/* UNIT HISTORY UPDATE DATA - styling inherited from Daily Outstanding */
+#unitHistoryUpdateModal[hidden] { display:none !important; }
+#unitHistoryUpdateModal { position:fixed; inset:0; z-index:5000; display:flex; align-items:flex-start; justify-content:center; padding:25px; overflow-y:auto; background:rgba(0,0,0,.56); }
+#unitHistoryUpdateModal .modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.56
+    );
+
+  overflow-y: auto;
+}
+#unitHistoryUpdateModal .update-overlay {
+  align-items: flex-start;
+
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+#unitHistoryUpdateModal .update-modal {
+  width:
+    min(
+      94vw,
+      820px
+    );
+
+  margin: auto;
+
+  overflow: hidden;
+
+  border:
+    3px solid #111;
+
+  border-radius: 20px;
+
+  background: #ffd1a3;
+
+  box-shadow:
+    0 24px 60px
+    rgba(
+      0,
+      0,
+      0,
+      0.32
+    );
+}
+#unitHistoryUpdateModal .update-title {
+  padding:
+    20px 20px 12px;
+
+  text-align: center;
+}
+#unitHistoryUpdateModal .update-title h2 {
+  margin: 0;
+
+  color: #111;
+
+  font-size: 24px;
+}
+#unitHistoryUpdateModal .update-form {
+  width:
+    min(
+      calc(100% - 40px),
+      620px
+    );
+
+  margin:
+    0 auto 25px;
+
+  padding:
+    22px;
+
+  background: #fff;
+}
+#unitHistoryUpdateModal .form-group {
+  margin-bottom: 20px;
+}
+#unitHistoryUpdateModal .form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #565656;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+#unitHistoryUpdateModal .form-group label span {
+  color: #f5a000;
+}
+#unitHistoryUpdateModal .form-group input, #unitHistoryUpdateModal .form-group select, #unitHistoryUpdateModal .form-group textarea {
+  width: 100%;
+
+  border:
+    1px solid #ccd0d5;
+
+  border-radius: 5px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #333;
+
+  font-family: inherit;
+
+  font-size: 14px;
+}
+#unitHistoryUpdateModal .form-group input, #unitHistoryUpdateModal .form-group select {
+  height: 48px;
+
+  padding: 0 12px;
+}
+#unitHistoryUpdateModal .form-group textarea {
+  min-height: 80px;
+
+  padding: 11px 12px;
+
+  resize: vertical;
+}
+#unitHistoryUpdateModal .form-group input:focus, #unitHistoryUpdateModal .form-group select:focus, #unitHistoryUpdateModal .form-group textarea:focus {
+  border-color: #f5a000;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      245,
+      160,
+      0,
+      0.10
+    );
+}
+#unitHistoryUpdateModal .form-group input[readonly] {
+  background: #f5f5f5;
+
+  color: #888;
+
+  cursor: not-allowed;
+}
+#unitHistoryUpdateModal .number-control {
+  height: 48px;
+
+  display: grid;
+
+  grid-template-columns:
+    48px 1fr 48px;
+
+  overflow: hidden;
+
+  border:
+    1px solid #ccd0d5;
+
+  border-radius: 5px;
+
+  background: #fff;
+}
+#unitHistoryUpdateModal .number-control input {
+  height: 46px;
+
+  border: 0;
+
+  border-left:
+    1px solid #eee;
+
+  border-right:
+    1px solid #eee;
+
+  border-radius: 0;
+
+  text-align: center;
+
+  font-weight: 600;
+}
+#unitHistoryUpdateModal .number-control input:focus {
+  box-shadow: none;
+}
+#unitHistoryUpdateModal .number-button {
+  border: 0;
+
+  background: #f7f7f7;
+
+  color: #555;
+
+  font-size: 23px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .number-button:hover {
+  background: #f5a000;
+
+  color: #111;
+}
+#unitHistoryUpdateModal .existing-photo {
+  width: 100%;
+
+  overflow: hidden;
+
+  border:
+    1px solid #ddd;
+
+  border-radius: 5px;
+
+  background: #f4f4f4;
+}
+#unitHistoryUpdateModal .existing-photo img {
+  display: block;
+
+  width: 100%;
+
+  max-height: 360px;
+
+  object-fit: contain;
+}
+#unitHistoryUpdateModal .file-upload-button {
+  min-height: 42px;
+
+  display: flex !important;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top:
+    8px !important;
+
+  border:
+    1px dashed #f5a000;
+
+  border-radius: 5px;
+
+  color: #c67e00 !important;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .rating-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 6px;
+}
+#unitHistoryUpdateModal .rating-button {
+  min-height: 46px;
+
+  padding: 7px;
+
+  border:
+    1px solid #d1d4d8;
+
+  border-radius: 4px;
+
+  background: #f7f8f9;
+
+  color: #666;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .rating-button.selected {
+  border-color: #f5a000;
+
+  background:
+    rgba(
+      245,
+      160,
+      0,
+      0.20
+    );
+
+  color: #222;
+
+  font-weight: 700;
+}
+#unitHistoryUpdateModal .evidence-upload {
+  min-height: 82px;
+
+  display: flex !important;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin: 0 !important;
+
+  border:
+    1px dashed #bfc3c7;
+
+  border-radius: 5px;
+
+  background: #fafafa;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .evidence-upload:hover {
+  border-color: #f5a000;
+}
+#unitHistoryUpdateModal .evidence-upload svg {
+  width: 27px;
+  height: 27px;
+
+  fill: #666;
+}
+#unitHistoryUpdateModal .evidence-upload span {
+  color: #777 !important;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+#unitHistoryUpdateModal .existing-evidence {
+  margin-top: 8px;
+
+  padding: 10px;
+
+  border-radius: 5px;
+
+  background: #f4f4f4;
+
+  font-size: 12px;
+
+  overflow-wrap: anywhere;
+}
+#unitHistoryUpdateModal .parts-status-grid {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 4px;
+}
+#unitHistoryUpdateModal .parts-status-button {
+  min-height: 42px;
+
+  padding: 7px 12px;
+
+  border:
+    1px solid #d6d9dc;
+
+  border-radius: 3px;
+
+  background: #f7f8f9;
+
+  color: #555;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .parts-status-button.selected {
+  border-color:
+    rgba(
+      245,
+      160,
+      0,
+      0.55
+    );
+
+  background:
+    rgba(
+      245,
+      160,
+      0,
+      0.18
+    );
+
+  color: #222;
+
+  font-weight: 700;
+}
+#unitHistoryUpdateModal .update-form-actions {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  padding-top: 20px;
+}
+#unitHistoryUpdateModal .cancel-update-button, #unitHistoryUpdateModal .submit-update-button {
+  min-width: 150px;
+  min-height: 48px;
+
+  padding: 0 24px;
+
+  border: 0;
+
+  border-radius: 24px;
+
+  font-size: 14px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .cancel-update-button {
+  background: #ededed;
+
+  color: #555;
+}
+#unitHistoryUpdateModal .submit-update-button {
+  background: #f5a000;
+
+  color: #111;
+}
+#unitHistoryUpdateModal .update-overlay {
+  background: rgba(0, 0, 0, 0.58);
+}
+#unitHistoryUpdateModal .update-modal {
+  position: relative;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-top: 5px solid #f5a000;
+  border-radius: 22px;
+  background: #f7f7f7;
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.28);
+}
+#unitHistoryUpdateModal .update-title {
+  position: relative;
+  padding: 22px 20px 20px;
+  background: #fff;
+  border-bottom: 1px solid #ececec;
+}
+#unitHistoryUpdateModal .update-title h2 {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+#unitHistoryUpdateModal .update-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  width: 54px;
+  height: 3px;
+  border-radius: 3px;
+  background: #f5a000;
+  transform: translateX(-50%);
+}
+#unitHistoryUpdateModal .update-form {
+  width: min(calc(100% - 40px), 660px);
+  margin: 20px auto 26px;
+  padding: 24px;
+  border: 1px solid #e7e7e7;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.06);
+}
+#unitHistoryUpdateModal .form-group {
+  margin-bottom: 18px;
+}
+#unitHistoryUpdateModal .form-group label {
+  color: #3f3f3f;
+  font-weight: 700;
+}
+#unitHistoryUpdateModal .form-group input, #unitHistoryUpdateModal .form-group select, #unitHistoryUpdateModal .form-group textarea, #unitHistoryUpdateModal .number-control {
+  border-color: #d8dadd;
+  border-radius: 8px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+#unitHistoryUpdateModal .form-group input:focus, #unitHistoryUpdateModal .form-group select:focus, #unitHistoryUpdateModal .form-group textarea:focus {
+  border-color: #f5a000;
+  box-shadow: 0 0 0 3px rgba(245, 160, 0, 0.11);
+}
+#unitHistoryUpdateModal .form-group input[readonly] {
+  border-color: #e2e2e2;
+  background: #f1f2f3;
+  color: #777;
+}
+#unitHistoryUpdateModal .number-control {
+  overflow: hidden;
+}
+#unitHistoryUpdateModal .number-button {
+  background: #f4f4f4;
+}
+#unitHistoryUpdateModal .existing-photo {
+  border-color: #e0e0e0;
+  border-radius: 10px;
+  background: #f5f5f5;
+}
+#unitHistoryUpdateModal .file-upload-button {
+  border-radius: 8px;
+  background: #fffaf1;
+}
+#unitHistoryUpdateModal .rating-button, #unitHistoryUpdateModal .parts-status-button, #unitHistoryUpdateModal .evidence-upload, #unitHistoryUpdateModal .existing-evidence {
+  border-radius: 8px;
+}
+#unitHistoryUpdateModal .rating-button.selected, #unitHistoryUpdateModal .parts-status-button.selected {
+  border-color: #f5a000;
+  background: rgba(245, 160, 0, 0.13);
+}
+#unitHistoryUpdateModal .evidence-upload {
+  background: #fafafa;
+}
+#unitHistoryUpdateModal .update-form-actions {
+  padding-top: 22px;
+  border-top: 1px solid #eeeeee;
+}
+#unitHistoryUpdateModal .cancel-update-button, #unitHistoryUpdateModal .submit-update-button {
+  border-radius: 10px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+#unitHistoryUpdateModal .cancel-update-button {
+  background: #eeeeee;
+  color: #555;
+}
+#unitHistoryUpdateModal .submit-update-button {
+  background: #f5a000;
+  color: #111;
+  box-shadow: 0 6px 14px rgba(245, 160, 0, 0.20);
+}
+#unitHistoryUpdateModal .cancel-update-button:hover, #unitHistoryUpdateModal .submit-update-button:hover {
+  transform: translateY(-1px);
+}
+#unitHistoryUpdateModal .submit-update-button:hover {
+  background: #ffad0a;
+}
+#unitHistoryUpdateModal .update-part-requirement-group {
+  margin-top: 3px;
+}
+#unitHistoryUpdateModal .update-part-requirement-main-label {
+  margin-bottom: 10px !important;
+
+  color: #565656 !important;
+
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+#unitHistoryUpdateModal .update-part-requirement-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+#unitHistoryUpdateModal .update-part-requirement-item {
+  position: relative;
+
+  padding: 16px;
+
+  border: 1px solid #d7dadd;
+  border-radius: 8px;
+
+  background: #fafafa;
+
+  box-shadow:
+    0 3px 9px rgba(0, 0, 0, 0.035);
+}
+#unitHistoryUpdateModal .update-part-item-header {
+  min-height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #e7e7e7;
+}
+#unitHistoryUpdateModal .update-part-item-title {
+  color: #222;
+
+  font-size: 14px;
+  font-weight: 750;
+}
+#unitHistoryUpdateModal .update-part-field {
+  min-width: 0;
+}
+#unitHistoryUpdateModal .update-part-field > label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #666;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+#unitHistoryUpdateModal .update-part-field input {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 12px;
+
+  border: 1px solid #ccd0d5;
+  border-radius: 5px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #333;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+#unitHistoryUpdateModal .update-part-field input:focus {
+  border-color: #f5a000;
+
+  box-shadow:
+    0 0 0 3px rgba(245, 160, 0, 0.12);
+}
+#unitHistoryUpdateModal .update-part-description-input {
+  margin-bottom: 13px;
+}
+#unitHistoryUpdateModal .update-part-row {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    115px;
+
+  gap: 12px;
+
+  align-items: end;
+}
+#unitHistoryUpdateModal .update-remove-part-button {
+  flex-shrink: 0;
+
+  padding: 6px 10px;
+
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+
+  background: #fff;
+
+  color: #777;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease;
+}
+#unitHistoryUpdateModal .update-remove-part-button:hover {
+  border-color: #d64545;
+
+  background: #fff4f4;
+
+  color: #c83232;
+}
+#unitHistoryUpdateModal .update-add-part-area {
+  display: flex;
+  justify-content: center;
+
+  padding-top: 12px;
+}
+#unitHistoryUpdateModal .update-add-part-button {
+  min-width: 145px;
+  min-height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 7px 15px;
+
+  border: 1px solid #f5a000;
+  border-radius: 7px;
+
+  background: #fff;
+
+  color: #d88900;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+#unitHistoryUpdateModal .update-add-part-button:hover {
+  background: rgba(245, 160, 0, 0.09);
+
+  color: #b87500;
+
+  box-shadow:
+    0 4px 10px rgba(245, 160, 0, 0.12);
+
+  transform: translateY(-1px);
+}
+#unitHistoryUpdateModal .update-add-part-button:active {
+  transform: translateY(0);
+}
+#unitHistoryUpdateModal .update-add-part-icon {
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #f5a000;
+
+  color: #111 !important;
+
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+#unitHistoryUpdateModal .update-part-requirement-group
+input[type="hidden"] {
+  display: none !important;
+}
+
+
