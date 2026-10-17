@@ -47,7 +47,8 @@
       </div>
       <label>Problem Autolube <span>*</span><textarea id="galProblem" required rows="3" placeholder="Jelaskan kerusakan / deviasi"></textarea></label>
       <label>Kategori Komponen <span>*</span><select id="galCategory" required><option value="">Pilih kategori</option><option value="GREASE_PUMP">Grease Pump</option><option value="OIL_PUMP">Oil Pump</option><option value="CONTROL_UNIT">Control Unit</option><option value="LINES">Lines</option><option value="INJECTORS">Injectors</option></select></label>
-      <label>Foto Kerusakan<input id="galDamage" type="file" accept="image/*"><small>Bisa pilih kamera atau galeri (sesuai perangkat).</small></label>
+      <label>Condition <span>*</span><select id="galCondition" required><option value="WARNING">Function with Notes — Oranye</option><option value="BROKEN">Not Function — Merah</option></select></label>
+       <label>Foto Kerusakan<input id="galDamage" type="file" accept="image/*"><small>Bisa pilih kamera atau galeri (sesuai perangkat).</small></label>
       <section class="gal-parts-section"><div class="gal-parts-title"><strong>Required Part</strong><small>Opsional</small></div><div id="galParts"></div><button type="button" id="galAddPart" class="gal-secondary gal-add-part">+ Add Part</button></section>
       <label>Recommended Follow Up <span>*</span><textarea id="galRecommendation" required rows="3" placeholder="Rekomendasi tindakan"></textarea></label>
       <p class="gal-message" id="galNewMessage" role="status"></p>
