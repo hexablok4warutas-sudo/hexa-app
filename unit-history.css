@@ -2283,3 +2283,426 @@ body.modal-open {
 .unit-history-edit-save:disabled { opacity:.5; cursor:not-allowed; }
 .unit-history-edit-message { font-size:13px; min-height:1em; }
 @media(max-width:600px){ .unit-history-edit-fields{grid-template-columns:1fr;} .unit-history-edit-field.wide{grid-column:auto;} .unit-history-edit-modal{padding:16px;} }
+
+#unitHistoryUpdateModal[hidden] { display:none !important; }
+#unitHistoryUpdateModal { position:fixed; inset:0; z-index:5000; display:flex; align-items:flex-start; justify-content:center; padding:25px; overflow-y:auto; background:rgba(0,0,0,.56); }
+#unitHistoryUpdateModal .modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.56
+    );
+
+  overflow-y: auto;
+}
+#unitHistoryUpdateModal .update-overlay {
+  align-items: flex-start;
+
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+#unitHistoryUpdateModal .update-modal {
+  width:
+    min(
+      94vw,
+      820px
+    );
+
+  margin: auto;
+
+  overflow: hidden;
+
+  border:
+    3px solid #111;
+
+  border-radius: 20px;
+
+  background: #ffd1a3;
+
+  box-shadow:
+    0 24px 60px
+    rgba(
+      0,
+      0,
+      0,
+      0.32
+    );
+}
+#unitHistoryUpdateModal .update-title {
+  padding:
+    20px 20px 12px;
+
+  text-align: center;
+}
+#unitHistoryUpdateModal .update-title h2 {
+  margin: 0;
+
+  color: #111;
+
+  font-size: 24px;
+}
+#unitHistoryUpdateModal .update-form {
+  width:
+    min(
+      calc(100% - 40px),
+      620px
+    );
+
+  margin:
+    0 auto 25px;
+
+  padding:
+    22px;
+
+  background: #fff;
+}
+#unitHistoryUpdateModal .form-group {
+  margin-bottom: 20px;
+}
+#unitHistoryUpdateModal .form-group label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #565656;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+#unitHistoryUpdateModal .form-group label span {
+  color: #f5a000;
+}
+#unitHistoryUpdateModal .form-group input, #unitHistoryUpdateModal .form-group select, #unitHistoryUpdateModal .form-group textarea {
+  width: 100%;
+
+  border:
+    1px solid #ccd0d5;
+
+  border-radius: 5px;
+
+  outline: none;
+
+  background: #fff;
+
+  color: #333;
+
+  font-family: inherit;
+
+  font-size: 14px;
+}
+#unitHistoryUpdateModal .form-group input, #unitHistoryUpdateModal .form-group select {
+  height: 48px;
+
+  padding: 0 12px;
+}
+#unitHistoryUpdateModal .form-group textarea {
+  min-height: 80px;
+
+  padding: 11px 12px;
+
+  resize: vertical;
+}
+#unitHistoryUpdateModal .form-group input:focus, #unitHistoryUpdateModal .form-group select:focus, #unitHistoryUpdateModal .form-group textarea:focus {
+  border-color: #f5a000;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(
+      245,
+      160,
+      0,
+      0.10
+    );
+}
+#unitHistoryUpdateModal .form-group input[readonly] {
+  background: #f5f5f5;
+
+  color: #888;
+
+  cursor: not-allowed;
+}
+#unitHistoryUpdateModal .number-control {
+  height: 48px;
+
+  display: grid;
+
+  grid-template-columns:
+    48px 1fr 48px;
+
+  overflow: hidden;
+
+  border:
+    1px solid #ccd0d5;
+
+  border-radius: 5px;
+
+  background: #fff;
+}
+#unitHistoryUpdateModal .number-control input {
+  height: 46px;
+
+  border: 0;
+
+  border-left:
+    1px solid #eee;
+
+  border-right:
+    1px solid #eee;
+
+  border-radius: 0;
+
+  text-align: center;
+
+  font-weight: 600;
+}
+#unitHistoryUpdateModal .number-control input:focus {
+  box-shadow: none;
+}
+#unitHistoryUpdateModal .number-button {
+  border: 0;
+
+  background: #f7f7f7;
+
+  color: #555;
+
+  font-size: 23px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .number-button:hover {
+  background: #f5a000;
+
+  color: #111;
+}
+#unitHistoryUpdateModal .existing-photo {
+  width: 100%;
+
+  overflow: hidden;
+
+  border:
+    1px solid #ddd;
+
+  border-radius: 5px;
+
+  background: #f4f4f4;
+}
+#unitHistoryUpdateModal .existing-photo img {
+  display: block;
+
+  width: 100%;
+
+  max-height: 360px;
+
+  object-fit: contain;
+}
+#unitHistoryUpdateModal .file-upload-button {
+  min-height: 42px;
+
+  display: flex !important;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top:
+    8px !important;
+
+  border:
+    1px dashed #f5a000;
+
+  border-radius: 5px;
+
+  color: #c67e00 !important;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .rating-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 6px;
+}
+#unitHistoryUpdateModal .rating-button {
+  min-height: 46px;
+
+  padding: 7px;
+
+  border:
+    1px solid #d1d4d8;
+
+  border-radius: 4px;
+
+  background: #f7f8f9;
+
+  color: #666;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .rating-button.selected {
+  border-color: #f5a000;
+
+  background:
+    rgba(
+      245,
+      160,
+      0,
+      0.20
+    );
+
+  color: #222;
+
+  font-weight: 700;
+}
+#unitHistoryUpdateModal .evidence-upload {
+  min-height: 82px;
+
+  display: flex !important;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin: 0 !important;
+
+  border:
+    1px dashed #bfc3c7;
+
+  border-radius: 5px;
+
+  background: #fafafa;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .evidence-upload:hover {
+  border-color: #f5a000;
+}
+#unitHistoryUpdateModal .evidence-upload svg {
+  width: 27px;
+  height: 27px;
+
+  fill: #666;
+}
+#unitHistoryUpdateModal .evidence-upload span {
+  color: #777 !important;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+#unitHistoryUpdateModal .existing-evidence {
+  margin-top: 8px;
+
+  padding: 10px;
+
+  border-radius: 5px;
+
+  background: #f4f4f4;
+
+  font-size: 12px;
+
+  overflow-wrap: anywhere;
+}
+#unitHistoryUpdateModal .parts-status-grid {
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 4px;
+}
+#unitHistoryUpdateModal .parts-status-button {
+  min-height: 42px;
+
+  padding: 7px 12px;
+
+  border:
+    1px solid #d6d9dc;
+
+  border-radius: 3px;
+
+  background: #f7f8f9;
+
+  color: #555;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .parts-status-button.selected {
+  border-color:
+    rgba(
+      245,
+      160,
+      0,
+      0.55
+    );
+
+  background:
+    rgba(
+      245,
+      160,
+      0,
+      0.18
+    );
+
+  color: #222;
+
+  font-weight: 700;
+}
+#unitHistoryUpdateModal .update-form-actions {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  padding-top: 20px;
+}
+#unitHistoryUpdateModal .cancel-update-button, #unitHistoryUpdateModal .submit-update-button {
+  min-width: 150px;
+  min-height: 48px;
+
+  padding: 0 24px;
+
+  border: 0;
+
+  border-radius: 24px;
+
+  font-size: 14px;
+  font-weight: 750;
+
+  cursor: pointer;
+}
+#unitHistoryUpdateModal .cancel-update-button {
+  background: #ededed;
+
+  color: #555;
+}
+#unitHistoryUpdateModal .submit-update-button {
+  background: #f5a000;
+
+  color: #111;
+}
+
+#unitHistoryUpdateModal { z-index: 2500; }
+#unitHistoryUpdateModal[hidden] { display: none !important; }
