@@ -244,6 +244,12 @@ dailyMenuItems.forEach(
 
         }
 
+        // DRAFT INSPECTION
+        if (menu === "draft-inspection") {
+          window.location.href = "draft-inspection.html";
+          return;
+        }
+
         // GREASING ANTI LINEBORING
         if (menu === "greasing-anti-lineboring") {
           window.location.href = "/greasing-anti-lineboring";
