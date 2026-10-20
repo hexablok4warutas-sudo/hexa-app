@@ -10,8 +10,6 @@
   try{user=JSON.parse(raw);if(!user||typeof user!=='object')throw Error('invalid user');}
   catch(_){window.location.replace('index.html');return;}
   const accountId=user.userId||user.userID||user.userid||user.id||user.username||user.nik||user.NIK;
-  const accountName=user.name||user.nama||user.fullName||accountId;
-  document.getElementById('draftAccount').textContent=accountName?String(accountName):'Akun HEXA';
   const list=document.getElementById('draftList');
   const search=document.getElementById('draftSearch');
   const type=document.getElementById('draftType');
