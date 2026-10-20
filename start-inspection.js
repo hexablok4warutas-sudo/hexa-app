@@ -59,17 +59,41 @@ function openUnitCombobox() {
 }
 async function loadStartInspectionPopulation() {
   if (!unitCodeSearch || !unitCodeInput) return;
-  unitCodeSearch.disabled=true; unitCodeSearch.value="Loading Unit Population...";
+  unitCodeSearch.disabled=true;
+  unitCodeSearch.value='Loading Unit Population...';
+  const apply = (units, offline=false) => {
+    startInspectionUnits=(Array.isArray(units)?units:[])
+      .map(unit=>({unitCode:cleanStartInspectionValue(unit?.unitCode),egi:cleanStartInspectionValue(unit?.egi),status:cleanStartInspectionValue(unit?.status)}))
+      .filter(unit=>unit.unitCode && ['running','stand by'].includes(unit.status.toLowerCase()))
+      .sort((a,b)=>getPopulationStatusRank(a.status)-getPopulationStatusRank(b.status)||a.unitCode.localeCompare(b.unitCode,'id',{numeric:true,sensitivity:'base'}));
+    if (!startInspectionUnits.length) return false;
+    unitCodeSearch.disabled=false;
+    unitCodeSearch.value='';
+    unitCodeSearch.placeholder=offline?'Search / Select Unit (offline)':'Search / Select Unit';
+    return true;
+  };
+  let hasCache=false;
   try {
-    const response=await fetch(HEXA_API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"getUnitPopulation"})});
-    if (!response.ok) throw new Error("HTTP "+response.status);
-    const result=await response.json(); if (!result || result.success!==true) throw new Error(result?.message || "Gagal mengambil Population Unit.");
-    startInspectionUnits=(Array.isArray(result.units)?result.units:[]).map(unit=>({unitCode:cleanStartInspectionValue(unit?.unitCode),egi:cleanStartInspectionValue(unit?.egi),status:cleanStartInspectionValue(unit?.status)})).filter(unit=>unit.unitCode && ["running","stand by"].includes(unit.status.toLowerCase())).sort((a,b)=>getPopulationStatusRank(a.status)-getPopulationStatusRank(b.status) || a.unitCode.localeCompare(b.unitCode,"id",{numeric:true,sensitivity:"base"}));
-    unitCodeSearch.disabled=false; unitCodeSearch.value=""; unitCodeSearch.placeholder="Search / Select Unit";
-  } catch(error) {
-    console.error("HEXA Start Inspection: Population load failed.",error); unitCodeSearch.value=""; unitCodeSearch.placeholder="Unable to load Unit Population"; unitCodeSearch.disabled=true;
+    const saved=await window.HEXAOffline?.loadMaster('unitPopulation');
+    if(saved?.data) hasCache=apply(saved.data,true);
+  }catch(error){console.warn('HEXA cache population:',error)}
+  if(!navigator.onLine){
+    if(!hasCache){unitCodeSearch.disabled=true;unitCodeSearch.value='';unitCodeSearch.placeholder='Buka HEXA online sekali untuk memuat Unit Population';}
+    return;
+  }
+  try {
+    const response=await fetch(HEXA_API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'getUnitPopulation'})});
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const result=await response.json();
+    if(result?.success!==true)throw Error(result?.message||'Gagal mengambil Unit Population');
+    if(!apply(result.units,false))throw Error('Unit Population kosong');
+    try{await window.HEXAOffline?.saveMaster('unitPopulation',result.units)}catch(e){console.warn('Gagal cache Unit Population',e)}
+  }catch(error){
+    console.warn('HEXA population: memakai cache jika tersedia',error);
+    if(!hasCache){unitCodeSearch.disabled=true;unitCodeSearch.value='';unitCodeSearch.placeholder='Unable to load Unit Population';}
   }
 }
+
 if (unitCodeSearch) {
   unitCodeSearch.addEventListener("focus",openUnitCombobox);
   unitCodeSearch.addEventListener("click",openUnitCombobox);
@@ -898,214 +922,45 @@ const groupComponentSelect =
 
 
 async function loadStartInspectionGroupComponents() {
-
-  if (!groupComponentSelect) {
+  if(!groupComponentSelect)return;
+  groupComponentSelect.disabled=true;
+  groupComponentSelect.innerHTML='<option value="">Loading Group Component...</option>';
+  const apply=(items,offline=false)=>{
+    const components=(Array.isArray(items)?[...items]:[]).sort((a,b)=>{
+      const x=Number(cleanStartInspectionValue(a?.code)),y=Number(cleanStartInspectionValue(b?.code));
+      if(Number.isFinite(x)&&Number.isFinite(y)&&x!==y)return x-y;
+      return cleanStartInspectionValue(a?.groupComponent).localeCompare(cleanStartInspectionValue(b?.groupComponent),'id',{numeric:true,sensitivity:'base'});
+    });
+    groupComponentSelect.innerHTML='';
+    const initial=document.createElement('option');initial.value='';initial.textContent=offline?'Search / Select Component (offline)':'Search / Select Component';groupComponentSelect.appendChild(initial);
+    components.forEach(item=>{
+      const name=cleanStartInspectionValue(item?.groupComponent);
+      if(!name)return;
+      const option=document.createElement('option');option.value=name;option.textContent=name;option.dataset.code=cleanStartInspectionValue(item?.code);groupComponentSelect.appendChild(option);
+    });
+    const available=groupComponentSelect.options.length>1;
+    groupComponentSelect.disabled=!available;
+    return available;
+  };
+  let hasCache=false;
+  try{const saved=await window.HEXAOffline?.loadMaster('groupComponents');if(saved?.data)hasCache=apply(saved.data,true)}
+  catch(error){console.warn('HEXA cache group components:',error)}
+  if(!navigator.onLine){
+    if(!hasCache)groupComponentSelect.innerHTML='<option value="">Buka HEXA online sekali untuk memuat Group Component</option>';
     return;
   }
-
-
-  groupComponentSelect.disabled =
-    true;
-
-
-  groupComponentSelect.innerHTML =
-    '<option value="">Loading Group Component...</option>';
-
-
-  try {
-
-    const response =
-      await fetch(
-        HEXA_API_URL,
-        {
-
-          method:
-            "POST",
-
-          headers: {
-
-            "Content-Type":
-              "text/plain;charset=utf-8"
-
-          },
-
-          body:
-            JSON.stringify({
-
-              action:
-                "getGroupComponentList"
-
-            })
-
-        }
-      );
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        "HTTP " +
-        response.status
-      );
-
-    }
-
-
-    const result =
-      await response.json();
-
-
-    if (
-      !result ||
-      result.success !== true
-    ) {
-
-      throw new Error(
-        result?.message ||
-        "Gagal mengambil Group Component."
-      );
-
-    }
-
-
-    const components =
-      Array.isArray(
-        result.groupComponents
-      )
-        ? [...result.groupComponents]
-        : [];
-
-
-    components.sort(
-      function (a, b) {
-
-        const codeA =
-          Number(
-            cleanStartInspectionValue(
-              a?.code
-            )
-          );
-
-        const codeB =
-          Number(
-            cleanStartInspectionValue(
-              b?.code
-            )
-          );
-
-
-        if (
-          Number.isFinite(codeA) &&
-          Number.isFinite(codeB) &&
-          codeA !== codeB
-        ) {
-
-          return codeA - codeB;
-
-        }
-
-
-        return cleanStartInspectionValue(
-          a?.groupComponent
-        ).localeCompare(
-          cleanStartInspectionValue(
-            b?.groupComponent
-          ),
-          "id",
-          {
-            numeric: true,
-            sensitivity: "base"
-          }
-        );
-
-      }
-    );
-
-
-    groupComponentSelect.innerHTML =
-      '<option value="">Search / Select Component</option>';
-
-
-    components.forEach(
-      function (item) {
-
-        const name =
-          cleanStartInspectionValue(
-            item?.groupComponent
-          );
-
-
-        if (!name) {
-          return;
-        }
-
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-
-        /*
-          Value tetap NAMA Group Component agar payload
-          Submit Inspection dan DM DATABASE tetap sama
-          seperti sebelumnya.
-        */
-        option.value =
-          name;
-
-
-        option.textContent =
-          name;
-
-
-        option.dataset.code =
-          cleanStartInspectionValue(
-            item?.code
-          );
-
-
-        groupComponentSelect.appendChild(
-          option
-        );
-
-      }
-    );
-
-
-    if (
-      groupComponentSelect.options.length <= 1
-    ) {
-
-      groupComponentSelect.innerHTML =
-        '<option value="">No Group Component Available</option>';
-
-    }
-
-
-    groupComponentSelect.disabled =
-      false;
-
-
-  } catch (error) {
-
-    console.error(
-      "HEXA Start Inspection: Group Component load failed.",
-      error
-    );
-
-
-    groupComponentSelect.innerHTML =
-      '<option value="">Unable to load Group Component</option>';
-
-
-    groupComponentSelect.disabled =
-      false;
-
+  try{
+    const response=await fetch(HEXA_API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'getGroupComponentList'})});
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const result=await response.json();
+    if(result?.success!==true)throw Error(result?.message||'Gagal mengambil Group Component');
+    if(!apply(result.groupComponents,false))throw Error('Group Component kosong');
+    try{await window.HEXAOffline?.saveMaster('groupComponents',result.groupComponents)}catch(e){console.warn('Gagal cache Group Component',e)}
+  }catch(error){
+    console.warn('HEXA group components: memakai cache jika tersedia',error);
+    if(!hasCache){groupComponentSelect.disabled=true;groupComponentSelect.innerHTML='<option value="">Unable to load Group Component</option>';}
   }
-
 }
-
 
 loadStartInspectionGroupComponents();
 
