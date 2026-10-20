@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Draft Inspection | HEXA</title>
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="draft-inspection.css">
+</head>
+<body>
+  <header id="hexaHeader" data-header-type="standard" data-page="daily-maintenance"></header>
+  <main class="draft-main">
+    <section class="draft-shell">
+      <div class="draft-top">
+        <div>
+          <div class="draft-eyebrow">HEXA · DAILY MAINTENANCE</div>
+          <h1>Draft Inspection</h1>
+          <p>Draft pribadi dan antrean inspeksi Anda.</p>
+        </div>
+        <div class="draft-account"><span>AKUN AKTIF</span><strong id="draftAccount">Memeriksa sesi...</strong></div>
+      </div>
+      <div class="draft-info" id="draftInfo" role="status">Tahap awal: halaman pengelolaan. Penyimpanan form dan sinkronisasi akan diaktifkan setelah integrasi.</div>
+      <div class="draft-stats">
+        <article><span>Draft</span><strong id="countDraft">0</strong></article>
+        <article><span>Ready Sync</span><strong id="countReady">0</strong></article>
+        <article><span>Gagal Sync</span><strong id="countFailed">0</strong></article>
+      </div>
+      <div class="draft-toolbar">
+        <div class="draft-tabs" role="tablist" aria-label="Daftar inspeksi">
+          <button type="button" class="active" data-tab="pending" role="tab" aria-selected="true">Draft & Pending</button>
+          <button type="button" data-tab="history" role="tab" aria-selected="false">Sync History</button>
+        </div>
+        <button type="button" id="syncAll" class="draft-sync" disabled title="Aktif setelah integrasi sinkronisasi">Sync All</button>
+      </div>
+      <div class="draft-filters">
+        <label for="draftType">Jenis Inspeksi</label>
+        <select id="draftType"><option value="all">Semua</option><option value="start">Start Inspection</option><option value="daily">Daily Inspection</option></select>
+        <label for="draftSearch">Cari Unit</label>
+        <input id="draftSearch" type="search" placeholder="Contoh: HEX 1205" autocomplete="off">
+      </div>
+      <div id="draftList" class="draft-list" aria-live="polite"></div>
+      <div class="draft-footer"><a href="daily-maintenance.html">← Kembali ke Daily Maintenance</a><span id="draftConnection">Memeriksa koneksi...</span></div>
+    </section>
+  </main>
+  <script src="hexa-menu.js"></script>
+  <script src="hexa-header.js"></script>
+  <script src="draft-inspection.js"></script>
+</body>
+</html>
