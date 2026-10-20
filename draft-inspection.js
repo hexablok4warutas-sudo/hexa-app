@@ -13,22 +13,24 @@
   const list=document.getElementById('draftList');
   const search=document.getElementById('draftSearch');
   let activeTab='pending';
-  function render(){
+  async function render(){
     list.replaceChildren();
-    const wrap=document.createElement('section');wrap.className='draft-empty';
-    const symbol=document.createElement('div');symbol.className='symbol';symbol.textContent=activeTab==='pending'?'📋':'✓';
-    const heading=document.createElement('h2');heading.textContent=activeTab==='pending'?'Belum ada draft yang terhubung':'Belum ada riwayat sinkronisasi';
-    const note=document.createElement('p');note.textContent=activeTab==='pending'?'Halaman sudah siap. Daftar akan muncul setelah penyimpanan lokal Start Inspection diintegrasikan.':'Riwayat akan tercatat setelah backend mengonfirmasi pengiriman berhasil.';
-    wrap.append(symbol,heading,note);list.append(wrap);
+    try {
+      const items=await window.HEXAOffline.list();
+      document.getElementById('countDraft').textContent=String(items.filter(x=>x.status==='draft').length);
+      document.getElementById('countReady').textContent=String(items.filter(x=>x.status==='pending').length);
+      document.getElementById('countFailed').textContent=String(items.filter(x=>x.status==='failed').length);
+      const query=(search?.value||'').trim().toLowerCase();
+      const filtered=items.filter(x=>(activeTab==='history'?x.status==='synced':x.status!=='synced')&&String(x.payload?.unitCode||'').toLowerCase().includes(query));
+      if(!filtered.length){const empty=document.createElement('section');empty.className='draft-empty';empty.textContent=activeTab==='history'?'Belum ada Sync History':'Belum ada inspection offline yang menunggu sinkronisasi.';list.append(empty);return;}
+      filtered.forEach(item=>{const card=document.createElement('article');card.style.cssText='background:white;border:1px solid #dbe4ed;border-radius:14px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap';const content=document.createElement('div');const title=document.createElement('strong');title.textContent=item.payload?.unitCode||'Unit';const info=document.createElement('div');info.style.cssText='font-size:13px;color:#64748b;margin-top:5px';info.textContent=[item.payload?.problemDescription||'',item.payload?.rating||'',new Date(item.createdAt).toLocaleString('id-ID'),item.status==='pending'?'Pending Sync':item.status].filter(Boolean).join(' • ');content.append(title,info);card.append(content);list.append(card);});
+    } catch(e){const error=document.createElement('p');error.textContent='Gagal membaca draft lokal: '+e.message;list.append(error);}
   }
-  document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>{
-    activeTab=button.dataset.tab;
-    document.querySelectorAll('[data-tab]').forEach(b=>{const selected=b===button;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected));});
-    render();
-  }));
+  document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>{activeTab=button.dataset.tab;document.querySelectorAll('[data-tab]').forEach(b=>{const selected=b===button;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected));});render();}));
   search?.addEventListener('input',render);
   function connection(){document.getElementById('draftConnection').textContent=navigator.onLine?'● Perangkat online':'● Perangkat offline';}
   window.addEventListener('online',connection);window.addEventListener('offline',connection);
+  const notice=document.getElementById('draftInfo');if(notice)notice.textContent='Inspection yang disubmit saat offline tersimpan di perangkat. Sinkronisasi otomatis diaktifkan setelah pengamanan anti-duplikat backend selesai.';
   connection();render();
 
   // Floating Start Inspection shortcut, mengikuti perilaku Daily Maintenance.
