@@ -1,7 +1,7 @@
-/* HEXA Offline App Shell v3 — redirect-safe navigation.
+/* HEXA Offline App Shell v4 — navigation response rebuilt at delivery.
    Only same-origin static files are cached. GAS/API requests are untouched.
    IndexedDB is never deleted or modified by this worker. */
-const CACHE_NAME = 'hexa-shell-v3-20261020';
+const CACHE_NAME = 'hexa-shell-v4-20261020';
 const CORE = [
   '/main.html', '/daily-maintenance.html', '/start-inspection.html',
   '/draft-inspection.html', '/main.js', '/daily-maintenance.js',
@@ -102,12 +102,15 @@ self.addEventListener('fetch', event => {
       const cache = await caches.open(CACHE_NAME);
       // Prefer a known-good, normalized local HTML response.
       const cached = await cache.match(page);
-      if (cached && !cached.redirected) return cached;
+      if (cached) {
+        const safe = await cleanResponse(cached, page);
+        if (safe) return safe;
+      }
       try {
         const fresh = await fetchStatic(page);
         if (fresh) {
           await cache.put(page, fresh.clone());
-          return fresh;
+          return await cleanResponse(fresh.clone(), page) || Response.error();
         }
       } catch (_) {}
       // Old cache entries may contain redirects; normalize before serving.
