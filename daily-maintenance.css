@@ -656,3 +656,11 @@ body {
 #dmKpiUnitHistory .dm-kpi-investigation-analysis p{margin:0 0 8px}
 #dmKpiUnitHistory .dm-kpi-investigation-analysis ul{margin:0;padding-left:20px;line-height:1.8}
 @media(max-width:650px){#dmKpiUnitHistory .dm-kpi-investigation{padding:12px}#dmKpiUnitHistory .dm-kpi-investigation-stats{gap:6px}#dmKpiUnitHistory .dm-kpi-investigation-stats>div{padding:9px}#dmKpiUnitHistory .dm-kpi-investigation-stats strong{font-size:16px}}
+
+/* Draft Inspection menu label: no ellipsis on mobile */
+@media (max-width:600px) {
+  .daily-menu-item[data-menu="draft-inspection"] > span {
+    white-space:normal; overflow:visible; text-overflow:clip;
+    width:110px; max-width:110px; overflow-wrap:break-word;
+  }
+}
