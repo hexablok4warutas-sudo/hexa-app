@@ -2268,6 +2268,17 @@ if (inspectionForm) {
         );
 
 
+        /* OFFLINE: simpan payload lengkap hanya setelah validasi asli lolos.
+           Tidak ada tombol baru. Sinkronisasi akan diaktifkan setelah
+           backend mendukung idempotency key agar tidak duplikat. */
+        if (!navigator.onLine) {
+          if (!window.HEXAOffline) throw new Error('Modul offline belum dimuat.');
+          await window.HEXAOffline.put(inspectionData);
+          alert('Inspection tersimpan offline. Akan muncul di Draft Inspection.');
+          window.location.href = 'draft-inspection.html';
+          return;
+        }
+
         /* =============================================
            SEND TO HEXA API
         ============================================= */
