@@ -130,17 +130,11 @@
       if(!filtered.length){const empty=document.createElement('section');empty.className='draft-empty';empty.textContent=activeTab==='history'?'Belum ada Sync History':'Belum ada inspection offline yang menunggu sinkronisasi.';list.append(empty);return;}
       filtered.forEach(item=>{const card=document.createElement('article');card.style.cssText='background:white;border:1px solid #dbe4ed;border-radius:14px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap';const content=document.createElement('div');const title=document.createElement('strong');title.textContent=item.payload?.unitCode||'Unit';const info=document.createElement('div');info.style.cssText='font-size:13px;color:#64748b;margin-top:5px';info.textContent=[item.payload?.problemDescription||'',item.payload?.rating||'',new Date(item.createdAt).toLocaleString('id-ID'),item.status==='pending'?'Pending Sync':item.status==='synced'?'Synced · '+(item.inspectionId||''):item.status].filter(Boolean).join(' • ');content.append(title,info);card.append(content);
         if(item.status!=='synced'){
-          const edit=document.createElement('button');edit.type='button';edit.textContent='✎ Edit Foto';
-          edit.style.cssText='background:#fff7ed;color:#c65f00;border:1px solid #f5c58c;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;';
-          edit.addEventListener('click',()=>{
-            const input=document.createElement('input');input.type='file';input.accept='image/*';
-            input.addEventListener('change',async()=>{
-              if(!input.files?.[0])return;
-              edit.disabled=true;edit.textContent='Menyimpan foto...';
-              try{await replaceOfflinePhoto(item.id,input.files[0]);await render();}
-              catch(error){alert('Gagal mengedit foto: '+error.message);edit.disabled=false;edit.textContent='✎ Edit Foto';}
-            },{once:true});input.click();
-          });card.append(edit);
+          const edit=document.createElement('button');edit.type='button';edit.textContent='✎ Edit';
+           edit.style.cssText='background:#fff7ed;color:#c65f00;border:1px solid #f5c58c;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700;';
+           edit.addEventListener('click',()=>{
+             window.location.href='start-inspection.html?edit='+encodeURIComponent(item.id);
+           });card.append(edit);
         }
         list.append(card);});
     } catch(e){const error=document.createElement('p');error.textContent='Gagal membaca draft lokal: '+e.message;list.append(error);}
