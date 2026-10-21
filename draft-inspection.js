@@ -15,9 +15,13 @@
   const syncButton=document.getElementById('syncAll');
   let syncing=false;
   let syncStarted=false;
+  let nextAutoAttemptAt=0;
+  const AUTO_CHECK_MS=12000;
+  const AUTO_RETRY_MS=30000;
   async function syncAll(){
     if(syncing||!navigator.onLine)return;
     syncing=true;
+    nextAutoAttemptAt=Date.now()+AUTO_RETRY_MS;
     if(syncButton){syncButton.disabled=true;syncButton.textContent='Syncing...';}
     const notice=document.getElementById('draftInfo');
     let successCount=0,failedCount=0;
@@ -63,7 +67,22 @@
     }
   }
   syncButton?.addEventListener('click',syncAll);
-  window.addEventListener('online',()=>{connection();syncAll();});
+  window.addEventListener('online',()=>{connection();nextAutoAttemptAt=0;syncAll();});
+  // Browser tidak selalu memicu event online saat koneksi fisik kembali.
+  // Periksa antrean secara berkala tanpa membuat permintaan paralel.
+  async function autoCheck(){
+    if(syncing||!navigator.onLine||Date.now()<nextAutoAttemptAt)return;
+    try{
+      const items=await window.HEXAOffline.list();
+      if(items.some(x=>x.status==='pending')){
+        nextAutoAttemptAt=Date.now()+AUTO_RETRY_MS;
+        await syncAll();
+      }
+    }catch(error){console.warn('HEXA auto sync check:',error);}
+  }
+  window.setInterval(autoCheck,AUTO_CHECK_MS);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoCheck();});
+  window.addEventListener('focus',autoCheck);
   async function render(){
     list.replaceChildren();
     try {
