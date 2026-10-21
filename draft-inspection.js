@@ -1,4 +1,4 @@
-/* HEXA Draft Inspection — Offline Sync V3. Backend anti-duplikat wajib terpasang sebelum deploy. */
+/* HEXA Draft Inspection — V3 stable, Manual Sync All only. */
 'use strict';
 (function(){
   const loggedIn=sessionStorage.getItem('hexaLoggedIn');
@@ -14,14 +14,9 @@
   const API_URL='https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec';
   const syncButton=document.getElementById('syncAll');
   let syncing=false;
-  let syncStarted=false;
-  let nextAutoAttemptAt=0;
-  const AUTO_CHECK_MS=12000;
-  const AUTO_RETRY_MS=30000;
   async function syncAll(){
     if(syncing||!navigator.onLine)return;
     syncing=true;
-    nextAutoAttemptAt=Date.now()+AUTO_RETRY_MS;
     if(syncButton){syncButton.disabled=true;syncButton.textContent='Syncing...';}
     const notice=document.getElementById('draftInfo');
     let successCount=0,failedCount=0;
@@ -67,22 +62,6 @@
     }
   }
   syncButton?.addEventListener('click',syncAll);
-  window.addEventListener('online',()=>{connection();nextAutoAttemptAt=0;syncAll();});
-  // Browser tidak selalu memicu event online saat koneksi fisik kembali.
-  // Periksa antrean secara berkala tanpa membuat permintaan paralel.
-  async function autoCheck(){
-    if(syncing||!navigator.onLine||Date.now()<nextAutoAttemptAt)return;
-    try{
-      const items=await window.HEXAOffline.list();
-      if(items.some(x=>x.status==='pending')){
-        nextAutoAttemptAt=Date.now()+AUTO_RETRY_MS;
-        await syncAll();
-      }
-    }catch(error){console.warn('HEXA auto sync check:',error);}
-  }
-  window.setInterval(autoCheck,AUTO_CHECK_MS);
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoCheck();});
-  window.addEventListener('focus',autoCheck);
   async function render(){
     list.replaceChildren();
     try {
@@ -100,11 +79,9 @@
   document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>{activeTab=button.dataset.tab;document.querySelectorAll('[data-tab]').forEach(b=>{const selected=b===button;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected));});render();}));
   search?.addEventListener('input',render);
   function connection(){document.getElementById('draftConnection').textContent=navigator.onLine?'● Perangkat online':'● Perangkat offline';}
-  window.addEventListener('online',connection);window.addEventListener('offline',connection);
-  const notice=document.getElementById('draftInfo');if(notice)notice.textContent='Inspection offline disimpan di perangkat. Sync All aktif saat online, dan akan mencoba otomatis ketika koneksi kembali.';
+  window.addEventListener('online',()=>{connection();render();});window.addEventListener('offline',()=>{connection();render();});
+  const notice=document.getElementById('draftInfo');if(notice)notice.textContent='Inspection offline disimpan di perangkat. Saat online, klik Sync All untuk mengirim seluruh antrean.';
   connection();render();
-  // Saat halaman dibuka online, antrean yang ada dicoba sekali.
-  if(navigator.onLine && !syncStarted){syncStarted=true;syncAll();}
 
   // Floating Start Inspection shortcut, mengikuti perilaku Daily Maintenance.
   const shortcut = document.getElementById('inspectionShortcut');
