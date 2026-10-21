@@ -68,7 +68,7 @@ async function loadStartInspectionPopulation() {
       .sort((a,b)=>getPopulationStatusRank(a.status)-getPopulationStatusRank(b.status)||a.unitCode.localeCompare(b.unitCode,'id',{numeric:true,sensitivity:'base'}));
     if (!startInspectionUnits.length) return false;
     unitCodeSearch.disabled=false;
-    unitCodeSearch.value='';
+    unitCodeSearch.value=unitCodeInput.value||'';
     unitCodeSearch.placeholder=offline?'Search / Select Unit (offline)':'Search / Select Unit';
     return true;
   };
@@ -1944,6 +1944,72 @@ function resetInspectionForm() {
 
 
 /* =====================================================
+   EDIT OFFLINE INSPECTION — keep original queue ID
+===================================================== */
+const hexaEditId = new URLSearchParams(window.location.search).get('edit');
+let hexaEditItem = null;
+
+function hexaSetField(id,value){
+  const field=document.getElementById(id);
+  if(field)field.value=value == null ? '' : String(value);
+}
+function hexaFillParts(data){
+  const descriptions=String(data.partsDescription||'').split('\n');
+  const numbers=String(data.partNo||'').split('\n');
+  const quantities=String(data.quantity||'').split('\n');
+  const count=Math.max(1,descriptions.length,numbers.length,quantities.length);
+  if(!partRequirementList)return;
+  partRequirementList.replaceChildren();
+  for(let i=0;i<count;i++){
+    const row=createPartItem();
+    row.querySelector('.part-description-input').value=descriptions[i]||'';
+    row.querySelector('.part-no-input').value=numbers[i]||'';
+    row.querySelector('.part-quantity-input').value=quantities[i]||'';
+    partRequirementList.appendChild(row);
+  }
+  renumberParts();
+}
+async function hexaLoadEdit(){
+  if(!hexaEditId)return;
+  try{
+    if(!window.HEXAOffline?.get || !window.HEXAOffline?.updatePayload)
+      throw Error('Modul offline belum mendukung Edit Inspection. Perbarui hexa-offline-store.js.');
+    const item=await window.HEXAOffline.get(hexaEditId);
+    if(!item||item.status==='synced')throw Error('Draft tidak ditemukan atau sudah tersinkronisasi.');
+    hexaEditItem=item;
+    const d=item.payload||{};
+    hexaSetField('unitCode',d.unitCode);
+    hexaSetField('unitCodeSearch',d.unitCode);
+    hexaSetField('hmInspection',d.hmInspection);
+    hexaSetField('dateInspection',d.dateInspection);
+    hexaSetField('groupComponent',d.groupComponent);
+    hexaSetField('problemDescription',d.problemDescription);
+    hexaSetField('rating',d.rating);
+    hexaSetField('inspectors',d.inspectors);
+    hexaSetField('notes',d.notes);
+    hexaFillParts(d);
+    ratingButtons.forEach(b=>b.classList.toggle('selected',b.dataset.rating===d.rating));
+    if(d.photoBase64){
+      if(photoPreview){photoPreview.src=d.photoBase64;}
+      if(photoPreviewContainer)photoPreviewContainer.hidden=false;
+      if(photoText)photoText.textContent='Foto tersimpan (bisa diganti)';
+    }
+    if(submitButton)submitButton.textContent='Save Changes';
+    // Master dropdowns load asynchronously. Restore selected values when options arrive.
+    if(groupComponentSelect){
+      const restore=()=>{if(hexaEditItem&&Array.from(groupComponentSelect.options).some(o=>o.value===String(d.groupComponent||'')))groupComponentSelect.value=d.groupComponent||'';};
+      const observer=new MutationObserver(restore);
+      observer.observe(groupComponentSelect,{childList:true});
+      restore();
+    }
+  }catch(error){
+    alert('Gagal membuka Edit Inspection: '+error.message);
+    window.location.href='draft-inspection.html';
+  }
+}
+hexaLoadEdit();
+
+/* =====================================================
    SUBMIT START INSPECTION
 ===================================================== */
 
@@ -2126,6 +2192,14 @@ if (inspectionForm) {
         /* OFFLINE: simpan payload lengkap hanya setelah validasi asli lolos.
            Tidak ada tombol baru. Sinkronisasi akan diaktifkan setelah
            backend mendukung idempotency key agar tidak duplikat. */
+        if (hexaEditId) {
+          if (!hexaEditItem) throw new Error('Data Edit Inspection belum selesai dimuat.');
+          await window.HEXAOffline.updatePayload(hexaEditId, inspectionData);
+          alert('Perubahan inspeksi berhasil disimpan di perangkat.');
+          window.location.href='draft-inspection.html';
+          return;
+        }
+
         if (!navigator.onLine) {
           if (!window.HEXAOffline) throw new Error('Modul offline belum dimuat.');
           await window.HEXAOffline.put(inspectionData);
