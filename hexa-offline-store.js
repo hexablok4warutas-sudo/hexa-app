@@ -33,5 +33,23 @@ window.HEXAOffline = (() => {
      tx.onabort=()=>{db.close();reject(tx.error)};
    });
  }
- return {owner,put,list,get,saveMaster,loadMaster};
+ async function updateStatus(key, status, extra={}) {
+   const id=owner();
+   if (!['pending','failed','synced'].includes(status)) throw Error('Status tidak dikenal');
+   const db=await open();
+   return new Promise((resolve,reject)=>{
+     const tx=db.transaction(STORE,'readwrite');
+     const s=tx.objectStore(STORE);
+     const req=s.get(key);
+     req.onsuccess=()=>{
+       const item=req.result;
+       if (!item || item.owner!==id) { tx.abort(); reject(Error('Inspection tidak ditemukan untuk akun ini')); return; }
+       s.put({...item,...extra,id:item.id,owner:item.owner,payload:item.payload,status});
+     };
+     tx.oncomplete=()=>{db.close();resolve(true)};
+     tx.onerror=()=>{db.close();reject(tx.error)};
+     tx.onabort=()=>{db.close()};
+   });
+ }
+ return {owner,put,list,get,saveMaster,loadMaster,updateStatus};
 })();
