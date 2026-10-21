@@ -1,112 +1,182 @@
-/* HEXA Draft Inspection — Offline Sync V3. Backend anti-duplikat wajib terpasang sebelum deploy. */
+/* HEXA Draft Inspection — Auto Sync V5.
+ * Memerlukan HEXAOffline.list() dan HEXAOffline.updateStatus() dari offline store V3.
+ * Backend syncOfflineInspection harus sudah mendukung clientRequestId/idempotency.
+ * Tidak mengubah Service Worker, database, atau struktur HTML.
+ */
 'use strict';
-(function(){
-  const loggedIn=sessionStorage.getItem('hexaLoggedIn');
-  const raw=sessionStorage.getItem('hexaUser');
-  if(loggedIn!=='true'||!raw){window.location.replace('index.html');return;}
+(function () {
+  const loggedIn = sessionStorage.getItem('hexaLoggedIn');
+  const raw = sessionStorage.getItem('hexaUser');
+  if (loggedIn !== 'true' || !raw) { window.location.replace('index.html'); return; }
   let user;
-  try{user=JSON.parse(raw);if(!user||typeof user!=='object')throw Error('invalid user');}
-  catch(_){window.location.replace('index.html');return;}
-  const accountId=user.userId||user.userID||user.userid||user.id||user.username||user.nik||user.NIK;
-  const list=document.getElementById('draftList');
-  const search=document.getElementById('draftSearch');
-  let activeTab='pending';
-  const API_URL='https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec';
-  const syncButton=document.getElementById('syncAll');
-  let syncing=false;
-  let syncStarted=false;
-  let nextAutoAttemptAt=0;
-  const AUTO_CHECK_MS=12000;
-  const AUTO_RETRY_MS=30000;
-  async function syncAll(){
-    if(syncing||!navigator.onLine)return;
-    syncing=true;
-    nextAutoAttemptAt=Date.now()+AUTO_RETRY_MS;
-    if(syncButton){syncButton.disabled=true;syncButton.textContent='Syncing...';}
-    const notice=document.getElementById('draftInfo');
-    let successCount=0,failedCount=0;
-    try{
-      const items=(await window.HEXAOffline.list()).filter(x=>['pending','failed'].includes(x.status));
-      for(const item of items){
-        if(!navigator.onLine)break;
-        try{
-          const response=await fetch(API_URL,{
-            method:'POST',
-            headers:{'Content-Type':'text/plain;charset=utf-8'},
-            body:JSON.stringify({...item.payload,action:'syncOfflineInspection',clientRequestId:item.id})
+  try { user = JSON.parse(raw); if (!user || typeof user !== 'object') throw Error('invalid user'); }
+  catch (_) { window.location.replace('index.html'); return; }
+
+  const list = document.getElementById('draftList');
+  const search = document.getElementById('draftSearch');
+  const syncButton = document.getElementById('syncAll');
+  const notice = document.getElementById('draftInfo');
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxB6yiEnjsE95F_5FlNhjY731u7CG0KQrPmPu5t2bKFHCaWAx0y2ioicLALH7LX6NeKFg/exec';
+  const CHECK_INTERVAL_MS = 12000;
+  const RETRY_DELAY_MS = 30000;
+  let activeTab = 'pending';
+  let syncing = false;
+  let lastFailedAttempt = 0;
+  let renderVersion = 0;
+
+  function pendingItem(item) {
+    return item && (item.status === 'pending' || item.status === 'failed');
+  }
+
+  function connection() {
+    const element = document.getElementById('draftConnection');
+    if (element) element.textContent = navigator.onLine ? '● Perangkat online' : '● Perangkat offline';
+  }
+
+  async function render() {
+    const version = ++renderVersion;
+    try {
+      const items = await window.HEXAOffline.list();
+      if (version !== renderVersion) return;
+      const draftCount = document.getElementById('countDraft');
+      const readyCount = document.getElementById('countReady');
+      const failedCount = document.getElementById('countFailed');
+      if (draftCount) draftCount.textContent = String(items.filter(x => x.status === 'draft').length);
+      if (readyCount) readyCount.textContent = String(items.filter(x => x.status === 'pending').length);
+      if (failedCount) failedCount.textContent = String(items.filter(x => x.status === 'failed').length);
+      if (syncButton) {
+        syncButton.disabled = syncing || !navigator.onLine || !items.some(pendingItem);
+        syncButton.textContent = syncing ? 'Syncing...' : 'Sync All';
+      }
+      if (!list) return;
+      list.replaceChildren();
+      const query = (search?.value || '').trim().toLowerCase();
+      const filtered = items.filter(x =>
+        (activeTab === 'history' ? x.status === 'synced' : x.status !== 'synced') &&
+        String(x.payload?.unitCode || '').toLowerCase().includes(query)
+      );
+      if (!filtered.length) {
+        const empty = document.createElement('section');
+        empty.className = 'draft-empty';
+        empty.textContent = activeTab === 'history'
+          ? 'Belum ada Sync History'
+          : 'Belum ada inspection offline yang menunggu sinkronisasi.';
+        list.append(empty);
+        return;
+      }
+      filtered.forEach(item => {
+        const card = document.createElement('article');
+        card.style.cssText = 'background:white;border:1px solid #dbe4ed;border-radius:14px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap';
+        const content = document.createElement('div');
+        const title = document.createElement('strong');
+        title.textContent = item.payload?.unitCode || 'Unit';
+        const info = document.createElement('div');
+        info.style.cssText = 'font-size:13px;color:#64748b;margin-top:5px';
+        info.textContent = [
+          item.payload?.problemDescription || '', item.payload?.rating || '',
+          new Date(item.createdAt).toLocaleString('id-ID'),
+          item.status === 'pending' ? 'Pending Sync' :
+          item.status === 'synced' ? 'Synced · ' + (item.inspectionId || '') : item.status
+        ].filter(Boolean).join(' • ');
+        content.append(title, info);
+        card.append(content);
+        list.append(card);
+      });
+    } catch (error) {
+      if (version !== renderVersion || !list) return;
+      list.replaceChildren();
+      const p = document.createElement('p');
+      p.textContent = 'Gagal membaca draft lokal: ' + error.message;
+      list.append(p);
+    }
+  }
+
+  async function syncAll(manual = false) {
+    if (syncing || !navigator.onLine) { connection(); return; }
+    if (!manual && Date.now() - lastFailedAttempt < RETRY_DELAY_MS) return;
+    syncing = true;
+    if (syncButton) { syncButton.disabled = true; syncButton.textContent = 'Syncing...'; }
+    let successCount = 0;
+    let failedCount = 0;
+    try {
+      const items = (await window.HEXAOffline.list()).filter(pendingItem);
+      if (!items.length) return;
+      if (notice) notice.textContent = 'Mengirim ' + items.length + ' inspeksi yang menunggu sinkronisasi...';
+      for (const item of items) {
+        if (!navigator.onLine) break;
+        try {
+          const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({ ...item.payload, action: 'syncOfflineInspection', clientRequestId: item.id })
           });
-          if(!response.ok)throw Error('HTTP '+response.status);
-          const result=await response.json();
-          if(result.success && result.clientRequestId===item.id && result.inspectionId){
-            await window.HEXAOffline.updateStatus(item.id,'synced',{
-              inspectionId:result.inspectionId,syncedAt:new Date().toISOString(),lastError:''
+          if (!response.ok) throw Error('HTTP ' + response.status);
+          const result = await response.json();
+          if (result.success && result.clientRequestId === item.id && result.inspectionId) {
+            await window.HEXAOffline.updateStatus(item.id, 'synced', {
+              inspectionId: result.inspectionId,
+              syncedAt: new Date().toISOString(),
+              lastError: ''
             });
             successCount++;
           } else {
-            const message=String(result.message||'Server belum mengonfirmasi penyimpanan');
-            // Jangan tandai sukses jika server tidak mengembalikan ID yang cocok.
-            await window.HEXAOffline.updateStatus(item.id,'failed',{lastError:message});
+            const message = String(result.message || 'Server belum mengonfirmasi penyimpanan');
+            await window.HEXAOffline.updateStatus(item.id, 'failed', { lastError: message });
             failedCount++;
           }
-        }catch(error){
-          // Jika respons jaringan hilang, status keberhasilan di server tidak diketahui.
-          // Tetap pending: percobaan berikutnya aman karena clientRequestId sama.
-          await window.HEXAOffline.updateStatus(item.id,'pending',{lastError:'Respons tidak diterima: '+error.message});
+        } catch (error) {
+          // Respons jaringan tidak pasti: tetap pending, aman dicoba lagi dengan clientRequestId sama.
+          await window.HEXAOffline.updateStatus(item.id, 'pending', {
+            lastError: 'Respons tidak diterima: ' + error.message
+          });
           failedCount++;
-          if(!navigator.onLine)break;
+          if (!navigator.onLine) break;
         }
         await render();
       }
-      if(notice)notice.textContent=`Sync selesai: ${successCount} berhasil, ${failedCount} belum berhasil. Data yang belum terkonfirmasi tetap tersimpan di perangkat.`;
-    }catch(error){
-      if(notice)notice.textContent='Sync gagal: '+error.message;
-    }finally{
-      syncing=false;
-      if(syncButton)syncButton.textContent='Sync All';
+      if (failedCount) lastFailedAttempt = Date.now();
+      else lastFailedAttempt = 0;
+      if (notice) notice.textContent = 'Sync selesai: ' + successCount + ' berhasil, ' + failedCount + ' belum berhasil. Data yang belum terkonfirmasi tetap tersimpan di perangkat.';
+    } catch (error) {
+      lastFailedAttempt = Date.now();
+      if (notice) notice.textContent = 'Sync gagal: ' + error.message;
+    } finally {
+      syncing = false;
       await render();
     }
   }
-  syncButton?.addEventListener('click',syncAll);
-  window.addEventListener('online',()=>{connection();nextAutoAttemptAt=0;syncAll();});
-  // Browser tidak selalu memicu event online saat koneksi fisik kembali.
-  // Periksa antrean secara berkala tanpa membuat permintaan paralel.
-  async function autoCheck(){
-    if(syncing||!navigator.onLine||Date.now()<nextAutoAttemptAt)return;
-    try{
-      const items=await window.HEXAOffline.list();
-      if(items.some(x=>x.status==='pending')){
-        nextAutoAttemptAt=Date.now()+AUTO_RETRY_MS;
-        await syncAll();
-      }
-    }catch(error){console.warn('HEXA auto sync check:',error);}
-  }
-  window.setInterval(autoCheck,AUTO_CHECK_MS);
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)autoCheck();});
-  window.addEventListener('focus',autoCheck);
-  async function render(){
-    list.replaceChildren();
-    try {
-      const items=await window.HEXAOffline.list();
-      document.getElementById('countDraft').textContent=String(items.filter(x=>x.status==='draft').length);
-      document.getElementById('countReady').textContent=String(items.filter(x=>x.status==='pending').length);
-      document.getElementById('countFailed').textContent=String(items.filter(x=>x.status==='failed').length);
-      if(syncButton)syncButton.disabled=syncing||!navigator.onLine||!items.some(x=>['pending','failed'].includes(x.status));
-      const query=(search?.value||'').trim().toLowerCase();
-      const filtered=items.filter(x=>(activeTab==='history'?x.status==='synced':x.status!=='synced')&&String(x.payload?.unitCode||'').toLowerCase().includes(query));
-      if(!filtered.length){const empty=document.createElement('section');empty.className='draft-empty';empty.textContent=activeTab==='history'?'Belum ada Sync History':'Belum ada inspection offline yang menunggu sinkronisasi.';list.append(empty);return;}
-      filtered.forEach(item=>{const card=document.createElement('article');card.style.cssText='background:white;border:1px solid #dbe4ed;border-radius:14px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap';const content=document.createElement('div');const title=document.createElement('strong');title.textContent=item.payload?.unitCode||'Unit';const info=document.createElement('div');info.style.cssText='font-size:13px;color:#64748b;margin-top:5px';info.textContent=[item.payload?.problemDescription||'',item.payload?.rating||'',new Date(item.createdAt).toLocaleString('id-ID'),item.status==='pending'?'Pending Sync':item.status==='synced'?'Synced · '+(item.inspectionId||''):item.status].filter(Boolean).join(' • ');content.append(title,info);card.append(content);list.append(card);});
-    } catch(e){const error=document.createElement('p');error.textContent='Gagal membaca draft lokal: '+e.message;list.append(error);}
-  }
-  document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>{activeTab=button.dataset.tab;document.querySelectorAll('[data-tab]').forEach(b=>{const selected=b===button;b.classList.toggle('active',selected);b.setAttribute('aria-selected',String(selected));});render();}));
-  search?.addEventListener('input',render);
-  function connection(){document.getElementById('draftConnection').textContent=navigator.onLine?'● Perangkat online':'● Perangkat offline';}
-  window.addEventListener('online',connection);window.addEventListener('offline',connection);
-  const notice=document.getElementById('draftInfo');if(notice)notice.textContent='Inspection offline disimpan di perangkat. Sync All aktif saat online, dan akan mencoba otomatis ketika koneksi kembali.';
-  connection();render();
-  // Saat halaman dibuka online, antrean yang ada dicoba sekali.
-  if(navigator.onLine && !syncStarted){syncStarted=true;syncAll();}
 
-  // Floating Start Inspection shortcut, mengikuti perilaku Daily Maintenance.
+  async function autoSync() {
+    connection();
+    if (!navigator.onLine || syncing) return;
+    await syncAll(false);
+  }
+
+  syncButton?.addEventListener('click', () => { void syncAll(true); });
+  window.addEventListener('online', () => { connection(); void autoSync(); });
+  window.addEventListener('offline', () => { connection(); void render(); });
+  window.addEventListener('focus', () => { void autoSync(); });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) void autoSync();
+  });
+  window.setInterval(() => { if (!document.hidden) void autoSync(); }, CHECK_INTERVAL_MS);
+
+  document.querySelectorAll('[data-tab]').forEach(button => button.addEventListener('click', () => {
+    activeTab = button.dataset.tab;
+    document.querySelectorAll('[data-tab]').forEach(b => {
+      const selected = b === button;
+      b.classList.toggle('active', selected);
+      b.setAttribute('aria-selected', String(selected));
+    });
+    void render();
+  }));
+  search?.addEventListener('input', () => { void render(); });
+  if (notice) notice.textContent = 'Inspection offline disimpan di perangkat. Sync All aktif saat online. Auto Sync memeriksa antrean setiap 12 detik saat halaman terbuka.';
+  connection();
+  void render();
+  void autoSync();
+
+  // Floating Start Inspection shortcut — dipertahankan dari V3.
   const shortcut = document.getElementById('inspectionShortcut');
   if (shortcut) {
     const positionKey = 'hexaInspectionButtonPosition';
@@ -125,15 +195,13 @@
     }
     try {
       const saved = JSON.parse(localStorage.getItem(positionKey) || 'null');
-      if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) {
-        move(saved.left, saved.top);
-      }
+      if (saved && Number.isFinite(saved.left) && Number.isFinite(saved.top)) move(saved.left, saved.top);
     } catch (_) {}
     shortcut.addEventListener('pointerdown', event => {
       if (event.pointerType === 'mouse' && event.button !== 0) return;
       const rect = shortcut.getBoundingClientRect();
       drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY,
-               left: rect.left, top: rect.top, moved: false };
+        left: rect.left, top: rect.top, moved: false };
       shortcut.setPointerCapture?.(event.pointerId);
     });
     shortcut.addEventListener('pointermove', event => {
@@ -149,7 +217,7 @@
       if (drag.moved) {
         suppressClick = true;
         const rect = shortcut.getBoundingClientRect();
-        try { localStorage.setItem(positionKey, JSON.stringify({left:rect.left,top:rect.top})); } catch (_) {}
+        try { localStorage.setItem(positionKey, JSON.stringify({ left: rect.left, top: rect.top })); } catch (_) {}
       }
       drag = null;
     }
