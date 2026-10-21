@@ -1,4 +1,4 @@
-/* HEXA Offline Queue v1 — per-account IndexedDB. Sync backend will be enabled after server idempotency. */
+/* HEXA Offline Queue v1 — per-account IndexedDB. */
 'use strict';
 window.HEXAOffline = (() => {
  const DB='HEXA_OFFLINE_INSPECTIONS_V1', STORE='inspections', MASTER='masterData';
@@ -8,48 +8,30 @@ window.HEXAOffline = (() => {
  async function put(payload){const id=crypto.randomUUID();const item={id,owner:owner(),type:'start-inspection',status:'pending',createdAt:new Date().toISOString(),payload};await operation('readwrite',s=>s.put(item));return item;}
  async function list(){const id=owner();return operation('readonly',(s,resolve)=>{const req=s.index('owner').getAll(id);req.onsuccess=()=>resolve((req.result||[]).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)));});}
  async function get(key){const id=owner();return operation('readonly',(s,resolve)=>{const req=s.get(key);req.onsuccess=()=>resolve(req.result?.owner===id?req.result:null);});}
-
- // Master data is device-shared reference data, not personal inspection records.
  async function saveMaster(key, data){
    if(!['unitPopulation','groupComponents'].includes(key)||!Array.isArray(data)||!data.length)throw Error('Master data tidak valid');
-   const db=await open();
-   return new Promise((resolve,reject)=>{
-     const tx=db.transaction(MASTER,'readwrite');
-     tx.objectStore(MASTER).put({key,data,updatedAt:new Date().toISOString()});
-     tx.oncomplete=()=>{db.close();resolve(true)};
-     tx.onerror=()=>{db.close();reject(tx.error)};
-     tx.onabort=()=>{db.close();reject(tx.error)};
-   });
+   const db=await open();return new Promise((resolve,reject)=>{const tx=db.transaction(MASTER,'readwrite');tx.objectStore(MASTER).put({key,data,updatedAt:new Date().toISOString()});tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close();reject(tx.error)};});
  }
  async function loadMaster(key){
    if(!['unitPopulation','groupComponents'].includes(key))throw Error('Master data tidak dikenal');
-   const db=await open();
-   return new Promise((resolve,reject)=>{
-     const tx=db.transaction(MASTER,'readonly');
-     const req=tx.objectStore(MASTER).get(key);
-     req.onsuccess=()=>resolve(req.result||null);
-     req.onerror=()=>reject(req.error);
-     tx.oncomplete=()=>db.close();
-     tx.onabort=()=>{db.close();reject(tx.error)};
-   });
+   const db=await open();return new Promise((resolve,reject)=>{const tx=db.transaction(MASTER,'readonly');const req=tx.objectStore(MASTER).get(key);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);tx.oncomplete=()=>db.close();tx.onabort=()=>{db.close();reject(tx.error)};});
  }
  async function updateStatus(key, status, extra={}) {
-   const id=owner();
-   if (!['pending','failed','synced'].includes(status)) throw Error('Status tidak dikenal');
-   const db=await open();
-   return new Promise((resolve,reject)=>{
-     const tx=db.transaction(STORE,'readwrite');
-     const s=tx.objectStore(STORE);
-     const req=s.get(key);
-     req.onsuccess=()=>{
-       const item=req.result;
-       if (!item || item.owner!==id) { tx.abort(); reject(Error('Inspection tidak ditemukan untuk akun ini')); return; }
-       s.put({...item,...extra,id:item.id,owner:item.owner,payload:item.payload,status});
+   const id=owner();if (!['pending','failed','synced'].includes(status)) throw Error('Status tidak dikenal');const db=await open();return new Promise((resolve,reject)=>{const tx=db.transaction(STORE,'readwrite');const s=tx.objectStore(STORE);const req=s.get(key);req.onsuccess=()=>{const item=req.result;if(!item||item.owner!==id){tx.abort();reject(Error('Inspection tidak ditemukan untuk akun ini'));return;}s.put({...item,...extra,id:item.id,owner:item.owner,payload:item.payload,status});};tx.oncomplete=()=>{db.close();resolve(true)};tx.onerror=()=>{db.close();reject(tx.error)};tx.onabort=()=>{db.close()};});
+ }
+ // Edit only unsynced records. Preserve queue ID and creation time.
+ async function updatePayload(key,payload){
+   if(!payload||typeof payload!=='object')throw Error('Payload tidak valid');
+   const id=owner(),db=await open();return new Promise((resolve,reject)=>{
+     const tx=db.transaction(STORE,'readwrite'),s=tx.objectStore(STORE),req=s.get(key);
+     req.onsuccess=()=>{const item=req.result;
+       if(!item||item.owner!==id||item.status==='synced'){tx.abort();return;}
+       s.put({...item,payload:{...item.payload,...payload},status:'pending',lastError:'',updatedAt:new Date().toISOString()});
      };
      tx.oncomplete=()=>{db.close();resolve(true)};
      tx.onerror=()=>{db.close();reject(tx.error)};
-     tx.onabort=()=>{db.close()};
+     tx.onabort=()=>{db.close();reject(Error('Draft tidak ditemukan atau sudah tersinkronisasi'))};
    });
  }
- return {owner,put,list,get,saveMaster,loadMaster,updateStatus};
+ return {owner,put,list,get,saveMaster,loadMaster,updateStatus,updatePayload};
 })();
