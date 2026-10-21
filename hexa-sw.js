@@ -1,7 +1,8 @@
-/* HEXA Offline App Shell v4 — navigation response rebuilt at delivery.
+/* HEXA Offline App Shell v5 — navigation response rebuilt at delivery.
    Only same-origin static files are cached. GAS/API requests are untouched.
-   IndexedDB is never deleted or modified by this worker. */
-const CACHE_NAME = 'hexa-shell-v4-20261020';
+   IndexedDB is never deleted or modified by this worker.
+   V5 adds the Global Header logo to the offline asset cache. */
+const CACHE_NAME = 'hexa-shell-v5-20261021';
 const CORE = [
   '/main.html', '/daily-maintenance.html', '/start-inspection.html',
   '/draft-inspection.html', '/main.js', '/daily-maintenance.js',
@@ -11,6 +12,7 @@ const CORE = [
 const ASSETS = [
   '/banner-01.jpg', '/banner-02.jpg', '/daily-maintenance.css',
   '/draft-inspection.css', '/hexa-doodle.png', '/hexa-header.css',
+  '/hexa-logo-header.png',
   '/hexa-icon-dailyactivity.svg', '/hexa-icon-dailyoutstanding.svg',
   '/hexa-icon-draftinspection.svg', '/hexa-icon-greasingantilineboring.svg',
   '/hexa-icon-startinspection-noline.png', '/hexa-icon-startinspection.svg',
