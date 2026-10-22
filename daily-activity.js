@@ -72,6 +72,98 @@ function daOfflineClearNotice() {
 }
 
 
+// =============================================================
+// HEXA DAILY ACTIVITY — STAGE 2A: LOCAL DRAFT + PHOTO
+// Separate from read-only Stage 1 cache and Start Inspection DB.
+// =============================================================
+const DA_DRAFT_DB = "HEXA_DAILY_ACTIVITY_DRAFTS_V1";
+function daDraftOpen() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(DA_DRAFT_DB, 1);
+    request.onupgradeneeded = () => {
+      if (!request.result.objectStoreNames.contains("drafts"))
+        request.result.createObjectStore("drafts");
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+function daDraftKey(scheduleUnitId) {
+  const owner = daOfflineOwner();
+  if (!owner || !scheduleUnitId) throw new Error("Identitas Draft tidak tersedia.");
+  return owner + ":" + scheduleUnitId;
+}
+async function daDraftPut(scheduleUnitId, value) {
+  const db = await daDraftOpen();
+  try {
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction("drafts", "readwrite");
+      tx.objectStore("drafts").put(value, daDraftKey(scheduleUnitId));
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error);
+    });
+  } finally { db.close(); }
+}
+async function daDraftGet(scheduleUnitId) {
+  const db = await daDraftOpen();
+  try {
+    return await new Promise((resolve, reject) => {
+      const req = db.transaction("drafts", "readonly")
+        .objectStore("drafts").get(daDraftKey(scheduleUnitId));
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+  } finally { db.close(); }
+}
+let daSelectedPhoto = null;
+function daPhotoLabel() {
+  const label = document.getElementById("dailyActivityInspectionPhotoName");
+  if (label) label.textContent = daSelectedPhoto?.name || "No photo selected";
+}
+function daCaptureDraft() {
+  const backdrop = document.getElementById("dailyActivityInspectionBackdrop");
+  const scheduleUnitId = backdrop?.dataset.scheduleUnitId;
+  if (!scheduleUnitId) throw new Error("Schedule Unit ID tidak ditemukan.");
+  const time = name => {
+    const input = document.getElementById(`dailyActivityInspection${name}Time`);
+    return { value: input?.value || "", iso: input?.dataset.actualIso || "" };
+  };
+  return {
+    scheduleUnitId,
+    unitCode: backdrop.dataset.unitCode || "",
+    status: "DRAFT_OFFLINE",
+    hourMeter: document.getElementById("dailyActivityInspectionHourMeter")?.value || "",
+    activityNotes: document.getElementById("dailyActivityInspectionNotes")?.value || "",
+    start: time("Start"), finish: time("Finish"),
+    answers: collectDailyActivityInspectionAnswers(),
+    photo: daSelectedPhoto, savedAt: Date.now()
+  };
+}
+function daRestoreLocalDraft(draft) {
+  if (!draft) return;
+  const hour = document.getElementById("dailyActivityInspectionHourMeter");
+  const notes = document.getElementById("dailyActivityInspectionNotes");
+  if (hour) hour.value = draft.hourMeter || "";
+  if (notes) notes.value = draft.activityNotes || "";
+  for (const [name, field] of [["Start", "start"], ["Finish", "finish"]]) {
+    const input = document.getElementById(`dailyActivityInspection${name}Time`);
+    if (!input) continue;
+    input.value = draft[field]?.value || "";
+    if (draft[field]?.iso) input.dataset.actualIso = draft[field].iso;
+  }
+  daSelectedPhoto = draft.photo || null;
+  daPhotoLabel();
+  for (const answer of draft.answers || []) {
+    const row = Array.from(document.querySelectorAll("#dailyActivityInspectionBody [data-checklist-id]"))
+      .find(item => item.dataset.checklistId === answer.checklistId);
+    const options = row?.querySelector(".daily-activity-result-options");
+    const button = Array.from(options?.querySelectorAll("button") || [])
+      .find(item => item.dataset.value === answer.result);
+    if (button) selectDailyActivityResultButton(options, button);
+  }
+}
+
         let schedulerActiveMechanics = [];
         let schedulerAvailableUnits = [];
         let schedulerSelectedUnitIds = new Set();
@@ -2032,7 +2124,7 @@ function daOfflineClearNotice() {
               type: cleanDailyActivityValue(result?.type || result?.equipmentType || result?.unit?.type || unit?.type),
               checklist
             });
-            if (offline) daOfflineNotice("OFFLINE — Checklist " + unitCode + " tersedia untuk dilihat. Save Draft offline belum diaktifkan pada tahap ini.");
+            if (offline) daOfflineNotice("OFFLINE — Checklist " + unitCode + " tersedia untuk dilihat. Save Draft offline dan foto sudah tersedia pada Tahap 2A.");
           } catch (error) {
             console.error("HEXA Daily Activity Inspection error:", unitCode, error);
             alert(error?.message || `Checklist ${unitCode} gagal dimuat.`);
@@ -2260,15 +2352,14 @@ function daOfflineClearNotice() {
           });
 
         photoInput?.addEventListener("change", () => {
-          const name =
-            document.getElementById("dailyActivityInspectionPhotoName");
           const file = photoInput.files?.[0];
-
-          if (name) {
-            name.textContent = file
-              ? file.name
-              : "No photo selected";
+          if (file && !file.type.startsWith("image/")) {
+            alert("Pilih file foto yang valid.");
+            photoInput.value = "";
+            return;
           }
+          daSelectedPhoto = file || null;
+          daPhotoLabel();
         });
 
         document.getElementById("saveDailyActivityInspectionDraft")
@@ -2310,6 +2401,7 @@ function daOfflineClearNotice() {
       }
       if (notes) notes.value = "";
       if (photo) photo.value = "";
+      daSelectedPhoto = null;
       if (photoName) photoName.textContent = "No photo selected";
 
       const body =
@@ -2669,6 +2761,10 @@ function daOfflineClearNotice() {
       }
 
       try {
+        if (!navigator.onLine || await daDraftGet(scheduleUnitId) || daSelectedPhoto) {
+          alert("Submit belum diaktifkan untuk Draft offline/foto pada Tahap 2A. Data tetap aman; gunakan Save Draft dahulu.");
+          return;
+        }
         const result =
           await dailyActivityApiRequest({
             action: "submitDMInspection",
@@ -2777,6 +2873,13 @@ function daOfflineClearNotice() {
       }
 
       try {
+        if (!navigator.onLine || daSelectedPhoto || await daDraftGet(scheduleUnitId)) {
+          const draft = daCaptureDraft();
+          await daDraftPut(scheduleUnitId, draft);
+          alert("Draft dan foto berhasil disimpan di perangkat ini. Belum tersinkronisasi ke server.");
+          if (backdrop) backdrop.hidden = true;
+          return;
+        }
         const result = await dailyActivityApiRequest({
           action: "saveDMInspectionDraft",
           scheduleUnitId: scheduleUnitId,
@@ -2826,7 +2929,14 @@ function daOfflineClearNotice() {
 
     async function loadDailyActivityInspectionDraft(scheduleUnitId) {
       if (!scheduleUnitId) return;
-      if (!navigator.onLine) return; // Stage 1: no server draft fetch while offline.
+      // A local draft has priority; never overwrite unsynced photos/answers.
+      const localDraft = await daDraftGet(scheduleUnitId);
+      if (localDraft) {
+        daRestoreLocalDraft(localDraft);
+        daOfflineNotice("DRAFT LOKAL — Checklist dan foto tersimpan di perangkat ini; belum tersinkronisasi.");
+        return;
+      }
+      if (!navigator.onLine) return;
 
       try {
         const result = await dailyActivityApiRequest({
