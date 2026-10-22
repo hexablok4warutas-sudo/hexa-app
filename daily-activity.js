@@ -153,14 +153,13 @@ async function daRefreshLocalUnitCards() {
       card.style.removeProperty("background-color");
       card.style.removeProperty("border-color");
       if (!isPending && !isDraft) return;
-      card.style.setProperty("background-color", isPending ? "#fed7aa" : "#fef3c7", "important");
-      card.style.setProperty("border-color", isPending ? "#ea580c" : "#d97706", "important");
-      const label = document.createElement("span");
-      label.className = "da-local-status";
-      label.textContent = isPending ? "PENDING SYNC" : "DRAFT OFFLINE";
-      label.style.cssText = "display:block;font-size:10px;font-weight:800;letter-spacing:.3px;margin-top:5px;color:#7c2d12;white-space:normal";
-      card.appendChild(label);
-      card.title = isPending ? "Submit tersimpan di perangkat; menunggu sinkronisasi" : "Draft tersimpan di perangkat";
+      if (isPending) {
+        card.classList.add("is-completed");
+      } else {
+        card.style.setProperty("background-color", "#fef3c7", "important");
+        card.style.setProperty("border-color", "#d97706", "important");
+      }
+      // Local sync marker stays in IndexedDB, never shown on unit cards.
     } catch (error) {
       console.warn("HEXA DA local card status:", error);
     }
@@ -188,13 +187,67 @@ async function daShowPendingForUnit(scheduleUnitId) {
   const backdrop = document.getElementById("dailyActivityInspectionBackdrop");
   if (backdrop) backdrop.dataset.pendingSync = draft?.status === "PENDING_SYNC" ? "true" : "false";
   daPendingLockUI();
-  if (draft?.status === "PENDING_SYNC")
-    daOfflineNotice("PENDING SYNC — Submit tersimpan di perangkat, terkunci sampai sinkronisasi server berhasil.");
+
 }
-let daSelectedPhoto = null;
+// Multi-photo 4:3 landscape, compressed JPEG, saved as Files in IndexedDB.
+let daSelectedPhotos = [];
 function daPhotoLabel() {
   const label = document.getElementById("dailyActivityInspectionPhotoName");
-  if (label) label.textContent = daSelectedPhoto?.name || "No photo selected";
+  if (label) label.textContent = daSelectedPhotos.length ? `${daSelectedPhotos.length} foto dipilih` : "Belum ada foto";
+  const gallery = document.getElementById("dailyActivityInspectionPhotoGallery");
+  if (!gallery) return;
+  gallery.replaceChildren();
+  daSelectedPhotos.forEach((file, index) => {
+    const card = document.createElement("div");
+    card.style.cssText = "position:relative;min-width:0";
+    const img = document.createElement("img");
+    const url = URL.createObjectURL(file);
+    img.src = url;
+    img.alt = `Foto ${index + 1}`;
+    img.title = "Klik untuk memperbesar";
+    img.style.cssText = "width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px;cursor:zoom-in;display:block";
+    img.addEventListener("load", () => URL.revokeObjectURL(url), {once:true});
+    img.addEventListener("click", () => daOpenPhotoPreview(file));
+    card.appendChild(img);
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.textContent = "×";
+    remove.title = "Hapus foto";
+    remove.style.cssText = "position:absolute;right:4px;top:4px;background:#b91c1c;color:white;border:0;border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:20px";
+    remove.disabled = document.getElementById("dailyActivityInspectionBackdrop")?.dataset.pendingSync === "true";
+    remove.addEventListener("click", () => {daSelectedPhotos.splice(index,1);daPhotoLabel();});
+    card.appendChild(remove);
+    gallery.appendChild(card);
+  });
+}
+function daOpenPhotoPreview(file) {
+  const shade = document.createElement("div");
+  shade.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:22px;cursor:zoom-out";
+  const img = document.createElement("img");
+  const url = URL.createObjectURL(file);
+  img.src = url;
+  img.style.cssText = "max-width:100%;max-height:88vh;object-fit:contain";
+  const close = () => {shade.remove();URL.revokeObjectURL(url);document.removeEventListener("keydown",esc);};
+  const esc = event => {if(event.key === "Escape") close();};
+  shade.addEventListener("click",close);
+  document.addEventListener("keydown",esc);
+  shade.appendChild(img);
+  document.body.appendChild(shade);
+}
+async function daCropPhotoLandscape(file) {
+  if (!file?.type?.startsWith("image/")) throw new Error("Pilih file gambar yang valid.");
+  const bitmap = await createImageBitmap(file, {imageOrientation:"from-image"});
+  try {
+    const width = bitmap.width, height = bitmap.height;
+    const ratio = 4/3;
+    const cropW = Math.min(width, height * ratio);
+    const cropH = cropW / ratio;
+    const canvas = document.createElement("canvas");
+    canvas.width = 1200; canvas.height = 900;
+    canvas.getContext("2d").drawImage(bitmap,(width-cropW)/2,(height-cropH)/2,cropW,cropH,0,0,1200,900);
+    const blob = await new Promise((resolve,reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error("Gagal memproses foto.")),"image/jpeg",.82));
+    return new File([blob], `DA_${Date.now()}_${Math.random().toString(36).slice(2,7)}.jpg`, {type:"image/jpeg"});
+  } finally {bitmap.close();}
 }
 function daCaptureDraft() {
   const backdrop = document.getElementById("dailyActivityInspectionBackdrop");
@@ -212,7 +265,7 @@ function daCaptureDraft() {
     activityNotes: document.getElementById("dailyActivityInspectionNotes")?.value || "",
     start: time("Start"), finish: time("Finish"),
     answers: collectDailyActivityInspectionAnswers(),
-    photo: daSelectedPhoto, owner: daOfflineOwner(),
+    photo: daSelectedPhotos[0] || null, photos: daSelectedPhotos.slice(), owner: daOfflineOwner(),
     scheduleId: cleanDailyActivityValue(daScheduleForUnit(scheduleUnitId)?.scheduleId),
     savedAt: Date.now()
   };
@@ -229,7 +282,7 @@ function daRestoreLocalDraft(draft) {
     input.value = draft[field]?.value || "";
     if (draft[field]?.iso) input.dataset.actualIso = draft[field].iso;
   }
-  daSelectedPhoto = draft.photo || null;
+  daSelectedPhotos = Array.isArray(draft.photos) ? draft.photos.slice() : (draft.photo ? [draft.photo] : []);
   daPhotoLabel();
   for (const answer of draft.answers || []) {
     const row = Array.from(document.querySelectorAll("#dailyActivityInspectionBody [data-checklist-id]"))
@@ -2325,9 +2378,9 @@ function daRestoreLocalDraft(draft) {
                 + Add Photo
               </button>
               <div id="dailyActivityInspectionPhotoName"
-                   style="margin-top:7px;font-size:12px;color:#777;">
-                No photo selected
-              </div>
+                   style="margin-top:7px;font-size:12px;color:#777;">Belum ada foto</div>
+              <div id="dailyActivityInspectionPhotoGallery"
+                   style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:10px;"></div>
             </div>
           </div>
 
@@ -2438,15 +2491,20 @@ function daRestoreLocalDraft(draft) {
             photoInput?.click();
           });
 
-        photoInput?.addEventListener("change", () => {
-          const file = photoInput.files?.[0];
-          if (file && !file.type.startsWith("image/")) {
-            alert("Pilih file foto yang valid.");
-            photoInput.value = "";
-            return;
-          }
-          daSelectedPhoto = file || null;
-          daPhotoLabel();
+        photoInput?.setAttribute("multiple", "multiple");
+        photoInput?.addEventListener("change", async () => {
+          const files = Array.from(photoInput.files || []);
+          if (!files.length) return;
+          const addButton = document.getElementById("dailyActivityInspectionAddPhoto");
+          if (addButton) addButton.disabled = true;
+          try {
+            for (const file of files) {
+              const cropped = await daCropPhotoLandscape(file);
+              daSelectedPhotos.push(cropped);
+            }
+            daPhotoLabel();
+          } catch (error) { alert(error?.message || "Gagal menambahkan foto."); }
+          finally { photoInput.value = ""; if (addButton) addButton.disabled = false; }
         });
 
         document.getElementById("saveDailyActivityInspectionDraft")
@@ -2488,7 +2546,7 @@ function daRestoreLocalDraft(draft) {
       }
       if (notes) notes.value = "";
       if (photo) photo.value = "";
-      daSelectedPhoto = null;
+      daSelectedPhotos = [];
       backdrop.dataset.pendingSync = "false";
       if (photoName) photoName.textContent = "No photo selected";
 
@@ -2865,8 +2923,7 @@ function daRestoreLocalDraft(draft) {
         await daDraftPut(scheduleUnitId, local);
         await daRefreshLocalUnitCards();
         if (backdrop) backdrop.hidden = true;
-        daOfflineNotice("PENDING SYNC — Submit dan foto tersimpan aman di perangkat. Complete Daily Activity belum dapat dijalankan sebelum sinkronisasi Tahap 2C.");
-        alert("Submit tersimpan sebagai PENDING SYNC. Belum dikirim ke server. Jangan hapus data situs/browser.");
+        alert("Submit berhasil disimpan di perangkat. Unit ditandai Completed; data akan dikirim saat Complete Daily Activity.");
         return;
         const result =
           await dailyActivityApiRequest({
@@ -2981,7 +3038,7 @@ function daRestoreLocalDraft(draft) {
           alert("Unit sudah Pending Sync dan terkunci. Draft tidak boleh diubah.");
           return;
         }
-        if (!navigator.onLine || daSelectedPhoto || existingLocal) {
+        if (!navigator.onLine || daSelectedPhotos.length || existingLocal) {
           const draft = daCaptureDraft();
           await daDraftPut(scheduleUnitId, draft);
           await daRefreshLocalUnitCards();
