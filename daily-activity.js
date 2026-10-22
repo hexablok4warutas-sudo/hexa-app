@@ -135,35 +135,132 @@ async function daDraftPendingCount(scheduleId) {
 let daCardPaintSequence = 0;
 async function daRefreshLocalUnitCards() {
   const sequence = ++daCardPaintSequence;
-  const cards = Array.from(document.querySelectorAll(".daily-unit-card[data-schedule-unit-id]"));
-  await Promise.all(cards.map(async card => {
-    const id = cleanDailyActivityValue(card.dataset.scheduleUnitId);
-    if (!id) return;
-    try {
-      const local = await daDraftGet(id);
-      if (sequence !== daCardPaintSequence || !card.isConnected) return;
-      const status = local?.status;
-      const isPending = status === "PENDING_SYNC";
-      const isDraft = status === "DRAFT_OFFLINE";
-      // Server COMPLETED takes precedence; never mask an acknowledged completion.
-      if (card.classList.contains("is-completed")) return;
-      card.classList.toggle("da-local-pending", isPending);
-      card.classList.toggle("da-local-draft", isDraft);
-      card.querySelector(".da-local-status")?.remove();
-      card.style.removeProperty("background-color");
-      card.style.removeProperty("border-color");
-      if (!isPending && !isDraft) return;
-      if (isPending) {
-        card.classList.add("is-completed");
-      } else {
-        card.style.setProperty("background-color", "#fef3c7", "important");
-        card.style.setProperty("border-color", "#d97706", "important");
+  const schedules = dailyActivitySchedules;
+  await Promise.all(schedules.map(async schedule => {
+    const units = schedule.units || [];
+    for (const unit of units) {
+      const id = cleanDailyActivityValue(unit.scheduleUnitId);
+      if (!id) continue;
+      const card = document.querySelector(`.daily-unit-card[data-schedule-unit-id="${CSS.escape(id)}"]`);
+      const local = await daDraftGet(id).catch(() => null);
+      if (sequence !== daCardPaintSequence) return;
+      const submitted = local?.status === "PENDING_SYNC" || local?.status === "SYNCED";
+      const draft = local?.status === "DRAFT_OFFLINE";
+      const serverDone = normalizeDailyActivityStatus(unit.status) === "COMPLETED";
+      if (card) {
+        card.className = "daily-unit-card " + getDailyActivityUnitStatusClass(serverDone || submitted ? "COMPLETED" : draft ? "IN PROGRESS" : unit.status);
+        card.querySelector(".da-local-status")?.remove();
+        card.style.removeProperty("background-color");
+        card.style.removeProperty("border-color");
       }
-      // Local sync marker stays in IndexedDB, never shown on unit cards.
-    } catch (error) {
-      console.warn("HEXA DA local card status:", error);
     }
+    const truck = getLubeTruckNumber(schedule.lubeTruck);
+    const completed = await Promise.all(units.map(async unit => {
+      if (normalizeDailyActivityStatus(unit.status) === "COMPLETED") return true;
+      const local = await daDraftGet(cleanDailyActivityValue(unit.scheduleUnitId)).catch(() => null);
+      return local?.status === "PENDING_SYNC" || local?.status === "SYNCED";
+    }));
+    if (sequence !== daCardPaintSequence || !truck) return;
+    const count = completed.filter(Boolean).length;
+    setDailyActivityText(`lubeTruck${truck}ProgressText`, `${count} / ${units.length}`);
+    const bar = document.getElementById(`lubeTruck${truck}ProgressBar`);
+    if (bar) bar.style.width = `${units.length ? count / units.length * 100 : 0}%`;
   }));
+}
+let daSyncRunning = false;
+function daSyncOverlay() {
+  let overlay = document.getElementById("daSyncOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div"); overlay.id = "daSyncOverlay";
+    overlay.style.cssText = "position:fixed;inset:0;z-index:2147483640;background:rgba(10,20,30,.65);display:flex;align-items:center;justify-content:center;padding:20px";
+    overlay.innerHTML = `<div style="background:white;border-radius:18px;padding:28px;max-width:420px;width:100%;font-family:Arial;text-align:center"><h3 style="margin:0 0 12px">Sinkronisasi Daily Activity</h3><div id="daSyncStep" style="font-size:22px;font-weight:700;margin:12px">0/0</div><div style="height:10px;background:#eee;border-radius:8px;overflow:hidden"><div id="daSyncBar" style="height:100%;width:0;background:#16a34a;transition:width .2s"></div></div><p id="daSyncUnit" style="font-size:13px;margin:12px 0 0">Mengirim data...</p></div>`;
+    document.body.appendChild(overlay);
+  }
+  overlay.hidden = false;
+  overlay.style.display = "flex";
+  return overlay;
+}
+function daSyncUpdate(done, total, name) {
+  const overlay = daSyncOverlay();
+  overlay.querySelector("#daSyncStep").textContent = `${done}/${total}`;
+  overlay.querySelector("#daSyncBar").style.width = `${total ? done / total * 100 : 100}%`;
+  overlay.querySelector("#daSyncUnit").textContent = name || "Menyinkronkan...";
+}
+async function daFileBase64(file) {
+  return await new Promise((resolve,reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(",")[1]);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+async function daUploadPhotos(local, inspectorId) {
+  const photos = Array.isArray(local.photos) ? local.photos : (local.photo ? [local.photo] : []);
+  const urls = Array.isArray(local.uploadedPhotoUrls) ? local.uploadedPhotoUrls.slice() : [];
+  for (let i = 0; i < photos.length; i++) {
+    if (urls[i]) continue;
+    const photo = photos[i];
+    if (!photo || !(photo instanceof Blob)) throw new Error("Foto offline tidak dapat dibaca.");
+    const result = await dailyActivityApiRequest({
+      action: "uploadDMActivityPhoto", scheduleUnitId: local.scheduleUnitId,
+      uploadedById: inspectorId, index: i, name: photo.name || `photo_${i}.jpg`,
+      mimeType: photo.type || "image/jpeg", base64: await daFileBase64(photo)
+    });
+    if (result?.success !== true || !result.url) throw new Error(result?.message || "Upload foto gagal.");
+    urls[i] = result.url;
+    // Persist each uploaded photo so retries never upload it again.
+    if (local.status === "PENDING_SYNC") {
+      local.uploadedPhotoUrls = urls;
+      await daDraftPut(local.scheduleUnitId, local);
+    }
+  }
+  return urls;
+}
+async function daSyncSchedule(schedule) {
+  if (daSyncRunning) throw new Error("Sinkronisasi sedang berjalan.");
+  const user = getDailyActivitySessionUser();
+  if (!user) throw new Error("Session tidak valid.");
+  const pending = [];
+  for (const unit of schedule.units || []) {
+    const id = cleanDailyActivityValue(unit.scheduleUnitId);
+    const local = await daDraftGet(id);
+    if (local?.status === "PENDING_SYNC") pending.push(local);
+  }
+  if (!pending.length) return;
+  daSyncRunning = true;
+  const overlay = daSyncOverlay();
+  try {
+    daSyncUpdate(0, pending.length, "Menyiapkan sinkronisasi...");
+    for (let i = 0; i < pending.length; i++) {
+      const local = pending[i];
+      daSyncUpdate(i, pending.length, `Mengirim ${local.unitCode || local.scheduleUnitId}...`);
+      const photos = await daUploadPhotos(local, cleanDailyActivityValue(user.uniqId));
+      const payload = {
+        action: "submitDMInspection", scheduleUnitId: local.scheduleUnitId,
+        inspectedById: cleanDailyActivityValue(user.uniqId),
+        hourMeter: local.hourMeter, activityNotes: local.activityNotes,
+        startInspectionTime: local.start?.value, startInspectionAt: local.start?.iso,
+        finishInspectionTime: local.finish?.value, finishInspectionAt: local.finish?.iso,
+        answers: local.answers, photo: photos[0] || ""
+      };
+      // Check existing completion first: network response might have been lost on previous attempt.
+      const verify = await dailyActivityApiRequest({action:"getDMInspectionDraft", scheduleUnitId:local.scheduleUnitId});
+      const serverCompleted = String(verify?.inspection?.status || "").toUpperCase() === "SUBMITTED";
+      if (!serverCompleted) {
+        const result = await dailyActivityApiRequest(payload);
+        if (result?.success !== true) throw new Error(result?.message || `Submit ${local.unitCode} gagal.`);
+      }
+      local.status = "SYNCED";
+      local.photos = []; local.photo = null;
+      await daDraftPut(local.scheduleUnitId, local);
+      daSyncUpdate(i + 1, pending.length, `${local.unitCode || local.scheduleUnitId} berhasil`);
+    }
+    await loadDailyActivitySchedule();
+  } finally {
+    overlay.hidden = true;
+    overlay.style.display = "none";
+    daSyncRunning = false;
+  }
 }
 function daScheduleForUnit(scheduleUnitId) {
   return dailyActivitySchedules.find(schedule => (schedule?.units || []).some(
@@ -591,6 +688,7 @@ function daRestoreLocalDraft(draft) {
           });
 
           renderDailyActivityApprovalReview();
+          daRefreshLocalUnitCards();
         }
 
         function formatDAScheduleBadgeDate(value) {
@@ -923,19 +1021,26 @@ function daRestoreLocalDraft(draft) {
             });
         }
 
-        function handleDailyActivityBottomButton(truckNumber) {
+        async function handleDailyActivityBottomButton(truckNumber) {
           const schedule = dailyActivitySchedules.find(item => getLubeTruckNumber(item?.lubeTruck) === truckNumber);
           const status = normalizeDailyActivityStatus(schedule?.status);
-          if (status === "RESUME ISSUED") {
-            openDailyActivityIssuedDocument(truckNumber);
-            return;
-          }
+          if (status === "RESUME ISSUED") { openDailyActivityIssuedDocument(truckNumber); return; }
           if (["APPROVAL", "APPROVED"].includes(status)) return;
-          const scheduleId = cleanDailyActivityValue(schedule?.scheduleId);
-          daDraftPendingCount(scheduleId).then(count => {
-            if (count) alert(`${count} unit masih PENDING SYNC. Selesaikan sinkronisasi sebelum closing.`);
-            else openDailyActivityClosing(truckNumber);
-          }).catch(error => alert("Tidak dapat memeriksa data Pending Sync: " + error.message));
+          if (!schedule) return;
+          if (daSyncRunning) return;
+          const button = document.getElementById(`lubeTruck${truckNumber}CompleteButton`);
+          try {
+            if (!navigator.onLine) throw new Error("Complete Daily Activity membutuhkan internet.");
+            if (button) button.disabled = true;
+            await daSyncSchedule(schedule);
+            // Original closing remains unchanged, including NO DM reason collection.
+            openDailyActivityClosing(truckNumber);
+          } catch (error) {
+            console.error("HEXA DA synchronization:", error);
+            alert(error?.message || "Sinkronisasi gagal. Data offline tetap tersimpan.");
+          } finally {
+            if (button) button.disabled = false;
+          }
         }
 
         function renderLubeTruckClosingState(truckNumber, schedule) {
@@ -1206,11 +1311,6 @@ function daRestoreLocalDraft(draft) {
             return;
           }
 
-          const pendingCount = await daDraftPendingCount(cleanDailyActivityValue(schedule?.scheduleId));
-          if (pendingCount > 0) {
-            alert(`${pendingCount} unit masih PENDING SYNC. Complete Daily Activity diblokir sampai sinkronisasi server Tahap 2C berhasil.`);
-            return;
-          }
           const validation =
             collectDailyActivityClosingReasons();
 
@@ -2907,24 +3007,25 @@ function daRestoreLocalDraft(draft) {
       }
 
       try {
-        // Stage 2B: Submit is safely queued, never sent until Stage 2C is installed.
         const existingLocal = await daDraftGet(scheduleUnitId);
         if (existingLocal?.status === "PENDING_SYNC") {
-          alert("Unit ini sudah Pending Sync. Jangan Submit ulang.");
-          return;
+          throw new Error("Unit sudah Submit dan terkunci.");
         }
         const local = daCaptureDraft();
-        if (!local.scheduleId) throw new Error("Schedule ID tidak tersedia; tidak dapat menyimpan Pending Sync.");
-        if (!local.start.value || !local.start.iso || !local.finish.value || !local.finish.iso)
-          throw new Error("Jam Start dan Finish beserta tanggal aktual wajib tersedia.");
-        if (new Date(local.finish.iso) < new Date(local.start.iso))
-          throw new Error("Finish Inspection tidak boleh lebih awal dari Start Inspection.");
-        local.status = "PENDING_SYNC";
-        await daDraftPut(scheduleUnitId, local);
-        await daRefreshLocalUnitCards();
-        if (backdrop) backdrop.hidden = true;
-        alert("Submit berhasil disimpan di perangkat. Unit ditandai Completed; data akan dikirim saat Complete Daily Activity.");
-        return;
+        if (!local.scheduleId) throw new Error("Schedule ID tidak tersedia.");
+        if (!local.start.iso || !local.finish.iso) throw new Error("Timestamp Start dan Finish wajib tersedia.");
+        if (new Date(local.finish.iso) < new Date(local.start.iso)) throw new Error("Finish sebelum Start.");
+        if (!navigator.onLine) {
+          local.status = "PENDING_SYNC";
+          await daDraftPut(scheduleUnitId, local);
+          await daRefreshLocalUnitCards();
+          if (backdrop) backdrop.hidden = true;
+          alert("Submit berhasil disimpan. Data akan dikirim saat Complete Daily Activity.");
+          return;
+        }
+        // Online Submit tetap mengirim langsung ke server.
+        // Foto diunggah satu per satu sebelum Submit final.
+        const photoUrls = await daUploadPhotos(local, inspectorId);
         const result =
           await dailyActivityApiRequest({
             action: "submitDMInspection",
@@ -2936,7 +3037,7 @@ function daRestoreLocalDraft(draft) {
             finishInspectionTime: document.getElementById("dailyActivityInspectionFinishTime")?.value || "",
             finishInspectionAt: document.getElementById("dailyActivityInspectionFinishTime")?.dataset.actualIso || "",
             activityNotes: activityNotes,
-            photo: "",
+            photo: photoUrls[0] || "",
             answers: answers
           });
 
@@ -2947,6 +3048,12 @@ function daRestoreLocalDraft(draft) {
           );
         }
 
+        if (existingLocal) {
+          local.status = "SYNCED";
+          local.photos = [];
+          local.photo = null;
+          await daDraftPut(scheduleUnitId, local);
+        }
         // Refresh data terlebih dahulu agar card/progress mengambil
         // status terbaru dari database.
         await loadDailyActivitySchedule();
