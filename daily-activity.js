@@ -5,6 +5,73 @@
 
         let dailyActivitySchedules = [];
 
+// =============================================================
+// HEXA DAILY ACTIVITY — OFFLINE STAGE 1 (READ-ONLY CACHE)
+// Dedicated IndexedDB; never touches Start Inspection drafts.
+// =============================================================
+const DA_OFFLINE_DB = "HEXA_DAILY_ACTIVITY_OFFLINE_V1";
+function daOfflineOpen() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DA_OFFLINE_DB, 1);
+    req.onupgradeneeded = () => {
+      if (!req.result.objectStoreNames.contains("snapshots"))
+        req.result.createObjectStore("snapshots");
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+function daOfflineOwner() {
+  const user = getDailyActivitySessionUser();
+  return user ? String(user.uniqId) + ":" + String(user.userId) : "";
+}
+async function daOfflineWrite(kind, key, value) {
+  const owner = daOfflineOwner();
+  if (!owner) return;
+  const db = await daOfflineOpen();
+  try {
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction("snapshots", "readwrite");
+      tx.objectStore("snapshots").put({value, savedAt: Date.now()}, owner + ":" + kind + ":" + key);
+      tx.oncomplete = resolve;
+      tx.onerror = () => reject(tx.error);
+      tx.onabort = () => reject(tx.error);
+    });
+  } finally { db.close(); }
+}
+async function daOfflineRead(kind, key, maxAgeMs) {
+  const owner = daOfflineOwner();
+  if (!owner) return null;
+  const db = await daOfflineOpen();
+  try {
+    const record = await new Promise((resolve, reject) => {
+      const tx = db.transaction("snapshots", "readonly");
+      const req = tx.objectStore("snapshots").get(owner + ":" + kind + ":" + key);
+      req.onsuccess = () => resolve(req.result || null);
+      req.onerror = () => reject(req.error);
+    });
+    if (!record || (maxAgeMs && Date.now() - record.savedAt > maxAgeMs)) return null;
+    return record.value;
+  } finally { db.close(); }
+}
+function daOfflineNotice(message) {
+  let el = document.getElementById("daOfflineNotice");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "daOfflineNotice";
+    el.style.cssText = "max-width:1180px;margin:10px auto;padding:12px 16px;border:1px solid #efb34b;border-radius:12px;background:#fff7e8;color:#654400;font:600 13px Arial";
+    const grid = document.getElementById("dailyActivityScheduleGrid");
+    grid?.parentElement?.insertBefore(el, grid);
+  }
+  el.textContent = message;
+  el.hidden = false;
+}
+function daOfflineClearNotice() {
+  const el = document.getElementById("daOfflineNotice");
+  if (el) el.hidden = true;
+}
+
+
         let schedulerActiveMechanics = [];
         let schedulerAvailableUnits = [];
         let schedulerSelectedUnitIds = new Set();
@@ -73,35 +140,34 @@
         }
 
         async function loadDailyActivityPermissions(user) {
+          let result;
           try {
-            const result = await dailyActivityApiRequest({
+            result = await dailyActivityApiRequest({
               action: "resolveDailyActivityPermissions",
               uniqId: cleanDailyActivityValue(user?.uniqId)
             });
-
-            if (!result || result.success !== true) {
-              throw new Error(
-                result?.message ||
-                "Daily Activity permission tidak dapat dimuat."
-              );
-            }
-
-            dailyActivityPermissions =
-              result.permissions && typeof result.permissions === "object"
-                ? result.permissions
-                : {};
-
-            dailyActivityPermissionSource =
-              cleanDailyActivityValue(result.source);
-
+            if (!result || result.success !== true) throw new Error(result?.message || "Permission tidak tersedia");
+            dailyActivityPermissions = result.permissions && typeof result.permissions === "object" ? result.permissions : {};
+            dailyActivityPermissionSource = cleanDailyActivityValue(result.source);
+            await daOfflineWrite("permissions", "current", {
+              permissions: dailyActivityPermissions, source: dailyActivityPermissionSource
+            });
             return true;
-
           } catch (error) {
+            // Offline permission snapshot expires after 24 hours.
+            // Never grant permissions that were not previously confirmed online.
+            const cached = await daOfflineRead("permissions", "current", 24 * 60 * 60 * 1000).catch(() => null);
+            if (cached?.permissions?.PAGE_ACCESS === true) {
+              dailyActivityPermissions = cached.permissions;
+              dailyActivityPermissionSource = "Offline snapshot";
+              // Offline mode is mechanic inspection only, no scheduler or approval operations.
+              for (const key of ["SCHEDULER", "EDIT_SCHEDULE", "APPROVAL_REVIEW"])
+                dailyActivityPermissions[key] = false;
+              daOfflineNotice("OFFLINE — Hak akses terakhir digunakan (maks. 24 jam). Scheduler dan approval dinonaktifkan.");
+              return true;
+            }
             console.error("HEXA Daily Activity permission error:", error);
-            alert(
-              error?.message ||
-              "Daily Activity permission tidak dapat dimuat."
-            );
+            alert("Tidak dapat memverifikasi hak akses. Buka Daily Activity saat online terlebih dahulu.");
             return false;
           }
         }
@@ -171,56 +237,49 @@
         }
 
         async function loadDailyActivitySchedule() {
-          const activityDate =
-            document.getElementById("activityDate")?.value?.trim() || "";
-
-          if (!activityDate) {
-            showDailyActivityMessage("Activity Date belum dipilih.");
-            return;
-          }
-
-          // Hide stale cards immediately when the selected date changes.
+          const activityDate = document.getElementById("activityDate")?.value?.trim() || "";
+          if (!activityDate) { showDailyActivityMessage("Activity Date belum dipilih."); return; }
           dailyActivitySchedules = [];
           resetLubeTruckCard(15);
           resetLubeTruckCard(16);
           setDailyActivityLoadingState();
-
           try {
-            const result = await dailyActivityApiRequest({
-              action: "getDMScheduleByDate",
-              activityDate: activityDate
-            });
-
-            if (!result || result.success !== true) {
-              throw new Error(result?.message || "Unable to load Daily Activity Schedule.");
-            }
-
-            dailyActivitySchedules =
-              Array.isArray(result.schedules) ? result.schedules : [];
-
-            // Render schedule/card utama segera; Approval tidak boleh menahan halaman.
+            const result = await dailyActivityApiRequest({action:"getDMScheduleByDate", activityDate});
+            if (!result || result.success !== true) throw new Error(result?.message || "Unable to load schedule");
+            dailyActivitySchedules = Array.isArray(result.schedules) ? result.schedules : [];
+            await daOfflineWrite("schedule", activityDate, dailyActivitySchedules);
+            daOfflineClearNotice();
             renderDailyActivitySchedules();
-
-            loadDailyActivityApprovalStates()
-              .then(function() {
-                // Setelah approval state selesai, update hanya panel Approval Review.
-                renderDailyActivityApprovalReview();
-                [15, 16].forEach(truckNumber => {
-                  const schedule = dailyActivitySchedules.find(item => getLubeTruckNumber(item?.lubeTruck) === truckNumber);
-                  if (schedule) renderLubeTruckClosingState(truckNumber, schedule);
-                });
-              })
-              .catch(function(error) {
-                console.error(
-                  "HEXA DM Approval background load error:",
-                  error
-                );
+            // Prepare checklist templates for all scheduled units in background.
+            // Keep schedule UI responsive; each template is stored per account.
+            const unitCodes = [...new Set(dailyActivitySchedules.flatMap(schedule =>
+              (Array.isArray(schedule?.units) ? schedule.units : [])
+                .map(unit => cleanDailyActivityValue(unit?.unitCode)).filter(Boolean)
+            ))];
+            Promise.allSettled(unitCodes.map(async unitCode => {
+              const detail = await dailyActivityApiRequest({action:"getDMChecklistByUnit", unitCode});
+              if (detail?.success === true && getDailyActivityChecklistArray(detail).length)
+                await daOfflineWrite("checklist", unitCode, detail);
+            })).then(results => {
+              const failed = results.filter(item => item.status === "rejected").length;
+              if (failed) console.warn("HEXA DA offline checklist preload incomplete:", failed);
+            });
+            loadDailyActivityApprovalStates().then(() => {
+              renderDailyActivityApprovalReview();
+              [15,16].forEach(truckNumber => {
+                const schedule = dailyActivitySchedules.find(item => getLubeTruckNumber(item?.lubeTruck) === truckNumber);
+                if (schedule) renderLubeTruckClosingState(truckNumber, schedule);
               });
+            }).catch(error => console.error("HEXA DM Approval background load error:", error));
           } catch (error) {
-            console.error("HEXA Daily Activity load error:", error);
-            setDailyActivityErrorState(
-              error.message || "Unable to load Daily Activity Schedule."
-            );
+            const cached = await daOfflineRead("schedule", activityDate).catch(() => null);
+            if (cached) {
+              dailyActivitySchedules = cached;
+              renderDailyActivitySchedules();
+              daOfflineNotice("OFFLINE — Menampilkan jadwal tersimpan untuk " + activityDate + ". Perubahan status belum tersinkronisasi.");
+            } else {
+              setDailyActivityErrorState("Jadwal " + activityDate + " belum disiapkan offline. Buka tanggal ini saat online terlebih dahulu.");
+            }
           }
         }
 
@@ -1953,51 +2012,30 @@
 
         async function openDailyActivityInspection(unit) {
           const unitCode = cleanDailyActivityValue(unit?.unitCode);
-
-          if (!unitCode) {
-            alert("Unit Code tidak ditemukan pada Unit Card.");
-            return;
-          }
-
+          if (!unitCode) { alert("Unit Code tidak ditemukan pada Unit Card."); return; }
           try {
-            const result = await dailyActivityApiRequest({
-              action: "getDMChecklistByUnit",
-              unitCode: unitCode
-            });
-
-            if (!result || result.success !== true) {
-              throw new Error(
-                result?.message || `Checklist ${unitCode} gagal dimuat.`
-              );
+            let result;
+            let offline = false;
+            try {
+              result = await dailyActivityApiRequest({action:"getDMChecklistByUnit", unitCode});
+              if (!result || result.success !== true) throw new Error(result?.message || "Checklist gagal dimuat");
+              await daOfflineWrite("checklist", unitCode, result);
+            } catch (error) {
+              result = await daOfflineRead("checklist", unitCode).catch(() => null);
+              if (!result) throw new Error("Checklist " + unitCode + " belum tersimpan offline. Buka unit ini saat online dahulu.");
+              offline = true;
             }
-
             const checklist = getDailyActivityChecklistArray(result);
-
             await openDailyActivityInspectionModal({
-              scheduleUnitId: cleanDailyActivityValue(unit?.scheduleUnitId),
-              unitCode,
-              egi: cleanDailyActivityValue(
-                result?.egi || result?.unit?.egi || unit?.egi
-              ),
-              type: cleanDailyActivityValue(
-                result?.type ||
-                result?.equipmentType ||
-                result?.unit?.type ||
-                unit?.type
-              ),
+              scheduleUnitId: cleanDailyActivityValue(unit?.scheduleUnitId), unitCode,
+              egi: cleanDailyActivityValue(result?.egi || result?.unit?.egi || unit?.egi),
+              type: cleanDailyActivityValue(result?.type || result?.equipmentType || result?.unit?.type || unit?.type),
               checklist
             });
-
+            if (offline) daOfflineNotice("OFFLINE — Checklist " + unitCode + " tersedia untuk dilihat. Save Draft offline belum diaktifkan pada tahap ini.");
           } catch (error) {
-            console.error(
-              "HEXA Daily Activity Inspection error:",
-              unitCode,
-              error
-            );
-            alert(
-              error?.message ||
-              `Checklist ${unitCode} gagal dimuat.`
-            );
+            console.error("HEXA Daily Activity Inspection error:", unitCode, error);
+            alert(error?.message || `Checklist ${unitCode} gagal dimuat.`);
           }
         }
 
@@ -2788,6 +2826,7 @@
 
     async function loadDailyActivityInspectionDraft(scheduleUnitId) {
       if (!scheduleUnitId) return;
+      if (!navigator.onLine) return; // Stage 1: no server draft fetch while offline.
 
       try {
         const result = await dailyActivityApiRequest({
