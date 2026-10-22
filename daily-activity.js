@@ -201,10 +201,18 @@ async function daUploadPhotos(local, inspectorId) {
     if (urls[i]) continue;
     const photo = photos[i];
     if (!photo || !(photo instanceof Blob)) throw new Error("Foto offline tidak dapat dibaca.");
+    // Foto dari IndexedDB versi lama bisa berupa PNG/WEBP/HEIC atau JPEG
+    // yang belum dicrop. Normalisasi saat upload, tanpa meminta foto ulang.
+    const normalized = await daCropPhotoLandscape(photo);
+    // Simpan hasil konversi sebelum request agar retry tetap aman.
+    photos[i] = normalized;
+    local.photos = photos;
+    if (i === 0) local.photo = normalized;
+    if (local.status === "PENDING_SYNC") await daDraftPut(local.scheduleUnitId, local);
     const result = await dailyActivityApiRequest({
       action: "uploadDMActivityPhoto", scheduleUnitId: local.scheduleUnitId,
-      uploadedById: inspectorId, index: i, name: photo.name || `photo_${i}.jpg`,
-      mimeType: photo.type || "image/jpeg", base64: await daFileBase64(photo)
+      uploadedById: inspectorId, index: i, name: normalized.name,
+      mimeType: "image/jpeg", base64: await daFileBase64(normalized)
     });
     if (result?.success !== true || !result.url) throw new Error(result?.message || "Upload foto gagal.");
     urls[i] = result.url;
