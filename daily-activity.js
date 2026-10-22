@@ -1396,6 +1396,34 @@ function daRestoreLocalDraft(draft) {
            STAGE 2A - OPEN / CLOSE ONLY
         ===================================================== */
 
+        // Weekly reference: preselect only when creating a NEW schedule.
+        let schedulerWeeklyReferenceRequest = 0;
+        async function applySchedulerWeeklyReference() {
+          const requestId = ++schedulerWeeklyReferenceRequest;
+          if (schedulerEditingScheduleId) return;
+          const date = cleanDailyActivityValue(document.getElementById('schedulerActivityDate')?.value);
+          const truck = cleanDailyActivityValue(document.getElementById('schedulerLubeTruck')?.value);
+          if (!date || !truck || !schedulerAvailableUnits.length) return;
+          const result = await dailyActivityApiRequest({
+            action: 'getDMWeeklyReferenceSchedule', activityDate: date, lubeTruck: truck
+          });
+          if (requestId !== schedulerWeeklyReferenceRequest || schedulerEditingScheduleId) return;
+          if (result?.success !== true) throw new Error(result?.message || 'Gagal membaca REFF SCHEDULE.');
+          const wanted = new Set((result.unitCodes || []).map(code =>
+            cleanDailyActivityValue(code).toUpperCase().replace(/\s+/g, ' ')));
+          schedulerSelectedUnitIds.clear();
+          schedulerAvailableUnits.forEach(unit => {
+            const code = cleanDailyActivityValue(unit?.unitCode).toUpperCase().replace(/\s+/g, ' ');
+            const id = cleanDailyActivityValue(unit?.unitId || unit?.uniqId || unit?.id);
+            if (id && wanted.has(code)) schedulerSelectedUnitIds.add(id);
+          });
+          renderSchedulerUnitList();
+          updateSchedulerSelectedCount();
+          const found = new Set(schedulerAvailableUnits.map(u => cleanDailyActivityValue(u?.unitCode).toUpperCase().replace(/\s+/g, ' ')));
+          const missing = [...wanted].filter(code => !found.has(code));
+          if (missing.length) console.warn('HEXA REFF SCHEDULE: unit tidak tersedia di master Populasi / Running-Stand By:', missing);
+        }
+
         function initializeSchedulerPanel() {
           const openButton = document.getElementById("openSchedulerButton");
           const backdrop = document.getElementById("schedulerPanelBackdrop");
@@ -1421,7 +1449,7 @@ function daRestoreLocalDraft(draft) {
             backdrop.hidden = false;
             document.body.classList.add("scheduler-panel-open");
 
-            loadSchedulerReferenceData();
+            loadSchedulerReferenceData().then(() => applySchedulerWeeklyReference()).catch(error => console.error("HEXA weekly reference:", error));
           }
 
           function closePanel() {
@@ -1454,6 +1482,15 @@ function daRestoreLocalDraft(draft) {
           mechanic2?.addEventListener("change", updateSchedulerMechanicOptions);
 
           unitSearch?.addEventListener("input", renderSchedulerUnitList);
+          const reloadWeekly = () => {
+            if (schedulerEditingScheduleId) return;
+            applySchedulerWeeklyReference().catch(error => {
+              console.error('HEXA weekly reference:', error);
+              alert(error.message || 'Gagal membaca jadwal mingguan.');
+            });
+          };
+          schedulerDate?.addEventListener('change', reloadWeekly);
+          document.getElementById('schedulerLubeTruck')?.addEventListener('change', reloadWeekly);
           saveButton?.addEventListener("click", saveSchedulerSchedule);
 
           document.getElementById("lubeTruck15EditButton")
