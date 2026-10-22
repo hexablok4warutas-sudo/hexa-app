@@ -1,8 +1,8 @@
-/* HEXA SERVICE WORKER V6.2
+/* HEXA SERVICE WORKER V6.3 - DAILY ACTIVITY STAGE 1
  * Offline CSS / JS / icons / Global Header
  * Does not delete old caches or IndexedDB.
  */
-const CACHE_NAME = 'hexa-shell-v6-2-20261022';
+const CACHE_NAME = 'hexa-shell-v6-3-da-stage1-20261022';
 
 const CORE = [
   '/index.html', '/app.js', '/style.css',
@@ -10,6 +10,7 @@ const CORE = [
   '/main.html', '/main.js', '/main.css',
   '/daily-maintenance.html', '/daily-maintenance.css',
   '/daily-maintenance.js', '/hexa-kpi-fast-adapter.js',
+  '/daily-activity.html', '/daily-activity.css', '/daily-activity.js', '/hexa-doodle.png',
   '/start-inspection.html', '/start-inspection.js',
   '/draft-inspection.html', '/draft-inspection.js',
   '/hexa-offline-store.js', '/hexa-offline-register.js',
@@ -30,6 +31,8 @@ const PAGES = new Map([
   ['/main.html', '/main.html'],
   ['/daily-maintenance', '/daily-maintenance.html'],
   ['/daily-maintenance.html', '/daily-maintenance.html'],
+  ['/daily-activity', '/daily-activity.html'],
+  ['/daily-activity.html', '/daily-activity.html'],
   ['/start-inspection', '/start-inspection.html'],
   ['/start-inspection.html', '/start-inspection.html'],
   ['/draft-inspection', '/draft-inspection.html'],
