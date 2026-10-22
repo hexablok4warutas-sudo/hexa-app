@@ -116,6 +116,46 @@ async function daDraftGet(scheduleUnitId) {
     });
   } finally { db.close(); }
 }
+// Stage 2B: pending final remains on device until Stage 2C sync confirms server receipt.
+async function daDraftPendingCount(scheduleId) {
+  const owner = daOfflineOwner();
+  if (!owner) return 0;
+  const db = await daDraftOpen();
+  try {
+    const records = await new Promise((resolve,reject) => {
+      const req = db.transaction("drafts", "readonly").objectStore("drafts").getAll();
+      req.onsuccess = () => resolve(req.result || []);
+      req.onerror = () => reject(req.error);
+    });
+    return records.filter(item => item?.owner === owner &&
+      item?.status === "PENDING_SYNC" && item?.scheduleId === scheduleId).length;
+  } finally { db.close(); }
+}
+function daScheduleForUnit(scheduleUnitId) {
+  return dailyActivitySchedules.find(schedule => (schedule?.units || []).some(
+    unit => cleanDailyActivityValue(unit?.scheduleUnitId) === scheduleUnitId));
+}
+function daPendingLockUI() {
+  const backdrop = document.getElementById("dailyActivityInspectionBackdrop");
+  const locked = backdrop?.dataset.pendingSync === "true";
+  for (const id of ["dailyActivityInspectionHourMeter", "dailyActivityInspectionNotes",
+    "dailyActivityInspectionStartTime", "dailyActivityInspectionFinishTime",
+    "dailyActivityInspectionAddPhoto", "dailyActivityStartNow", "dailyActivityFinishNow",
+    "saveDailyActivityInspectionDraft", "submitDailyActivityInspection"]) {
+    const el = document.getElementById(id);
+    if (el) el.disabled = locked;
+  }
+  document.querySelectorAll("#dailyActivityInspectionBody .daily-activity-result-options button")
+    .forEach(button => { button.disabled = locked; });
+}
+async function daShowPendingForUnit(scheduleUnitId) {
+  const draft = await daDraftGet(scheduleUnitId);
+  const backdrop = document.getElementById("dailyActivityInspectionBackdrop");
+  if (backdrop) backdrop.dataset.pendingSync = draft?.status === "PENDING_SYNC" ? "true" : "false";
+  daPendingLockUI();
+  if (draft?.status === "PENDING_SYNC")
+    daOfflineNotice("PENDING SYNC — Submit tersimpan di perangkat, terkunci sampai sinkronisasi server berhasil.");
+}
 let daSelectedPhoto = null;
 function daPhotoLabel() {
   const label = document.getElementById("dailyActivityInspectionPhotoName");
@@ -137,7 +177,9 @@ function daCaptureDraft() {
     activityNotes: document.getElementById("dailyActivityInspectionNotes")?.value || "",
     start: time("Start"), finish: time("Finish"),
     answers: collectDailyActivityInspectionAnswers(),
-    photo: daSelectedPhoto, savedAt: Date.now()
+    photo: daSelectedPhoto, owner: daOfflineOwner(),
+    scheduleId: cleanDailyActivityValue(daScheduleForUnit(scheduleUnitId)?.scheduleId),
+    savedAt: Date.now()
   };
 }
 function daRestoreLocalDraft(draft) {
@@ -800,7 +842,11 @@ function daRestoreLocalDraft(draft) {
             return;
           }
           if (["APPROVAL", "APPROVED"].includes(status)) return;
-          openDailyActivityClosing(truckNumber);
+          const scheduleId = cleanDailyActivityValue(schedule?.scheduleId);
+          daDraftPendingCount(scheduleId).then(count => {
+            if (count) alert(`${count} unit masih PENDING SYNC. Selesaikan sinkronisasi sebelum closing.`);
+            else openDailyActivityClosing(truckNumber);
+          }).catch(error => alert("Tidak dapat memeriksa data Pending Sync: " + error.message));
         }
 
         function renderLubeTruckClosingState(truckNumber, schedule) {
@@ -1071,6 +1117,11 @@ function daRestoreLocalDraft(draft) {
             return;
           }
 
+          const pendingCount = await daDraftPendingCount(cleanDailyActivityValue(schedule?.scheduleId));
+          if (pendingCount > 0) {
+            alert(`${pendingCount} unit masih PENDING SYNC. Complete Daily Activity diblokir sampai sinkronisasi server Tahap 2C berhasil.`);
+            return;
+          }
           const validation =
             collectDailyActivityClosingReasons();
 
@@ -2402,6 +2453,7 @@ function daRestoreLocalDraft(draft) {
       if (notes) notes.value = "";
       if (photo) photo.value = "";
       daSelectedPhoto = null;
+      backdrop.dataset.pendingSync = "false";
       if (photoName) photoName.textContent = "No photo selected";
 
       const body =
@@ -2761,10 +2813,24 @@ function daRestoreLocalDraft(draft) {
       }
 
       try {
-        if (!navigator.onLine || await daDraftGet(scheduleUnitId) || daSelectedPhoto) {
-          alert("Submit belum diaktifkan untuk Draft offline/foto pada Tahap 2A. Data tetap aman; gunakan Save Draft dahulu.");
+        // Stage 2B: Submit is safely queued, never sent until Stage 2C is installed.
+        const existingLocal = await daDraftGet(scheduleUnitId);
+        if (existingLocal?.status === "PENDING_SYNC") {
+          alert("Unit ini sudah Pending Sync. Jangan Submit ulang.");
           return;
         }
+        const local = daCaptureDraft();
+        if (!local.scheduleId) throw new Error("Schedule ID tidak tersedia; tidak dapat menyimpan Pending Sync.");
+        if (!local.start.value || !local.start.iso || !local.finish.value || !local.finish.iso)
+          throw new Error("Jam Start dan Finish beserta tanggal aktual wajib tersedia.");
+        if (new Date(local.finish.iso) < new Date(local.start.iso))
+          throw new Error("Finish Inspection tidak boleh lebih awal dari Start Inspection.");
+        local.status = "PENDING_SYNC";
+        await daDraftPut(scheduleUnitId, local);
+        if (backdrop) backdrop.hidden = true;
+        daOfflineNotice("PENDING SYNC — Submit dan foto tersimpan aman di perangkat. Complete Daily Activity belum dapat dijalankan sebelum sinkronisasi Tahap 2C.");
+        alert("Submit tersimpan sebagai PENDING SYNC. Belum dikirim ke server. Jangan hapus data situs/browser.");
+        return;
         const result =
           await dailyActivityApiRequest({
             action: "submitDMInspection",
@@ -2873,7 +2939,12 @@ function daRestoreLocalDraft(draft) {
       }
 
       try {
-        if (!navigator.onLine || daSelectedPhoto || await daDraftGet(scheduleUnitId)) {
+        const existingLocal = await daDraftGet(scheduleUnitId);
+        if (existingLocal?.status === "PENDING_SYNC") {
+          alert("Unit sudah Pending Sync dan terkunci. Draft tidak boleh diubah.");
+          return;
+        }
+        if (!navigator.onLine || daSelectedPhoto || existingLocal) {
           const draft = daCaptureDraft();
           await daDraftPut(scheduleUnitId, draft);
           alert("Draft dan foto berhasil disimpan di perangkat ini. Belum tersinkronisasi ke server.");
@@ -2933,7 +3004,9 @@ function daRestoreLocalDraft(draft) {
       const localDraft = await daDraftGet(scheduleUnitId);
       if (localDraft) {
         daRestoreLocalDraft(localDraft);
-        daOfflineNotice("DRAFT LOKAL — Checklist dan foto tersimpan di perangkat ini; belum tersinkronisasi.");
+        await daShowPendingForUnit(scheduleUnitId);
+        if (localDraft.status !== "PENDING_SYNC")
+          daOfflineNotice("DRAFT LOKAL — Checklist dan foto tersimpan di perangkat ini; belum tersinkronisasi.");
         return;
       }
       if (!navigator.onLine) return;
