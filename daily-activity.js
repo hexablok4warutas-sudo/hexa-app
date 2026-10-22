@@ -131,6 +131,41 @@ async function daDraftPendingCount(scheduleId) {
       item?.status === "PENDING_SYNC" && item?.scheduleId === scheduleId).length;
   } finally { db.close(); }
 }
+// Stage 2B.1 — Visual status local, tidak mengubah status server / KPI.
+let daCardPaintSequence = 0;
+async function daRefreshLocalUnitCards() {
+  const sequence = ++daCardPaintSequence;
+  const cards = Array.from(document.querySelectorAll(".daily-unit-card[data-schedule-unit-id]"));
+  await Promise.all(cards.map(async card => {
+    const id = cleanDailyActivityValue(card.dataset.scheduleUnitId);
+    if (!id) return;
+    try {
+      const local = await daDraftGet(id);
+      if (sequence !== daCardPaintSequence || !card.isConnected) return;
+      const status = local?.status;
+      const isPending = status === "PENDING_SYNC";
+      const isDraft = status === "DRAFT_OFFLINE";
+      // Server COMPLETED takes precedence; never mask an acknowledged completion.
+      if (card.classList.contains("is-completed")) return;
+      card.classList.toggle("da-local-pending", isPending);
+      card.classList.toggle("da-local-draft", isDraft);
+      card.querySelector(".da-local-status")?.remove();
+      card.style.removeProperty("background-color");
+      card.style.removeProperty("border-color");
+      if (!isPending && !isDraft) return;
+      card.style.setProperty("background-color", isPending ? "#fed7aa" : "#fef3c7", "important");
+      card.style.setProperty("border-color", isPending ? "#ea580c" : "#d97706", "important");
+      const label = document.createElement("span");
+      label.className = "da-local-status";
+      label.textContent = isPending ? "PENDING SYNC" : "DRAFT OFFLINE";
+      label.style.cssText = "display:block;font-size:10px;font-weight:800;letter-spacing:.3px;margin-top:5px;color:#7c2d12;white-space:normal";
+      card.appendChild(label);
+      card.title = isPending ? "Submit tersimpan di perangkat; menunggu sinkronisasi" : "Draft tersimpan di perangkat";
+    } catch (error) {
+      console.warn("HEXA DA local card status:", error);
+    }
+  }));
+}
 function daScheduleForUnit(scheduleUnitId) {
   return dailyActivitySchedules.find(schedule => (schedule?.units || []).some(
     unit => cleanDailyActivityValue(unit?.scheduleUnitId) === scheduleUnitId));
@@ -611,6 +646,7 @@ function daRestoreLocalDraft(draft) {
           units.forEach(unit => {
             container.appendChild(createDailyActivityUnitCard(unit));
           });
+          void daRefreshLocalUnitCards();
         }
 
         function createDailyActivityUnitCard(unit) {
@@ -2827,6 +2863,7 @@ function daRestoreLocalDraft(draft) {
           throw new Error("Finish Inspection tidak boleh lebih awal dari Start Inspection.");
         local.status = "PENDING_SYNC";
         await daDraftPut(scheduleUnitId, local);
+        await daRefreshLocalUnitCards();
         if (backdrop) backdrop.hidden = true;
         daOfflineNotice("PENDING SYNC — Submit dan foto tersimpan aman di perangkat. Complete Daily Activity belum dapat dijalankan sebelum sinkronisasi Tahap 2C.");
         alert("Submit tersimpan sebagai PENDING SYNC. Belum dikirim ke server. Jangan hapus data situs/browser.");
@@ -2947,6 +2984,7 @@ function daRestoreLocalDraft(draft) {
         if (!navigator.onLine || daSelectedPhoto || existingLocal) {
           const draft = daCaptureDraft();
           await daDraftPut(scheduleUnitId, draft);
+          await daRefreshLocalUnitCards();
           alert("Draft dan foto berhasil disimpan di perangkat ini. Belum tersinkronisasi ke server.");
           if (backdrop) backdrop.hidden = true;
           return;
