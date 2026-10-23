@@ -108,7 +108,7 @@ async function locatePart(groupId,index){
  pickPart(index);
  if(foundImage<0&&imgs.length){console.info('HEXCatalog: lokasi SVG tidak terverifikasi, hanya Parts List yang disorot.',part.pn);}
 }
-function openGroup(id){active=groups.find(g=>g.id===id);imageIndex=0;showGroups($('groupSearch').value);render();}
+function openGroup(id){++locateRequest;active=groups.find(g=>g.id===id);imageIndex=0;showGroups($('groupSearch').value);render();}
 function render(){if(!active)return;$('groupTitle').textContent=active.name;$('groupCount').textContent=`${active.parts.length} part`;
  $('partsBody').innerHTML=active.parts.map((p,i)=>`<tr data-index="${i}"><td>${esc(p.no)}</td><td><strong>${esc(p.pn)}</strong></td><td>${esc(p.description)}</td><td>${p.qty??'—'}</td><td><input class="cat-qty" aria-label="Quantity needed ${esc(p.pn)}" type="number" min="1" max="9999" value="${selected.get(key(active,p))?.needed??1}"></td><td><button type="button" class="cat-add">${selected.has(key(active,p))?'Update':'Add'}</button></td></tr>`).join('');renderImage();}
 // SVG viewer: fit, zoom, pan and fullscreen. Existing Parts List is unchanged.
@@ -193,6 +193,39 @@ function updateView(){if(!viewerImage)return;viewerImage.style.transform=`transl
 function setZoom(n){zoom=Math.max(.5,Math.min(10,n));updateView();}
 function resetView(){zoom=1;offsetX=offsetY=0;updateView();}
 function toggleFullscreen(){fullscreen=!fullscreen;document.querySelector('.cat-images').classList.toggle('cat-fullscreen',fullscreen);document.body.classList.toggle('cat-viewer-open',fullscreen);resetView();}
+// V2: Fokus hanya setelah memilih hasil Global Search.
+// Prioritaskan bentuk part dengan Part Number tepat, lalu callout bernomor sesuai.
+function focusPartInDrawing(index){
+ if(!viewerImage||!active?.parts[index])return false;
+ const part=active.parts[index],no=parentNo(part),pn=normalizePN(part.pn);
+ const nodes=[...viewerImage.querySelectorAll('g.part, g.callout')];
+ const matching=nodes.filter(node=>partNumbers(node).includes(no));
+ const exactParts=matching.filter(node=>node.classList.contains('part')&&normalizePN(partTitlePN(node))===pn);
+ const callouts=matching.filter(node=>node.classList.contains('callout'));
+ const targets=exactParts.length?exactParts:callouts;
+ if(!targets.length)return false;
+ // Gunakan elemen yang benar-benar memiliki ukuran di layar.
+ const rects=targets.map(node=>node.getBoundingClientRect()).filter(r=>r.width>0&&r.height>0);
+ if(!rects.length)return false;
+ const left=Math.min(...rects.map(r=>r.left)),right=Math.max(...rects.map(r=>r.right));
+ const top=Math.min(...rects.map(r=>r.top)),bottom=Math.max(...rects.map(r=>r.bottom));
+ const area=$('drawingArea'),stage=viewer.getBoundingClientRect();
+ const width=area.clientWidth||stage.width,height=area.clientHeight||stage.height;
+ if(!width||!height)return false;
+ const targetWidth=Math.max(24,right-left),targetHeight=Math.max(24,bottom-top);
+ const desiredZoom=Math.max(1.4,Math.min(4,Math.min(width*.42/targetWidth,height*.42/targetHeight)));
+ const nextZoom=Math.max(.5,Math.min(10,desiredZoom));
+ const currentCenterX=(left+right)/2-(stage.left+stage.width/2);
+ const currentCenterY=(top+bottom)/2-(stage.top+stage.height/2);
+ // Posisi pusat target dihitung dari transform lama, lalu diletakkan tepat di tengah stage.
+ const originalX=(currentCenterX-offsetX)/zoom;
+ const originalY=(currentCenterY-offsetY)/zoom;
+ zoom=nextZoom;
+ offsetX=-originalX*zoom;
+ offsetY=-originalY*zoom;
+ updateView();
+ return true;
+}
 function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
  // Class CAT SIS: part_14, 1 / callout_14, 1. Indeks turunan dipetakan lewat parentNo().
  function partNumbers(node){
