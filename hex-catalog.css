@@ -3,14 +3,12 @@
 * { box-sizing:border-box; }
 html, body { margin:0; min-height:100%; }
 body { font-family:Arial,Helvetica,sans-serif; color:var(--hc-navy); background:#f4f8fd url('hexa-doodle.png') center top / 430px repeat; }
-.hexcatalog-main { min-height:100vh; padding:calc(88px + 42px) 22px 64px; }
+.hexcatalog-main { min-height:100vh; padding:calc(88px + 10px) 22px 64px; }
 .hexcatalog-shell { max-width:1160px; margin:0 auto; }
-.hexcatalog-heading { text-align:center; margin:0 auto 30px; }
-.hexcatalog-brand { display:flex; justify-content:center; align-items:center; gap:10px; color:var(--hc-blue); font-size:11px; font-weight:800; letter-spacing:2px; }
-.hexcatalog-brand img { width:36px; height:36px; object-fit:contain; }
-.hexcatalog-heading h1 { margin:12px 0 6px; color:#075eaa; font-size:clamp(35px,5vw,56px); letter-spacing:-1.8px; }
+.hexcatalog-heading { display:flex; align-items:center; gap:15px; padding:0 8px 15px; margin:0 0 10px; border-bottom:2px solid var(--hc-orange); background:rgba(255,255,255,.92); }
+.hexcatalog-title-icon { width:76px; height:76px; object-fit:contain; flex-shrink:0; }
+.hexcatalog-heading h1 { margin:0; font-size:clamp(30px,4vw,46px); color:#111; font-weight:800; letter-spacing:-1.4px; }
 .hexcatalog-heading h1 span { color:var(--hc-orange); }
-.hexcatalog-heading p { margin:0; color:#667b90; font-size:15px; }
 .hexcatalog-container { padding:30px; border:1px solid #d8e7f7; border-radius:24px; background:rgba(255,255,255,.94); box-shadow:0 18px 52px rgba(6,75,137,.12); }
 .hexcatalog-section-heading { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:25px; }
 .hexcatalog-eyebrow { color:var(--hc-orange); font-size:11px; font-weight:800; letter-spacing:2px; }
@@ -33,8 +31,6 @@ body { font-family:Arial,Helvetica,sans-serif; color:var(--hc-navy); background:
 .catalog-card-action { display:flex; justify-content:space-between; margin-top:19px; color:#075eaa; font-size:12px; font-weight:800; }
 .catalog-card-action span { color:var(--hc-orange); font-size:18px; line-height:12px; }
 .hexcatalog-note { text-align:center; font-size:12px; color:#77899b; margin:24px 0 0; }
-.hexcatalog-back { display:inline-block; margin-top:24px; padding:12px 17px; border-radius:12px; background:#0866b2; color:#fff; font-size:13px; font-weight:700; text-decoration:none; }
-.hexcatalog-back:hover { background:#004e90; }
 @media(max-width:1000px) { .hexcatalog-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:600px) { .hexcatalog-main { padding:calc(88px + 20px) 12px 36px; } .hexcatalog-heading { margin-bottom:20px; } .hexcatalog-brand { font-size:9px; letter-spacing:1px; } .hexcatalog-container { padding:18px 14px; border-radius:18px; } .hexcatalog-section-heading { align-items:flex-start; } .hexcatalog-count { font-size:10px; padding:8px; } .hexcatalog-grid { gap:11px; } .catalog-card-top { padding:12px 10px 0; } .catalog-card-number { font-size:8px; } .catalog-card-visual { height:100px; } .catalog-card-machine { font-size:15px; } .catalog-card-watermark { font-size:42px; } .catalog-card-info { padding:12px 10px; } .catalog-card-name { font-size:17px; } .catalog-card-action { font-size:11px; } }
+@media(max-width:600px) { .hexcatalog-main { padding:calc(88px + 8px) 12px 36px; } .hexcatalog-heading { gap:10px; margin-bottom:12px; } .hexcatalog-title-icon { width:50px; height:50px; } .hexcatalog-container { padding:18px 14px; border-radius:18px; } .hexcatalog-section-heading { align-items:flex-start; } .hexcatalog-count { font-size:10px; padding:8px; } .hexcatalog-grid { gap:11px; } .catalog-card-top { padding:12px 10px 0; } .catalog-card-number { font-size:8px; } .catalog-card-visual { height:100px; } .catalog-card-machine { font-size:15px; } .catalog-card-watermark { font-size:42px; } .catalog-card-info { padding:12px 10px; } .catalog-card-name { font-size:17px; } .catalog-card-action { font-size:11px; } }
 @media(prefers-reduced-motion:reduce) { .catalog-card { transition:none; } }
