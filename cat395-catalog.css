@@ -166,3 +166,15 @@ html,body{max-width:100%;overflow-x:clip}
  .cat-selected-remove{min-height:44px;width:100%}
  .cat-selection-actions{display:grid;grid-template-columns:1fr 1.4fr;margin-top:12px}
 }
+
+/* FIX: CAT SIS SVG clickable callouts and part shapes */
+.cat-inline-svg g.callout,
+.cat-inline-svg g.part { cursor:pointer!important; pointer-events:visiblePainted!important; }
+.cat-inline-svg g.callout *,
+.cat-inline-svg g.part * { cursor:pointer!important; pointer-events:visiblePainted!important; }
+.cat-inline-svg g.callout:hover,
+.cat-inline-svg g.part:hover { filter:drop-shadow(0 0 2px #ff9417); }
+.cat-inline-svg g.callout:hover text,
+.cat-inline-svg g.callout:hover tspan { fill:#ff8500!important; }
+.cat-inline-svg g.callout.cat-svg-selected,
+.cat-inline-svg g.part.cat-svg-selected { filter:drop-shadow(0 0 2.5px #ff9417); }
