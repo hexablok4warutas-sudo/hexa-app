@@ -102,15 +102,22 @@ async function locatePart(groupId,index){
  // Render daftar part sebelum memuat gambar; setelah SVG siap, ulangi highlight.
  $('groupTitle').textContent=g.name;
  $('groupCount').textContent=`${g.parts.length} part`;
- $('partsBody').innerHTML=g.parts.map((p,i)=>`<tr data-index="${i}"><td>${esc(p.no)}</td><td><strong>${esc(p.pn)}</strong></td><td>${esc(p.description)}</td><td>${p.qty??'—'}</td><td><input class="cat-qty" aria-label="Quantity needed ${esc(p.pn)}" type="number" min="1" max="9999" value="${selected.get(key(g,p))?.needed??1}"></td><td><button type="button" class="cat-add">${selected.has(key(g,p))?'Update':'Add'}</button></td></tr>`).join('');
+ $('partsBody').innerHTML=partsRowsHTML(g);
  await renderImage();
  if(request!==locateRequest)return;
  pickPart(index);
  if(foundImage<0&&imgs.length){console.info('HEXCatalog: lokasi SVG tidak terverifikasi, hanya Parts List yang disorot.',part.pn);}
 }
+
+ function partsRowsHTML(group){
+  return group.parts.map((p,i)=>{
+   const chosen=selected.has(key(group,p));
+   return `<tr data-index="${i}" class="${chosen?'cat-part-in-cart':''}"><td>${esc(p.no)}</td><td><strong>${esc(p.pn)}</strong></td><td>${esc(p.description)}</td><td>${esc(p.qty??'—')}</td><td><button type="button" class="cat-add" title="${chosen?'Sudah dipilih':'Tambahkan ke Selected Parts'}" aria-label="${chosen?'Sudah dipilih':'Tambahkan'} ${esc(p.pn)} ke Selected Parts" aria-pressed="${chosen}"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button></td></tr>`;
+  }).join('');
+ }
 function openGroup(id){++locateRequest;active=groups.find(g=>g.id===id);imageIndex=0;showGroups($('groupSearch').value);render();}
 function render(){if(!active)return;$('groupTitle').textContent=active.name;$('groupCount').textContent=`${active.parts.length} part`;
- $('partsBody').innerHTML=active.parts.map((p,i)=>`<tr data-index="${i}"><td>${esc(p.no)}</td><td><strong>${esc(p.pn)}</strong></td><td>${esc(p.description)}</td><td>${p.qty??'—'}</td><td><input class="cat-qty" aria-label="Quantity needed ${esc(p.pn)}" type="number" min="1" max="9999" value="${selected.get(key(active,p))?.needed??1}"></td><td><button type="button" class="cat-add">${selected.has(key(active,p))?'Update':'Add'}</button></td></tr>`).join('');renderImage();}
+ $('partsBody').innerHTML=partsRowsHTML(active);renderImage();}
 // SVG viewer: fit, zoom, pan and fullscreen. Existing Parts List is unchanged.
 let zoom=1, offsetX=0, offsetY=0, dragging=false, startX=0, startY=0;
 let viewer, viewerImage, zoomLabel, fullscreen=false;
@@ -265,7 +272,7 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
    rows.forEach((row,i)=>row.classList.toggle('cat-part-highlight',i===index));
    highlightDrawing(index);
    const row=rows[index];row?.scrollIntoView({behavior:'smooth',block:'nearest'});
-   row?.querySelector('.cat-qty')?.focus({preventScroll:true});
+   // Qty Needed hanya diedit pada Selected Parts.
  }
 
 function showPartPicker(clientX,clientY,onlyIndexes=null){
@@ -343,16 +350,20 @@ function renderSelected(){
  if(!items.length){summary.innerHTML='<span class="cat-selection-empty">Belum ada part dipilih. Pilih part dari Parts List, lalu tekan Add.</span>';return;}
  summary.innerHTML='<div class="cat-selected-table-wrap"><table class="cat-selected-table"><thead><tr><th>Assembly Group</th><th>No</th><th>Part Number</th><th>Description</th><th>Qty Needed</th><th>Aksi</th></tr></thead><tbody>'+items.map(([k,x],i)=>`<tr data-selected-index="${i}"><td data-label="Assembly Group">${esc(x.group)}</td><td data-label="No">${esc(x.no)}</td><td data-label="Part Number"><strong>${esc(x.pn)}</strong></td><td data-label="Description">${esc(x.description)}</td><td data-label="Qty Needed"><input class="cat-selected-qty" type="number" min="1" max="9999" value="${qty(x.needed)}" aria-label="Qty Needed ${esc(x.pn)}"></td><td class="cat-selected-remove-cell"><button class="cat-selected-remove" type="button" aria-label="Hapus ${esc(x.pn)}">Remove</button></td></tr>`).join('')+'</tbody></table></div>';
 }
-function syncPartAddButton(x){
- if(!active)return;
- $('partsBody').querySelectorAll('tr').forEach(tr=>{
-  const p=active.parts[Number(tr.dataset.index)];
-  if(!p)return;
-  const b=tr.querySelector('.cat-add');
-  if(b)b.textContent=selected.has(key(active,p))?'Update':'Add';
-  if(x&&p.no==x.no&&p.pn===x.pn&&active.name===x.group){const input=tr.querySelector('.cat-qty');if(input)input.value=x.needed;}
- });
-}
+ function syncPartAddButton(){
+  if(!active)return;
+  $('partsBody').querySelectorAll('tr').forEach(tr=>{
+   const p=active.parts[Number(tr.dataset.index)];if(!p)return;
+   const chosen=selected.has(key(active,p));
+   tr.classList.toggle('cat-part-in-cart',chosen);
+   const b=tr.querySelector('.cat-add');if(!b)return;
+   b.classList.toggle('is-selected',chosen);
+   b.setAttribute('aria-pressed',String(chosen));
+   b.setAttribute('aria-label',`${chosen?'Sudah dipilih':'Tambahkan'} ${p.pn} ke Selected Parts`);
+   b.title=chosen?'Sudah dipilih':'Tambahkan ke Selected Parts';
+  });
+ }
+
 $('selectionSummary').addEventListener('change',e=>{
  const input=e.target.closest('.cat-selected-qty');if(!input)return;
  const row=input.closest('[data-selected-index]'),entry=[...selected.entries()][Number(row?.dataset.selectedIndex)];
@@ -369,7 +380,7 @@ $('groupList').addEventListener('click',e=>{const locate=e.target.closest('[data
 $('groupSearch').placeholder='Cari Group / Part Number / Part...';
 $('groupSearch').setAttribute('aria-label','Global Search: Assembly Group, Part Number, atau Description');
 $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
-$('partsBody').addEventListener('click',e=>{const btn=e.target.closest('.cat-add');if(!btn||!active)return;const tr=btn.closest('tr');const p=active.parts[Number(tr.dataset.index)];pickPart(Number(tr.dataset.index));selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:qty(tr.querySelector('input').value)});btn.textContent='Update';saveSelection();renderSelected();});
+$('partsBody').addEventListener('click',e=>{const btn=e.target.closest('.cat-add');if(!btn||!active)return;const tr=btn.closest('tr');const p=active.parts[Number(tr.dataset.index)];pickPart(Number(tr.dataset.index));if(!selected.has(key(active,p)))selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:1});saveSelection();renderSelected();syncPartAddButton();});
 $('prevImage').addEventListener('click',()=>{if(imageIndex>0){imageIndex--;renderImage()}});
 $('nextImage').addEventListener('click',()=>{if(imageIndex<(active?.images.length||0)-1){imageIndex++;renderImage()}});
 $('clearSelection').addEventListener('click',()=>{if(!selected.size)return;if(!confirm('Hapus semua Selected Parts?'))return;selected.clear();saveSelection();renderSelected();render()});
