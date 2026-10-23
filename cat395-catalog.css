@@ -182,3 +182,14 @@ html,body{max-width:100%;overflow-x:clip}
 /* Single and multi-number callouts: cursor + orange hover + browser tooltip via SVG title */
 .cat-inline-svg g.callout text,.cat-inline-svg g.callout tspan{cursor:pointer!important}
 .cat-inline-svg g.callout:hover text,.cat-inline-svg g.callout:hover tspan{fill:#ff8500!important;stroke:#ff8500!important}
+
+/* HEXCatalog Global Search - tambahkan pada AKHIR cat395-catalog.css */
+.cat-search-section{margin:12px 4px 7px;color:#52728c;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.cat-group-btn.cat-search-result{width:100%;text-align:left;align-items:center;gap:8px;min-height:65px}
+.cat-search-result>span{display:flex;flex-direction:column;gap:3px;min-width:0;overflow-wrap:anywhere}
+.cat-search-result strong{color:#075eaa;font-size:13px}
+.cat-search-desc{font-size:11px;color:#354e64;font-weight:400}
+.cat-search-group{font-size:10px;color:#71879a;font-weight:400}
+.cat-search-hint{padding:10px 5px;font-size:12px;color:#688096}
+.cat-search-result:hover strong{color:#ff8500}
+
