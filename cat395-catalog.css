@@ -39,3 +39,67 @@
 .cat-inline-svg g.part:hover path,
 .cat-inline-svg g.part:hover polyline,
 .cat-inline-svg g.part:hover line{stroke:#ff9417!important;stroke-width:.3!important}
+
+/* ===== HEXCatalog CAT395: mobile layout / overflow containment ===== */
+html,body{max-width:100%;overflow-x:clip}
+.cat-main,.cat-shell,.cat-panel,.cat-layout,.cat-detail,.cat-groups,.cat-images,.cat-table-wrap{min-width:0;max-width:100%}
+.cat-layout{grid-template-columns:minmax(0,265px) minmax(0,1fr)}
+.cat-drawing.cat-viewer,.cat-viewer-stage{max-width:100%;min-width:0;contain:layout paint}
+.cat-inline-svg{overflow:hidden!important;max-width:none}
+.cat-image-toolbar>div:first-of-type{display:flex;align-items:center;gap:5px}
+.cat-image-toolbar button{min-height:36px}
+@media(max-width:850px){
+ .cat-layout{display:grid;grid-template-columns:minmax(0,1fr)}
+ .cat-groups #groupList{display:flex;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding-bottom:5px}
+ .cat-group-btn{flex:0 0 165px;min-width:0;scroll-snap-align:start}
+ .cat-detail,.cat-groups{width:100%}
+}
+@media(max-width:600px){
+ html{-webkit-text-size-adjust:100%}
+ .cat-main{width:100%;padding:96px 10px 30px}
+ .cat-shell{width:100%}
+ .cat-title{padding:9px 10px;gap:9px}
+ .cat-title img{width:42px;height:42px;flex:none}
+ .cat-title h1{font-size:25px;line-height:1.12}
+ .cat-title small{font-size:11px;margin-top:4px}
+ .cat-panel{padding:12px;border-radius:14px}
+ .cat-top{gap:7px;margin-bottom:14px}
+ .cat-top strong{font-size:14px;line-height:1.4}
+ .cat-top p{font-size:12px;line-height:1.5}
+ .cat-groups,.cat-detail,.cat-selection{padding:12px;border-radius:12px}
+ .cat-groups h2,.cat-detail h2,.cat-selection h2{font-size:16px}
+ .cat-groups input{font-size:16px;min-height:43px}
+ .cat-group-btn{flex-basis:150px;font-size:12px;min-height:44px;padding:11px 9px}
+ .cat-image-toolbar{display:flex;flex-wrap:wrap;gap:9px;padding:9px}
+ .cat-image-toolbar strong{font-size:12px}
+ .cat-zoom-controls{width:100%;justify-content:space-between;gap:4px}
+ .cat-zoom-controls button{flex:1;min-height:40px;min-width:0;padding:5px 6px;font-size:14px}
+ .cat-zoom-label{min-width:44px}
+ .cat-drawing.cat-viewer{height:clamp(310px,88vw,470px);width:100%;overflow:hidden}
+ .cat-viewer-stage{overflow:hidden}
+ .cat-part-picker{position:absolute!important;width:min(300px,calc(100% - 16px));max-height:230px;font-size:13px}
+ .cat-picker-list button{min-height:43px}
+ .cat-table-wrap{overflow:visible}
+ .cat-table-wrap table,.cat-table-wrap tbody,.cat-table-wrap tr,.cat-table-wrap td{display:block;width:100%}
+ .cat-table-wrap thead{display:none}
+ .cat-table-wrap tbody{display:grid;gap:10px}
+ .cat-table-wrap tbody tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:12px;border:1px solid #dce9f5;border-radius:12px;background:#fff}
+ .cat-table-wrap tbody tr.cat-part-highlight{border-color:#ff9417;outline:1px solid #ff9417}
+ .cat-table-wrap td{min-width:0;white-space:normal;padding:0;border:0;overflow-wrap:anywhere;font-size:13px}
+ .cat-table-wrap td::before{display:block;margin-bottom:5px;color:#668198;font-size:10px;font-weight:700;letter-spacing:.2px}
+ .cat-table-wrap td:nth-child(1)::before{content:'No'}
+ .cat-table-wrap td:nth-child(2)::before{content:'Part Number'}
+ .cat-table-wrap td:nth-child(3){grid-column:1/-1}
+ .cat-table-wrap td:nth-child(3)::before{content:'Description'}
+ .cat-table-wrap td:nth-child(4)::before{content:'Qty Assembly'}
+ .cat-table-wrap td:nth-child(5)::before{content:'Qty Needed'}
+ .cat-table-wrap td:nth-child(6){grid-column:1/-1}
+ .cat-qty{width:100%;max-width:140px;min-height:42px;font-size:16px}
+ .cat-add{width:100%;min-height:43px;font-size:14px}
+ .cat-selection{gap:12px}
+ .cat-selection-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+ .cat-selection-actions button{white-space:normal;min-height:44px;padding:9px;font-size:12px}
+ .cat-selection p{overflow-wrap:anywhere}
+ .cat-images.cat-fullscreen{inset:0;max-width:none;border-radius:0}
+ .cat-fullscreen .cat-drawing.cat-viewer{height:auto}
+}
