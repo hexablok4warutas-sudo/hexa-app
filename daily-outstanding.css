@@ -2628,3 +2628,8 @@ input[type="hidden"] {
   }
 
 }
+
+/* HEXA OFFLINE VIEW ONLY */
+.do-offline-banner{margin:10px 0;padding:12px 16px;border-left:4px solid #e79a12;background:#fff4d9;color:#6c4800;font-size:13px;font-weight:700;border-radius:6px}
+.do-offline-banner[hidden]{display:none!important}
+body:has(.do-offline-banner:not([hidden])) .outstanding-item-edit{opacity:.4;pointer-events:none}
