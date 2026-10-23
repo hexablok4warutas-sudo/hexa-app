@@ -1,0 +1,502 @@
+{
+  "model": "CAT 395",
+  "groups": [
+    {
+      "id": "drive-gp-swing",
+      "name": "Drive Gp Swing",
+      "parts": [
+        {
+          "no": "14",
+          "pn": "555-1822",
+          "description": "Hose As",
+          "qty": 2
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-motor",
+      "name": "Lines Gp Motor",
+      "parts": [
+        {
+          "no": "16",
+          "pn": "528-0942",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "551-3760",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "551-3762",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "551-3766",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "26",
+          "pn": "552-8893",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "28",
+          "pn": "576-9763",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "29",
+          "pn": "576-9768",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "31",
+          "pn": "594-0239",
+          "description": "Hose As",
+          "qty": 1
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-pump",
+      "name": "Lines Gp Pump",
+      "parts": [
+        {
+          "no": "20",
+          "pn": "148-4964",
+          "description": "Hose As",
+          "qty": 2
+        },
+        {
+          "no": "26",
+          "pn": "550-7139",
+          "description": "Hose As",
+          "qty": 2
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-pilot",
+      "name": "Lines Gp Pilot",
+      "parts": [
+        {
+          "no": "4",
+          "pn": "087-5764",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "5",
+          "pn": "087-5772",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "6",
+          "pn": "104-8803",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "7",
+          "pn": "104-8973",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "8",
+          "pn": "108-7402",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "9",
+          "pn": "129-5959",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "29",
+          "pn": "278-6868",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "31",
+          "pn": "307-5153",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "32",
+          "pn": "320-0011",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "34",
+          "pn": "350-7213",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "35",
+          "pn": "354-3695",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "36",
+          "pn": "453-4976",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "37",
+          "pn": "459-5905",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "43",
+          "pn": "525-5013",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "44",
+          "pn": "550-7165",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "45",
+          "pn": "550-7167",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "46",
+          "pn": "550-7168",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "48",
+          "pn": "590-8011",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "2",
+          "pn": "104-8821",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "14",
+          "pn": "296-6949",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "551-1458",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "594-0241",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "2",
+          "pn": "590-9797",
+          "description": "Hose As",
+          "qty": 1
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-boom",
+      "name": "Lines Gp Boom",
+      "parts": [
+        {
+          "no": "9",
+          "pn": "363-2291",
+          "description": "Hose As",
+          "qty": 2
+        },
+        {
+          "no": "10",
+          "pn": "363-2292",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "3",
+          "pn": "550-6760",
+          "description": "Hose As",
+          "qty": 4
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-group-arc",
+      "name": "Lines Group ARC",
+      "parts": [
+        {
+          "no": "24",
+          "pn": "550-7110",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "25",
+          "pn": "550-7112",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "26",
+          "pn": "550-7114",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "27",
+          "pn": "550-7116",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "28",
+          "pn": "569-3617",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "29",
+          "pn": "590-5391",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "30",
+          "pn": "590-5393",
+          "description": "Hose As",
+          "qty": 5
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-control-valve",
+      "name": "Lines Gp Control Valve",
+      "parts": [
+        {
+          "no": "23",
+          "pn": "236-6341",
+          "description": "Hose As",
+          "qty": 5
+        },
+        {
+          "no": "36",
+          "pn": "594-0196",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "37",
+          "pn": "594-0198",
+          "description": "Hose As",
+          "qty": 1
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-return",
+      "name": "Lines Gp Return",
+      "parts": [
+        {
+          "no": "18",
+          "pn": "576-9222",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "584-5200",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "23",
+          "pn": "594-0249",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "24",
+          "pn": "594-0251",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "25",
+          "pn": "594-0253",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "26",
+          "pn": "594-0255",
+          "description": "Hose As",
+          "qty": 1
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-stick",
+      "name": "Lines Gp Stick",
+      "parts": [
+        {
+          "no": "1",
+          "pn": "363-2296",
+          "description": "Hose As",
+          "qty": 1
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-swing-motor",
+      "name": "Lines Gp Swing Motor",
+      "parts": [
+        {
+          "no": "49",
+          "pn": "302-3293",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "51",
+          "pn": "366-8644",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "52",
+          "pn": "550-7283",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "54",
+          "pn": "570-5161",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "55",
+          "pn": "576-9224",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "56",
+          "pn": "590-7443",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "61",
+          "pn": "594-0260",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "62",
+          "pn": "594-0262",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "63",
+          "pn": "594-0264",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "64",
+          "pn": "594-0266",
+          "description": "Hose As",
+          "qty": 1
+        }
+      ],
+      "images": []
+    },
+    {
+      "id": "lines-gp-travel-motor",
+      "name": "Lines Gp Travel Motor",
+      "parts": [
+        {
+          "no": "17",
+          "pn": "453-1246",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "453-1247",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "550-7174",
+          "description": "Hose As",
+          "qty": 1
+        },
+        {
+          "no": "20",
+          "pn": "550-7176",
+          "description": "Hose As",
+          "qty": 2
+        },
+        {
+          "no": "21",
+          "pn": "550-7178",
+          "description": "Hose As",
+          "qty": 2
+        },
+        {
+          "no": "22",
+          "pn": "555-4230",
+          "description": "Hose As",
+          "qty": 1
+        }
+      ],
+      "images": []
+    }
+  ]
+}
