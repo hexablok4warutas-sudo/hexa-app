@@ -131,3 +131,13 @@ html,body{max-width:100%;overflow-x:clip}
  .cat-viewer-stage{touch-action:none}
  .cat-part-picker{font-size:14px}
 }
+
+/* HEXCatalog CAT 395 — Dual SVG Selection (tambahkan di akhir CSS lama) */
+.cat-inline-svg g.callout, .cat-inline-svg g.part { cursor: pointer; }
+.cat-inline-svg g.callout text { pointer-events: all; }
+.cat-inline-svg g.callout.cat-svg-selected text { fill: #e97900 !important; stroke: none !important; font-weight: 700; }
+.cat-inline-svg g.callout.cat-svg-selected :is(path,polyline,line,ellipse,rect,polygon) { stroke: #ff9200 !important; stroke-width: .45px !important; }
+.cat-inline-svg g.part.cat-svg-selected :is(path,polyline,line,ellipse,polygon) { stroke: #ff9200 !important; stroke-width: .42px !important; }
+.cat-inline-svg g.part.cat-svg-selected { filter: drop-shadow(0 0 1px rgba(255,146,0,.5)); }
+.cat-picker-notice { margin: 10px 0 0; color: #4d6075; font-size: 13px; line-height: 1.5; }
+@media (hover:hover) { .cat-inline-svg g.callout:hover text { fill: #ff9200 !important; } }
