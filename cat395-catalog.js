@@ -36,21 +36,52 @@ function initViewer(){
  controls.addEventListener('click',e=>{const btn=e.target.closest('[data-zoom]');if(!btn)return;const action=btn.dataset.zoom;
  if(action==='in')setZoom(zoom*1.3);if(action==='out')setZoom(zoom/1.3);if(action==='fit')resetView();if(action==='fullscreen')toggleFullscreen();});
  area.addEventListener('wheel',e=>{if(!hasDrawing())return;e.preventDefault();setZoom(zoom*(e.deltaY<0?1.15:1/1.15));},{passive:false});
- area.addEventListener('pointerdown',e=>{if(e.target.closest('.cat-part-picker'))return;if(e.button!==0||!hasDrawing())return;dragging=true;startX=e.clientX-offsetX;startY=e.clientY-offsetY;area.setPointerCapture(e.pointerId);area.classList.add('is-dragging');});
- area.addEventListener('pointermove',e=>{if(!dragging)return;offsetX=e.clientX-startX;offsetY=e.clientY-startY;updateView();});
- const end=()=>{dragging=false;area.classList.remove('is-dragging')};area.addEventListener('pointerup',end);area.addEventListener('pointercancel',end);
- let down=null;area.addEventListener('pointerdown',e=>{if(e.target.closest('.cat-part-picker'))return;down={x:e.clientX,y:e.clientY};});
- area.addEventListener('pointerup',e=>{if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null;if(moved>7||!hasDrawing())return;
- const hit=document.elementFromPoint(e.clientX,e.clientY);
- const partNode=hit?.closest?.('g.part');
- if(partNode && viewer.contains(partNode)){
+ // Unified touch/mouse gestures: single-finger pan, two-finger pinch around midpoint.
+ const pointers=new Map();let gesture=null, tap=null, multiTouch=false;
+ const midpoint=(a,b)=>({x:(a.x+b.x)/2,y:(a.y+b.y)/2});
+ const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+ area.addEventListener('pointerdown',e=>{
+  if(e.target.closest('.cat-part-picker')||!hasDrawing()||e.button!==0)return;
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  area.setPointerCapture(e.pointerId);
+  if(pointers.size===1){tap={x:e.clientX,y:e.clientY,hit:e.target};multiTouch=false;gesture={type:'pan',x:e.clientX-offsetX,y:e.clientY-offsetY};}
+  else if(pointers.size===2){multiTouch=true;tap=null;hidePicker();const [a,b]=[...pointers.values()];const m=midpoint(a,b);gesture={type:'pinch',dist:distance(a,b),zoom,offsetX,offsetY,m};}
+  area.classList.add('is-dragging');
+ });
+ area.addEventListener('pointermove',e=>{
+  if(!pointers.has(e.pointerId))return;
+  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pointers.size>=2){
+   const [a,b]=[...pointers.values()],m=midpoint(a,b);
+   if(!gesture||gesture.type!=='pinch')return;
+   const next=Math.max(.5,Math.min(10,gesture.zoom*distance(a,b)/Math.max(1,gesture.dist)));
+   const rect=area.getBoundingClientRect(),cx=gesture.m.x-(rect.left+rect.width/2),cy=gesture.m.y-(rect.top+rect.height/2);
+   const newCx=m.x-(rect.left+rect.width/2),newCy=m.y-(rect.top+rect.height/2);
+   offsetX=newCx-(cx-gesture.offsetX)*(next/gesture.zoom);
+   offsetY=newCy-(cy-gesture.offsetY)*(next/gesture.zoom);
+   zoom=next;updateView();
+  }else if(gesture?.type==='pan'){
+   offsetX=e.clientX-gesture.x;offsetY=e.clientY-gesture.y;updateView();
+  }
+ });
+ area.addEventListener('pointerup',e=>{
+  if(!pointers.has(e.pointerId))return;
+  const isTap=!multiTouch&&tap&&Math.hypot(e.clientX-tap.x,e.clientY-tap.y)<9;
+  pointers.delete(e.pointerId);
+  if(pointers.size===1){const point=[...pointers.values()][0];gesture={type:'pan',x:point.x-offsetX,y:point.y-offsetY};tap=null;}
+  else if(!pointers.size){gesture=null;area.classList.remove('is-dragging');}
+  if(!isTap||!hasDrawing())return;
+  const partNode=tap.hit?.closest?.('g.part');
+  if(partNode&&viewer.contains(partNode)){
    const title=partNode.querySelector(':scope > title')?.textContent||'';
    const pn=title.match(/\[([^\]]+)\]/)?.[1];
    const no=(partNode.getAttribute('class')||'').match(/part_(\d+)/)?.[1];
-   const index=active?.parts.findIndex(p=>String(p.pn)===pn && (!no||String(p.no)===no));
+   const index=active?.parts.findIndex(p=>String(p.pn)===pn&&(!no||String(p.no)===no));
    if(index>=0){pickPart(index);return;}
- }
- showPartPicker(e.clientX,e.clientY);});
+  }
+  showPartPicker(e.clientX,e.clientY);
+ });
+ area.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);tap=null;if(!pointers.size){gesture=null;area.classList.remove('is-dragging');}});
  area.addEventListener('click',e=>{const btn=e.target.closest('[data-pick-index]');if(!btn)return;pickPart(Number(btn.dataset.pickIndex));});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&fullscreen)toggleFullscreen();});
 }
