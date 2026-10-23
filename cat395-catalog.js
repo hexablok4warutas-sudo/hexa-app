@@ -216,13 +216,42 @@ async function renderImage(){
    console.error('HEXCatalog SVG:',err);
  }
 }
-function renderSelected(){const items=[...selected.values()];$('selectionCount').textContent=items.length;$('selectionSummary').textContent=items.length?items.map(x=>`${x.group}: #${x.no} ${x.pn} × ${x.needed}`).join(' | '):'Belum ada part dipilih.';}
+function renderSelected(){
+ const items=[...selected.entries()];
+ $('selectionCount').textContent=items.length;
+ const summary=$('selectionSummary');
+ if(!items.length){summary.innerHTML='<span class="cat-selection-empty">Belum ada part dipilih. Pilih part dari Parts List, lalu tekan Add.</span>';return;}
+ summary.innerHTML='<div class="cat-selected-table-wrap"><table class="cat-selected-table"><thead><tr><th>Assembly Group</th><th>No</th><th>Part Number</th><th>Description</th><th>Qty Needed</th><th>Aksi</th></tr></thead><tbody>'+items.map(([k,x],i)=>`<tr data-selected-index="${i}"><td data-label="Assembly Group">${esc(x.group)}</td><td data-label="No">${esc(x.no)}</td><td data-label="Part Number"><strong>${esc(x.pn)}</strong></td><td data-label="Description">${esc(x.description)}</td><td data-label="Qty Needed"><input class="cat-selected-qty" type="number" min="1" max="9999" value="${qty(x.needed)}" aria-label="Qty Needed ${esc(x.pn)}"></td><td class="cat-selected-remove-cell"><button class="cat-selected-remove" type="button" aria-label="Hapus ${esc(x.pn)}">Remove</button></td></tr>`).join('')+'</tbody></table></div>';
+}
+function syncPartAddButton(x){
+ if(!active)return;
+ $('partsBody').querySelectorAll('tr').forEach(tr=>{
+  const p=active.parts[Number(tr.dataset.index)];
+  if(!p)return;
+  const b=tr.querySelector('.cat-add');
+  if(b)b.textContent=selected.has(key(active,p))?'Update':'Add';
+  if(x&&p.no==x.no&&p.pn===x.pn&&active.name===x.group){const input=tr.querySelector('.cat-qty');if(input)input.value=x.needed;}
+ });
+}
+$('selectionSummary').addEventListener('change',e=>{
+ const input=e.target.closest('.cat-selected-qty');if(!input)return;
+ const row=input.closest('[data-selected-index]'),entry=[...selected.entries()][Number(row?.dataset.selectedIndex)];
+ if(!entry)return;
+ const [k,x]=entry;x.needed=qty(input.value);input.value=x.needed;selected.set(k,x);saveSelection();syncPartAddButton(x);
+});
+$('selectionSummary').addEventListener('click',e=>{
+ const button=e.target.closest('.cat-selected-remove');if(!button)return;
+ const row=button.closest('[data-selected-index]'),entry=[...selected.entries()][Number(row?.dataset.selectedIndex)];
+ if(!entry)return;
+ selected.delete(entry[0]);saveSelection();renderSelected();syncPartAddButton();
+});
 $('groupList').addEventListener('click',e=>{const btn=e.target.closest('[data-group]');if(btn)openGroup(btn.dataset.group)});
 $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
-$('partsBody').addEventListener('click',e=>{const btn=e.target.closest('.cat-add');if(!btn||!active)return;const tr=btn.closest('tr');const p=active.parts[Number(tr.dataset.index)];pickPart(Number(tr.dataset.index));selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:qty(tr.querySelector('input').value)});btn.textContent='Update';renderSelected();});
+$('partsBody').addEventListener('click',e=>{const btn=e.target.closest('.cat-add');if(!btn||!active)return;const tr=btn.closest('tr');const p=active.parts[Number(tr.dataset.index)];pickPart(Number(tr.dataset.index));selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:qty(tr.querySelector('input').value)});btn.textContent='Update';saveSelection();renderSelected();});
 $('prevImage').addEventListener('click',()=>{if(imageIndex>0){imageIndex--;renderImage()}});
 $('nextImage').addEventListener('click',()=>{if(imageIndex<(active?.images.length||0)-1){imageIndex++;renderImage()}});
-$('clearSelection').addEventListener('click',()=>{selected.clear();renderSelected();render()});
+$('clearSelection').addEventListener('click',()=>{if(!selected.size)return;if(!confirm('Hapus semua Selected Parts?'))return;selected.clear();saveSelection();renderSelected();render()});
 $('exportSelection').addEventListener('click',async()=>{if(!selected.size){alert('Pilih part terlebih dahulu.');return}const data=[...selected.values()];const text=['Group\tNo\tPart Number\tDescription\tQty Needed',...data.map(p=>[p.group,p.no,p.pn,p.description,p.needed].join('\t'))].join('\n');try{await navigator.clipboard.writeText(text);alert('Daftar part berhasil disalin.')}catch{prompt('Salin daftar part berikut:',text)}});
+restoreSelection();renderSelected();
 fetch('cat395-hose-data.json').then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{groups=data.groups||[];showGroups();if(groups.length)openGroup(groups[0].id)}).catch(e=>{$('groupList').textContent='Gagal memuat data katalog. Periksa cat395-hose-data.json';console.error(e)});
 })();
