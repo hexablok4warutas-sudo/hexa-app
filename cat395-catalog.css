@@ -132,12 +132,37 @@ html,body{max-width:100%;overflow-x:clip}
  .cat-part-picker{font-size:14px}
 }
 
-/* HEXCatalog CAT 395 — Dual SVG Selection (tambahkan di akhir CSS lama) */
-.cat-inline-svg g.callout, .cat-inline-svg g.part { cursor: pointer; }
-.cat-inline-svg g.callout text { pointer-events: all; }
-.cat-inline-svg g.callout.cat-svg-selected text { fill: #e97900 !important; stroke: none !important; font-weight: 700; }
-.cat-inline-svg g.callout.cat-svg-selected :is(path,polyline,line,ellipse,rect,polygon) { stroke: #ff9200 !important; stroke-width: .45px !important; }
-.cat-inline-svg g.part.cat-svg-selected :is(path,polyline,line,ellipse,polygon) { stroke: #ff9200 !important; stroke-width: .42px !important; }
-.cat-inline-svg g.part.cat-svg-selected { filter: drop-shadow(0 0 1px rgba(255,146,0,.5)); }
-.cat-picker-notice { margin: 10px 0 0; color: #4d6075; font-size: 13px; line-height: 1.5; }
-@media (hover:hover) { .cat-inline-svg g.callout:hover text { fill: #ff9200 !important; } }
+/* ===== HEXCatalog Selected Parts v3: responsive table/cards ===== */
+.cat-selection{display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px}
+.cat-selection>div:first-child{flex:1 1 100%;min-width:0}
+.cat-selection #selectionSummary{margin-top:12px;line-height:1.5;overflow:visible}
+.cat-selected-table-wrap{max-width:100%;overflow-x:auto;border:1px solid #dce9f5;border-radius:12px;background:#fff}
+.cat-selected-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}
+.cat-selected-table th{background:#f1f6fc;color:#143b5b;padding:11px 12px;white-space:nowrap;font-size:12px}
+.cat-selected-table td{padding:11px 12px;border-top:1px solid #e7edf5;vertical-align:middle;color:#234760}
+.cat-selected-table td strong{color:#075eaa;font-size:14px}
+.cat-selected-qty{width:82px;min-height:40px;border:1px solid #c9dbea;border-radius:8px;padding:6px 8px;font-size:16px;background:#fff;color:#143b5b}
+.cat-selected-remove{min-height:40px;border:1px solid #f0c4c4;background:#fff5f5;color:#aa2634;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer}
+.cat-selected-remove:hover{background:#ffe6e6}
+.cat-selection-empty{display:block;padding:14px;color:#698096;background:#f5f8fc;border-radius:9px}
+.cat-selection-actions{margin-left:auto;display:flex;gap:9px;flex-wrap:wrap}
+@media(max-width:700px){
+ .cat-selection{display:block}
+ .cat-selected-table-wrap{overflow:visible;border:0;background:transparent}
+ .cat-selected-table,.cat-selected-table tbody,.cat-selected-table tr,.cat-selected-table td{display:block;width:100%}
+ .cat-selected-table thead{display:none}
+ .cat-selected-table tbody{display:grid;gap:10px}
+ .cat-selected-table tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;border:1px solid #dce9f5;border-radius:12px;background:#fff;padding:12px}
+ .cat-selected-table td{padding:0;border:0;min-width:0;overflow-wrap:anywhere;font-size:13px}
+ .cat-selected-table td::before{content:attr(data-label);display:block;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#668198;margin-bottom:3px}
+ .cat-selected-table td:nth-child(1){grid-column:1/-1}
+ .cat-selected-table td:nth-child(2){grid-column:2;grid-row:2}
+ .cat-selected-table td:nth-child(3){grid-column:1;grid-row:2}
+ .cat-selected-table td:nth-child(4){grid-column:1/-1;padding-bottom:9px;border-bottom:1px solid #e6edf4}
+ .cat-selected-table td:nth-child(5){grid-column:1;align-self:end}
+ .cat-selected-table td:nth-child(6){grid-column:2;align-self:end}
+ .cat-selected-table td:nth-child(6)::before{content:'Aksi'}
+ .cat-selected-qty{width:100%;max-width:130px;min-height:44px}
+ .cat-selected-remove{min-height:44px;width:100%}
+ .cat-selection-actions{display:grid;grid-template-columns:1fr 1.4fr;margin-top:12px}
+}
