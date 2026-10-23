@@ -77,17 +77,17 @@ function initViewer(){
    const callout=hit?.closest?.('g.callout');
    const partNode=hit?.closest?.('g.part');
    if(callout && viewer.contains(callout)){
-     const number=callout.id.match(/^ID_(\d+)(?:_\d+)?$/)?.[1] ||
-       (callout.querySelector('text')?.textContent||'').trim().match(/^\d+/)?.[0];
-     if(number){pickByNumber(number);return;}
+     const nums=partNumbers(callout);
+     if(nums.length){pickByNumbers(nums);return;}
    }
    if(partNode && viewer.contains(partNode)){
      const title=partNode.querySelector(':scope > title')?.textContent||'';
      const pn=title.match(/\[([^\]]+)\]/)?.[1];
      const nums=partNumbers(partNode);
-     const index=active?.parts.findIndex(p=>String(p.pn)===pn && (!nums.length||nums.includes(String(p.no))));
-     if(index>=0){pickPart(index);return;}
-     if(nums.length){pickByNumber(nums[0]);return;}
+     const indexes=active?.parts.map((p,i)=>(String(p.pn)===pn && (!nums.length||nums.includes(String(p.no))))?i:-1).filter(i=>i>=0)||[];
+     if(indexes.length===1){pickPart(indexes[0]);return;}
+     if(indexes.length>1){showPartPicker(e.clientX,e.clientY,indexes);return;}
+     if(nums.length){pickByNumbers(nums);return;}
    }
    showPartPicker(e.clientX,e.clientY);
  });
@@ -106,12 +106,12 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
    const m=c.match(/(?:part|callout)_(\d+(?:\s*,\s*\d+)*)/);
    return m?m[1].split(',').map(x=>x.trim()):[];
  }
- function pickByNumber(no){
-   const indexes=active?.parts.map((p,i)=>String(p.no)===String(no)?i:-1).filter(i=>i>=0)||[];
+ function pickByNumbers(nums){
+   const numbers=[...new Set(nums.map(String))];
+   const indexes=active?.parts.map((p,i)=>numbers.includes(String(p.no))?i:-1).filter(i=>i>=0)||[];
    if(indexes.length===1){pickPart(indexes[0]);return;}
    if(indexes.length>1){showPartPicker(lastPointer.x,lastPointer.y,indexes);return;}
-   // Jangan memilih part lain jika nomor belum ada dalam JSON.
-   showPartNotice(`No ${no} belum terdaftar dalam Parts List grup ini.`);
+   showPartNotice(`No ${numbers.join(', ')} belum terdaftar dalam Parts List grup ini.`);
  }
  function showPartNotice(message){
    const picker=$('catPartPicker');if(!picker)return;
@@ -126,9 +126,8 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
    viewerImage.querySelectorAll('g.part, g.callout').forEach(node=>{
      const numbers=partNumbers(node);
      const isCallout=node.classList.contains('callout');
-     const idNumber=node.id.match(/^ID_(\d+)(?:_\d+)?$/)?.[1];
      const title=node.querySelector(':scope > title')?.textContent||'';
-     const match=isCallout?(idNumber===no):(numbers.includes(no)&&title.includes('['+pn+']'));
+     const match=isCallout?numbers.includes(no):(numbers.includes(no)&&title.includes('['+pn+']'));
      node.classList.toggle('cat-svg-selected',match);
    });
  }
