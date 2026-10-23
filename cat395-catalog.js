@@ -81,7 +81,7 @@ function initViewer(){
   if(e.target.closest('.cat-part-picker')||!hasDrawing()||e.button!==0)return;
   pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
   area.setPointerCapture(e.pointerId);
-  if(pointers.size===1){tap={x:e.clientX,y:e.clientY,hit:e.target};multiTouch=false;gesture={type:'pan',x:e.clientX-offsetX,y:e.clientY-offsetY};}
+  if(pointers.size===1){tap={x:e.clientX,y:e.clientY,hit:document.elementFromPoint(e.clientX,e.clientY)||e.target};multiTouch=false;gesture={type:'pan',x:e.clientX-offsetX,y:e.clientY-offsetY};}
   else if(pointers.size===2){multiTouch=true;tap=null;hidePicker();const [a,b]=[...pointers.values()];const m=midpoint(a,b);gesture={type:'pinch',dist:distance(a,b),zoom,offsetX,offsetY,m};}
   area.classList.add('is-dragging');
  });
@@ -110,9 +110,10 @@ function initViewer(){
   else if(!pointers.size){gesture=null;area.classList.remove('is-dragging');}
   if(!isTap||!hasDrawing())return;
    // Callout induk membuka pilihan termasuk subpart; klik gambar part memakai PN metadata jika cocok.
-   const hit=tap.hit;
-   const callout=hit?.closest?.('g.callout');
-   const partNode=hit?.closest?.('g.part');
+   const hit=document.elementFromPoint(e.clientX,e.clientY)||tap.hit;
+   const svgHit=hit?.closest?.('g.callout, g.part') ? hit : tap.hit;
+   const callout=svgHit?.closest?.('g.callout');
+   const partNode=svgHit?.closest?.('g.part');
    if(callout && viewer.contains(callout)){
      const nums=partNumbers(callout);
      if(nums.length){pickByNumbers(nums);return;}
