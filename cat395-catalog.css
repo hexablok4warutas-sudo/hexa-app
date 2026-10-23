@@ -178,3 +178,7 @@ html,body{max-width:100%;overflow-x:clip}
 .cat-inline-svg g.callout:hover tspan { fill:#ff8500!important; }
 .cat-inline-svg g.callout.cat-svg-selected,
 .cat-inline-svg g.part.cat-svg-selected { filter:drop-shadow(0 0 2.5px #ff9417); }
+
+/* Single and multi-number callouts: cursor + orange hover + browser tooltip via SVG title */
+.cat-inline-svg g.callout text,.cat-inline-svg g.callout tspan{cursor:pointer!important}
+.cat-inline-svg g.callout:hover text,.cat-inline-svg g.callout:hover tspan{fill:#ff8500!important;stroke:#ff8500!important}
