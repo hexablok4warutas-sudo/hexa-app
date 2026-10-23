@@ -12,64 +12,176 @@
           "qty": 2
         }
       ],
-      "images": ["catalog-images/cat395/drive-gp-swing-01.svg"]
+      "images": [
+        "catalog-images/cat395/drive-gp-swing-01.svg"
+      ]
     },
     {
       "id": "lines-gp-motor",
       "name": "Lines Gp Motor",
       "parts": [
         {
+          "no": "4",
+          "pn": "148-8347",
+          "description": "Elbow AS",
+          "qty": 2
+        },
+        {
+          "no": "4.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "4",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "4.2",
+          "pn": "6V-9007",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "4",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "4.3",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "4",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "5",
+          "pn": "148-8444",
+          "description": "Tee AS-Swivel",
+          "qty": 1
+        },
+        {
+          "no": "5.1",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 2,
+          "parentNo": "5",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "5.2",
+          "pn": "6V-9837",
+          "description": "Tee-Swivel",
+          "qty": 1,
+          "parentNo": "5",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "6.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "6",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "6.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "6",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "11.1",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "11",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "11.2",
+          "pn": "7M-8485",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "11",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "13",
+          "pn": "4J-0520",
+          "description": "Seal-O-Ring",
+          "qty": 2
+        },
+        {
+          "no": "14",
+          "pn": "4J-0522",
+          "description": "Seal-O-Ring",
+          "qty": 2
+        },
+        {
           "no": "16",
           "pn": "528-0942",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "17",
           "pn": "551-3760",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "18",
           "pn": "551-3762",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "19",
           "pn": "551-3766",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "26",
           "pn": "552-8893",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "28",
           "pn": "576-9763",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "29",
           "pn": "576-9768",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "31",
           "pn": "594-0239",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "39",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 2
+        },
+        {
+          "no": "40",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 4
         }
       ],
-      "images": ["catalog-images/cat395/lines-gp-motor-01.svg",
-  "catalog-images/cat395/lines-gp-motor-02.svg",
-  "catalog-images/cat395/lines-gp-motor-03.svg"]
+      "images": [
+        "catalog-images/cat395/lines-gp-motor-01.svg",
+        "catalog-images/cat395/lines-gp-motor-02.svg",
+        "catalog-images/cat395/lines-gp-motor-03.svg"
+      ]
     },
     {
       "id": "lines-gp-pump",
