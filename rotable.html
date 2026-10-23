@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b3561">
+<title>Rotable | HEXA</title>
+<link rel="stylesheet" href="hexa-header.css">
+<style>
+:root{--blue:#0b3561;--blue2:#145b99;--orange:#ff9c24;--ink:#19354d}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif}body{background:#f7faff;color:var(--ink);overflow-x:hidden}
+.dev-main{padding:108px 22px 50px;min-height:100vh;background:linear-gradient(120deg,rgba(255,255,255,.84),rgba(240,248,255,.78)),url('hexa-doodle.png') center/cover repeat}
+.dev-wrap{max-width:1060px;margin:auto}.dev-back{display:inline-flex;align-items:center;gap:8px;color:#195589;text-decoration:none;background:#fff;border:1px solid #d8e5f1;border-radius:12px;padding:10px 15px;font-weight:700;font-size:13px;box-shadow:0 3px 12px #12416c0d}.dev-back:hover{background:#edf6ff}
+.dev-card{position:relative;isolation:isolate;overflow:hidden;max-width:850px;margin:24px auto 0;padding:48px 30px 40px;text-align:center;background:rgba(255,255,255,.95);border:1px solid #d9e7f4;border-radius:28px;box-shadow:0 22px 65px rgba(17,67,114,.13)}
+.dev-card:before{content:"";position:absolute;inset:0 0 auto;height:7px;background:linear-gradient(90deg,var(--blue),#2594d4,var(--orange))}.dev-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,#d9f1ff 0,transparent 68%);top:-165px;left:50%;transform:translateX(-50%);z-index:-1}
+.dev-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #c8e1f6;background:#edf7ff;border-radius:99px;padding:8px 15px;color:#1a659b;font-size:11px;font-weight:800;letter-spacing:1.8px}.dev-dot{width:8px;height:8px;background:#ff9c24;border-radius:50%;box-shadow:0 0 0 4px #ff9c2422;animation:pulse 1.9s infinite}
+.dev-art{position:relative;margin:25px auto 8px;width:min(260px,65vw);height:240px;display:grid;place-items:center}.dev-orbit{position:absolute;inset:8px;border:2px dashed #b6d9f3;border-radius:50%;animation:spin 28s linear infinite}.dev-orbit:before,.dev-orbit:after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:#ff9c24;top:17px;left:28px;box-shadow:0 2px 8px #ff9c2466}.dev-orbit:after{width:9px;height:9px;top:auto;left:auto;bottom:20px;right:26px;background:#2a8fca;box-shadow:0 2px 8px #2a8fca66}
+.dev-art img{position:relative;width:188px;height:188px;object-fit:contain;filter:drop-shadow(0 12px 12px #1b528a22);transform-origin:50% 72%;animation:devMachineMove 3.6s ease-in-out infinite}.dev-art img{will-change:transform;backface-visibility:hidden}.dev-art:after{content:"";position:absolute;bottom:12px;width:155px;height:15px;border-radius:50%;background:#0b356118;filter:blur(7px);animation:shadow 3.6s ease-in-out infinite}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.dev-card h1{margin:10px 0 10px;font-size:clamp(30px,5.7vw,52px);letter-spacing:-1.3px;color:#103e69}.dev-card h1 span{color:var(--orange)}.dev-card p{max-width:520px;margin:0 auto;color:#5f7487;line-height:1.7;font-size:15px}.dev-title{font-size:12px!important;letter-spacing:2.4px;font-weight:800;color:#3c87ba!important;margin-bottom:8px!important}
+.dev-loader{display:flex;justify-content:center;gap:9px;margin:26px auto 14px}.dev-loader i{width:10px;height:10px;background:#17639d;border-radius:50%;animation:bounce 1.2s ease-in-out infinite}.dev-loader i:nth-child(2){animation-delay:.15s;background:#399bd1}.dev-loader i:nth-child(3){animation-delay:.3s;background:#ff9c24}.dev-note{font-size:12px!important;color:#8294a4!important}.dev-footer{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:30px;padding-top:20px;border-top:1px solid #e7eff6;font-size:12px;font-weight:700;color:#7290a9}.dev-footer strong{color:#145b99}
+@keyframes devMachineMove{0%,100%{transform:translateY(0) rotate(-3deg) scale(1)}20%{transform:translateY(-7px) rotate(2deg) scale(1.025)}40%{transform:translateY(-11px) rotate(-2deg) scale(1.045)}60%{transform:translateY(-6px) rotate(3deg) scale(1.025)}80%{transform:translateY(-3px) rotate(-1deg) scale(1.01)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes shadow{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(.78);opacity:.4}}@keyframes pulse{50%{box-shadow:0 0 0 8px #ff9c2400}}@keyframes bounce{0%,65%,100%{transform:translateY(0)}35%{transform:translateY(-9px)}}
+@media(max-width:600px){.dev-main{padding:88px 12px 28px}.dev-card{margin-top:17px;padding:30px 17px 27px;border-radius:20px}.dev-art{height:210px;width:220px}.dev-art img{width:165px;height:165px}.dev-card p{font-size:13px}.dev-footer{margin-top:22px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header id="hexaHeader" data-header-type="standard" data-page="rotable"></header>
+<main class="dev-main"><div class="dev-wrap">
+<a class="dev-back" href="main.html" aria-label="Kembali ke Main Page">&#8592; Kembali ke Main Page</a>
+<section class="dev-card" aria-labelledby="devHeading"><div class="dev-glow" aria-hidden="true"></div>
+<div class="dev-chip"><span class="dev-dot" aria-hidden="true"></span> HEXA · UNDER DEVELOPMENT</div>
+<div class="dev-art" aria-hidden="true"><div class="dev-orbit"></div><img src="hexa-icon-svg-rotable.svg" alt=""></div>
+<p class="dev-title">HEAVY EQUIPMENT XCELLENT APPS</p>
+<h1 id="devHeading">COMING <span>SOON</span><span class="sr-only"> — Rotable</span></h1>
+<p>Halaman <strong>Rotable</strong> sedang dalam proses pengembangan. Fitur pengelolaan komponen rotable, pemantauan status, dan riwayat perputaran komponen akan hadir di HEXA.</p>
+<div class="dev-loader" aria-hidden="true"><i></i><i></i><i></i></div>
+<p class="dev-note">Sedang disiapkan untuk pengalaman yang lebih baik.</p>
+<div class="dev-footer"><strong>HEXA</strong><span>•</span>Rotable</div>
+</section></div></main>
+<script src="hexa-menu.js"></script>
+<script src="hexa-header.js"></script>
+<script src="hexa-offline-register.js"></script>
+</body></html>

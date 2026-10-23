@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b3561"><title>HEXA Games | Coming Soon</title>
+<link rel="stylesheet" href="hexa-header.css">
+<style>
+:root{--navy:#0b3561;--blue:#1674b8;--orange:#ff9c24;--ink:#173750}*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif}body{color:var(--ink);background:#f7faff;overflow-x:hidden}
+.games-main{min-height:100vh;padding:110px 20px 60px;background:linear-gradient(115deg,rgba(255,255,255,.92),rgba(234,246,255,.87)),url('hexa-doodle.png') center/550px repeat}
+.wrap{max-width:1060px;margin:auto}.back{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--navy);background:white;border:1px solid #d9e8f5;border-radius:12px;padding:11px 16px;font-weight:700;box-shadow:0 5px 15px #163a5912}
+.hero{margin:24px auto 0;min-height:550px;border:1px solid #d9e9f7;border-radius:28px;background:linear-gradient(155deg,#fff 0%,#eff8ff 70%,#e6f2ff 100%);box-shadow:0 22px 60px #0b356116;overflow:hidden;position:relative;text-align:center;padding:26px 18px 42px}
+.hero:before{content:"";position:absolute;inset:0;background-image:radial-gradient(#1e6ba514 1.4px,transparent 1.4px);background-size:23px 23px;pointer-events:none}.hero>*{position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#eaf4ff;color:#12588c;border:1px solid #cee7fa;border-radius:99px;padding:8px 14px;font-size:12px;font-weight:800;letter-spacing:1.4px}.blink{width:8px;height:8px;border-radius:50%;background:#ff9c24;box-shadow:0 0 0 5px #ff9c2427;animation:blink 1.5s infinite}
+h1{margin:15px 0 5px;color:var(--navy);font-size:clamp(32px,5vw,49px);letter-spacing:-1px}.subtitle{margin:0 auto;color:#597389;max-width:580px;font-size:15px;line-height:1.65}
+.stage{height:275px;max-width:570px;margin:13px auto 0;position:relative}.stage:before{content:"";position:absolute;left:7%;right:7%;bottom:13px;height:34px;border-radius:50%;background:radial-gradient(ellipse,#135c9430,transparent 70%)}
+.orbit{position:absolute;left:50%;top:43%;width:290px;height:225px;border:2px dashed #2986c233;border-radius:50%;transform:translate(-50%,-50%);animation:orbit 25s linear infinite}
+.star{position:absolute;font-size:20px;color:var(--orange);animation:twinkle 2.4s infinite}.s1{top:18px;left:17%}.s2{top:38px;right:13%;animation-delay:1s}.s3{bottom:57px;left:8%;animation-delay:.7s}
+.robot{position:absolute;left:calc(50% - 150px);bottom:34px;width:165px;height:215px;animation:robot-bob 2.8s ease-in-out infinite;transform-origin:center bottom;filter:drop-shadow(0 9px 7px #0b35612a)}
+.antenna{position:absolute;top:1px;left:79px;width:6px;height:25px;background:#125a92;border-radius:8px}.antenna:before{content:"";position:absolute;left:-6px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--orange);box-shadow:0 0 13px #ff9c2488;animation:blink 1.2s infinite}
+.head{position:absolute;top:23px;left:25px;width:116px;height:79px;border:5px solid #0d4775;border-radius:24px;background:linear-gradient(145deg,#e7f8ff,#8cd6ff);box-shadow:inset 0 -9px #368fc33d}.face{position:absolute;inset:17px 10px 12px;background:#0c3c66;border-radius:13px;display:flex;justify-content:space-evenly;align-items:center}.eye{width:23px;height:18px;background:#ffb22f;border-radius:8px;box-shadow:0 0 12px #ffb22f;animation:eye 4s infinite}.eye:last-child{animation-delay:.1s}
+.ear{position:absolute;top:48px;width:20px;height:35px;border-radius:8px;background:#f9a23a;border:4px solid #0d4775}.ear.left{left:8px}.ear.right{right:7px}
+.torso{position:absolute;top:110px;left:37px;width:95px;height:76px;border:5px solid #0d4775;border-radius:19px;background:linear-gradient(145deg,#a9e4ff,#2f98d0)}.badge{position:absolute;top:19px;left:23px;width:40px;height:29px;background:#fff;border:3px solid #0d4775;border-radius:9px;display:grid;place-items:center;color:#0d4775;font-size:11px;font-weight:900}
+.arm{position:absolute;top:116px;width:29px;height:68px;background:#60b8e5;border:5px solid #0d4775;border-radius:15px;transform-origin:top center}.arm.left{left:5px;animation:wave 1.6s ease-in-out infinite}.arm.right{right:2px;animation:wave-right 2s ease-in-out infinite}.hand{position:absolute;bottom:-12px;left:-3px;width:25px;height:23px;background:#ffad36;border:4px solid #0d4775;border-radius:10px}
+.leg{position:absolute;top:178px;width:33px;height:34px;background:#4ea9d9;border:5px solid #0d4775;border-radius:9px}.leg.left{left:49px}.leg.right{right:46px}
+.controller{position:absolute;right:calc(50% - 238px);bottom:50px;width:200px;height:128px;animation:controller-tilt 2.8s ease-in-out infinite;filter:drop-shadow(0 11px 8px #0b356126)}
+.pad{position:absolute;left:10px;top:24px;width:180px;height:95px;border:6px solid #0c4775;border-radius:48% 48% 37% 37%;background:linear-gradient(145deg,#5fbce8,#197ab8);transform:rotate(-6deg)}
+.joy-base{position:absolute;left:67px;top:43px;width:48px;height:43px;background:#0b3c68;border:4px solid #072d52;border-radius:50%}.stick{position:absolute;left:86px;top:17px;width:12px;height:56px;background:#0d416e;border-radius:9px;transform-origin:bottom center;animation:stick 1.5s ease-in-out infinite}.stick:before{content:"";position:absolute;top:-12px;left:-11px;width:34px;height:34px;border-radius:50%;border:4px solid #0b4775;background:var(--orange)}
+.key{position:absolute;width:18px;height:18px;border:3px solid #0c4775;border-radius:50%;background:#ffae35;animation:key-press 1.7s infinite}.k1{right:25px;top:46px}.k2{right:43px;top:65px;animation-delay:.5s}.cross{position:absolute;left:28px;top:54px;width:42px;height:42px;background:#0a406d;clip-path:polygon(35% 0,65% 0,65% 35%,100% 35%,100% 65%,65% 65%,65% 100%,35% 100%,35% 65%,0 65%,0 35%,35% 35%)}
+.coming{font-size:clamp(23px,4vw,37px);color:var(--navy);font-weight:900;letter-spacing:2px;margin:0}.dots span{display:inline-block;animation:dot 1.1s infinite}.dots span:nth-child(2){animation-delay:.18s}.dots span:nth-child(3){animation-delay:.36s}.caption{font-size:14px;color:#658096;margin:10px 0 21px}.tag{display:inline-block;background:#fff4e3;color:#a45d0b;border:1px solid #ffdb9e;border-radius:50px;padding:9px 18px;font-size:12px;font-weight:800;letter-spacing:.6px}
+@keyframes robot-bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-15px) rotate(3deg)}}@keyframes wave{0%,100%{transform:rotate(15deg)}50%{transform:rotate(48deg)}}@keyframes wave-right{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(-37deg)}}@keyframes controller-tilt{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(-9px)}}@keyframes stick{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(22deg)}}@keyframes key-press{0%,55%,100%{transform:scale(1)}65%{transform:scale(.67)}}@keyframes blink{50%{opacity:.35}}@keyframes eye{0%,42%,49%,100%{transform:scaleY(1)}46%{transform:scaleY(.15)}}@keyframes orbit{to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes twinkle{50%{opacity:.25;transform:scale(.65)}}@keyframes dot{0%,70%,100%{transform:translateY(0);opacity:.5}35%{transform:translateY(-7px);opacity:1}}
+@media(max-width:550px){.games-main{padding:94px 12px 32px}.hero{padding:23px 10px 34px;border-radius:20px}.stage{height:250px;transform:scale(.78);transform-origin:center center;margin:-5px auto -18px}.robot{left:calc(50% - 145px)}.controller{right:calc(50% - 230px)}.subtitle{font-size:13px}.orbit{width:250px;height:200px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<header id="hexaHeader" data-header-type="standard" data-page="hexa-games"></header>
+<main class="games-main"><div class="wrap"><a class="back" href="main.html" aria-label="Kembali ke Main Page">← Kembali ke Main Page</a>
+<section class="hero" aria-labelledby="page-title"><div class="eyebrow"><span class="blink"></span> HEXA GAME CENTER</div>
+<h1 id="page-title">HEXA GAMES</h1><p class="subtitle">Petualangan, tantangan, dan permainan seru untuk tim HEXA sedang disiapkan.</p>
+<div class="stage" role="img" aria-label="Animasi robot HEXA melambaikan tangan di samping joystick yang bergerak">
+<div class="orbit"></div><span class="star s1">✦</span><span class="star s2">✦</span><span class="star s3">✦</span>
+<div class="robot"><div class="antenna"></div><div class="ear left"></div><div class="ear right"></div><div class="head"><div class="face"><div class="eye"></div><div class="eye"></div></div></div><div class="arm left"><div class="hand"></div></div><div class="arm right"><div class="hand"></div></div><div class="torso"><div class="badge">HEXA</div></div><div class="leg left"></div><div class="leg right"></div></div>
+<div class="controller"><div class="pad"></div><div class="cross"></div><div class="joy-base"></div><div class="stick"></div><div class="key k1"></div><div class="key k2"></div></div></div>
+<p class="coming">COMING SOON<span class="dots"><span>.</span><span>.</span><span>.</span></span></p><p class="caption">Get ready, mechanics! The next challenge is loading.</p><span class="tag">🎮 UNDER DEVELOPMENT</span>
+</section></div></main>
+<script src="hexa-menu.js"></script><script src="hexa-header.js"></script>
+</body></html>
