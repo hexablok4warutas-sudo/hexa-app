@@ -17,3 +17,17 @@
 .cat-fullscreen .cat-drawing{flex:1;height:auto!important;min-height:0}
 .cat-viewer-open{overflow:hidden}
 @media(max-width:600px){.cat-drawing.cat-viewer{height:360px}.cat-zoom-controls{width:100%;justify-content:flex-end}.cat-images.cat-fullscreen{inset:0;border-radius:0}}
+
+/* Part number selection from drawing: manual matching until SVG callouts are mapped */
+.cat-part-picker{position:absolute;z-index:12;width:min(285px,calc(100% - 16px));max-height:260px;overflow:auto;text-align:left;background:#fff;border:1px solid #d2e3f0;border-radius:12px;box-shadow:0 14px 35px #15364b33;padding:10px;cursor:default;touch-action:pan-y;user-select:text}
+.cat-part-picker[hidden]{display:none!important}
+.cat-picker-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px;color:#163a5c}
+.cat-picker-head button{border:0;background:#f0f5fa;border-radius:7px;font-size:20px;cursor:pointer}
+.cat-picker-list{display:grid;gap:4px;max-height:170px;overflow:auto}
+.cat-picker-list button{display:flex;align-items:center;gap:9px;padding:8px;text-align:left;border:1px solid #e4edf6;background:#f8fbff;border-radius:7px;cursor:pointer;font-size:12px}
+.cat-picker-list button:hover{background:#fff1df;border-color:#ff9417}
+.cat-picker-list b{color:#075eaa;white-space:nowrap}
+.cat-picker-list span{overflow-wrap:anywhere}
+.cat-part-picker small{display:block;color:#778da1;margin-top:8px;font-size:10px;line-height:1.4}
+#partsBody tr.cat-part-highlight{background:#fff0d9;outline:2px solid #ff9417;outline-offset:-2px}
+.cat-viewer-stage[data-message=""]{cursor:crosshair}
