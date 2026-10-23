@@ -742,53 +742,343 @@
       ]
     },
     {
-      "id": "lines-group-arc",
-      "name": "Lines Group ARC",
+      "id": "lines-gp-arc-swivel",
+      "name": "Lines Gp ARC & Swivel",
       "parts": [
         {
-          "no": "24",
-          "pn": "550-7110",
-          "description": "Hose As",
+          "no": "1",
+          "pn": "1P-3703",
+          "description": "Seal-Rectangular",
+          "qty": 2
+        },
+        {
+          "no": "2",
+          "pn": "1P-3704",
+          "description": "Seal-Rectangular",
+          "qty": 11
+        },
+        {
+          "no": "3",
+          "pn": "1P-3705",
+          "description": "Seal-Rectangular",
+          "qty": 14
+        },
+        {
+          "no": "4",
+          "pn": "7K-1181",
+          "description": "Strap-Cable",
+          "qty": 4
+        },
+        {
+          "no": "5",
+          "pn": "170-8553",
+          "description": "Bolt-Socket Head (M12X1.75X40-MM)",
+          "qty": 12
+        },
+        {
+          "no": "6",
+          "pn": "239-2009",
+          "description": "Support AS",
+          "qty": 2
+        },
+        {
+          "no": "6.1",
+          "pn": "8T-3597",
+          "description": "Nut-Weld (M12X1.75-THD)",
+          "qty": 3,
+          "parentNo": "6",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "7",
+          "pn": "447-1707",
+          "description": "Bolt (M16X2X60-MM)",
+          "qty": 50
+        },
+        {
+          "no": "8",
+          "pn": "451-2175",
+          "description": "Washer-Hard (17.5X30X3.5-MM Thk)",
+          "qty": 50
+        },
+        {
+          "no": "9",
+          "pn": "101-7397",
+          "description": "Bolt-Socket Head (M12X1.75X50-MM)",
+          "qty": 8
+        },
+        {
+          "no": "10",
+          "pn": "104-8903",
+          "description": "Guard",
+          "qty": 2
+        },
+        {
+          "no": "11",
+          "pn": "124-0909",
+          "description": "Clip",
+          "qty": 4
+        },
+        {
+          "no": "12",
+          "pn": "128-7514",
+          "description": "Clip",
+          "qty": 6
+        },
+        {
+          "no": "13",
+          "pn": "164-6874",
+          "description": "Fitting AS-Elbow (Quick Disconnect, Male)",
+          "qty": 3
+        },
+        {
+          "no": "13.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "13",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "13.2",
+          "pn": "085-7356",
+          "description": "Elbow-Adapter",
+          "qty": 1,
+          "parentNo": "13",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "14",
+          "pn": "1P-5767",
+          "description": "Flange-Half",
+          "qty": 20
+        },
+        {
+          "no": "15",
+          "pn": "338-6971",
+          "description": "Sensor GP-Pressure",
+          "qty": 4
+        },
+        {
+          "no": "16",
+          "pn": "550-7099",
+          "description": "Tube AS",
           "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "550-7100",
+          "description": "Tube AS",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "550-7101",
+          "description": "Tube AS",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "550-7102",
+          "description": "Tube AS",
+          "qty": 1
+        },
+        {
+          "no": "20",
+          "pn": "569-3617",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "21",
+          "pn": "569-3619",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "22",
+          "pn": "590-5391",
+          "description": "Hose AS",
+          "qty": 5
+        },
+        {
+          "no": "23",
+          "pn": "590-5393",
+          "description": "Tube AS",
+          "qty": 1
+        },
+        {
+          "no": "24",
+          "pn": "590-5394",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "24.1",
+          "pn": "7Y-6215",
+          "description": "Plate",
+          "qty": 1,
+          "parentNo": "24",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "24.2",
+          "pn": "8T-3597",
+          "description": "Nut-Weld (M12X1.75-THD)",
+          "qty": 2,
+          "parentNo": "24",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
         },
         {
           "no": "25",
-          "pn": "550-7112",
-          "description": "Hose As",
+          "pn": "673-0443",
+          "description": "Support AS",
           "qty": 1
+        },
+        {
+          "no": "25.1",
+          "pn": "7Y-6215",
+          "description": "Plate",
+          "qty": 1,
+          "parentNo": "25",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "25.2",
+          "pn": "8T-3597",
+          "description": "Nut-Weld (M12X1.75-THD)",
+          "qty": 2,
+          "parentNo": "25",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "25.3",
+          "pn": "8Y-3795",
+          "description": "Boss (M10X1.5X40-MM)",
+          "qty": 3,
+          "parentNo": "25",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "25.4",
+          "pn": "9R-2672",
+          "description": "Boss-Threaded (M10X1.5X20-MM)",
+          "qty": 3,
+          "parentNo": "25",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
         },
         {
           "no": "26",
-          "pn": "550-7114",
-          "description": "Hose As",
+          "pn": "591-3704",
+          "description": "Support AS",
           "qty": 1
+        },
+        {
+          "no": "26.1",
+          "pn": "8T-3597",
+          "description": "Nut-Weld (M12X1.75-THD)",
+          "qty": 7,
+          "parentNo": "26",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "26.2",
+          "pn": "9R-2672",
+          "description": "Boss-Threaded (M10X1.5X20-MM)",
+          "qty": 3,
+          "parentNo": "26",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
         },
         {
           "no": "27",
-          "pn": "550-7116",
-          "description": "Hose As",
-          "qty": 1
+          "pn": "5P-1076",
+          "description": "Washer-Hard (13.5X30X4-MM Thk)",
+          "qty": 6
         },
         {
           "no": "28",
-          "pn": "569-3617",
-          "description": "Hose As",
-          "qty": 1
+          "pn": "5P-8077",
+          "description": "Flange-Half",
+          "qty": 20
         },
         {
           "no": "29",
-          "pn": "590-5391",
-          "description": "Hose As",
+          "pn": "653-1269",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "30",
-          "pn": "590-5393",
-          "description": "Hose As",
-          "qty": 5
+          "pn": "653-1270",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "31",
+          "pn": "653-1271",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "32",
+          "pn": "653-1272",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "33",
+          "pn": "6V-0400",
+          "description": "Flange-Half",
+          "qty": 4
+        },
+        {
+          "no": "34",
+          "pn": "7X-0584",
+          "description": "Washer-Hard (13.5X20.5X2-MM Thk)",
+          "qty": 20
+        },
+        {
+          "no": "35",
+          "pn": "288-3678",
+          "description": "Bolt (M20X2.5X45-MM)",
+          "qty": 4
+        },
+        {
+          "no": "36",
+          "pn": "8T-4123",
+          "description": "Washer (22X35X3.5-MM Thk)",
+          "qty": 4
+        },
+        {
+          "no": "37",
+          "pn": "259-2627",
+          "description": "Bolt-Head (M12X1.75X40-MM)",
+          "qty": 4
+        },
+        {
+          "no": "38",
+          "pn": "8T-4194",
+          "description": "Bolt (M12X1.75X50-MM)",
+          "qty": 48
+        },
+        {
+          "no": "39",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 48
+        },
+        {
+          "no": "40",
+          "pn": "362-1320",
+          "description": "Bolt (M12X1.75X35-MM)",
+          "qty": 2
         }
       ],
-      "images": []
+      "images": [
+        "catalog-images/cat395/lines-gp-arc-swivel-01.svg",
+        "catalog-images/cat395/lines-gp-arc-swivel-02.svg",
+        "catalog-images/cat395/lines-gp-arc-swivel-03.svg"
+      ]
     },
     {
       "id": "lines-gp-control-valve",
