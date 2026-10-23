@@ -16,11 +16,12 @@
       <div class="cat-layout">
         <aside class="cat-groups"><h2>Assembly Groups</h2><input id="groupSearch" type="search" placeholder="Cari group..."><div id="groupList"></div></aside>
         <section class="cat-detail"><div class="cat-detail-head"><h2 id="groupTitle">Pilih Group</h2><span id="groupCount"></span></div>
-          <div class="cat-images"><div class="cat-image-toolbar"><strong>Assembly Drawing</strong><div><button id="prevImage" type="button">‹</button><span id="imagePosition">0 / 0</span><button id="nextImage" type="button">›</button></div></div><div id="drawingArea" class="cat-drawing">Gambar SVG akan ditambahkan oleh Master.</div></div>
-          <div class="cat-table-wrap"><table><thead><tr><th>No</th><th>Part Number</th><th>Description</th><th>Qty Assembly</th><th>Qty Needed</th><th></th></tr></thead><tbody id="partsBody"></tbody></table></div>
+          <div class="cat-workspace"><div class="cat-images"><div class="cat-image-toolbar"><strong>Assembly Drawing</strong><div><button id="prevImage" type="button">‹</button><span id="imagePosition">0 / 0</span><button id="nextImage" type="button">›</button></div></div><div id="drawingArea" class="cat-drawing">Gambar SVG akan ditambahkan oleh Master.</div></div>
+          <div class="cat-parts-panel"><div class="cat-parts-heading"><strong>Parts List</strong><small>Scroll untuk melihat seluruh part</small></div><div class="cat-table-wrap"><table><thead><tr><th>No</th><th>Part No.</th><th>Description</th><th>Qty</th><th aria-label="Tambah part"></th></tr></thead><tbody id="partsBody"></tbody></table></div></div></div>
+          <section class="cat-selection"><div><h2>Selected Parts <span id="selectionCount">0</span></h2><p id="selectionSummary">Belum ada part dipilih.</p></div><div class="cat-selection-actions"><button id="clearSelection" type="button">Clear</button><button id="exportSelection" type="button">Copy Selected Parts</button></div></section>
         </section>
       </div>
-      <section class="cat-selection"><div><h2>Selected Parts <span id="selectionCount">0</span></h2><p id="selectionSummary">Belum ada part dipilih.</p></div><div class="cat-selection-actions"><button id="clearSelection" type="button">Clear</button><button id="exportSelection" type="button">Copy Selected Parts</button></div></section>
+      
     </section>
   </div>
 </main>
