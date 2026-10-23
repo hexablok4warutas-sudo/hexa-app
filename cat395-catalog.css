@@ -31,3 +31,11 @@
 .cat-part-picker small{display:block;color:#778da1;margin-top:8px;font-size:10px;line-height:1.4}
 #partsBody tr.cat-part-highlight{background:#fff0d9;outline:2px solid #ff9417;outline-offset:-2px}
 .cat-viewer-stage[data-message=""]{cursor:crosshair}
+
+/* SVG CAT SIS: grup part asli dapat diklik, tanpa mengganggu zoom/pan */
+.cat-inline-svg{pointer-events:auto!important;overflow:visible}
+.cat-inline-svg g.part{cursor:pointer}
+.cat-inline-svg g.part:hover{filter:drop-shadow(0 0 1.1px #ff9417)}
+.cat-inline-svg g.part:hover path,
+.cat-inline-svg g.part:hover polyline,
+.cat-inline-svg g.part:hover line{stroke:#ff9417!important;stroke-width:.3!important}
