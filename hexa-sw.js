@@ -1,8 +1,9 @@
-/* HEXA SERVICE WORKER V6.3 - DAILY ACTIVITY STAGE 1
- * Offline CSS / JS / icons / Global Header
- * Does not delete old caches or IndexedDB.
+/* HEXA SERVICE WORKER V6.4 - BACKLOG OFFLINE SHELL
+ * Adds Backlog Monitoring & Backlog Control app-shell support.
+ * Preserves existing caches and IndexedDB (including pending inspection drafts).
+ * DATA offline requires corresponding IndexedDB handling in page scripts.
  */
-const CACHE_NAME = 'hexa-shell-v6-3-da-stage1-20261022';
+const CACHE_NAME = 'hexa-shell-v6-4-backlog-20261023';
 
 const CORE = [
   '/index.html', '/app.js', '/style.css',
@@ -20,7 +21,10 @@ const CORE = [
   '/hexa-icon-unithistory.svg',
   '/hexa-icon-dailyactivity.svg',
   '/hexa-icon-greasingantilineboring.svg',
-  '/hexa-icon-draftinspection.svg'
+  '/hexa-icon-draftinspection.svg',
+  '/backlog-monitoring.html', '/backlog-monitoring.css', '/backlog-monitoring.js',
+  '/backlog-control.html', '/backlog-control.css', '/backlog-control.js',
+  '/hexa-icon-backlogregistration.svg', '/hexa-icon-backlogcontrol.svg'
 ];
 
 const PAGES = new Map([
@@ -36,7 +40,11 @@ const PAGES = new Map([
   ['/start-inspection', '/start-inspection.html'],
   ['/start-inspection.html', '/start-inspection.html'],
   ['/draft-inspection', '/draft-inspection.html'],
-  ['/draft-inspection.html', '/draft-inspection.html']
+  ['/draft-inspection.html', '/draft-inspection.html'],
+  ['/backlog-monitoring', '/backlog-monitoring.html'],
+  ['/backlog-monitoring.html', '/backlog-monitoring.html'],
+  ['/backlog-control', '/backlog-control.html'],
+  ['/backlog-control.html', '/backlog-control.html']
 ]);
 
 const STATIC_FILE = /\.(?:css|js|mjs|svg|png|jpg|jpeg|gif|webp|ico|woff2?|ttf|otf)$/i;
