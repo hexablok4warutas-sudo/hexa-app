@@ -193,3 +193,47 @@ html,body{max-width:100%;overflow-x:clip}
 .cat-search-hint{padding:10px 5px;font-size:12px;color:#688096}
 .cat-search-result:hover strong{color:#ff8500}
 
+
+
+/* === HEXCatalog CAT 395 | Drawing + Parts List side-by-side === */
+.cat-layout{grid-template-columns:minmax(0,265px) minmax(0,1fr);align-items:start}
+.cat-detail{min-width:0}
+.cat-workspace{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,1fr);gap:12px;align-items:stretch;min-width:0}
+.cat-workspace .cat-images{margin:12px 0 0;min-width:0;display:flex;flex-direction:column}
+.cat-workspace .cat-images .cat-drawing.cat-viewer{height:clamp(390px,43vw,630px);min-height:0;flex:1}
+.cat-parts-panel{min-width:0;margin-top:12px;border:1px solid #e4edf5;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;height:calc(clamp(390px,43vw,630px) + 57px)}
+.cat-parts-heading{flex:none;min-height:57px;padding:11px 12px;background:#f5f9fd;display:flex;flex-direction:column;gap:4px;color:#18324c}
+.cat-parts-heading small{font-size:11px;color:#74889b;font-weight:normal}
+.cat-parts-panel .cat-table-wrap{min-height:0;flex:1;overflow-y:auto;overflow-x:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.cat-parts-panel table{font-size:12px;table-layout:auto}
+.cat-parts-panel thead{position:sticky;top:0;z-index:2}
+.cat-parts-panel th,.cat-parts-panel td{padding:10px 6px;white-space:normal;overflow-wrap:anywhere;vertical-align:middle}
+.cat-parts-panel th:nth-child(1),.cat-parts-panel td:nth-child(1){width:38px}
+.cat-parts-panel th:nth-child(2),.cat-parts-panel td:nth-child(2){min-width:94px}
+.cat-parts-panel th:nth-child(4),.cat-parts-panel td:nth-child(4){width:39px;text-align:center}
+.cat-parts-panel th:nth-child(5),.cat-parts-panel td:nth-child(5){width:45px;text-align:center}
+.cat-parts-panel .cat-add{display:inline-flex;align-items:center;justify-content:center;background:#ff9417;color:#fff;border:0;width:35px;height:35px;padding:0;border-radius:9px;cursor:pointer}
+.cat-parts-panel .cat-add:hover{background:#e67d00}
+.cat-parts-panel .cat-add.is-selected{background:#fff1de;color:#c96b00;outline:1px solid #ffb95e}
+.cat-selection{margin-top:14px;width:100%}
+.cat-images.cat-fullscreen{margin:0;display:flex}
+.cat-images.cat-fullscreen .cat-drawing.cat-viewer{height:auto!important;flex:1}
+@media(max-width:1200px){.cat-workspace{grid-template-columns:minmax(0,1.1fr) minmax(255px,1fr)}}
+@media(max-width:1000px){.cat-layout{grid-template-columns:minmax(0,1fr)}.cat-workspace{grid-template-columns:minmax(0,1.2fr) minmax(255px,1fr)}}
+@media(max-width:700px){
+ .cat-workspace{grid-template-columns:minmax(0,1fr)}
+ .cat-workspace .cat-images .cat-drawing.cat-viewer{height:clamp(310px,88vw,470px);flex:none}
+ .cat-parts-panel{height:390px;margin-top:0}
+ .cat-parts-panel .cat-table-wrap{overflow-y:auto;overflow-x:hidden}
+ .cat-parts-panel .cat-table-wrap table{display:table;width:100%}
+ .cat-parts-panel .cat-table-wrap thead{display:table-header-group}
+ .cat-parts-panel .cat-table-wrap tbody{display:table-row-group}
+ .cat-parts-panel .cat-table-wrap tr{display:table-row;background:transparent;border:0;padding:0}
+ .cat-parts-panel .cat-table-wrap td{display:table-cell;width:auto;grid-column:auto;grid-row:auto;padding:10px 5px;border-bottom:1px solid #e5edf5;font-size:12px;line-height:1.35;white-space:normal;background:transparent}
+ .cat-parts-panel .cat-table-wrap td::before{display:none!important}
+ .cat-parts-panel .cat-table-wrap td:nth-child(2){font-size:12px;margin:0;color:#075eaa}
+ .cat-parts-panel .cat-table-wrap td:nth-child(3){padding:10px 5px;border-bottom:1px solid #e5edf5}
+ .cat-parts-panel .cat-table-wrap td:nth-child(4){border-radius:0;white-space:normal}
+ .cat-parts-panel .cat-table-wrap td:nth-child(5){padding:10px 4px}
+ .cat-parts-panel .cat-add{width:35px;height:35px;min-width:35px;min-height:35px}
+}
