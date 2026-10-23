@@ -1,38 +1,36 @@
-
-<main class="hexcatalog-main">
-  <section class="hexcatalog-heading">
-    <h1>HEX<span>Catalog</span></h1>
-    <p>Heavy Equipment Parts Catalog</p>
-  </section>
-
-  <section class="hexcatalog-container">
-    <h2>Select Unit Catalog</h2>
-    <p>Pilih model unit untuk membuka katalog.</p>
-
-    <div class="hexcatalog-grid">
-      <button class="catalog-card" data-model="CAT 395">
-        <h3>CAT 395</h3>
-        <span>Caterpillar</span>
-        <strong>Open Catalog →</strong>
-      </button>
-
-      <button class="catalog-card" data-model="PC1250-8">
-        <h3>PC1250-8</h3>
-        <span>Komatsu</span>
-        <strong>Open Catalog →</strong>
-      </button>
-
-      <button class="catalog-card" data-model="PC1250-11">
-        <h3>PC1250-11</h3>
-        <span>Komatsu</span>
-        <strong>Open Catalog →</strong>
-      </button>
-
-      <button class="catalog-card" data-model="PC500">
-        <h3>PC500</h3>
-        <span>Komatsu</span>
-        <strong>Open Catalog →</strong>
-      </button>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HEXCatalog | HEXA</title>
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="hex-catalog.css">
+</head>
+<body>
+  <header id="hexaHeader" data-header-type="standard" data-page="hex-catalog"></header>
+  <main class="hexcatalog-main">
+    <div class="hexcatalog-shell">
+      <section class="hexcatalog-heading" aria-labelledby="catalog-title">
+        <div class="hexcatalog-brand"><img src="hexa-icon-partscatalog.svg" alt="" onerror="this.style.display='none'"> <span>HEXA • HEAVY EQUIPMENT XCELLENT APPS</span></div>
+        <h1 id="catalog-title">HEX<span>Catalog</span></h1>
+        <p>Heavy Equipment Parts Catalog</p>
+      </section>
+      <section class="hexcatalog-container" aria-labelledby="unit-heading">
+        <div class="hexcatalog-section-heading"><div><div class="hexcatalog-eyebrow">PARTS REFERENCE LIBRARY</div><h2 id="unit-heading">Select Unit Catalog</h2><p>Pilih model unit untuk membuka katalog komponen.</p></div><span class="hexcatalog-count">4 Unit Models</span></div>
+        <div class="hexcatalog-grid">
+          <button type="button" class="catalog-card" data-model="CAT 395"><span class="catalog-card-top"><span class="catalog-card-number">01 / CATERPILLAR</span><span class="catalog-card-arrow" aria-hidden="true">↗</span></span><span class="catalog-card-visual"><span class="catalog-card-machine" aria-hidden="true">CAT</span><span class="catalog-card-watermark" aria-hidden="true">395</span></span><span class="catalog-card-info"><span class="catalog-card-name">CAT 395</span><span class="catalog-card-maker">Caterpillar</span><span class="catalog-card-action">Open Catalog <span aria-hidden="true">→</span></span></span></button>
+          <button type="button" class="catalog-card" data-model="PC1250-8"><span class="catalog-card-top"><span class="catalog-card-number">02 / KOMATSU</span><span class="catalog-card-arrow" aria-hidden="true">↗</span></span><span class="catalog-card-visual"><span class="catalog-card-machine" aria-hidden="true">KOMATSU</span><span class="catalog-card-watermark" aria-hidden="true">1250</span></span><span class="catalog-card-info"><span class="catalog-card-name">PC1250-8</span><span class="catalog-card-maker">Komatsu</span><span class="catalog-card-action">Open Catalog <span aria-hidden="true">→</span></span></span></button>
+          <button type="button" class="catalog-card" data-model="PC1250-11"><span class="catalog-card-top"><span class="catalog-card-number">03 / KOMATSU</span><span class="catalog-card-arrow" aria-hidden="true">↗</span></span><span class="catalog-card-visual"><span class="catalog-card-machine" aria-hidden="true">KOMATSU</span><span class="catalog-card-watermark" aria-hidden="true">1250</span></span><span class="catalog-card-info"><span class="catalog-card-name">PC1250-11</span><span class="catalog-card-maker">Komatsu</span><span class="catalog-card-action">Open Catalog <span aria-hidden="true">→</span></span></span></button>
+          <button type="button" class="catalog-card" data-model="PC500"><span class="catalog-card-top"><span class="catalog-card-number">04 / KOMATSU</span><span class="catalog-card-arrow" aria-hidden="true">↗</span></span><span class="catalog-card-visual"><span class="catalog-card-machine" aria-hidden="true">KOMATSU</span><span class="catalog-card-watermark" aria-hidden="true">500</span></span><span class="catalog-card-info"><span class="catalog-card-name">PC500</span><span class="catalog-card-maker">Komatsu</span><span class="catalog-card-action">Open Catalog <span aria-hidden="true">→</span></span></span></button>
+        </div>
+        <p class="hexcatalog-note">Katalog assembly dan Parts List akan ditambahkan pada tahap berikutnya.</p>
+      </section>
+      <a class="hexcatalog-back" href="main.html">← Kembali ke Main Page</a>
     </div>
-  </section>
-</main>
+  </main>
+  <script src="hexa-menu.js"></script>
+  <script src="hexa-header.js"></script>
+  <script src="hex-catalog.js"></script>
+</body>
+</html>
