@@ -21,11 +21,13 @@ function render(){if(!active)return;$('groupTitle').textContent=active.name;$('g
 // SVG viewer: fit, zoom, pan and fullscreen. Existing Parts List is unchanged.
 let zoom=1, offsetX=0, offsetY=0, dragging=false, startX=0, startY=0;
 let viewer, viewerImage, zoomLabel, fullscreen=false;
+let imageRequest=0;
+const hasDrawing=()=>!!viewerImage?.dataset.loaded;
 function initViewer(){
  const area=$('drawingArea');
  area.classList.add('cat-viewer');
- area.innerHTML='<div class="cat-viewer-stage"><img class="cat-viewer-image" alt=""></div>';
- viewer=area.querySelector('.cat-viewer-stage'); viewerImage=area.querySelector('img');
+ area.innerHTML='<div class="cat-viewer-stage"></div>';
+ viewer=area.querySelector('.cat-viewer-stage');
  const picker=document.createElement('div');picker.id='catPartPicker';picker.className='cat-part-picker';picker.hidden=true;area.append(picker);
  const toolbar=area.closest('.cat-images').querySelector('.cat-image-toolbar');
  const controls=document.createElement('div');controls.className='cat-zoom-controls';
@@ -33,12 +35,22 @@ function initViewer(){
  toolbar.append(controls);zoomLabel=controls.querySelector('.cat-zoom-label');
  controls.addEventListener('click',e=>{const btn=e.target.closest('[data-zoom]');if(!btn)return;const action=btn.dataset.zoom;
  if(action==='in')setZoom(zoom*1.3);if(action==='out')setZoom(zoom/1.3);if(action==='fit')resetView();if(action==='fullscreen')toggleFullscreen();});
- area.addEventListener('wheel',e=>{if(!viewerImage?.getAttribute('src'))return;e.preventDefault();setZoom(zoom*(e.deltaY<0?1.15:1/1.15));},{passive:false});
- area.addEventListener('pointerdown',e=>{if(e.target.closest('.cat-part-picker'))return;if(e.button!==0||!viewerImage?.getAttribute('src'))return;dragging=true;startX=e.clientX-offsetX;startY=e.clientY-offsetY;area.setPointerCapture(e.pointerId);area.classList.add('is-dragging');});
+ area.addEventListener('wheel',e=>{if(!hasDrawing())return;e.preventDefault();setZoom(zoom*(e.deltaY<0?1.15:1/1.15));},{passive:false});
+ area.addEventListener('pointerdown',e=>{if(e.target.closest('.cat-part-picker'))return;if(e.button!==0||!hasDrawing())return;dragging=true;startX=e.clientX-offsetX;startY=e.clientY-offsetY;area.setPointerCapture(e.pointerId);area.classList.add('is-dragging');});
  area.addEventListener('pointermove',e=>{if(!dragging)return;offsetX=e.clientX-startX;offsetY=e.clientY-startY;updateView();});
  const end=()=>{dragging=false;area.classList.remove('is-dragging')};area.addEventListener('pointerup',end);area.addEventListener('pointercancel',end);
  let down=null;area.addEventListener('pointerdown',e=>{if(e.target.closest('.cat-part-picker'))return;down={x:e.clientX,y:e.clientY};});
- area.addEventListener('pointerup',e=>{if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null;if(moved>7||!viewerImage?.getAttribute('src'))return;showPartPicker(e.clientX,e.clientY);});
+ area.addEventListener('pointerup',e=>{if(!down)return;const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null;if(moved>7||!hasDrawing())return;
+ const hit=document.elementFromPoint(e.clientX,e.clientY);
+ const partNode=hit?.closest?.('g.part');
+ if(partNode && viewer.contains(partNode)){
+   const title=partNode.querySelector(':scope > title')?.textContent||'';
+   const pn=title.match(/\[([^\]]+)\]/)?.[1];
+   const no=(partNode.getAttribute('class')||'').match(/part_(\d+)/)?.[1];
+   const index=active?.parts.findIndex(p=>String(p.pn)===pn && (!no||String(p.no)===no));
+   if(index>=0){pickPart(index);return;}
+ }
+ showPartPicker(e.clientX,e.clientY);});
  area.addEventListener('click',e=>{const btn=e.target.closest('[data-pick-index]');if(!btn)return;pickPart(Number(btn.dataset.pickIndex));});
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&fullscreen)toggleFullscreen();});
 }
@@ -64,12 +76,52 @@ function showPartPicker(clientX,clientY){
  picker.style.top=Math.max(8,Math.min(clientY-r.top,r.height-260))+'px';
  picker.querySelector('[data-close-picker]').onclick=hidePicker;
 }
-function renderImage(){hidePicker();activePartIndex=null;document.querySelectorAll('#partsBody tr').forEach(r=>r.classList.remove('cat-part-highlight'));const imgs=active?.images||[];const area=$('drawingArea');$('imagePosition').textContent=imgs.length?`${imageIndex+1} / ${imgs.length}`:'0 / 0';$('prevImage').disabled=imageIndex===0;$('nextImage').disabled=imageIndex>=imgs.length-1;
- if(!viewer)initViewer();resetView();
- if(!imgs.length){viewerImage.removeAttribute('src');viewerImage.style.display='none';viewer.dataset.message='Gambar SVG assembly belum diupload. Parts List tetap dapat digunakan.';return;}
- viewer.dataset.message='';viewerImage.style.display='block';viewerImage.alt=`${active.name} drawing ${imageIndex+1}`;
- viewerImage.onerror=()=>{viewerImage.style.display='none';viewer.dataset.message='Gambar tidak ditemukan: '+imgs[imageIndex]};
- viewerImage.onload=()=>{viewer.dataset.message='';resetView()};viewerImage.src=imgs[imageIndex];
+async function renderImage(){
+ hidePicker();activePartIndex=null;
+ document.querySelectorAll('#partsBody tr').forEach(r=>r.classList.remove('cat-part-highlight'));
+ const imgs=active?.images||[], area=$('drawingArea'), request=++imageRequest;
+ $('imagePosition').textContent=imgs.length?`${imageIndex+1} / ${imgs.length}`:'0 / 0';
+ $('prevImage').disabled=imageIndex===0;
+ $('nextImage').disabled=imageIndex>=imgs.length-1;
+ if(!viewer)initViewer();
+ viewer.replaceChildren();viewerImage=null;resetView();
+ if(!imgs.length){viewer.dataset.message='Gambar SVG assembly belum diupload. Parts List tetap dapat digunakan.';return;}
+ viewer.dataset.message='Memuat gambar assembly...';
+ try{
+   const url=imgs[imageIndex];
+   const response=await fetch(url);
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const source=await response.text();
+   const doc=new DOMParser().parseFromString(source,'image/svg+xml');
+   if(doc.querySelector('parsererror'))throw Error('SVG tidak valid');
+   const root=doc.documentElement;
+   if(root.localName!=='svg')throw Error('File bukan SVG');
+   // SVG CAT SIS dimuat sebagai elemen inline agar grup part bisa diklik.
+   // Hapus konten aktif dan tautan eksternal sebelum dimasukkan ke halaman.
+   root.querySelectorAll('script,foreignObject,iframe,object,embed,animate,set,animateMotion,animateTransform').forEach(n=>n.remove());
+   root.querySelectorAll('*').forEach(el=>{
+     for(const attr of [...el.attributes]){
+       const name=attr.name.toLowerCase(),value=attr.value.trim();
+       if(name.startsWith('on') || ((name==='href'||name.endsWith(':href')) && !value.startsWith('#')) ||
+          /url\s*\(\s*['"]?\s*(?:https?:|data:|javascript:)/i.test(value) ||
+          (name==='style' && /@import|expression\s*\(/i.test(value))) el.removeAttribute(attr.name);
+     }
+   });
+   if(request!==imageRequest)return;
+   const svg=document.importNode(root,true);
+   svg.classList.add('cat-viewer-image','cat-inline-svg');
+   svg.dataset.loaded='true';
+   svg.setAttribute('role','img');
+   svg.setAttribute('aria-label',`${active.name} assembly drawing`);
+   viewer.replaceChildren(svg);
+   viewerImage=svg;
+   viewer.dataset.message='';
+   resetView();
+ }catch(err){
+   if(request!==imageRequest)return;
+   viewer.dataset.message='Gambar gagal dimuat: '+err.message;
+   console.error('HEXCatalog SVG:',err);
+ }
 }
 function renderSelected(){const items=[...selected.values()];$('selectionCount').textContent=items.length;$('selectionSummary').textContent=items.length?items.map(x=>`${x.group}: #${x.no} ${x.pn} × ${x.needed}`).join(' | '):'Belum ada part dipilih.';}
 $('groupList').addEventListener('click',e=>{const btn=e.target.closest('[data-group]');if(btn)openGroup(btn.dataset.group)});
