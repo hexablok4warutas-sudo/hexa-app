@@ -11,6 +11,25 @@ const selected=new Map();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const key=(g,p)=>`${g.id}|${p.no}|${p.pn}`;
 const qty=(v)=>Math.max(1,Math.min(9999,Number.parseInt(v,10)||1));
+// Indeks turunan (contoh 11.1, 11.2) adalah subpart dari indeks assembly 11.
+const parentNo=p=>String(p.no??'').split('.')[0];
+const isChild=p=>String(p.no??'').includes('.');
+const partTitlePN=node=>{
+ const title=node?.querySelector(':scope > title')?.textContent||'';
+ return (title.match(/\[([^\]]+)\]/)?.[1]||'').trim().toUpperCase();
+};
+const normalizePN=pn=>String(pn??'').trim().toUpperCase();
+// Nomor SVG dapat menunjuk assembly induk, sedangkan PN metadata dapat menunjuk subpart.
+function matchIndexes(numbers, pn=''){
+ if(!active)return [];
+ const nums=new Set(numbers.map(String));
+ const candidates=active.parts.map((part,i)=>({part,i})).filter(({part})=>nums.has(parentNo(part)));
+ if(pn){
+  const exact=candidates.filter(({part})=>normalizePN(part.pn)===normalizePN(pn));
+  if(exact.length)return exact.map(x=>x.i);
+ }
+ return candidates.map(x=>x.i);
+}
 function showGroups(filter=''){
  const list=groups.filter(g=>g.name.toLowerCase().includes(filter.toLowerCase()));
  $('groupList').innerHTML=list.map(g=>`<button type="button" class="cat-group-btn ${active?.id===g.id?'active':''}" data-group="${esc(g.id)}"><span>${esc(g.name)}</span><small>${g.parts.length}</small></button>`).join('')||'<p>Tidak ada group.</p>';
@@ -72,7 +91,7 @@ function initViewer(){
   if(pointers.size===1){const point=[...pointers.values()][0];gesture={type:'pan',x:point.x-offsetX,y:point.y-offsetY};tap=null;}
   else if(!pointers.size){gesture=null;area.classList.remove('is-dragging');}
   if(!isTap||!hasDrawing())return;
-   // Prioritaskan nomor callout atau komponen SVG; hanya tampilkan picker jika bukan keduanya.
+   // Callout induk membuka pilihan termasuk subpart; klik gambar part memakai PN metadata jika cocok.
    const hit=tap.hit;
    const callout=hit?.closest?.('g.callout');
    const partNode=hit?.closest?.('g.part');
@@ -84,7 +103,7 @@ function initViewer(){
      const title=partNode.querySelector(':scope > title')?.textContent||'';
      const pn=title.match(/\[([^\]]+)\]/)?.[1];
      const nums=partNumbers(partNode);
-     const indexes=active?.parts.map((p,i)=>(String(p.pn)===pn && (!nums.length||nums.includes(String(p.no))))?i:-1).filter(i=>i>=0)||[];
+     const indexes=matchIndexes(nums,pn);
      if(indexes.length===1){pickPart(indexes[0]);return;}
      if(indexes.length>1){showPartPicker(e.clientX,e.clientY,indexes);return;}
      if(nums.length){pickByNumbers(nums);return;}
@@ -100,7 +119,7 @@ function setZoom(n){zoom=Math.max(.5,Math.min(10,n));updateView();}
 function resetView(){zoom=1;offsetX=offsetY=0;updateView();}
 function toggleFullscreen(){fullscreen=!fullscreen;document.querySelector('.cat-images').classList.toggle('cat-fullscreen',fullscreen);document.body.classList.toggle('cat-viewer-open',fullscreen);resetView();}
 function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
- // Class CAT SIS: "part part_14, 1" / "callout callout_14, 1".
+ // Class CAT SIS: part_14, 1 / callout_14, 1. Indeks turunan dipetakan lewat parentNo().
  function partNumbers(node){
    const c=node?.getAttribute('class')||'';
    const m=c.match(/(?:part|callout)_(\d+(?:\s*,\s*\d+)*)/);
@@ -108,7 +127,7 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
  }
  function pickByNumbers(nums){
    const numbers=[...new Set(nums.map(String))];
-   const indexes=active?.parts.map((p,i)=>numbers.includes(String(p.no))?i:-1).filter(i=>i>=0)||[];
+   const indexes=matchIndexes(numbers);
    if(indexes.length===1){pickPart(indexes[0]);return;}
    if(indexes.length>1){showPartPicker(lastPointer.x,lastPointer.y,indexes);return;}
    showPartNotice(`No ${numbers.join(', ')} belum terdaftar dalam Parts List grup ini.`);
@@ -122,12 +141,12 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
  }
  function highlightDrawing(index){
    if(!viewerImage||!active?.parts[index])return;
-   const p=active.parts[index],no=String(p.no),pn=String(p.pn);
+   const p=active.parts[index],no=parentNo(p),pn=normalizePN(p.pn);
    viewerImage.querySelectorAll('g.part, g.callout').forEach(node=>{
      const numbers=partNumbers(node);
      const isCallout=node.classList.contains('callout');
      const title=node.querySelector(':scope > title')?.textContent||'';
-     const match=isCallout?numbers.includes(no):(numbers.includes(no)&&title.includes('['+pn+']'));
+     const match=isCallout?numbers.includes(no):(numbers.includes(no) && normalizePN(partTitlePN(node))===pn);
      node.classList.toggle('cat-svg-selected',match);
    });
  }
@@ -144,7 +163,7 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
 function showPartPicker(clientX,clientY,onlyIndexes=null){
  if(!active?.parts?.length)return;
  const area=$('drawingArea'), picker=$('catPartPicker'), r=area.getBoundingClientRect();
- picker.innerHTML='<div class="cat-picker-head"><strong>Pilih nomor part</strong><button type="button" data-close-picker aria-label="Tutup">×</button></div><div class="cat-picker-list">'+active.parts.map((part,i)=>({part,i})).filter(({i})=>!onlyIndexes||onlyIndexes.includes(i)).map(({part,i})=>`<button type="button" data-pick-index="${i}"><b>No ${esc(part.no)}</b><span>${esc(part.pn)} — ${esc(part.description)}</span></button>`).join('')+'</div><small>Pilih part sesuai nomor pada gambar.</small>';
+ picker.innerHTML='<div class="cat-picker-head"><strong>Pilih nomor part</strong><button type="button" data-close-picker aria-label="Tutup">×</button></div><div class="cat-picker-list">'+active.parts.map((part,i)=>({part,i})).filter(({i})=>!onlyIndexes||onlyIndexes.includes(i)).map(({part,i})=>`<button type="button" data-pick-index="${i}"><b>No ${esc(part.no)}${isChild(part)?' (subpart dari No '+esc(parentNo(part))+')':''}</b><span>${esc(part.pn)} — ${esc(part.description)}</span></button>`).join('')+'</div><small>Pilih part sesuai nomor pada gambar.</small>';
  picker.hidden=false;
  picker.style.left=Math.max(8,Math.min(clientX-r.left,r.width-295))+'px';
  picker.style.top=Math.max(8,Math.min(clientY-r.top,r.height-260))+'px';
