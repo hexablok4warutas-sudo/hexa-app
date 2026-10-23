@@ -8,6 +8,24 @@ let groups=[],active=null,imageIndex=0;
 let activePartIndex=null;
 let lastPointer={x:0,y:0};
 const selected=new Map();
+const STORAGE_KEY='hexa_cat395_selected_parts_v1';
+function saveSelection(){
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify([...selected.entries()]));}
+ catch(err){console.warn('HEXA Selected Parts: penyimpanan lokal tidak tersedia',err);}
+}
+function restoreSelection(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  if(!Array.isArray(saved))return;
+  for(const entry of saved){
+   if(!Array.isArray(entry)||entry.length!==2||!entry[1]||typeof entry[1]!=='object')continue;
+   const [k,x]=entry;
+   if(!x.group||!x.pn||x.no==null)continue;
+   selected.set(String(k),{group:String(x.group),no:String(x.no),pn:String(x.pn),description:String(x.description||''),needed:qty(x.needed)});
+  }
+ }catch(err){console.warn('HEXA Selected Parts: gagal memulihkan data lokal',err);}
+}
+
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const key=(g,p)=>`${g.id}|${p.no}|${p.pn}`;
 const qty=(v)=>Math.max(1,Math.min(9999,Number.parseInt(v,10)||1));
