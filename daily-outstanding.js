@@ -1099,6 +1099,75 @@ async function apiRequest(
 
 
 // =====================================================
+// HEXA DAILY OUTSTANDING - OFFLINE VIEW ONLY
+// Cache per akun; server tetap sumber data utama.
+// =====================================================
+const DO_CACHE_DB = "HEXA_DAILY_OUTSTANDING_VIEW_V1";
+const DO_CACHE_STORE = "responses";
+const DO_USER_KEY = String(currentUser?.userId || currentUser?.userID || currentUser?.id || currentUser?.username || hexaUserRaw);
+let doUsingOfflineCache = false;
+function doCacheOpen() {
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open(DO_CACHE_DB,1);
+    req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(DO_CACHE_STORE))req.result.createObjectStore(DO_CACHE_STORE);};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error);
+  });
+}
+async function doCacheRead(key) {
+  try {const db=await doCacheOpen();return await new Promise(resolve=>{
+    const tx=db.transaction(DO_CACHE_STORE,"readonly");const req=tx.objectStore(DO_CACHE_STORE).get(DO_USER_KEY+":"+key);
+    req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>resolve(null);tx.oncomplete=()=>db.close();
+  });} catch(_){return null;}
+}
+async function doCacheWrite(key,value) {
+  try {const db=await doCacheOpen();await new Promise((resolve,reject)=>{
+    const tx=db.transaction(DO_CACHE_STORE,"readwrite");tx.objectStore(DO_CACHE_STORE).put({value,savedAt:Date.now()},DO_USER_KEY+":"+key);
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });db.close();}catch(err){console.warn("Offline cache gagal:",err);}
+}
+function doSetOfflineState(active,savedAt) {
+  doUsingOfflineCache=active;
+  const banner=document.getElementById("doOfflineBanner");
+  if(banner){banner.hidden=!active;banner.textContent=active
+    ? "OFFLINE · VIEW ONLY — Data tersimpan "+(savedAt?new Date(savedAt).toLocaleString("id-ID"):"sebelumnya")+". Edit dinonaktifkan.":"";}
+  document.querySelectorAll("#editOutstandingButton,.outstanding-item-edit").forEach(el=>{
+    el.disabled=active;el.title=active?"Tidak dapat mengedit saat offline":"";
+    el.style.opacity=active?"0.4":"";
+  });
+}
+const doOriginalApiRequest=apiRequest;
+apiRequest=async function(payload){
+  const action=payload?.action;
+  const cacheable=action==="getDailyOutstanding"||action==="getDailyOutstandingDetail";
+  const key=action==="getDailyOutstandingDetail"?"detail:"+String(payload.inspectionId):"list";
+  if(!cacheable && (doUsingOfflineCache||!navigator.onLine))throw new Error("Offline View Only: perubahan tidak dapat dikirim.");
+  try {
+    if(cacheable&&!navigator.onLine)throw new Error("Tidak ada koneksi internet");
+    const result=await doOriginalApiRequest(payload);
+    if(cacheable&&result?.success===true){await doCacheWrite(key,result);doSetOfflineState(false);}
+    return result;
+  } catch(err){
+    if(cacheable){const cached=await doCacheRead(key);
+      if(cached?.value?.success===true){doSetOfflineState(true,cached.savedAt);return cached.value;}
+    }
+    throw err;
+  }
+};
+const doOriginalOpenUpdateForm=openUpdateForm;
+openUpdateForm=function(){
+  if(doUsingOfflineCache||!navigator.onLine){alert("Offline View Only — Edit Outstanding hanya tersedia saat online.");return;}
+  return doOriginalOpenUpdateForm.apply(this,arguments);
+};
+const doOriginalSubmitOutstandingUpdate=submitOutstandingUpdate;
+submitOutstandingUpdate=function(event){
+  if(doUsingOfflineCache||!navigator.onLine){event.preventDefault();alert("Offline View Only — Perubahan tidak disimpan.");return;}
+  return doOriginalSubmitOutstandingUpdate.apply(this,arguments);
+};
+window.addEventListener("online",()=>{if(doUsingOfflineCache)loadDailyOutstanding();});
+window.addEventListener("offline",()=>{doSetOfflineState(true);});
+
+// =====================================================
 // LOAD DAILY OUTSTANDING
 // =====================================================
 
@@ -2225,6 +2294,7 @@ function setPhotoZoom(
 // =====================================================
 
 function openUpdateForm() {
+  if(doUsingOfflineCache || !navigator.onLine){alert("Offline View Only — Edit hanya tersedia saat online.");return;}
 
   if (!selectedRecord) {
     return;
@@ -3585,6 +3655,7 @@ function updateEvidenceDisplay(
 async function submitOutstandingUpdate(
   event
 ) {
+  if(doUsingOfflineCache || !navigator.onLine){event.preventDefault();alert("Offline View Only — Tidak dapat mengirim perubahan.");return;}
 
   event.preventDefault();
 
