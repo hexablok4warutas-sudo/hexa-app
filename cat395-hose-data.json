@@ -67,7 +67,9 @@
           "qty": 1
         }
       ],
-      "images": []
+      "images": ["catalog-images/cat395/lines-gp-motor-01.svg",
+  "catalog-images/cat395/lines-gp-motor-02.svg",
+  "catalog-images/cat395/lines-gp-motor-03.svg"]
     },
     {
       "id": "lines-gp-pump",
