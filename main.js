@@ -68,42 +68,15 @@ console.log(
 // ======================================================
 
 const HEXA_PAGES = {
-
-  "daily-maintenance": {
-    url: "daily-maintenance.html",
-    enabled: true
-  },
-
-  "backlog-monitoring": {
-    url: "backlog-monitoring.html",
-    enabled: true
-  },
-
-  "fui": {
-    url: "fui.html",
-    enabled: false
-  },
-
-  "rotable": {
-    url: "rotable.html",
-    enabled: false
-  },
-
-  "news": {
-    url: "news.html",
-    enabled: false
-  },
-
-  "hexa-games": {
-    url: "/hexa-games",
-    enabled: false // Aktifkan setelah halaman HEXA Games tersedia
-  },
-
-  "settings": {
-    url: "/settings",
-    enabled: true
-  }
-
+  "daily-maintenance": { url: "daily-maintenance.html", enabled: true },
+  "backlog-monitoring": { url: "backlog-monitoring.html", enabled: true },
+  "fui": { url: "fui.html", enabled: true },
+  "rotable": { url: "rotable.html", enabled: true },
+  "news": { url: "news.html", enabled: true },
+  "hexa-games": { url: "hexa-games.html", enabled: true },
+  "my-development": { url: "my-development.html", enabled: true },
+  "hex-catalog": { url: "hex-catalog.html", enabled: true },
+  "settings": { url: "/settings", enabled: true }
 };
 
 
