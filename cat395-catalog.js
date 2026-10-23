@@ -67,19 +67,29 @@ function initViewer(){
  area.addEventListener('pointerup',e=>{
   if(!pointers.has(e.pointerId))return;
   const isTap=!multiTouch&&tap&&Math.hypot(e.clientX-tap.x,e.clientY-tap.y)<9;
+   lastPointer={x:e.clientX,y:e.clientY};
   pointers.delete(e.pointerId);
   if(pointers.size===1){const point=[...pointers.values()][0];gesture={type:'pan',x:point.x-offsetX,y:point.y-offsetY};tap=null;}
   else if(!pointers.size){gesture=null;area.classList.remove('is-dragging');}
   if(!isTap||!hasDrawing())return;
-  const partNode=tap.hit?.closest?.('g.part');
-  if(partNode&&viewer.contains(partNode)){
-   const title=partNode.querySelector(':scope > title')?.textContent||'';
-   const pn=title.match(/\[([^\]]+)\]/)?.[1];
-   const no=(partNode.getAttribute('class')||'').match(/part_(\d+)/)?.[1];
-   const index=active?.parts.findIndex(p=>String(p.pn)===pn&&(!no||String(p.no)===no));
-   if(index>=0){pickPart(index);return;}
-  }
-  showPartPicker(e.clientX,e.clientY);
+   // Prioritaskan nomor callout atau komponen SVG; hanya tampilkan picker jika bukan keduanya.
+   const hit=tap.hit;
+   const callout=hit?.closest?.('g.callout');
+   const partNode=hit?.closest?.('g.part');
+   if(callout && viewer.contains(callout)){
+     const number=callout.id.match(/^ID_(\d+)(?:_\d+)?$/)?.[1] ||
+       (callout.querySelector('text')?.textContent||'').trim().match(/^\d+/)?.[0];
+     if(number){pickByNumber(number);return;}
+   }
+   if(partNode && viewer.contains(partNode)){
+     const title=partNode.querySelector(':scope > title')?.textContent||'';
+     const pn=title.match(/\[([^\]]+)\]/)?.[1];
+     const nums=partNumbers(partNode);
+     const index=active?.parts.findIndex(p=>String(p.pn)===pn && (!nums.length||nums.includes(String(p.no))));
+     if(index>=0){pickPart(index);return;}
+     if(nums.length){pickByNumber(nums[0]);return;}
+   }
+   showPartPicker(e.clientX,e.clientY);
  });
  area.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);tap=null;if(!pointers.size){gesture=null;area.classList.remove('is-dragging');}});
  area.addEventListener('click',e=>{const btn=e.target.closest('[data-pick-index]');if(!btn)return;pickPart(Number(btn.dataset.pickIndex));});
@@ -90,18 +100,52 @@ function setZoom(n){zoom=Math.max(.5,Math.min(10,n));updateView();}
 function resetView(){zoom=1;offsetX=offsetY=0;updateView();}
 function toggleFullscreen(){fullscreen=!fullscreen;document.querySelector('.cat-images').classList.toggle('cat-fullscreen',fullscreen);document.body.classList.toggle('cat-viewer-open',fullscreen);resetView();}
 function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
-function pickPart(index){
- if(!active?.parts[index])return;
- activePartIndex=index;hidePicker();
- const rows=[...$('partsBody').querySelectorAll('tr')];
- rows.forEach((row,i)=>row.classList.toggle('cat-part-highlight',i===index));
- const row=rows[index];row?.scrollIntoView({behavior:'smooth',block:'nearest'});
- row?.querySelector('.cat-qty')?.focus({preventScroll:true});
-}
-function showPartPicker(clientX,clientY){
+ // Class CAT SIS: "part part_14, 1" / "callout callout_14, 1".
+ function partNumbers(node){
+   const c=node?.getAttribute('class')||'';
+   const m=c.match(/(?:part|callout)_(\d+(?:\s*,\s*\d+)*)/);
+   return m?m[1].split(',').map(x=>x.trim()):[];
+ }
+ function pickByNumber(no){
+   const indexes=active?.parts.map((p,i)=>String(p.no)===String(no)?i:-1).filter(i=>i>=0)||[];
+   if(indexes.length===1){pickPart(indexes[0]);return;}
+   if(indexes.length>1){showPartPicker(lastPointer.x,lastPointer.y,indexes);return;}
+   // Jangan memilih part lain jika nomor belum ada dalam JSON.
+   showPartNotice(`No ${no} belum terdaftar dalam Parts List grup ini.`);
+ }
+ function showPartNotice(message){
+   const picker=$('catPartPicker');if(!picker)return;
+   picker.innerHTML='<div class="cat-picker-head"><strong>Informasi part</strong><button type="button" data-close-picker aria-label="Tutup">×</button></div><p class="cat-picker-notice"></p>';
+   picker.querySelector('.cat-picker-notice').textContent=message;
+   picker.hidden=false;picker.style.left='12px';picker.style.top='12px';
+   picker.querySelector('[data-close-picker]').onclick=hidePicker;
+ }
+ function highlightDrawing(index){
+   if(!viewerImage||!active?.parts[index])return;
+   const p=active.parts[index],no=String(p.no),pn=String(p.pn);
+   viewerImage.querySelectorAll('g.part, g.callout').forEach(node=>{
+     const numbers=partNumbers(node);
+     const isCallout=node.classList.contains('callout');
+     const idNumber=node.id.match(/^ID_(\d+)(?:_\d+)?$/)?.[1];
+     const title=node.querySelector(':scope > title')?.textContent||'';
+     const match=isCallout?(idNumber===no):(numbers.includes(no)&&title.includes('['+pn+']'));
+     node.classList.toggle('cat-svg-selected',match);
+   });
+ }
+ function pickPart(index){
+   if(!active?.parts[index])return;
+   activePartIndex=index;hidePicker();
+   const rows=[...$('partsBody').querySelectorAll('tr')];
+   rows.forEach((row,i)=>row.classList.toggle('cat-part-highlight',i===index));
+   highlightDrawing(index);
+   const row=rows[index];row?.scrollIntoView({behavior:'smooth',block:'nearest'});
+   row?.querySelector('.cat-qty')?.focus({preventScroll:true});
+ }
+
+function showPartPicker(clientX,clientY,onlyIndexes=null){
  if(!active?.parts?.length)return;
  const area=$('drawingArea'), picker=$('catPartPicker'), r=area.getBoundingClientRect();
- picker.innerHTML='<div class="cat-picker-head"><strong>Pilih nomor part</strong><button type="button" data-close-picker aria-label="Tutup">×</button></div><div class="cat-picker-list">'+active.parts.map((part,i)=>`<button type="button" data-pick-index="${i}"><b>No ${esc(part.no)}</b><span>${esc(part.pn)} — ${esc(part.description)}</span></button>`).join('')+'</div><small>Nomor pada SVG belum dipetakan otomatis. Pilih nomor yang terlihat pada gambar.</small>';
+ picker.innerHTML='<div class="cat-picker-head"><strong>Pilih nomor part</strong><button type="button" data-close-picker aria-label="Tutup">×</button></div><div class="cat-picker-list">'+active.parts.map((part,i)=>({part,i})).filter(({i})=>!onlyIndexes||onlyIndexes.includes(i)).map(({part,i})=>`<button type="button" data-pick-index="${i}"><b>No ${esc(part.no)}</b><span>${esc(part.pn)} — ${esc(part.description)}</span></button>`).join('')+'</div><small>Pilih part sesuai nomor pada gambar.</small>';
  picker.hidden=false;
  picker.style.left=Math.max(8,Math.min(clientX-r.left,r.width-295))+'px';
  picker.style.top=Math.max(8,Math.min(clientY-r.top,r.height-260))+'px';
