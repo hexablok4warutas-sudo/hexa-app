@@ -225,6 +225,18 @@ async function renderImage(){
    svg.dataset.loaded='true';
    svg.setAttribute('role','img');
    svg.setAttribute('aria-label',`${active.name} assembly drawing`);
+   // CAT SIS callout tidak memiliki <title>; tambahkan tooltip dari database.
+   svg.querySelectorAll('g.callout').forEach(node=>{
+     const nums=partNumbers(node);
+     const indexes=matchIndexes(nums);
+     const entries=indexes.map(i=>active.parts[i]);
+     const label=entries.length
+       ? entries.map(x=>`No ${x.no} | ${x.pn} | ${x.description}`).join('\n')
+       : `No ${nums.join(', ')} | Tidak terdaftar di Parts List`;
+     let title=node.querySelector(':scope > title');
+     if(!title){title=document.createElementNS('http://www.w3.org/2000/svg','title');node.insertBefore(title,node.firstChild);}
+     title.textContent=label;
+   });
    viewer.replaceChildren(svg);
    viewerImage=svg;
    viewer.dataset.message='';
