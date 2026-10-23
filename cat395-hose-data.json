@@ -578,25 +578,168 @@
       "name": "Lines Gp Boom",
       "parts": [
         {
+          "no": "1",
+          "pn": "451-2183",
+          "description": "Nut (M16X2-THD)",
+          "qty": 10
+        },
+        {
+          "no": "2",
+          "pn": "549-6646",
+          "description": "Tube AS",
+          "qty": 2
+        },
+        {
+          "no": "3",
+          "pn": "138-5708",
+          "description": "Clip-Half",
+          "qty": 36
+        },
+        {
+          "no": "4",
+          "pn": "138-5709",
+          "description": "Grommet (48.6-MM Id)",
+          "qty": 18
+        },
+        {
+          "no": "5",
+          "pn": "1P-3705",
+          "description": "Seal-Rectangular",
+          "qty": 6
+        },
+        {
+          "no": "6",
+          "pn": "1P-3706",
+          "description": "Seal-Rectangular",
+          "qty": 2
+        },
+        {
+          "no": "7",
+          "pn": "317-4860",
+          "description": "Tube AS",
+          "qty": 3
+        },
+        {
+          "no": "8",
+          "pn": "333-4594",
+          "description": "Plate",
+          "qty": 1
+        },
+        {
           "no": "9",
           "pn": "363-2291",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 2
         },
         {
           "no": "10",
           "pn": "363-2292",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "11",
+          "pn": "447-1707",
+          "description": "Bolt (M16X2X60-MM)",
+          "qty": 42
+        },
+        {
+          "no": "12",
+          "pn": "451-2175",
+          "description": "Washer-Hard (17.5X30X3.5-MM Thk)",
+          "qty": 98
+        },
+        {
+          "no": "13",
+          "pn": "453-2837",
+          "description": "Bolt (M16X2X55-MM)",
+          "qty": 8
+        },
+        {
+          "no": "14",
+          "pn": "453-2838",
+          "description": "Bolt (M16X2X70-MM)",
+          "qty": 28
+        },
+        {
+          "no": "15",
+          "pn": "453-4135",
+          "description": "Bolt (M16X2X90-MM)",
+          "qty": 10
+        },
+        {
+          "no": "16",
+          "pn": "591-9038",
+          "description": "Tube AS",
+          "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "591-9042",
+          "description": "Tube AS",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "5P-8077",
+          "description": "Flange-Half",
+          "qty": 22
+        },
+        {
+          "no": "19",
+          "pn": "6H-3615",
+          "description": "Plug-Protection",
+          "qty": 5
+        },
+        {
+          "no": "20",
+          "pn": "9F-2167",
+          "description": "Screw-Purge (3/8-24X1.164-IN)",
+          "qty": 5
+        }
+      ],
+      "images": [
+        "catalog-images/cat395/lines-gp-boom-01.svg"
+      ]
+    },
+    {
+      "id": "lines-gp-boom-cylinder",
+      "name": "Lines Gp Boom Cylinder",
+      "parts": [
+        {
+          "no": "1",
+          "pn": "1P-3704",
+          "description": "Seal-Rectangular",
+          "qty": 8
+        },
+        {
+          "no": "2",
+          "pn": "1P-5767",
+          "description": "Flange-Half",
+          "qty": 16
         },
         {
           "no": "3",
           "pn": "550-6760",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 4
+        },
+        {
+          "no": "4",
+          "pn": "8T-4194",
+          "description": "Bolt (M12X1.75X50-MM)",
+          "qty": 32
+        },
+        {
+          "no": "5",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 32
         }
       ],
-      "images": []
+      "images": [
+        "catalog-images/cat395/lines-gp-boom-cylinder-01.svg"
+      ]
     },
     {
       "id": "lines-group-arc",
