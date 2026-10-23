@@ -12,195 +12,307 @@
           "qty": 2
         }
       ],
-      "images": [
-        "catalog-images/cat395/drive-gp-swing-01.svg"
-      ]
+      "images": []
     },
     {
       "id": "lines-gp-motor",
       "name": "Lines Gp Motor",
       "parts": [
         {
-          "no": "4",
-          "pn": "148-8347",
-          "description": "Elbow AS",
-          "qty": 2
-        },
-        {
-          "no": "4.1",
-          "pn": "3D-2824",
-          "description": "Seal-O-Ring",
-          "qty": 1,
-          "parentNo": "4",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "4.2",
-          "pn": "6V-9007",
-          "description": "Elbow",
-          "qty": 1,
-          "parentNo": "4",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "4.3",
-          "pn": "6V-9746",
-          "description": "Seal-O-Ring",
-          "qty": 1,
-          "parentNo": "4",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "5",
-          "pn": "148-8444",
-          "description": "Tee AS-Swivel",
-          "qty": 1
-        },
-        {
-          "no": "5.1",
-          "pn": "6V-8398",
-          "description": "Seal-O-Ring",
-          "qty": 2,
-          "parentNo": "5",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "5.2",
-          "pn": "6V-9837",
-          "description": "Tee-Swivel",
-          "qty": 1,
-          "parentNo": "5",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "6.1",
-          "pn": "3K-0360",
-          "description": "Seal-O-Ring",
-          "qty": 1,
-          "parentNo": "6",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "6.2",
-          "pn": "6V-8398",
-          "description": "Seal-O-Ring",
-          "qty": 1,
-          "parentNo": "6",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "11.1",
-          "pn": "6V-9746",
-          "description": "Seal-O-Ring",
-          "qty": 1,
-          "parentNo": "11",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "11.2",
-          "pn": "7M-8485",
-          "description": "Seal-O-Ring",
-          "qty": 1,
-          "parentNo": "11",
-          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
-        },
-        {
-          "no": "13",
-          "pn": "4J-0520",
-          "description": "Seal-O-Ring",
-          "qty": 2
-        },
-        {
-          "no": "14",
-          "pn": "4J-0522",
-          "description": "Seal-O-Ring",
-          "qty": 2
-        },
-        {
           "no": "16",
           "pn": "528-0942",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
         },
         {
           "no": "17",
           "pn": "551-3760",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
         },
         {
           "no": "18",
           "pn": "551-3762",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
         },
         {
           "no": "19",
           "pn": "551-3766",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
         },
         {
           "no": "26",
           "pn": "552-8893",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
         },
         {
           "no": "28",
           "pn": "576-9763",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
         },
         {
           "no": "29",
           "pn": "576-9768",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
         },
         {
           "no": "31",
           "pn": "594-0239",
-          "description": "Hose AS",
+          "description": "Hose As",
           "qty": 1
-        },
-        {
-          "no": "39",
-          "pn": "6V-8398",
-          "description": "Seal-O-Ring",
-          "qty": 2
-        },
-        {
-          "no": "40",
-          "pn": "6V-9746",
-          "description": "Seal-O-Ring",
-          "qty": 4
         }
       ],
-      "images": [
-        "catalog-images/cat395/lines-gp-motor-01.svg",
-        "catalog-images/cat395/lines-gp-motor-02.svg",
-        "catalog-images/cat395/lines-gp-motor-03.svg"
-      ]
+      "images": []
     },
     {
       "id": "lines-gp-pump",
       "name": "Lines Gp Pump",
       "parts": [
         {
+          "no": "1",
+          "pn": "1P-3703",
+          "description": "Seal-Rectangular",
+          "qty": 2
+        },
+        {
+          "no": "2",
+          "pn": "1P-3705",
+          "description": "Seal-Rectangular",
+          "qty": 1
+        },
+        {
+          "no": "3",
+          "pn": "6F-4718",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "4",
+          "pn": "6V-0400",
+          "description": "Flange-Half",
+          "qty": 4
+        },
+        {
+          "no": "5",
+          "pn": "8T-4139",
+          "description": "Bolt (M12X1.75X30-MM)",
+          "qty": 6
+        },
+        {
+          "no": "6",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 14
+        },
+        {
+          "no": "7",
+          "pn": "9M-2092",
+          "description": "Seal-O-Ring",
+          "qty": 2
+        },
+        {
+          "no": "8",
+          "pn": "7Y-0623",
+          "description": "Locknut (M16X2-THD)",
+          "qty": 6
+        },
+        {
+          "no": "9",
+          "pn": "107-9403",
+          "description": "Bolt-Socket Head (M16X2X35-MM)",
+          "qty": 4
+        },
+        {
+          "no": "10",
+          "pn": "108-1782",
+          "description": "Bolt-Socket Head (M12X1.75X90-MM)",
+          "qty": 4
+        },
+        {
+          "no": "11",
+          "pn": "148-8411",
+          "description": "Plug AS",
+          "qty": 1
+        },
+        {
+          "no": "11.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "11.2",
+          "pn": "9S-4185",
+          "description": "Plug (3/4-16-THD)",
+          "qty": 1
+        },
+        {
+          "no": "12",
+          "pn": "190-6063",
+          "description": "U-Bolt",
+          "qty": 3
+        },
+        {
+          "no": "13",
+          "pn": "150-3073",
+          "description": "Plug AS",
+          "qty": 2
+        },
+        {
+          "no": "13.1",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "13.2",
+          "pn": "6V-9512",
+          "description": "Plug (1-7/16-12-THD)",
+          "qty": 1
+        },
+        {
+          "no": "14",
+          "pn": "187-6754",
+          "description": "Plate",
+          "qty": 2
+        },
+        {
+          "no": "15",
+          "pn": "199-1996",
+          "description": "Grommet",
+          "qty": 4
+        },
+        {
+          "no": "16",
+          "pn": "368-1755",
+          "description": "Pipe AS",
+          "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "612-6659",
+          "description": "Support AS",
+          "qty": 2
+        },
+        {
+          "no": "18",
+          "pn": "447-1711",
+          "description": "Bolt (M16X2X50-MM)",
+          "qty": 8
+        },
+        {
+          "no": "19",
+          "pn": "451-2175",
+          "description": "Washer-Hard (17.5X30X3.5-MM Thk)",
+          "qty": 14
+        },
+        {
           "no": "20",
           "pn": "148-4964",
-          "description": "Hose As",
+          "description": "Hose",
+          "qty": 2
+        },
+        {
+          "no": "21",
+          "pn": "3E-7424",
+          "description": "Clamp-Hose",
+          "qty": 8
+        },
+        {
+          "no": "22",
+          "pn": "447-1707",
+          "description": "Bolt (M16X2X60-MM)",
+          "qty": 4
+        },
+        {
+          "no": "23",
+          "pn": "550-7131",
+          "description": "Pipe",
+          "qty": 1
+        },
+        {
+          "no": "24",
+          "pn": "550-7133",
+          "description": "Block",
+          "qty": 1
+        },
+        {
+          "no": "25",
+          "pn": "550-7135",
+          "description": "Support AS",
+          "qty": 2
+        },
+        {
+          "no": "25.1",
+          "pn": "9R-9866",
+          "description": "Boss-Threaded (M10X1.5-THD)",
           "qty": 2
         },
         {
           "no": "26",
           "pn": "550-7139",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 2
+        },
+        {
+          "no": "27",
+          "pn": "601-1407",
+          "description": "Pipe AS",
+          "qty": 1
+        },
+        {
+          "no": "28",
+          "pn": "612-6666",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "28.1",
+          "pn": "9R-2672",
+          "description": "Boss-Threaded (M10X1.5X20-MM)",
+          "qty": 2
+        },
+        {
+          "no": "29",
+          "pn": "601-3568",
+          "description": "Flange",
+          "qty": 1
+        },
+        {
+          "no": "30",
+          "pn": "8T-4121",
+          "description": "Washer-Hard (11X21X2.5-MM Thk)",
+          "qty": 4
+        },
+        {
+          "no": "31",
+          "pn": "8T-4194",
+          "description": "Bolt (M12X1.75X50-MM)",
+          "qty": 8
+        },
+        {
+          "no": "32",
+          "pn": "183-7121",
+          "description": "Bolt (M10X1.5X35-MM)",
+          "qty": 4
+        },
+        {
+          "no": "33",
+          "pn": "9X-8257",
+          "description": "Washer (17.5X30X3.5-MM Thk)",
+          "qty": 4
         }
       ],
-      "images": []
+      "images": [
+        "lines-gp-pump-01.svg",
+        "lines-gp-pump-02.svg",
+        "lines-gp-pump-03.svg"
+      ]
     },
     {
       "id": "lines-gp-pilot",
