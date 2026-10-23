@@ -48,9 +48,65 @@ function matchIndexes(numbers, pn=''){
  }
  return candidates.map(x=>x.i);
 }
+// Global Search memakai input groupSearch yang sudah ada (tanpa HTML baru).
 function showGroups(filter=''){
- const list=groups.filter(g=>g.name.toLowerCase().includes(filter.toLowerCase()));
- $('groupList').innerHTML=list.map(g=>`<button type="button" class="cat-group-btn ${active?.id===g.id?'active':''}" data-group="${esc(g.id)}"><span>${esc(g.name)}</span><small>${g.parts.length}</small></button>`).join('')||'<p>Tidak ada group.</p>';
+ const q=String(filter).trim().toLowerCase();
+ const list=$('groupList');
+ if(!q){
+  list.innerHTML=groups.map(g=>`<button type="button" class="cat-group-btn ${active?.id===g.id?'active':''}" data-group="${esc(g.id)}"><span>${esc(g.name)}</span><small>${g.parts.length}</small></button>`).join('')||'<p>Tidak ada group.</p>';
+  return;
+ }
+ const matchingGroups=groups.filter(g=>g.name.toLowerCase().includes(q));
+ const matches=[];
+ for(const g of groups){for(let i=0;i<g.parts.length;i++){
+  const part=g.parts[i];
+  if([part.pn,part.description,part.no].some(v=>String(v??'').toLowerCase().includes(q)))matches.push({g,part,i});
+ }}
+ const groupHTML=matchingGroups.map(g=>`<button type="button" class="cat-group-btn ${active?.id===g.id?'active':''}" data-group="${esc(g.id)}"><span>${esc(g.name)}</span><small>${g.parts.length}</small></button>`).join('');
+ const partHTML=matches.slice(0,80).map(({g,part,i})=>`<button type="button" class="cat-group-btn cat-search-result" data-locate-group="${esc(g.id)}" data-locate-index="${i}" title="Locate ${esc(part.pn)}"><span><strong>${esc(part.pn)}</strong><span class="cat-search-desc">${esc(part.description)} · No ${esc(part.no)}</span><span class="cat-search-group">${esc(g.name)}</span></span><small>↗</small></button>`).join('');
+ list.innerHTML=(matchingGroups.length?'<div class="cat-search-section">Assembly Groups (${matchingGroups.length})</div>'+groupHTML:'')+
+  '<div class="cat-search-section">Parts ('+matches.length+')</div>'+partHTML+
+  (matches.length>80?'<p class="cat-search-hint">Menampilkan 80 hasil pertama. Ketik lebih spesifik.</p>':'')+
+  (!matchingGroups.length&&!matches.length?'<p class="cat-search-hint">Tidak ada grup atau part yang cocok.</p>':'');
+}
+let locateRequest=0;
+// Cari gambar yang benar berdasarkan nomor callout atau PN dalam metadata SVG.
+// Jika tidak ditemukan, tetap sorot Parts List tanpa mengklaim posisi gambar.
+async function locatePart(groupId,index){
+ const request=++locateRequest;
+ const g=groups.find(x=>x.id===groupId),part=g?.parts?.[index];
+ if(!g||!part)return;
+ const imgs=g.images||[];
+ let foundImage=-1;
+ const parent=parentNo(part);
+ for(let i=0;i<imgs.length;i++){
+  try{
+   const response=await fetch(imgs[i]);
+   if(!response.ok)continue;
+   const source=await response.text();
+   const doc=new DOMParser().parseFromString(source,'image/svg+xml');
+   const nodes=[...doc.querySelectorAll('g.callout, g.part')];
+   const hasMatch=nodes.some(node=>{
+    const nums=partNumbers(node);
+    if(!nums.includes(parent))return false;
+    if(node.classList.contains('callout'))return true;
+    return normalizePN(partTitlePN(node))===normalizePN(part.pn);
+   });
+   if(hasMatch){foundImage=i;break;}
+  }catch(err){console.warn('HEXCatalog Locate: SVG tidak dapat diperiksa',imgs[i],err);}
+ }
+ if(request!==locateRequest)return;
+ active=g;
+ imageIndex=foundImage>=0?foundImage:0;
+ showGroups($('groupSearch').value);
+ // Render daftar part sebelum memuat gambar; setelah SVG siap, ulangi highlight.
+ $('groupTitle').textContent=g.name;
+ $('groupCount').textContent=`${g.parts.length} part`;
+ $('partsBody').innerHTML=g.parts.map((p,i)=>`<tr data-index="${i}"><td>${esc(p.no)}</td><td><strong>${esc(p.pn)}</strong></td><td>${esc(p.description)}</td><td>${p.qty??'—'}</td><td><input class="cat-qty" aria-label="Quantity needed ${esc(p.pn)}" type="number" min="1" max="9999" value="${selected.get(key(g,p))?.needed??1}"></td><td><button type="button" class="cat-add">${selected.has(key(g,p))?'Update':'Add'}</button></td></tr>`).join('');
+ await renderImage();
+ if(request!==locateRequest)return;
+ pickPart(index);
+ if(foundImage<0&&imgs.length){console.info('HEXCatalog: lokasi SVG tidak terverifikasi, hanya Parts List yang disorot.',part.pn);}
 }
 function openGroup(id){active=groups.find(g=>g.id===id);imageIndex=0;showGroups($('groupSearch').value);render();}
 function render(){if(!active)return;$('groupTitle').textContent=active.name;$('groupCount').textContent=`${active.parts.length} part`;
@@ -276,7 +332,9 @@ $('selectionSummary').addEventListener('click',e=>{
  if(!entry)return;
  selected.delete(entry[0]);saveSelection();renderSelected();syncPartAddButton();
 });
-$('groupList').addEventListener('click',e=>{const btn=e.target.closest('[data-group]');if(btn)openGroup(btn.dataset.group)});
+$('groupList').addEventListener('click',e=>{const locate=e.target.closest('[data-locate-group]');if(locate){locatePart(locate.dataset.locateGroup,Number(locate.dataset.locateIndex));return;}const btn=e.target.closest('[data-group]');if(btn)openGroup(btn.dataset.group)});
+$('groupSearch').placeholder='Cari Group / Part Number / Part...';
+$('groupSearch').setAttribute('aria-label','Global Search: Assembly Group, Part Number, atau Description');
 $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
 $('partsBody').addEventListener('click',e=>{const btn=e.target.closest('.cat-add');if(!btn||!active)return;const tr=btn.closest('tr');const p=active.parts[Number(tr.dataset.index)];pickPart(Number(tr.dataset.index));selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:qty(tr.querySelector('input').value)});btn.textContent='Update';saveSelection();renderSelected();});
 $('prevImage').addEventListener('click',()=>{if(imageIndex>0){imageIndex--;renderImage()}});
