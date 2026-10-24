@@ -405,3 +405,12 @@ html,body{max-width:100%;overflow-x:clip}
   }
 
 }
+
+/* PC1250 SVG raster-overlay callouts: make selected number visibly orange. */
+.cat-inline-svg g.callout.cat-svg-selected .callout-focus-ring {
+  opacity: 1 !important;
+  stroke: #ff8500 !important;
+  stroke-width: 3 !important;
+  fill: none !important;
+  pointer-events: none !important;
+}
