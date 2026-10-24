@@ -1,12 +1,167 @@
 {
+  "source": "PB PC1250-11R.pdf — Engine Cylinder Head",
   "sections": [
     {
       "name": "Cylinder Head",
-      "figures": []
+      "figures": [
+        {
+          "fig": "A1010-001001",
+          "title": "Cylinder Head"
+        }
+      ]
+    },
+    {
+      "name": "Front Hanger",
+      "figures": [
+        {
+          "fig": "A1030-001001",
+          "title": "Front Hanger"
+        }
+      ]
     },
     {
       "name": "Cylinder Head Cover",
-      "figures": []
+      "figures": [
+        {
+          "fig": "A1110-001001",
+          "title": "Cylinder Head Cover"
+        }
+      ]
+    },
+    {
+      "name": "Komatsu Closed Crankcase Ventilation (KCCV)",
+      "figures": [
+        {
+          "fig": "A1210-001001",
+          "title": "Komatsu Closed Crankcase Ventilation (KCCV)"
+        }
+      ]
+    },
+    {
+      "name": "Head Cover Mounting Bolt",
+      "figures": [
+        {
+          "fig": "A1111-001001",
+          "title": "Head Cover Mounting Bolt"
+        }
+      ]
+    },
+    {
+      "name": "Air Intake Manifold (Connecting Parts) (1/2)",
+      "figures": [
+        {
+          "fig": "A1310-001001",
+          "title": "Air Intake Manifold (Connecting Parts) (1/2)"
+        }
+      ]
+    },
+    {
+      "name": "Air Intake Manifold (Connecting Parts) (2/2)",
+      "figures": [
+        {
+          "fig": "A1310-001002",
+          "title": "Air Intake Manifold (Connecting Parts) (2/2)"
+        }
+      ]
+    },
+    {
+      "name": "Air Intake Manifold (Sensor and Spill Tube)",
+      "figures": [
+        {
+          "fig": "A1310-001003",
+          "title": "Air Intake Manifold (Sensor and Spill Tube)"
+        }
+      ]
+    },
+    {
+      "name": "Air Intake Connector",
+      "figures": [
+        {
+          "fig": "A1410-001001",
+          "title": "Air Intake Connector"
+        }
+      ]
+    },
+    {
+      "name": "Exhaust Manifold",
+      "figures": [
+        {
+          "fig": "A1510-001001",
+          "title": "Exhaust Manifold"
+        }
+      ]
+    },
+    {
+      "name": "Variable Geometry Turbocharger (VGT) (Mounting Parts)",
+      "figures": [
+        {
+          "fig": "A1530-001001",
+          "title": "Variable Geometry Turbocharger (VGT) (Mounting Parts)"
+        }
+      ]
+    },
+    {
+      "name": "Variable Geometry Turbocharger (VGT) (Lubricating Oil Piping)",
+      "figures": [
+        {
+          "fig": "A1530-001002",
+          "title": "Variable Geometry Turbocharger (VGT) (Lubricating Oil Piping)"
+        }
+      ]
+    },
+    {
+      "name": "Variable Geometry Turbocharger (VGT) (Water Piping)",
+      "figures": [
+        {
+          "fig": "A1530-001003",
+          "title": "Variable Geometry Turbocharger (VGT) (Water Piping)"
+        }
+      ]
+    },
+    {
+      "name": "Variable Geometry Turbocharger (VGT) (Heat Cover)",
+      "figures": [
+        {
+          "fig": "A1530-001004",
+          "title": "Variable Geometry Turbocharger (VGT) (Heat Cover)"
+        }
+      ]
+    },
+    {
+      "name": "Exhaust Connection (Exhaust Connector)",
+      "figures": [
+        {
+          "fig": "A1670-001001",
+          "title": "Exhaust Connection (Exhaust Connector)"
+        }
+      ]
+    },
+    {
+      "name": "Heat Shield  (1/2)",
+      "figures": [
+        {
+          "fig": "A1570-001001",
+          "title": "Heat Shield  (1/2)"
+        }
+      ]
+    },
+    {
+      "name": "Heat Shield  (2/2)",
+      "figures": [
+        {
+          "fig": "A1570-001002",
+          "title": "Heat Shield  (2/2)"
+        }
+      ]
+    },
+    {
+      "name": "Cover For Exhaust Gas Re-circulation (EGR) Less",
+      "figures": [
+        {
+          "fig": "A1550-001001",
+          "title": "Cover For Exhaust Gas Re-circulation (EGR) Less"
+        }
+      ]
     }
   ]
 }
