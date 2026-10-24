@@ -416,6 +416,52 @@ $('prevImage').addEventListener('click',()=>{if(imageIndex>0){++locateRequest;im
 $('nextImage').addEventListener('click',()=>{if(imageIndex<(active?.images.length||0)-1){++locateRequest;imageIndex++;renderImage({preserveSelection:true})}});
 $('clearSelection').addEventListener('click',()=>{if(!selected.size)return;if(!confirm('Hapus semua Selected Parts?'))return;selected.clear();saveSelection();renderSelected();render()});
 $('exportSelection').addEventListener('click',async()=>{if(!selected.size){alert('Pilih part terlebih dahulu.');return}const data=[...selected.values()];const text=['Group\tNo\tPart Number\tDescription\tQty Needed',...data.map(p=>[p.group,p.no,p.pn,p.description,p.needed].join('\t'))].join('\n');try{await navigator.clipboard.writeText(text);alert('Daftar part berhasil disalin.')}catch{prompt('Salin daftar part berikut:',text)}});
+
+// FIG continuation handling:
+// - one drawing per identical FIG + same variant; never deduplicate across different variants
+// - continuation part rows are concatenated, not silently discarded
+// - legacy groups with images/parts work unchanged
+function prepareGroups(sourceGroups){
+ const result=[];
+ for(const raw of (Array.isArray(sourceGroups)?sourceGroups:[])){
+  if(!raw||typeof raw!=='object')continue;
+  const g={...raw};
+  const segments=Array.isArray(raw.pages)?raw.pages:(Array.isArray(raw.continuations)?raw.continuations:[]);
+  const parts=[...(Array.isArray(raw.parts)?raw.parts:[])];
+  const images=[...(Array.isArray(raw.images)?raw.images:[])];
+  const figKey=v=>String(v??'').trim().toUpperCase();
+  const variantKey=v=>String(v??'').trim().toUpperCase();
+  const known=new Set();
+  const cleanImages=[];
+  const addImage=(url,fig,variant)=>{
+   if(!url)return;
+   const canonical=String(url).trim();
+   // For repeated PDF continuation pages, prefer an explicit FIG identity.
+   // Without one, exact same URL is safely deduplicated.
+   const identity=figKey(fig)?'fig:'+figKey(fig)+'|variant:'+variantKey(variant):'url:'+canonical;
+   if(known.has(identity))return;
+   known.add(identity);cleanImages.push(canonical);
+  };
+  images.forEach((img,i)=>{
+   if(typeof img==='string')addImage(img,raw.imageFigs?.[i]||'',raw.imageVariants?.[i]||raw.variant||'');
+   else if(img&&typeof img==='object')addImage(img.url||img.src,img.fig,img.variant||raw.variant);
+  });
+  for(const page of segments){
+   if(!page||typeof page!=='object')continue;
+   if(Array.isArray(page.parts))parts.push(...page.parts);
+   const fig=page.fig||raw.fig;
+   const variant=page.variant||raw.variant;
+   if(page.image)addImage(page.image,fig,variant);
+   if(Array.isArray(page.images))page.images.forEach(im=>{
+    if(typeof im==='string')addImage(im,fig,variant);
+    else if(im)addImage(im.url||im.src,im.fig||fig,im.variant||variant);
+   });
+  }
+  g.parts=parts;g.images=cleanImages;
+  result.push(g);
+ }
+ return result;
+}
 restoreSelection();renderSelected();
-fetch('pc1250-11-data.json').then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{groups=data.groups||[];showGroups();if(groups.length)openGroup(groups[0].id)}).catch(e=>{$('groupList').textContent='Gagal memuat data katalog. Periksa pc1250-11-data.json';console.error(e)});
+fetch('pc1250-11-data.json').then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{groups=prepareGroups(data.groups);showGroups();if(groups.length)openGroup(groups[0].id)}).catch(e=>{$('groupList').textContent='Gagal memuat data katalog. Periksa pc1250-11-data.json';console.error(e)});
 })();
