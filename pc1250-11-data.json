@@ -1,21 +1,29 @@
 {
   "model": "PC1250-11R",
-  "source": "Komatsu FEN04900-00, PDF page 329 (printed page 328)",
-  "status": "prototype_partial_pdf_extraction",
+  "source": "Komatsu PC1250-11R FEN04900-00, PDF pages 329-330, FIG H0110-001001",
+  "status": "hydraulic_tank_first_fig_verified_not_complete",
   "groups": [
     {
       "id": "hydraulic-tank-tank",
       "name": "Hydraulic Tank (Tank)",
       "fig": "H0110-001001",
       "images": [
-        "catalog-images/pc1250-11r/pc1250-hydraulic-tank-01.svg"
+        "catalog-images/pc1250-11/hydraulic-system/H0110-001001.svg"
       ],
       "parts": [
+        {
+          "no": "ASM-1",
+          "pn": "21N-60-51350",
+          "description": "Strainer Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
         {
           "no": "1",
           "pn": "195-60-58190",
           "description": "• Strainer",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -23,7 +31,7 @@
           "no": "2",
           "pn": "21N-60-31360",
           "description": "• Rod Assembly",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -31,7 +39,7 @@
           "no": "3",
           "pn": "12R-60-11230",
           "description": "• • Spring",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -39,7 +47,7 @@
           "no": "4",
           "pn": "20Y-60-21320",
           "description": "• • Holder",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -47,7 +55,7 @@
           "no": "5",
           "pn": "21N-09-11140",
           "description": "O-ring",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -55,7 +63,7 @@
           "no": "6",
           "pn": "208-60-41212",
           "description": "Cap Assembly",
-          "qty": "1",
+          "qty": 1,
           "serial": "50030-",
           "code": ""
         },
@@ -63,7 +71,7 @@
           "no": "7",
           "pn": "20Y-60-42211",
           "description": "Filler Neck",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -71,7 +79,39 @@
           "no": "8",
           "pn": "20Y-60-21340",
           "description": "Gasket",
-          "qty": "1",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01252-70516",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01601-20513",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "07056-10045",
+          "description": "Strainer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "04065-04718",
+          "description": "Ring, Snap",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -79,7 +119,7 @@
           "no": "13",
           "pn": "21N-60-51161",
           "description": "Cover",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -87,7 +127,7 @@
           "no": "14",
           "pn": "203-00-17210",
           "description": "Mark, Triangle",
-          "qty": "2",
+          "qty": 2,
           "serial": "50001-",
           "code": ""
         },
@@ -95,7 +135,31 @@
           "no": "15",
           "pn": "203-00-17220",
           "description": "Mark, Key",
-          "qty": "1",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "07000-15230",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
           "serial": "50001-",
           "code": ""
         },
@@ -103,7 +167,7 @@
           "no": "19",
           "pn": "21N-60-51113",
           "description": "Tank",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -111,7 +175,7 @@
           "no": "20",
           "pn": "203-60-31100",
           "description": "Elbow Assembly",
-          "qty": "2",
+          "qty": 2,
           "serial": "50001-",
           "code": ""
         },
@@ -119,15 +183,55 @@
           "no": "21",
           "pn": "21T-60-71160",
           "description": "Tube",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
+        },
+        {
+          "no": "ASM-2",
+          "pn": "208-60-21153",
+          "description": "Breather",
+          "qty": 2,
+          "serial": "50051-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "C1",
+          "description": "• Body",
+          "qty": 1,
+          "serial": "50051-",
+          "code": "C1"
+        },
+        {
+          "no": "23",
+          "pn": "C1",
+          "description": "• Valve Assembly",
+          "qty": 1,
+          "serial": "50051-",
+          "code": "C1"
+        },
+        {
+          "no": "24",
+          "pn": "C1",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50051-",
+          "code": "C1"
+        },
+        {
+          "no": "25",
+          "pn": "C1",
+          "description": "• Case",
+          "qty": 1,
+          "serial": "50051-",
+          "code": "C1"
         },
         {
           "no": "26",
           "pn": "20Y-60-56260",
           "description": "• Nut",
-          "qty": "1",
+          "qty": 1,
           "serial": "50051-",
           "code": ""
         },
@@ -135,7 +239,7 @@
           "no": "27",
           "pn": "421-60-35170",
           "description": "• Element",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -143,7 +247,7 @@
           "no": "28",
           "pn": "421-60-35180",
           "description": "• Cover",
-          "qty": "1",
+          "qty": 1,
           "serial": "50001-",
           "code": ""
         },
@@ -151,7 +255,39 @@
           "no": "29",
           "pn": "21N-60-51131",
           "description": "Hose Assembly",
-          "qty": "1",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "07285-00200",
+          "description": "Clip, Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "04434-52312",
+          "description": "Clip",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 5,
           "serial": "50001-",
           "code": ""
         }
