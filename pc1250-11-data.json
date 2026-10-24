@@ -79095,6 +79095,829 @@
         }
       ],
       "system": "AIR SYSTEM"
+    },
+    {
+      "id": "j1110-008001",
+      "name": "Revolving Frame (Frame)",
+      "fig": "J1110-008001",
+      "images": [
+        "catalog-images/pc1250-11/frame-related/J1110-008001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-46-57101",
+          "description": "Frame",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-46-31261",
+          "description": "Bushing",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-46-51210",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-46-51230",
+          "description": "Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-46-57321",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-46-37280",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81220",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "FRAME AND ITS RELATED PARTS"
+    },
+    {
+      "id": "j1110-009001",
+      "name": "Revolving Frame (Frame) (Auto-greasing System, Electric Type)",
+      "fig": "J1110-009001",
+      "images": [
+        "catalog-images/pc1250-11/frame-related/J1110-009001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-46-57900",
+          "description": "Frame",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-46-31261",
+          "description": "Bushing",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-46-51210",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-46-51230",
+          "description": "Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-46-57321",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-46-37280",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81220",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "FRAME AND ITS RELATED PARTS"
+    },
+    {
+      "id": "j1110-008002",
+      "name": "Revolving Frame (Seat)",
+      "fig": "J1110-008002",
+      "images": [
+        "catalog-images/pc1250-11/frame-related/J1110-008002.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-46-51170",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-46-51250",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-46-51161",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-46-51380",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-46-51270",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-46-51191",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-46-51181",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-46-51150",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-46-51221",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-46-51340",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-54-53371",
+          "description": "Seal",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-51931",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-03-51920",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-54-53380",
+          "description": "Seal",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "08007-23549",
+          "description": "Cushion, Battery",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-46-51290",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "21N-46-51310",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-46-51320",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-46-51330",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "21N-54-55810",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "21N-54-55820",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-54-55830",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-46-57210",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-46-57920",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "21N-46-57181",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "21N-46-57930",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "21N-46-57171",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "FRAME AND ITS RELATED PARTS"
+    },
+    {
+      "id": "j1110-009002",
+      "name": "Revolving Frame (Seat) (Auto-greasing System, Electric Type)",
+      "fig": "J1110-009002",
+      "images": [
+        "catalog-images/pc1250-11/frame-related/J1110-009002.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-46-51170",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-46-51250",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-46-51161",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-46-51380",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-46-51270",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-46-51191",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-46-51181",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-46-51150",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-46-51221",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-46-51340",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-54-53371",
+          "description": "Seal",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-51931",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-03-51920",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-54-53380",
+          "description": "Seal",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "08007-23549",
+          "description": "Cushion, Battery",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-46-51290",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "21N-46-51310",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-46-51320",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-46-51330",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "21N-54-55810",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "21N-54-55820",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-54-55830",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-46-57210",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-46-57920",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "21N-46-57181",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "21N-46-57171",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "FRAME AND ITS RELATED PARTS"
+    },
+    {
+      "id": "j1310-001001",
+      "name": "Boom Foot Pin",
+      "fig": "J1310-001001",
+      "images": [
+        "catalog-images/pc1250-11/frame-related/J1310-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-70-37210",
+          "description": "Pin",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-70-11210",
+          "description": "Plate",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-82455",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01643-32460",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-72-11210",
+          "description": "Shim,T=1.0mm",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-72-11220",
+          "description": "Shim,T=1.5mm",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07049-02430",
+          "description": "Plug",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07049-03038",
+          "description": "Plug, Cork",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-72-11152",
+          "description": "Pin",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-70-11230",
+          "description": "Plate",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81640",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-72-11230",
+          "description": "Shim,T=1.0mm",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07049-02430",
+          "description": "Plug",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "07049-03038",
+          "description": "Plug, Cork",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "FRAME AND ITS RELATED PARTS"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
