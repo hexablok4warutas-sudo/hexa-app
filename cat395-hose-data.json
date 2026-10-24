@@ -3,18 +3,158 @@
   "groups": [
     {
       "id": "drive-gp-swing",
-      "name": "Drive Gp Swing",
+      "name": "Drive Gp Swing — Front",
       "parts": [
+        {
+          "no": "1",
+          "pn": "7D-5363",
+          "description": "Connector (9/16-18-THD)",
+          "qty": 2
+        },
+        {
+          "no": "2",
+          "pn": "153-6247",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "3",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "3.1",
+          "pn": "8C-6875",
+          "description": "Connector",
+          "qty": 1
+        },
+        {
+          "no": "3.2",
+          "pn": "1P-3705",
+          "description": "Seal-Rectangular",
+          "qty": 2
+        },
+        {
+          "no": "4",
+          "pn": "227-6215",
+          "description": "Boss (1/4-18-THD)",
+          "qty": 1
+        },
+        {
+          "no": "5",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "6",
+          "pn": "447-1719",
+          "description": "Bolt (M20X2.5X60-MM)",
+          "qty": 4
+        },
+        {
+          "no": "7",
+          "pn": "451-2182",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 2
+        },
+        {
+          "no": "8",
+          "pn": "453-3446",
+          "description": "Bolt (M12X1.75X35-MM)",
+          "qty": 1
+        },
+        {
+          "no": "9",
+          "pn": "4H-6112",
+          "description": "Breather",
+          "qty": 1
+        },
+        {
+          "no": "10",
+          "pn": "4I-7822",
+          "description": "Cover",
+          "qty": 2
+        },
+        {
+          "no": "11",
+          "pn": "547-9727",
+          "description": "Motor GP-Swing",
+          "qty": 1
+        },
+        {
+          "no": "12",
+          "pn": "548-7981",
+          "description": "Clip",
+          "qty": 2
+        },
+        {
+          "no": "13",
+          "pn": "553-0418",
+          "description": "Pipe AS",
+          "qty": 1
+        },
         {
           "no": "14",
           "pn": "555-1822",
-          "description": "Hose As",
-          "qty": 2
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "15",
+          "pn": "555-1823",
+          "description": "Gauge-Oil Level",
+          "qty": 1
+        },
+        {
+          "no": "16",
+          "pn": "5H-3252",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "607-5642",
+          "description": "Drive GP-Swing",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "6V-7238",
+          "description": "Valve-Shutoff",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "8T-1739",
+          "description": "Washer-Hard (21X40X3.5-MM Thk)",
+          "qty": 4
+        },
+        {
+          "no": "20",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 8
+        },
+        {
+          "no": "21",
+          "pn": "8T-4244",
+          "description": "Nut (M12X1.75-THD)",
+          "qty": 1
+        },
+        {
+          "no": "22",
+          "pn": "362-1320",
+          "description": "Bolt (M12X1.75X35-MM)",
+          "qty": 8
         }
       ],
       "images": [
-        "catalog-images/cat395/drive-gp-swing-01.svg"
-      ]
+        "catalog-images/cat395/lines-gp-swing-01.svg"
+      ],
+      "assemblyNumber": "619-6363",
+      "note": "S/N SGD1-UP; Part of 544-4548 DRIVE & MTG GP-SWING"
     },
     {
       "id": "lines-gp-motor",
@@ -429,149 +569,954 @@
       ]
     },
     {
-      "id": "lines-gp-pilot",
-      "name": "Lines Gp Pilot",
+      "id": "lines-gp-pilot-a",
+      "name": "Lines Gp Pilot A",
+      "images": [
+        "catalog-images/cat395/lines-gp-pilot-01.svg",
+        "catalog-images/cat395/lines-gp-pilot-02.svg",
+        "catalog-images/cat395/lines-gp-pilot-03.svg",
+        "catalog-images/cat395/lines-gp-pilot-04.svg",
+        "catalog-images/cat395/lines-gp-pilot-05.svg",
+        "catalog-images/cat395/lines-gp-pilot-06.svg"
+      ],
       "parts": [
+        {
+          "no": "1",
+          "pn": "8T-4136",
+          "description": "Bolt (M10X1.5X25-MM)",
+          "qty": 3
+        },
+        {
+          "no": "2",
+          "pn": "8T-4192",
+          "description": "Bolt (M12X1.75X25-MM)",
+          "qty": 2
+        },
+        {
+          "no": "3",
+          "pn": "8T-4198",
+          "description": "Bolt (M10X1.5X100-MM)",
+          "qty": 2
+        },
         {
           "no": "4",
           "pn": "087-5764",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "5",
           "pn": "087-5772",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "6",
           "pn": "104-8803",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "7",
           "pn": "104-8973",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "8",
           "pn": "108-7402",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "9",
           "pn": "129-5959",
-          "description": "Hose As",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "10",
+          "pn": "148-8336",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "10.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "10.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "10.3",
+          "pn": "6V-8636",
+          "description": "Adapter",
+          "qty": 1
+        },
+        {
+          "no": "11",
+          "pn": "148-8340",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "11.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "11.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "11.3",
+          "pn": "6V-8639",
+          "description": "Adapter",
+          "qty": 1
+        },
+        {
+          "no": "12",
+          "pn": "148-8353",
+          "description": "Elbow AS",
+          "qty": 7
+        },
+        {
+          "no": "12.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "12.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "12.3",
+          "pn": "6V-9001",
+          "description": "Elbow",
+          "qty": 1
+        },
+        {
+          "no": "13",
+          "pn": "148-8364",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "13.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "13.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "13.3",
+          "pn": "6V-8625",
+          "description": "Elbow",
+          "qty": 1
+        },
+        {
+          "no": "14",
+          "pn": "148-8378",
+          "description": "Elbow AS",
+          "qty": 12
+        },
+        {
+          "no": "14.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "14.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "14.3",
+          "pn": "6V-8724",
+          "description": "Elbow",
+          "qty": 1
+        },
+        {
+          "no": "15",
+          "pn": "148-8407",
+          "description": "Plug AS",
+          "qty": 6
+        },
+        {
+          "no": "15.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "15.2",
+          "pn": "9S-4191",
+          "description": "Plug (9/16-18-THD)",
+          "qty": 1
+        },
+        {
+          "no": "16",
+          "pn": "148-8411",
+          "description": "Plug AS",
+          "qty": 1
+        },
+        {
+          "no": "16.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "16.2",
+          "pn": "9S-4185",
+          "description": "Plug (3/4-16-THD)",
+          "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "148-8435",
+          "description": "Tee AS",
+          "qty": 2
+        },
+        {
+          "no": "17.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "17.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 2
+        },
+        {
+          "no": "17.3",
+          "pn": "6V-8781",
+          "description": "Tee",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "150-3065",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "18.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "18.2",
+          "pn": "6V-0484",
+          "description": "Elbow",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "150-4043",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "19.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "19.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "19.3",
+          "pn": "6V-9873",
+          "description": "Connector",
+          "qty": 1
+        },
+        {
+          "no": "20",
+          "pn": "150-4044",
+          "description": "Connector AS",
+          "qty": 2
+        },
+        {
+          "no": "20.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "20.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "20.3",
+          "pn": "8T-1779",
+          "description": "Connector",
+          "qty": 1
+        },
+        {
+          "no": "21",
+          "pn": "164-8908",
+          "description": "Connector AS",
+          "qty": 3
+        },
+        {
+          "no": "21.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "21.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "21.3",
+          "pn": "8T-0077",
+          "description": "Connector",
+          "qty": 1
+        },
+        {
+          "no": "22",
+          "pn": "168-9759",
+          "description": "Block",
+          "qty": 1
+        },
+        {
+          "no": "23",
+          "pn": "196-2036",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "23.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "23.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "23.3",
+          "pn": "9X-2492",
+          "description": "Tee",
+          "qty": 1
+        },
+        {
+          "no": "24",
+          "pn": "204-1611",
+          "description": "Strap-Cable (Dual)",
+          "qty": 2
+        },
+        {
+          "no": "25",
+          "pn": "204-2281",
+          "description": "Strap-Cable",
+          "qty": 3
+        },
+        {
+          "no": "26",
+          "pn": "204-8000",
+          "description": "Mounting-Cable Tie",
+          "qty": 3
+        },
+        {
+          "no": "27",
+          "pn": "216-8309",
+          "description": "Connector AS",
+          "qty": 2
+        },
+        {
+          "no": "27.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "27.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "27.3",
+          "pn": "169-9763",
+          "description": "Connector",
+          "qty": 1
+        },
+        {
+          "no": "28",
+          "pn": "241-6215",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "28.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "28.2",
+          "pn": "6V-8076",
+          "description": "Elbow",
           "qty": 1
         },
         {
           "no": "29",
           "pn": "278-6868",
-          "description": "Hose As",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "30",
+          "pn": "297-7927",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "30.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "30.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "30.3",
+          "pn": "123-1904",
+          "description": "Connector",
           "qty": 1
         },
         {
           "no": "31",
           "pn": "307-5153",
-          "description": "Hose As",
-          "qty": 1
+          "description": "Hose AS",
+          "qty": 2
         },
         {
           "no": "32",
           "pn": "320-0011",
-          "description": "Hose As",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "33",
+          "pn": "335-0546",
+          "description": "Accumulator & Mtg GP-Hydraulic (Charged)",
           "qty": 1
         },
         {
           "no": "34",
           "pn": "350-7213",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "35",
           "pn": "354-3695",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "36",
           "pn": "453-4976",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "37",
           "pn": "459-5905",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "38",
+          "pn": "4I-0797",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "39",
+          "pn": "4I-9523",
+          "description": "Band-Marker (Blue, L3)",
+          "qty": 6
+        },
+        {
+          "no": "40",
+          "pn": "4I-9524",
+          "description": "Band-Marker (Brown, L4)",
+          "qty": 6
+        },
+        {
+          "no": "41",
+          "pn": "4I-9525",
+          "description": "Band-Marker (Orange, R1)",
+          "qty": 4
+        },
+        {
+          "no": "42",
+          "pn": "4I-9528",
+          "description": "Band-Marker (Purple, R4)",
+          "qty": 2
         },
         {
           "no": "43",
           "pn": "525-5013",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "44",
           "pn": "550-7165",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "45",
           "pn": "550-7167",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "46",
           "pn": "550-7168",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "47",
+          "pn": "552-1845",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "47.1",
+          "pn": "8T-3490",
+          "description": "Nut-Weld (M10X1.5-THD)",
+          "qty": 2
         },
         {
           "no": "48",
           "pn": "590-8011",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "49",
+          "pn": "7K-1181",
+          "description": "Strap-Cable",
+          "qty": 11
+        },
+        {
+          "no": "50",
+          "pn": "8T-4121",
+          "description": "Washer-Hard (11X21X2.5-MM Thk)",
+          "qty": 5
+        },
+        {
+          "no": "51",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 4
+        },
+        {
+          "no": "52",
+          "pn": "362-1320",
+          "description": "Bolt (M12X1.75X35-MM)",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "id": "lines-gp-pilot-b",
+      "name": "Lines Gp Pilot B",
+      "images": [
+        "catalog-images/cat395/lines-gp-pilot-B-01.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "8T-4200",
+          "description": "Bolt (M8X1.25X16-MM)",
+          "qty": 2
         },
         {
           "no": "2",
           "pn": "104-8821",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "3",
+          "pn": "148-8336",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "3.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "3.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "3.3",
+          "pn": "6V-8636",
+          "description": "Adapter",
+          "qty": 1
+        },
+        {
+          "no": "4",
+          "pn": "148-8338",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "4.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "4.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "4.3",
+          "pn": "8T-0075",
+          "description": "Connector",
+          "qty": 1
+        },
+        {
+          "no": "5",
+          "pn": "148-8347",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "5.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "5.2",
+          "pn": "6V-9007",
+          "description": "Elbow",
+          "qty": 1
+        },
+        {
+          "no": "5.3",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "6",
+          "pn": "148-8378",
+          "description": "Elbow AS",
+          "qty": 2
+        },
+        {
+          "no": "6.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "6.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "6.3",
+          "pn": "6V-8724",
+          "description": "Elbow",
+          "qty": 1
+        },
+        {
+          "no": "7",
+          "pn": "148-8439",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "7.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "7.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 2
+        },
+        {
+          "no": "7.3",
+          "pn": "6V-8774",
+          "description": "Tee",
+          "qty": 1
+        },
+        {
+          "no": "8",
+          "pn": "150-4027",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "8.1",
+          "pn": "3E-2310",
+          "description": "Tee",
+          "qty": 1
+        },
+        {
+          "no": "8.2",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "8.3",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "9",
+          "pn": "150-4046",
+          "description": "Adapter AS",
+          "qty": 1
+        },
+        {
+          "no": "9.1",
+          "pn": "2M-9780",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "9.2",
+          "pn": "5P-1404",
+          "description": "Adapter",
+          "qty": 1
+        },
+        {
+          "no": "10",
+          "pn": "153-6259",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "10.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "10.2",
+          "pn": "6V-8777",
+          "description": "Tee-Face Seal",
+          "qty": 1
+        },
+        {
+          "no": "10.3",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 2
+        },
+        {
+          "no": "11",
+          "pn": "164-5567",
+          "description": "Nipple AS (Male)",
+          "qty": 8
+        },
+        {
+          "no": "11.1",
+          "pn": "6V-3965",
+          "description": "Adapter (Quick Disconnect)",
+          "qty": 1
+        },
+        {
+          "no": "11.2",
+          "pn": "214-7568",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "12",
+          "pn": "204-2281",
+          "description": "Strap-Cable",
+          "qty": 2
+        },
+        {
+          "no": "13",
+          "pn": "204-8000",
+          "description": "Mounting-Cable Tie",
+          "qty": 2
         },
         {
           "no": "14",
           "pn": "296-6949",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "15",
+          "pn": "338-6971",
+          "description": "Sensor GP-Pressure",
+          "qty": 2
+        },
+        {
+          "no": "16",
+          "pn": "524-0911",
+          "description": "Valve & Mtg GP-Solenoid",
+          "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "551-1454",
+          "description": "Plate AS",
+          "qty": 1
+        },
+        {
+          "no": "17.1",
+          "pn": "8T-3490",
+          "description": "Nut-Weld (M10X1.5-THD)",
+          "qty": 2
         },
         {
           "no": "18",
           "pn": "551-1458",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "19",
           "pn": "594-0241",
-          "description": "Hose As",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "20",
+          "pn": "5I-8825",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "21",
+          "pn": "6V-0852",
+          "description": "Cap-Dust",
+          "qty": 8
+        },
+        {
+          "no": "22",
+          "pn": "7K-1181",
+          "description": "Strap-Cable",
+          "qty": 3
+        },
+        {
+          "no": "23",
+          "pn": "8T-4121",
+          "description": "Washer-Hard (11X21X2.5-MM Thk)",
+          "qty": 4
+        },
+        {
+          "no": "24",
+          "pn": "183-7121",
+          "description": "Bolt (M10X1.5X35-MM)",
+          "qty": 4
+        },
+        {
+          "no": "25",
+          "pn": "8T-4224",
+          "description": "Washer-Hard (8.8X16X2-MM Thk)",
+          "qty": 2
+        }
+      ]
+    },
+    {
+      "id": "lines-gp-pilot-c",
+      "name": "Lines Gp Pilot C",
+      "images": [
+        "catalog-images/cat395/lines-gp-pilot-c-01.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "148-8354",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "1.1",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "1.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "1.3",
+          "pn": "6V-9002",
+          "description": "Elbow",
           "qty": 1
         },
         {
           "no": "2",
           "pn": "590-9797",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         }
-      ],
-      "images": []
+      ]
     },
     {
       "id": "lines-gp-boom",
