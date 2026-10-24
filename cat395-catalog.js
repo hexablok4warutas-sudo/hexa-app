@@ -112,7 +112,7 @@ async function locatePart(groupId,index){
  function partsRowsHTML(group){
   return group.parts.map((p,i)=>{
    const chosen=selected.has(key(group,p));
-   return `<tr data-index="${i}" class="${chosen?'cat-part-in-cart':''}"><td>${esc(p.no)}</td><td><strong>${esc(p.pn)}</strong></td><td>${esc(p.description)}</td><td>${esc(p.qty??'—')}</td><td><button type="button" class="cat-add" title="${chosen?'Sudah dipilih':'Tambahkan ke Selected Parts'}" aria-label="${chosen?'Sudah dipilih':'Tambahkan'} ${esc(p.pn)} ke Selected Parts" aria-pressed="${chosen}"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button></td></tr>`;
+   return `<tr data-index="${i}" tabindex="0" aria-label="Pilih part nomor ${esc(p.no)}, ${esc(p.pn)}" class="${chosen?'cat-part-in-cart':''}"><td>${esc(p.no)}</td><td><strong>${esc(p.pn)}</strong></td><td>${esc(p.description)}</td><td>${esc(p.qty??'—')}</td><td><button type="button" class="cat-add ${chosen?'is-selected':''}" title="${chosen?'Sudah dipilih':'Tambahkan ke Selected Parts'}" aria-label="${chosen?'Sudah dipilih':'Tambahkan'} ${esc(p.pn)} ke Selected Parts" aria-pressed="${chosen}"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg></button></td></tr>`;
   }).join('');
  }
 function openGroup(id){++locateRequest;active=groups.find(g=>g.id===id);imageIndex=0;showGroups($('groupSearch').value);render();}
@@ -173,7 +173,7 @@ function initViewer(){
   else if(!pointers.size){gesture=null;area.classList.remove('is-dragging');}
   if(!isTap||!hasDrawing())return;
    // Callout induk membuka pilihan termasuk subpart; klik gambar part memakai PN metadata jika cocok.
-   const hit=document.elementFromPoint(e.clientX,e.clientY)||tap.hit;
+   const hit=tap.hit||document.elementFromPoint(e.clientX,e.clientY);
    const svgHit=hit?.closest?.('g.callout, g.part') ? hit : tap.hit;
    const callout=svgHit?.closest?.('g.callout');
    const partNode=svgHit?.closest?.('g.part');
@@ -271,7 +271,12 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
    const rows=[...$('partsBody').querySelectorAll('tr')];
    rows.forEach((row,i)=>row.classList.toggle('cat-part-highlight',i===index));
    highlightDrawing(index);
-   const row=rows[index];row?.scrollIntoView({behavior:'smooth',block:'nearest'});
+   const row=rows[index],scroller=$('partsBody')?.closest('.cat-table-wrap');
+    if(row&&scroller){
+      const top=row.offsetTop-scroller.offsetTop;
+      const desired=top-(scroller.clientHeight-row.offsetHeight)/2;
+      scroller.scrollTo({top:Math.max(0,desired),behavior:'smooth'});
+    }
    // Qty Needed hanya diedit pada Selected Parts.
  }
 
@@ -380,7 +385,23 @@ $('groupList').addEventListener('click',e=>{const locate=e.target.closest('[data
 $('groupSearch').placeholder='Cari Group / Part Number / Part...';
 $('groupSearch').setAttribute('aria-label','Global Search: Assembly Group, Part Number, atau Description');
 $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
-$('partsBody').addEventListener('click',e=>{const btn=e.target.closest('.cat-add');if(!btn||!active)return;const tr=btn.closest('tr');const p=active.parts[Number(tr.dataset.index)];pickPart(Number(tr.dataset.index));if(!selected.has(key(active,p)))selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:1});saveSelection();renderSelected();syncPartAddButton();});
+// Sinkronisasi dua arah: klik baris memilih nomor SVG; klik keranjang tetap menambah part.
+ $('partsBody').addEventListener('click',e=>{
+  if(!active)return;
+  const tr=e.target.closest('tr[data-index]');if(!tr)return;
+  const index=Number(tr.dataset.index),p=active.parts[index];if(!p)return;
+  pickPart(index);
+  if(!e.target.closest('.cat-add'))return;
+  if(!selected.has(key(active,p)))selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:1});
+  saveSelection();renderSelected();syncPartAddButton();
+ });
+ // Akses keyboard untuk pemilihan baris Parts List tanpa mengganggu tombol keranjang.
+ $('partsBody').addEventListener('keydown',e=>{
+  if(e.target.closest('button,input,select,a'))return;
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  const tr=e.target.closest('tr[data-index]');if(!tr)return;
+  e.preventDefault();pickPart(Number(tr.dataset.index));
+ });
 $('prevImage').addEventListener('click',()=>{if(imageIndex>0){imageIndex--;renderImage()}});
 $('nextImage').addEventListener('click',()=>{if(imageIndex<(active?.images.length||0)-1){imageIndex++;renderImage()}});
 $('clearSelection').addEventListener('click',()=>{if(!selected.size)return;if(!confirm('Hapus semua Selected Parts?'))return;selected.clear();saveSelection();renderSelected();render()});
