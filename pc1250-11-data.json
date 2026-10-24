@@ -41105,6 +41105,535 @@
         }
       ],
       "system": "ENGINE CYLINDER BLOCK AND ITS RELATED PARTS"
+    },
+    {
+      "id": "a3010-001001",
+      "name": "Engine Oil Pump",
+      "fig": "A3010-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-lubrication/A3010-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "ASM",
+          "pn": "6240-51-1100",
+          "description": "Pump Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "ASM",
+          "pn": "6240-51-1130",
+          "description": "• Body Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "C1",
+          "description": "• • Body",
+          "qty": 1,
+          "serial": "750001-",
+          "code": "C1"
+        },
+        {
+          "no": "2",
+          "pn": "6151-51-1421",
+          "description": "• • Bushing",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "ASM",
+          "pn": "6240-51-1200",
+          "description": "• Cover Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "C1",
+          "description": "• • Cover",
+          "qty": 1,
+          "serial": "750001-",
+          "code": "C1"
+        },
+        {
+          "no": "4",
+          "pn": "6151-51-1421",
+          "description": "• • Bushing",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "6212-51-1320",
+          "description": "• • Shaft,Driven",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "ASM",
+          "pn": "6240-51-1300",
+          "description": "• Gear Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "C1",
+          "description": "• • Gear,Drive",
+          "qty": 1,
+          "serial": "750001-",
+          "code": "C1"
+        },
+        {
+          "no": "7",
+          "pn": "6240-51-1310",
+          "description": "• • Shaft,Drive",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "ASM",
+          "pn": "6212-51-1250",
+          "description": "• Gear Assembly",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "C1",
+          "description": "• • Gear,Driven",
+          "qty": 1,
+          "serial": "750001-",
+          "code": "C1"
+        },
+        {
+          "no": "9",
+          "pn": "6151-51-1421",
+          "description": "• • Bushing",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "6240-51-1610",
+          "description": "• Gear",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01435-00830",
+          "description": "• Bolt",
+          "qty": 6,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "6240-51-1710",
+          "description": "• Valve",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "6240-51-1750",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "6240-51-1780",
+          "description": "• Shim,T=1.00mm",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "6240-51-1760",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81040",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "6240-51-1811",
+          "description": "Gasket",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE LUBRICATION SYSTEM"
+    },
+    {
+      "id": "a3310-001001",
+      "name": "Engine Oil Cooler",
+      "fig": "A3310-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-lubrication/A3310-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "ASM",
+          "pn": "6240-61-2101",
+          "description": "Oil Cooler Assembly",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "6240-61-2111",
+          "description": "• Element",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "6240-61-2120",
+          "description": "• Cover",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "6240-61-2560",
+          "description": "• Gasket",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "6150-61-2510",
+          "description": "• O-ring",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "6150-61-2520",
+          "description": "• O-ring",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "6150-61-2580",
+          "description": "• Nut",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "6150-61-2530",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "6151-62-2130",
+          "description": "• Cover",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "07000-73042",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "6212-65-2610",
+          "description": "• Thermostat",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "6150-61-2540",
+          "description": "• Seal",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "6150-61-2141",
+          "description": "• Case",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "6150-61-2151",
+          "description": "• Plate",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01435-00825",
+          "description": "• Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "6150-61-2550",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "6150-61-2815",
+          "description": "Gasket",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "07043-70312",
+          "description": "Plug",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE LUBRICATION SYSTEM"
+    },
+    {
+      "id": "a3311-001001",
+      "name": "Engine Oil Cooler Mounting and Accessory",
+      "fig": "A3311-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-lubrication/A3311-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "01010-81065",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81080",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 7,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 7,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "6246-81-5370",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81045",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "6246-81-5780",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81035",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "6246-81-5220",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81035",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "6246-81-9280",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01010-81090",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE LUBRICATION SYSTEM"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
