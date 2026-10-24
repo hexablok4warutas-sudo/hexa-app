@@ -357,3 +357,51 @@ html,body{max-width:100%;overflow-x:clip}
   .cat-groups{height:auto!important;max-height:none!important}
   .cat-groups>#pcSectionList{max-height:390px!important;overflow-y:auto!important}
 }
+
+
+/* ==========================================
+   HEXCATALOG PC1250-11R
+   ASSEMBLY GROUPS HEIGHT FIX REV7
+   ========================================== */
+
+@media (min-width: 901px) {
+
+  /* Dua kolom utama harus sejajar */
+  .cat-layout {
+    display: grid !important;
+    align-items: start !important;
+  }
+
+  /* Panel detail sebagai acuan tinggi */
+  .cat-detail {
+    min-width: 0;
+  }
+
+  /* Panel kiri mengikuti tinggi workspace */
+  .cat-groups {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .cat-groups h2,
+  .cat-groups #groupSearch {
+    flex: 0 0 auto;
+  }
+
+  /* Area daftar tetap bisa scroll */
+  #pcSectionList {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+
+  #groupList {
+    min-height: 0 !important;
+    overflow-y: auto;
+  }
+
+}
