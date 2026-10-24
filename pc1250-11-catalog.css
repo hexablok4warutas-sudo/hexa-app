@@ -314,3 +314,47 @@ html,body{max-width:100%;overflow-x:clip}
 #groupList{display:none}
 .cat-image-toolbar>.cat-zoom-controls:not(:last-child){display:none!important}
 @media(max-width:600px){.pc-system-tab{padding:9px 11px!important;font-size:11px!important}.pc-catalog-heading{margin-bottom:12px}}
+
+
+/* =========================================
+   HEXCATALOG PC1250-11R
+   ASSEMBLY GROUPS FULL HEIGHT
+   ========================================= */
+
+@media (min-width: 901px) {
+
+  .cat-layout {
+    display: grid;
+    align-items: stretch;
+  }
+
+  .cat-groups {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .cat-groups h2,
+  .cat-groups #groupSearch {
+    flex-shrink: 0;
+  }
+
+  /* Daftar group mengisi ruang sidebar */
+  #pcSectionList {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  #groupList:not([style*="display: none"]) {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+}
+
