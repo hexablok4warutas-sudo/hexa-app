@@ -51993,6 +51993,25 @@
         }
       ],
       "system": "ENGINE ACCESSORIES AND OTHERS"
+    },
+    {
+      "id": "a9810-001001",
+      "name": "Warning Plate",
+      "fig": "A9810-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-marks/A9810-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "6271-81-2981",
+          "description": "Plate, Caution",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE MARKS AND PLATES"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
