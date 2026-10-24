@@ -1,0 +1,13 @@
+/* HEXCatalog PC1250-8R — clean layout override. Load AFTER pc1250-11-catalog.css */
+/* Hide metadata only; preserve button dimensions and behavior */
+#pcSectionList .pc-section-btn > small,
+#groupList .cat-group-btn > small { display:none !important; }
+#pcSectionList .pc-section-btn { justify-content:flex-start !important; }
+/* Remove duplicate heading but keep system tabs */
+.cat-top > .pc-catalog-heading { display:none !important; }
+/* Inline system breadcrumb and right-aligned back button */
+.cat-title { display:flex !important; align-items:center !important; }
+.cat-title h1 { min-width:0; flex:1; }
+.cat-title h1 small { display:inline !important; font-weight:500; line-height:1.5; }
+.cat-title .pc-clean-back { display:inline-flex;flex:none;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid #cfdde9;border-radius:8px;background:#fff;color:#0063a4;text-decoration:none;font-size:19px; }
+@media(max-width:600px){ .cat-title { gap:8px; } .cat-title h1 small { font-size:11px; } .cat-title .pc-clean-back { width:32px;height:32px; } }
