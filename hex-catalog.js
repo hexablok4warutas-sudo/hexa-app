@@ -1,9 +1,10 @@
 // HEXCatalog - Navigasi katalog unit
-// Menghubungkan card CAT 395 ke halaman katalog yang sudah dibuat.
-// Model lainnya tetap menampilkan pemberitahuan sampai katalognya tersedia.
+// Menghubungkan kartu model ke katalog yang sudah tersedia.
+// Model lain tetap menampilkan pemberitahuan.
 
 const catalogPages = {
-  'CAT 395': 'cat395-catalog.html'
+  'CAT 395': 'cat395-catalog.html',
+  'PC1250-11': 'pc1250-11-catalog.html'
 };
 
 document.querySelectorAll('.catalog-card').forEach((card) => {
