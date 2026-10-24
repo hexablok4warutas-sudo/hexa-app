@@ -268,3 +268,18 @@ html,body{max-width:100%;overflow-x:clip}
 .cat-inline-svg g.callout.cat-svg-selected circle,.cat-inline-svg g.callout.cat-svg-selected rect,
 .cat-inline-svg g.callout.cat-svg-selected ellipse{stroke:#ef8a13!important;stroke-width:1.1!important;fill:none!important}
 .cat-inline-svg g.callout:hover text,.cat-inline-svg g.callout:hover tspan{stroke:none!important;fill:#c86b00!important}
+
+/* v5: highlight bentuk part terpilih, hanya untuk SVG yang memiliki g.part. */
+.cat-inline-svg g.part.cat-svg-selected path,
+.cat-inline-svg g.part.cat-svg-selected line,
+.cat-inline-svg g.part.cat-svg-selected polyline,
+.cat-inline-svg g.part.cat-svg-selected polygon,
+.cat-inline-svg g.part.cat-svg-selected circle,
+.cat-inline-svg g.part.cat-svg-selected ellipse,
+.cat-inline-svg g.part.cat-svg-selected rect{
+ stroke:#e98313!important;
+ filter:none!important;
+}
+/* Nomor tetap terbaca dan tidak ditutup blok warna. */
+.cat-inline-svg g.part.cat-svg-selected text,
+.cat-inline-svg g.part.cat-svg-selected tspan{stroke:none!important;filter:none!important}
