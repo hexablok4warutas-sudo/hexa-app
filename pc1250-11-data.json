@@ -75195,6 +75195,3906 @@
         }
       ],
       "system": "ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "g0000-003001",
+      "name": "Air System (Air Piping)",
+      "fig": "G0000-003001",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G0000-003001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-68-41140",
+          "description": "Joint",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "205-68-51210",
+          "description": "Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21X-62-21140",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07002-62034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-68-41150",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07002-62034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "209-68-51150",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07004-01525",
+          "description": "Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "07834-00613",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07822-00650",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "07822-00603",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "07831-00612",
+          "description": "Sleeve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07832-00614",
+          "description": "Nut, Sleeve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "04434-51012",
+          "description": "Clip",
+          "qty": 14,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "04434-51612",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "195-33-11220",
+          "description": "Spacer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01010-81245",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-04-41151",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g0000-003002",
+      "name": "Air System (Air Tank)",
+      "fig": "G0000-003002",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G0000-003002.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07821-10801",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "205-68-51180",
+          "description": "Valve, Check",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "209-68-11430",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "205-68-51170",
+          "description": "Tank",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-68-41111",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "209-68-61180",
+          "description": "U-bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "203-62-15520",
+          "description": "Nut",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "206-68-11120",
+          "description": "Valve, Safety",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07326-10402",
+          "description": "Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "209-68-51140",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "07836-00613",
+          "description": "Connector",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07822-00603",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "07831-00612",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "07832-00614",
+          "description": "Nut, Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-68-41121",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "07326-10402",
+          "description": "Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "07325-10200",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "07700-40240",
+          "description": "Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "07822-00611",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "07831-00612",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07832-00614",
+          "description": "Nut, Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "500-44-14110",
+          "description": "Governor",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01010-80875",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01643-30823",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "234-43-12510",
+          "description": "Joint",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "07836-00613",
+          "description": "Connector",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g0000-003003",
+      "name": "Air System (Horn Valve)",
+      "fig": "G0000-003003",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G0000-003003.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07834-00613",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "281-34-13901",
+          "description": "Horn, Air",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-68-37120",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07831-00612",
+          "description": "Sleeve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07832-00614",
+          "description": "Nut, Sleeve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-06-41280",
+          "description": "Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "07834-00613",
+          "description": "Elbow",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07831-00612",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "07832-00614",
+          "description": "Nut, Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g0000-003004",
+      "name": "Air System (Mounting)",
+      "fig": "G0000-003004",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G0000-003004.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-80816",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-30823",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001001",
+      "name": "Auto-greasing System (Grease Pump)",
+      "fig": "G1010-001001",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001001.svg",
+        "catalog-images/pc1250-11/air-system/G1010-001001-p308.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "21N-95-55310",
+          "description": "Pump Assembly, Grease",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "08192-22810",
+          "description": "• Connector Body Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "42C-S95-3840",
+          "description": "• Sensor, Level",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "561-95-84630",
+          "description": "• Valve Assembly, Unload",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "561-95-84640",
+          "description": "• Pipe",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "561-95-8A510",
+          "description": "• Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "561-95-8A520",
+          "description": "• Tank Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "561-95-8A630",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "561-95-8A640",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "561-95-84720",
+          "description": "• Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "561-95-84730",
+          "description": "• Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "561-95-84760",
+          "description": "• Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "561-95-84770",
+          "description": "• Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "561-95-8A550",
+          "description": "• Elbow",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "561-95-84790",
+          "description": "• Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "561-95-8A530",
+          "description": "• Pump Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "561-95-84820",
+          "description": "• Fitting",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "561-95-8A540",
+          "description": "• Valve Assembly, Vent",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "561-95-8A560",
+          "description": "• Gasket",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "561-95-8A610",
+          "description": "• Tee",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "561-95-8A620",
+          "description": "• Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "LI66220",
+          "description": "• Washer, Lock",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "LI50015",
+          "description": "• Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "LI10160",
+          "description": "• Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "LI12989",
+          "description": "• Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "LI276853",
+          "description": "• Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "LI50016",
+          "description": "• Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "LI66246",
+          "description": "• Washer, Lock",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "LI272717",
+          "description": "• Tee",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "LI31010",
+          "description": "• Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "LI12538",
+          "description": "• Nut",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "LI277728",
+          "description": "• Screw",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "LI66186",
+          "description": "• Washer, Lock",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "LI277406",
+          "description": "• Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "LI249355",
+          "description": "• Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "LI67007",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "LI51005",
+          "description": "• Nut",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "LI276300",
+          "description": "• Bolt, Eye",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "LI50025",
+          "description": "• Screw",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "LI69181",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "LI51039",
+          "description": "• Nut",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "LI85689",
+          "description": "• Follower Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001002",
+      "name": "Auto-greasing System (Grease Pump Related Parts) (1/2)",
+      "fig": "G1010-001002",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001002.svg",
+        "catalog-images/pc1250-11/air-system/G1010-001002-p310.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-95-57580",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21T-68-34140",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "561-95-83820",
+          "description": "Connector",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "22P-62-13630",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "02896-21012",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "02767-004A4",
+          "description": "Hose, Face Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "02896-21012",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "561-95-83820",
+          "description": "Connector",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-68-41630",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "426-35-11590",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-68-57651",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "426-Z89-3220",
+          "description": "Valve Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "21N-68-57621",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "562-52-3A860",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "02781-00628",
+          "description": "Union",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "07002-22434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "02766-006A5",
+          "description": "Hose, Face Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "02896-21018",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "561-95-85481",
+          "description": "Connector",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "02766-00605",
+          "description": "Hose, Face Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "02896-21018",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "02765-00407",
+          "description": "Hose, Face Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "02896-21012",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "21N-06-52511",
+          "description": "Wiring Harness",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "04434-50810",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "04434-51210",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "04434-51410",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "04434-50810",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "08193-20010",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "04434-52711",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "07095-20420",
+          "description": "Cushion",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "04434-51410",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "08193-20010",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "45",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001003",
+      "name": "Auto-greasing System (Grease Pump Related Parts) (2/2)",
+      "fig": "G1010-001003",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001003.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "08193-20010",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "7861-93-1653",
+          "description": "Sensor, Pressure",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07042-30415",
+          "description": "Plug, Taper",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-06-57890",
+          "description": "Switch",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21T-06-34670",
+          "description": "• Switch",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-00-57150",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07372-21030",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-51032",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001004",
+      "name": "Auto-greasing System (Grease Pump Piping)",
+      "fig": "G1010-001004",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001004.svg",
+        "catalog-images/pc1250-11/air-system/G1010-001004-p313.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "02766-00609",
+          "description": "Hose, Face Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "02896-21018",
+          "description": "O-ring",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "04434-53412",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07095-20629",
+          "description": "Cushion",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-95-57480",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21T-06-34151",
+          "description": "Timer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-80620",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01643-30623",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21J-06-13661",
+          "description": "Diode",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "203-958-4230",
+          "description": "Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "02782-10422",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "02896-21012",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "07002-22034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01010-80612",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01643-30623",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21T-68-68490",
+          "description": "Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "209-68-51140",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07043-70211",
+          "description": "Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "209-68-51220",
+          "description": "Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-68-57251",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "7861-93-1653",
+          "description": "Sensor, Pressure",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-68-57670",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "02896-21012",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "21T-64-34350",
+          "description": "Block",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01010-81060",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "02782-10422",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "07002-22034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "07236-10422",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "07002-12034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "203-62-52210",
+          "description": "Rubber",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "08034-20536",
+          "description": "Band",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "04434-51412",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "04434-51012",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "21N-54-58640",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "01010-81220",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "04434-51412",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "45",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "46",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001005",
+      "name": "Auto-greasing System (Controller)",
+      "fig": "G1010-001005",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001005.svg",
+        "catalog-images/pc1250-11/air-system/G1010-001005-p315.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "198-54-19150",
+          "description": "Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-68-51710",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "416-09-12210",
+          "description": "• Hinge,Welded",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21T-06-35410",
+          "description": "Grommet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "2A6-60-11170",
+          "description": "Collar",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "421-09-12322",
+          "description": "Holder",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "426-Z89-3230",
+          "description": "Controller",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "426-Z89-4350",
+          "description": "Bar",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-68-57950",
+          "description": "Wiring Harness",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "561-95-85440",
+          "description": "Coupling",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "561-95-85450",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "561-95-85460",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "561-95-85510",
+          "description": "Cap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "561-95-8A710",
+          "description": "Filter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "561-95-8A720",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "561-95-8A740",
+          "description": "Connector",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "561-95-8A750",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "56B-06-21320",
+          "description": "Seal",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01023-20410",
+          "description": "Screw",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01010-80616",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01643-30623",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01010-80620",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01643-30623",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01010-81220",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "01640-20408",
+          "description": "Washer",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "01640-20816",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01643-30823",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "02010-70519",
+          "description": "Bolt, Unified",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "02783-10628",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "04050-12015",
+          "description": "Pin, Cotter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "04434-50612",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "04434-51412",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "04434-52312",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "07002-22434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "07260-21471",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "07285-00220",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "01010-81260",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "04434-52312",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "04434-51412",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "01010-81220",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "45",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001006",
+      "name": "Auto-greasing System (Hose)",
+      "fig": "G1010-001006",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001006.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-95-57591",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001007",
+      "name": "Auto-greasing System (Hose Reel)",
+      "fig": "G1010-001007",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001007.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "209-68-51241",
+          "description": "Hose Reel Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "YU770199-4",
+          "description": "• Stopper",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "YU702062-4",
+          "description": "• Band",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "YU619154-0",
+          "description": "• Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "YU627012-1",
+          "description": "• Nut",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "YU707944-4",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "YU707942-4",
+          "description": "• Stopper",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "YU707954-3",
+          "description": "• Cam",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "YU619097-1",
+          "description": "• Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "YU631418-1",
+          "description": "• Washer",
+          "qty": 13,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "YU619073-1",
+          "description": "• Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "YU631417-1",
+          "description": "• Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "YU711679-4",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "YU790372-4",
+          "description": "• Label",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "YU619145-1",
+          "description": "• Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "YU631420-1",
+          "description": "• Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "YU831174-3",
+          "description": "• Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "YU640006-0",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "YU709523-4",
+          "description": "• Holder",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "YU640020-0",
+          "description": "• O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "YU643680-0",
+          "description": "• Ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "YU705893-4",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "YU630695-4",
+          "description": "• Retainer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "YU708673-4",
+          "description": "• Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "YU705903-4",
+          "description": "• Swivel Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "YU770951-4",
+          "description": "• Packing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "YU708832-4",
+          "description": "• Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "YU680109-4",
+          "description": "• Adapter",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "YU708833-3",
+          "description": "• Arm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "YU831089-2",
+          "description": "• Drum",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "YU708834-4",
+          "description": "• Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "YU790371-4",
+          "description": "• Label",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "YU708835-3",
+          "description": "• Arm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "YU708671-4",
+          "description": "• Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "YU801941-4",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "YU627010-1",
+          "description": "• Nut",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "YU611095-1",
+          "description": "• Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "YU708830-4",
+          "description": "• Stopper",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001008",
+      "name": "Auto-greasing System (Mounting)",
+      "fig": "G1010-001008",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001008.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "04434-51912",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001009",
+      "name": "Auto-greasing System (Grease Gun)",
+      "fig": "G1010-001009",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001009.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "209-68-11230",
+          "description": "Grease Gun Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "209-68-11620",
+          "description": "• Swivel Joint Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "209-68-11630",
+          "description": "• Nozzle",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "209-68-11640",
+          "description": "• Coupling Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "209-68-11650",
+          "description": "• Cap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "209-68-51220",
+          "description": "• Adapter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001010",
+      "name": "Auto-greasing System (Main Piping)",
+      "fig": "G1010-001010",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001010.svg",
+        "catalog-images/pc1250-11/air-system/G1010-001010-p321.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21T-68-72450",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-68-57180",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-54-58630",
+          "description": "Flange",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07086-00410",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "04434-52212",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-54-58690",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "04434-52212",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-68-37560",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "203-973-5660",
+          "description": "Clamp",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "203-973-5720",
+          "description": "Seat",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01010-81055",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "07086-004A4",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "07238-10424",
+          "description": "Connector",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-68-37570",
+          "description": "Block",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "23S-44-34140",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "195-04-12280",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "07086-00416",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "04434-52210",
+          "description": "Clip",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "208-62-44830",
+          "description": "Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "08034-20519",
+          "description": "Band",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-68-52460",
+          "description": "Injector Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "561-95-63250",
+          "description": "• Elbow",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "566-01-61190",
+          "description": "• Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "581-96-19540",
+          "description": "• Injector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "581-96-19590",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "581-96-19620",
+          "description": "• Cap",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "01010-81050",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "21N-68-57410",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "45",
+          "pn": "425-S95-2150",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "46",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "47",
+          "pn": "20Y-62-22790",
+          "description": "Band,Red",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "48",
+          "pn": "21N-68-57571",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "49",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "50",
+          "pn": "425-S95-2150",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "51",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "52",
+          "pn": "20Y-62-22820",
+          "description": "Band,Blue",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "53",
+          "pn": "21N-68-57220",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "54",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "55",
+          "pn": "425-S95-2150",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "56",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "57",
+          "pn": "20Y-62-22850",
+          "description": "Band,Green",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "58",
+          "pn": "21N-68-57581",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "59",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "60",
+          "pn": "425-S95-2150",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "61",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "62",
+          "pn": "04434-51910",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "63",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "64",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "65",
+          "pn": "561-95-63310",
+          "description": "Connector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001011",
+      "name": "Auto-greasing System (Boom Cylinder Piping)",
+      "fig": "G1010-001011",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001011.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07086-004A4",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-68-52450",
+          "description": "Injector Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-68-32320",
+          "description": "• Connector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-68-32360",
+          "description": "• Tube",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "561-95-63250",
+          "description": "• Elbow",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "566-01-61190",
+          "description": "• Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "581-96-19540",
+          "description": "• Injector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "581-96-19590",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "581-96-19620",
+          "description": "• Cap",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-81050",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-68-57550",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "425-S95-2150",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-68-57560",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "425-S95-2150",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "04434-50810",
+          "description": "Clip",
+          "qty": 11,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 11,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 11,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "561-95-63310",
+          "description": "Connector",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001012",
+      "name": "Auto-greasing System (Boom Piping)",
+      "fig": "G1010-001012",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001012.svg",
+        "catalog-images/pc1250-11/air-system/G1010-001012-p324.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07086-00415",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-68-37530",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "203-973-5660",
+          "description": "Clamp",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "203-973-5720",
+          "description": "Seat",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81055",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-68-37550",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07086-004A4",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-68-52420",
+          "description": "Injector Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-68-32320",
+          "description": "• Connector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-68-32360",
+          "description": "• Tube",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "561-95-63250",
+          "description": "• Elbow",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "566-01-61190",
+          "description": "• Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "567-01-12140",
+          "description": "• Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "581-96-19540",
+          "description": "• Injector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "581-96-19620",
+          "description": "• Cap",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01010-81050",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "07086-00305",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "04434-51810",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-68-52430",
+          "description": "Injector Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "561-95-63250",
+          "description": "• Elbow",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "567-01-12140",
+          "description": "• Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "581-96-19540",
+          "description": "• Injector",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "581-96-19590",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "581-96-19620",
+          "description": "• Cap",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01010-81050",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "21N-68-57590",
+          "description": "Hose",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "21N-68-57610",
+          "description": "Hose",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "425-S95-2140",
+          "description": "Sleeve",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "425-S95-2160",
+          "description": "Hose Stud",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "561-95-63290",
+          "description": "Elbow",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "04434-50810",
+          "description": "Clip",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "04435-50810",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "07376-50422",
+          "description": "Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "07221-20422",
+          "description": "Nut, Sleeve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "07222-00414",
+          "description": "Plug, Taper Seal",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001013",
+      "name": "Auto-greasing System (Boom Main Piping)",
+      "fig": "G1010-001013",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001013.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07086-00405",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-68-32411",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07086-00406",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-68-32420",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07086-00406",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-68-32440",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "203-973-5660",
+          "description": "Clamp",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "203-973-5720",
+          "description": "Seat",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-81055",
+          "description": "Bolt",
+          "qty": 24,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 24,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "07086-20412",
+          "description": "Hose, Taper Seal Type",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
+    },
+    {
+      "id": "g1010-001014",
+      "name": "Auto-greasing System (Blind Parts)",
+      "fig": "G1010-001014",
+      "images": [
+        "catalog-images/pc1250-11/air-system/G1010-001014.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07221-20422",
+          "description": "Nut, Sleeve",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07222-00414",
+          "description": "Plug, Taper Seal",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21T-06-31840",
+          "description": "Connector",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21T-06-31940",
+          "description": "Connector",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07376-70628",
+          "description": "Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "02789-00628",
+          "description": "Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "02896-21018",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AIR SYSTEM"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
