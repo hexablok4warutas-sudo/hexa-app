@@ -66,3 +66,35 @@ fetch('pc1250-11-hydraulic-index.json').then(r=>{if(!r.ok)throw Error('HTTP '+r.
  document.addEventListener('DOMContentLoaded',schedule);
  schedule();
 })();
+
+
+/* HEXCatalog PC1250-11R
+   Match Assembly Groups height to Drawing + Parts List */
+
+(() => {
+  function syncAssemblyHeight() {
+    const sidebar = document.querySelector('.cat-groups');
+    const workspace = document.querySelector('.cat-workspace');
+
+    if (!sidebar || !workspace) return;
+
+    if (window.innerWidth <= 900) {
+      sidebar.style.height = '';
+      return;
+    }
+
+    const sidebarTop = sidebar.getBoundingClientRect().top;
+    const workspaceBottom = workspace.getBoundingClientRect().bottom;
+
+    const height = Math.max(300, workspaceBottom - sidebarTop);
+
+    sidebar.style.height = `${height}px`;
+  }
+
+  window.addEventListener('load', syncAssemblyHeight);
+  window.addEventListener('resize', syncAssemblyHeight);
+
+  if (document.readyState === 'complete') {
+    syncAssemblyHeight();
+  }
+})();
