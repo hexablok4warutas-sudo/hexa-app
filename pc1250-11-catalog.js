@@ -139,7 +139,8 @@ function initViewer(){
  viewer=area.querySelector('.cat-viewer-stage');
  const picker=document.createElement('div');picker.id='catPartPicker';picker.className='cat-part-picker';picker.hidden=true;area.append(picker);
  const toolbar=area.closest('.cat-images').querySelector('.cat-image-toolbar');
- const controls=document.createElement('div');controls.className='cat-zoom-controls';
+ toolbar.querySelectorAll('.cat-zoom-controls').forEach(el=>el.remove());
+  const controls=document.createElement('div');controls.className='cat-zoom-controls';
  controls.innerHTML='<button type="button" data-zoom="out" title="Zoom out">−</button><span class="cat-zoom-label">100%</span><button type="button" data-zoom="in" title="Zoom in">+</button><button type="button" data-zoom="fit" title="Fit gambar">Fit</button><button type="button" data-zoom="fullscreen" title="Fullscreen">⛶</button>';
  toolbar.append(controls);zoomLabel=controls.querySelector('.cat-zoom-label');
  controls.addEventListener('click',e=>{const btn=e.target.closest('[data-zoom]');if(!btn)return;const action=btn.dataset.zoom;
@@ -315,7 +316,7 @@ async function renderImage({preserveSelection=false}={}){
    if(!response.ok)throw Error('HTTP '+response.status);
    const source=await response.text();
    const doc=new DOMParser().parseFromString(source,'image/svg+xml');
-   if(doc.querySelector('parsererror'))throw Error('SVG tidak valid');
+   if(doc.querySelector('parsererror'))throw Error('SVG tidak valid — periksa file SVG asli');
    const root=doc.documentElement;
    if(root.localName!=='svg')throw Error('File bukan SVG');
    // SVG CAT SIS dimuat sebagai elemen inline agar grup part bisa diklik.
@@ -324,7 +325,7 @@ async function renderImage({preserveSelection=false}={}){
    root.querySelectorAll('*').forEach(el=>{
      for(const attr of [...el.attributes]){
        const name=attr.name.toLowerCase(),value=attr.value.trim();
-       if(name.startsWith('on') || ((name==='href'||name.endsWith(':href')) && !value.startsWith('#')) ||
+       if(name.startsWith('on') || ((name==='href'||name.endsWith(':href')) && !value.startsWith('#') && !(el.localName.toLowerCase()==='image' && /^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(value))) ||
           /url\s*\(\s*['"]?\s*(?:https?:|data:|javascript:)/i.test(value) ||
           (name==='style' && /@import|expression\s*\(/i.test(value))) el.removeAttribute(attr.name);
      }
