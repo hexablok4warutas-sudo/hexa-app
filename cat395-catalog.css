@@ -258,3 +258,13 @@ html,body{max-width:100%;overflow-x:clip}
 .cat-inline-svg g.part.cat-svg-selected polygon{
  stroke:#ff8500!important;
 }
+
+/* v4: selected callout — thin orange text, no opaque stroke or glow. */
+.cat-inline-svg g.callout.cat-svg-selected,.cat-inline-svg g.part.cat-svg-selected{filter:none!important}
+.cat-inline-svg g.callout.cat-svg-selected text,.cat-inline-svg g.callout.cat-svg-selected tspan,
+.cat-inline-svg g.callout.cat-svg-selected text *,.cat-inline-svg g.callout.cat-svg-selected tspan *{
+ fill:#c86b00!important;stroke:none!important;filter:none!important;paint-order:normal!important;
+}
+.cat-inline-svg g.callout.cat-svg-selected circle,.cat-inline-svg g.callout.cat-svg-selected rect,
+.cat-inline-svg g.callout.cat-svg-selected ellipse{stroke:#ef8a13!important;stroke-width:1.1!important;fill:none!important}
+.cat-inline-svg g.callout:hover text,.cat-inline-svg g.callout:hover tspan{stroke:none!important;fill:#c86b00!important}
