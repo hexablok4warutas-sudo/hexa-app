@@ -1085,68 +1085,692 @@
       "name": "Lines Gp Control Valve",
       "parts": [
         {
+          "no": "1",
+          "pn": "8T-5041",
+          "description": "Bolt (M12X1.75X120-MM)",
+          "qty": 8
+        },
+        {
+          "no": "2",
+          "pn": "1P-3704",
+          "description": "Seal-Rectangular",
+          "qty": 4
+        },
+        {
+          "no": "3",
+          "pn": "1P-4578",
+          "description": "Flange-Half",
+          "qty": 2
+        },
+        {
+          "no": "4",
+          "pn": "1P-5767",
+          "description": "Flange-Half",
+          "qty": 8
+        },
+        {
+          "no": "5",
+          "pn": "4J-0522",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "6",
+          "pn": "4J-0527",
+          "description": "Seal-O-Ring",
+          "qty": 5
+        },
+        {
+          "no": "7",
+          "pn": "5H-4020",
+          "description": "Cover",
+          "qty": 1
+        },
+        {
+          "no": "8",
+          "pn": "6V-1575",
+          "description": "Clip (Slot)",
+          "qty": 2
+        },
+        {
+          "no": "9",
+          "pn": "6V-1576",
+          "description": "Clip (Tab)",
+          "qty": 2
+        },
+        {
+          "no": "10",
+          "pn": "6V-1577",
+          "description": "Grommet",
+          "qty": 2
+        },
+        {
+          "no": "11",
+          "pn": "7Y-5247",
+          "description": "U-Bolt (M10X1.5-THD)",
+          "qty": 6
+        },
+        {
+          "no": "12",
+          "pn": "8T-4121",
+          "description": "Washer-Hard (11X21X2.5-MM Thk)",
+          "qty": 20
+        },
+        {
+          "no": "13",
+          "pn": "8T-4139",
+          "description": "Bolt (M12X1.75X30-MM)",
+          "qty": 2
+        },
+        {
+          "no": "14",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 47
+        },
+        {
+          "no": "15",
+          "pn": "096-4883",
+          "description": "Locknut (M10X1.5-THD)",
+          "qty": 12
+        },
+        {
+          "no": "16",
+          "pn": "107-2724",
+          "description": "Bolt-Socket Head (M12X1.75X100-MM)",
+          "qty": 8
+        },
+        {
+          "no": "17",
+          "pn": "144-0367",
+          "description": "Clamp-Hose",
+          "qty": 20
+        },
+        {
+          "no": "18",
+          "pn": "148-8407",
+          "description": "Plug AS",
+          "qty": 1
+        },
+        {
+          "no": "18.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "18",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "18.2",
+          "pn": "9S-4191",
+          "description": "Plug (9/16-18-THD)",
+          "qty": 1,
+          "parentNo": "18",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "19",
+          "pn": "148-8408",
+          "description": "Plug AS",
+          "qty": 1
+        },
+        {
+          "no": "19.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "19",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "19.2",
+          "pn": "9S-4183",
+          "description": "Plug (1-1/16-12-THD)",
+          "qty": 1,
+          "parentNo": "19",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "20",
+          "pn": "170-8553",
+          "description": "Bolt-Socket Head (M12X1.75X40-MM)",
+          "qty": 4
+        },
+        {
+          "no": "21",
+          "pn": "275-1607",
+          "description": "Flange",
+          "qty": 1
+        },
+        {
+          "no": "22",
+          "pn": "549-6144",
+          "description": "Valve GP-Check (Bypass)",
+          "qty": 1
+        },
+        {
           "no": "23",
           "pn": "236-6341",
-          "description": "Hose As",
+          "description": "Hose",
           "qty": 5
+        },
+        {
+          "no": "24",
+          "pn": "549-6138",
+          "description": "Valve GP-Check (Return)",
+          "qty": 1
+        },
+        {
+          "no": "25",
+          "pn": "551-0338",
+          "description": "Pipe AS",
+          "qty": 1
+        },
+        {
+          "no": "26",
+          "pn": "551-0342",
+          "description": "Pipe AS",
+          "qty": 1
+        },
+        {
+          "no": "27",
+          "pn": "551-0355",
+          "description": "Pipe",
+          "qty": 1
+        },
+        {
+          "no": "28",
+          "pn": "551-0442",
+          "description": "Support",
+          "qty": 1
+        },
+        {
+          "no": "29",
+          "pn": "551-0445",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "30",
+          "pn": "576-9851",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "31",
+          "pn": "576-9855",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "32",
+          "pn": "576-9859",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "33",
+          "pn": "576-9864",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "34",
+          "pn": "576-9872",
+          "description": "Pipe AS",
+          "qty": 1
+        },
+        {
+          "no": "35",
+          "pn": "591-3783",
+          "description": "Support AS",
+          "qty": 1
         },
         {
           "no": "36",
           "pn": "594-0196",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "37",
           "pn": "594-0198",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "38",
+          "pn": "8T-4183",
+          "description": "Bolt (M12X1.75X40-MM)",
+          "qty": 3
+        },
+        {
+          "no": "39",
+          "pn": "8T-4194",
+          "description": "Bolt (M12X1.75X50-MM)",
+          "qty": 16
+        },
+        {
+          "no": "40",
+          "pn": "183-7121",
+          "description": "Bolt (M10X1.5X35-MM)",
+          "qty": 8
+        },
+        {
+          "no": "41",
+          "pn": "8T-4956",
+          "description": "Bolt (M12X1.75X35-MM)",
+          "qty": 10
         }
       ],
-      "images": []
+      "images": [
+        "catalog-images/cat395/lines-gp-control-valve-01.svg",
+        "catalog-images/cat395/lines-gp-control-valve-02.svg",
+        "catalog-images/cat395/lines-gp-control-valve-03.svg"
+      ]
     },
     {
       "id": "lines-gp-return",
       "name": "Lines Gp Return",
       "parts": [
         {
+          "no": "1",
+          "pn": "7K-1181",
+          "description": "Strap-Cable",
+          "qty": 1
+        },
+        {
+          "no": "2",
+          "pn": "8T-4121",
+          "description": "Washer-Hard (11X21X2.5-MM Thk)",
+          "qty": 14
+        },
+        {
+          "no": "3",
+          "pn": "8T-4136",
+          "description": "Bolt (M10X1.5X25-MM)",
+          "qty": 14
+        },
+        {
+          "no": "4",
+          "pn": "8T-4139",
+          "description": "Bolt (M12X1.75X30-MM)",
+          "qty": 6
+        },
+        {
+          "no": "5",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 6
+        },
+        {
+          "no": "6",
+          "pn": "148-8317",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "6.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "6",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "6.2",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "6",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "6.3",
+          "pn": "6V-8714",
+          "description": "Connector",
+          "qty": 1,
+          "parentNo": "6",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "7",
+          "pn": "148-8335",
+          "description": "Adapter AS",
+          "qty": 2
+        },
+        {
+          "no": "7.1",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "7",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "7.2",
+          "pn": "6V-8635",
+          "description": "Adapter",
+          "qty": 1,
+          "parentNo": "7",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "7.3",
+          "pn": "7M-8485",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "7",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "8",
+          "pn": "148-8347",
+          "description": "Elbow AS",
+          "qty": 2
+        },
+        {
+          "no": "8.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "8",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "8.2",
+          "pn": "6V-9007",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "8",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "8.3",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "8",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "9",
+          "pn": "148-8362",
+          "description": "Adapter AS-Elbow",
+          "qty": 2
+        },
+        {
+          "no": "9.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "9",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "9.2",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "9",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "9.3",
+          "pn": "8T-6684",
+          "description": "Elbow (90-DEG)",
+          "qty": 1,
+          "parentNo": "9",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "10",
+          "pn": "148-8445",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "10.1",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 2,
+          "parentNo": "10",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "10.2",
+          "pn": "6V-9847",
+          "description": "Tee-Swivel",
+          "qty": 1,
+          "parentNo": "10",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "11",
+          "pn": "150-4049",
+          "description": "Adapter AS",
+          "qty": 1
+        },
+        {
+          "no": "11.1",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "11",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "11.2",
+          "pn": "7M-8485",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "11",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "11.3",
+          "pn": "8T-4149",
+          "description": "Adapter-Elbow",
+          "qty": 1,
+          "parentNo": "11",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "12",
+          "pn": "164-5574",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "12.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "12",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "12.2",
+          "pn": "6V-8784",
+          "description": "Tee-Face Seal",
+          "qty": 1,
+          "parentNo": "12",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "12.3",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 2,
+          "parentNo": "12",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "13",
+          "pn": "172-5277",
+          "description": "Tee AS",
+          "qty": 2
+        },
+        {
+          "no": "13.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "13",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "13.2",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "13",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "13.3",
+          "pn": "8T-8901",
+          "description": "Tee-O-Ring Port",
+          "qty": 1,
+          "parentNo": "13",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "14",
+          "pn": "188-2008",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "14.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "14",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "14.2",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "14",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "14.3",
+          "pn": "8T-7970",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "14",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "15",
+          "pn": "204-8000",
+          "description": "Mounting-Cable Tie",
+          "qty": 2
+        },
+        {
+          "no": "16",
+          "pn": "155-6258",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "16.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "16",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "16.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "16",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "16.3",
+          "pn": "127-1647",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "16",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "17",
+          "pn": "204-2281",
+          "description": "Strap-Cable",
+          "qty": 2
+        },
+        {
           "no": "18",
           "pn": "576-9222",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "19",
           "pn": "584-5200",
-          "description": "Hose As",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "20",
+          "pn": "592-1525",
+          "description": "Filter GP-Oil (Hydraulic Oil Drain)",
+          "qty": 3
+        },
+        {
+          "no": "21",
+          "pn": "593-4920",
+          "description": "Support",
+          "qty": 2
+        },
+        {
+          "no": "22",
+          "pn": "593-4926",
+          "description": "Support",
           "qty": 1
         },
         {
           "no": "23",
           "pn": "594-0249",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "24",
           "pn": "594-0251",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "25",
           "pn": "594-0253",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "26",
           "pn": "594-0255",
-          "description": "Hose As",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "27",
+          "pn": "7I-1201",
+          "description": "Hose AS",
           "qty": 1
         }
       ],
-      "images": []
+      "images": [
+        "catalog-images/cat395/lines-gp-return-01.svg"
+      ]
     },
     {
       "id": "lines-gp-stick",
@@ -1155,121 +1779,1044 @@
         {
           "no": "1",
           "pn": "363-2296",
-          "description": "Hose As",
-          "qty": 1
+          "description": "Hose AS",
+          "qty": 2
+        },
+        {
+          "no": "2",
+          "pn": "447-1707",
+          "description": "Bolt (M16X2X60-MM)",
+          "qty": 16
+        },
+        {
+          "no": "3",
+          "pn": "451-2175",
+          "description": "Washer-Hard (17.5X30X3.5-MM Thk)",
+          "qty": 16
+        },
+        {
+          "no": "4",
+          "pn": "5P-8077",
+          "description": "Flange-Half",
+          "qty": 8
+        },
+        {
+          "no": "5",
+          "pn": "1P-3705",
+          "description": "Seal-Rectangular",
+          "qty": 4
         }
       ],
-      "images": []
+      "images": [
+        "catalog-images/cat395/lines-gp-stick-01.svg"
+      ]
     },
     {
       "id": "lines-gp-swing-motor",
       "name": "Lines Gp Swing Motor",
       "parts": [
         {
-          "no": "49",
+          "no": "1",
+          "pn": "8T-4648",
+          "description": "Bolt (M12X1.75X70-MM)",
+          "qty": 2
+        },
+        {
+          "no": "2",
+          "pn": "8T-5041",
+          "description": "Bolt (M12X1.75X120-MM)",
+          "qty": 4
+        },
+        {
+          "no": "3",
+          "pn": "8T-6868",
+          "description": "Bolt (M12X1.75X80-MM)",
+          "qty": 4
+        },
+        {
+          "no": "4",
+          "pn": "1P-3704",
+          "description": "Seal-Rectangular",
+          "qty": 6
+        },
+        {
+          "no": "5",
+          "pn": "1P-3705",
+          "description": "Seal-Rectangular",
+          "qty": 2
+        },
+        {
+          "no": "6",
+          "pn": "1P-4578",
+          "description": "Flange-Half",
+          "qty": 2
+        },
+        {
+          "no": "7",
+          "pn": "1P-5767",
+          "description": "Flange-Half",
+          "qty": 8
+        },
+        {
+          "no": "8",
+          "pn": "3K-0360",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "9",
+          "pn": "4J-0520",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "10",
+          "pn": "4J-0522",
+          "description": "Seal-O-Ring",
+          "qty": 1
+        },
+        {
+          "no": "11",
+          "pn": "5P-7464",
+          "description": "Clip (Slot)",
+          "qty": 1
+        },
+        {
+          "no": "12",
+          "pn": "5P-7465",
+          "description": "Clip (Tab)",
+          "qty": 1
+        },
+        {
+          "no": "13",
+          "pn": "6V-0852",
+          "description": "Cap-Dust",
+          "qty": 2
+        },
+        {
+          "no": "14",
+          "pn": "6V-1575",
+          "description": "Clip (Slot)",
+          "qty": 3
+        },
+        {
+          "no": "15",
+          "pn": "6V-1576",
+          "description": "Clip (Tab)",
+          "qty": 3
+        },
+        {
+          "no": "16",
+          "pn": "6V-1577",
+          "description": "Grommet",
+          "qty": 3
+        },
+        {
+          "no": "17",
+          "pn": "6V-1876",
+          "description": "Grommet",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "6V-9168",
+          "description": "Nut (11/16-16-THD)",
+          "qty": 1
+        },
+        {
+          "no": "19",
+          "pn": "7G-5984",
+          "description": "Clip (Tab)",
+          "qty": 1
+        },
+        {
+          "no": "20",
+          "pn": "7G-5985",
+          "description": "Clip (Slot)",
+          "qty": 1
+        },
+        {
+          "no": "21",
+          "pn": "7K-1181",
+          "description": "Strap-Cable",
+          "qty": 5
+        },
+        {
+          "no": "22",
+          "pn": "8C-3206",
+          "description": "Flange-Half",
+          "qty": 2
+        },
+        {
+          "no": "23",
+          "pn": "8T-2920",
+          "description": "Grommet (27-MM Id)",
+          "qty": 1
+        },
+        {
+          "no": "24",
+          "pn": "8T-4121",
+          "description": "Washer-Hard (11X21X2.5-MM Thk)",
+          "qty": 20
+        },
+        {
+          "no": "25",
+          "pn": "8T-4136",
+          "description": "Bolt (M10X1.5X25-MM)",
+          "qty": 12
+        },
+        {
+          "no": "26",
+          "pn": "8T-4139",
+          "description": "Bolt (M12X1.75X30-MM)",
+          "qty": 1
+        },
+        {
+          "no": "27",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 29
+        },
+        {
+          "no": "28",
+          "pn": "101-7402",
+          "description": "Bolt-Socket Head (M12X1.75X30-MM)",
+          "qty": 8
+        },
+        {
+          "no": "29",
+          "pn": "106-8715",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "29.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "29",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "29.2",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "29",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "29.3",
+          "pn": "8C-8400",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "29",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "30",
+          "pn": "148-8347",
+          "description": "Elbow AS",
+          "qty": 3
+        },
+        {
+          "no": "30.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "30",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "30.2",
+          "pn": "6V-9007",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "30",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "30.3",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "30",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "31",
+          "pn": "148-8365",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "31.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "31",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "31.2",
+          "pn": "6V-8398",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "31",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "31.3",
+          "pn": "8T-6876",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "31",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "32",
+          "pn": "164-5546",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "32.1",
+          "pn": "3E-7410",
+          "description": "Tee",
+          "qty": 1,
+          "parentNo": "32",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "32.2",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "32",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "33",
+          "pn": "164-5567",
+          "description": "Nipple AS (Male)",
+          "qty": 2
+        },
+        {
+          "no": "33.1",
+          "pn": "6V-3965",
+          "description": "Adapter (Quick Disconnect)",
+          "qty": 1,
+          "parentNo": "33",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "33.2",
+          "pn": "214-7568",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "33",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "34",
+          "pn": "164-5590",
+          "description": "Valve AS-Fluid Sampling (Hydraulic Oil)",
+          "qty": 1
+        },
+        {
+          "no": "34.1",
+          "pn": "3J-7354",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "34",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "34.2",
+          "pn": "8C-3446",
+          "description": "Valve-Sampling",
+          "qty": 1,
+          "parentNo": "34",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "35",
+          "pn": "175-0447",
+          "description": "Valve AS-Check",
+          "qty": 1
+        },
+        {
+          "no": "35.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "35",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "35.2",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "35",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "36",
+          "pn": "180-9286",
+          "description": "Tee AS",
+          "qty": 4
+        },
+        {
+          "no": "36.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "36",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "36.2",
+          "pn": "3E-2345",
+          "description": "Adapter-Tee",
+          "qty": 1,
+          "parentNo": "36",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "36.3",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "36",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "37",
+          "pn": "194-1497",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "37.1",
+          "pn": "3D-2824",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "37",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "37.2",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "37",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "37.3",
+          "pn": "8T-8900",
+          "description": "Tee-O-Ring Port",
+          "qty": 1,
+          "parentNo": "37",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "38",
+          "pn": "241-6215",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "38.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "38",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "38.2",
+          "pn": "6V-8076",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "38",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "39",
+          "pn": "260-9187",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "39.1",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "39",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "39.2",
+          "pn": "8T-9358",
+          "description": "Connector",
+          "qty": 1,
+          "parentNo": "39",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "40",
+          "pn": "281-5871",
+          "description": "Adapter",
+          "qty": 1
+        },
+        {
+          "no": "41",
+          "pn": "286-6394",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "41.1",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "41",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "41.2",
+          "pn": "7M-8485",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "41",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "41.3",
+          "pn": "286-6395",
+          "description": "Connector",
+          "qty": 1,
+          "parentNo": "41",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "42",
+          "pn": "338-6971",
+          "description": "Sensor GP-Pressure (Swing Motor)",
+          "qty": 2
+        },
+        {
+          "no": "43",
+          "pn": "356-9305",
+          "description": "Spacer (13.5X30X40-MM Thk)",
+          "qty": 2
+        },
+        {
+          "no": "44",
+          "pn": "392-0800",
+          "description": "Elbow AS",
+          "qty": 1
+        },
+        {
+          "no": "44.1",
+          "pn": "214-7568",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "44",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "44.2",
+          "pn": "241-6217",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "44",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "45",
+          "pn": "396-0425",
+          "description": "Connector AS",
+          "qty": 1
+        },
+        {
+          "no": "45.1",
+          "pn": "8T-1779",
+          "description": "Connector",
+          "qty": 1,
+          "parentNo": "45",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "45.2",
+          "pn": "214-7568",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "45",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "45.3",
+          "pn": "228-7089",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "45",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "46",
+          "pn": "451-2175",
+          "description": "Washer-Hard (17.5X30X3.5-MM Thk)",
+          "qty": 1
+        },
+        {
+          "no": "47",
+          "pn": "622-3877",
+          "description": "Block",
+          "qty": 1
+        },
+        {
+          "no": "48",
           "pn": "302-3293",
-          "description": "Hose As",
+          "description": "Hose AS",
+          "qty": 1
+        },
+        {
+          "no": "49",
+          "pn": "335-0546",
+          "description": "Accumulator & Mtg GP-Hydraulic (Charged)",
+          "qty": 1
+        },
+        {
+          "no": "50",
+          "pn": "366-8644",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "51",
-          "pn": "366-8644",
-          "description": "Hose As",
+          "pn": "550-7283",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "52",
-          "pn": "550-7283",
-          "description": "Hose As",
+          "pn": "550-7310",
+          "description": "Block",
+          "qty": 1
+        },
+        {
+          "no": "53",
+          "pn": "570-5161",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "54",
-          "pn": "570-5161",
-          "description": "Hose As",
+          "pn": "576-9224",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "55",
-          "pn": "576-9224",
-          "description": "Hose As",
+          "pn": "590-7443",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "56",
-          "pn": "590-7443",
-          "description": "Hose As",
+          "pn": "592-1525",
+          "description": "Filter GP-Oil (Hydraulic)",
+          "qty": 1
+        },
+        {
+          "no": "57",
+          "pn": "593-4913",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "58",
+          "pn": "593-8386",
+          "description": "Block",
+          "qty": 1
+        },
+        {
+          "no": "59",
+          "pn": "622-3878",
+          "description": "Block",
+          "qty": 1
+        },
+        {
+          "no": "60",
+          "pn": "594-0260",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "61",
-          "pn": "594-0260",
-          "description": "Hose As",
+          "pn": "594-0262",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "62",
-          "pn": "594-0262",
-          "description": "Hose As",
+          "pn": "594-0264",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "63",
-          "pn": "594-0264",
-          "description": "Hose As",
+          "pn": "594-0266",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "64",
-          "pn": "594-0266",
-          "description": "Hose As",
+          "pn": "8C-3451",
+          "description": "Cap-Dust (Hydraulic Oil)",
           "qty": 1
+        },
+        {
+          "no": "65",
+          "pn": "8T-4194",
+          "description": "Bolt (M12X1.75X50-MM)",
+          "qty": 16
+        },
+        {
+          "no": "66",
+          "pn": "183-7121",
+          "description": "Bolt (M10X1.5X35-MM)",
+          "qty": 8
+        },
+        {
+          "no": "67",
+          "pn": "8T-4956",
+          "description": "Bolt (M12X1.75X35-MM)",
+          "qty": 2
         }
       ],
-      "images": []
+      "images": [
+        "catalog-images/cat395/lines-gp-wing-motor-01.svg",
+        "catalog-images/cat395/lines-gp-wing-motor-02.svg",
+        "catalog-images/cat395/lines-gp-wing-motor-03.svg"
+      ]
     },
     {
       "id": "lines-gp-travel-motor",
       "name": "Lines Gp Travel Motor",
       "parts": [
         {
+          "no": "1",
+          "pn": "183-7121",
+          "description": "Bolt (M10X1.5X35-MM)",
+          "qty": 8
+        },
+        {
+          "no": "2",
+          "pn": "110-4821",
+          "description": "Bolt-Socket Head (M16X2X55-MM)",
+          "qty": 12
+        },
+        {
+          "no": "3",
+          "pn": "148-8336",
+          "description": "Connector AS",
+          "qty": 2
+        },
+        {
+          "no": "3.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "3",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "3.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "3",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "3.3",
+          "pn": "6V-8636",
+          "description": "Adapter",
+          "qty": 1,
+          "parentNo": "3",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "4",
+          "pn": "148-8439",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "4.1",
+          "pn": "3J-1907",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "4",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "4.2",
+          "pn": "6V-8397",
+          "description": "Seal-O-Ring",
+          "qty": 2,
+          "parentNo": "4",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "4.3",
+          "pn": "6V-8774",
+          "description": "Tee",
+          "qty": 1,
+          "parentNo": "4",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "5",
+          "pn": "153-6236",
+          "description": "Reducer AS",
+          "qty": 2
+        },
+        {
+          "no": "5.1",
+          "pn": "6V-8946",
+          "description": "Reducer",
+          "qty": 1,
+          "parentNo": "5",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "5.2",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "5",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "6",
+          "pn": "155-9200",
+          "description": "Valve GP-Travel Counterbalance",
+          "qty": 2
+        },
+        {
+          "no": "7",
+          "pn": "164-5615",
+          "description": "Elbow AS",
+          "qty": 2
+        },
+        {
+          "no": "7.1",
+          "pn": "4K-1388",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "7",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "7.2",
+          "pn": "5K-9090",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "7",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "7.3",
+          "pn": "8T-8986",
+          "description": "Elbow",
+          "qty": 1,
+          "parentNo": "7",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "8",
+          "pn": "173-4946",
+          "description": "Clip",
+          "qty": 4
+        },
+        {
+          "no": "9",
+          "pn": "173-4947",
+          "description": "Clip",
+          "qty": 2
+        },
+        {
+          "no": "10",
+          "pn": "173-5120",
+          "description": "Grommet",
+          "qty": 4
+        },
+        {
+          "no": "11",
+          "pn": "1P-3704",
+          "description": "Seal-Rectangular",
+          "qty": 8
+        },
+        {
+          "no": "12",
+          "pn": "1P-5767",
+          "description": "Flange-Half",
+          "qty": 16
+        },
+        {
+          "no": "13",
+          "pn": "204-8488",
+          "description": "Grommet",
+          "qty": 2
+        },
+        {
+          "no": "14",
+          "pn": "241-6151",
+          "description": "Tee AS",
+          "qty": 1
+        },
+        {
+          "no": "14.1",
+          "pn": "6V-9746",
+          "description": "Seal-O-Ring",
+          "qty": 2,
+          "parentNo": "14",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "14.2",
+          "pn": "7M-8485",
+          "description": "Seal-O-Ring",
+          "qty": 1,
+          "parentNo": "14",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "14.3",
+          "pn": "102-1384",
+          "description": "Tee-Face Seal",
+          "qty": 1,
+          "parentNo": "14",
+          "note": "Komponen bawaan assembly; qty berdasarkan EACH INCLUDES pada Excel"
+        },
+        {
+          "no": "15",
+          "pn": "453-1238",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
+          "no": "16",
+          "pn": "453-1243",
+          "description": "Support AS",
+          "qty": 1
+        },
+        {
           "no": "17",
           "pn": "453-1246",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "18",
           "pn": "453-1247",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "19",
           "pn": "550-7174",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
         },
         {
           "no": "20",
           "pn": "550-7176",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 2
         },
         {
           "no": "21",
           "pn": "550-7178",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 2
         },
         {
           "no": "22",
           "pn": "555-4230",
-          "description": "Hose As",
+          "description": "Hose AS",
           "qty": 1
+        },
+        {
+          "no": "23",
+          "pn": "5P-7468",
+          "description": "Clip (Slot)",
+          "qty": 2
+        },
+        {
+          "no": "24",
+          "pn": "5P-7469",
+          "description": "Clip (Tab)",
+          "qty": 2
+        },
+        {
+          "no": "25",
+          "pn": "6V-0545",
+          "description": "Grommet (44-MM Id)",
+          "qty": 2
+        },
+        {
+          "no": "26",
+          "pn": "6V-1577",
+          "description": "Grommet",
+          "qty": 4
+        },
+        {
+          "no": "27",
+          "pn": "7K-1181",
+          "description": "Strap-Cable",
+          "qty": 10
+        },
+        {
+          "no": "28",
+          "pn": "8T-4121",
+          "description": "Washer-Hard (11X21X2.5-MM Thk)",
+          "qty": 20
+        },
+        {
+          "no": "29",
+          "pn": "8T-4136",
+          "description": "Bolt (M10X1.5X25-MM)",
+          "qty": 12
+        },
+        {
+          "no": "30",
+          "pn": "8T-4139",
+          "description": "Bolt (M12X1.75X30-MM)",
+          "qty": 2
+        },
+        {
+          "no": "31",
+          "pn": "8T-4194",
+          "description": "Bolt (M12X1.75X50-MM)",
+          "qty": 32
+        },
+        {
+          "no": "32",
+          "pn": "8T-4223",
+          "description": "Washer-Hard (13.5X25.5X3-MM Thk)",
+          "qty": 34
         }
       ],
-      "images": []
+      "images": [
+        "catalog-images/cat395/lines-gp-travel-motor-01.svg",
+        "catalog-images/cat395/lines-gp-travel-motor-02.svg"
+      ]
     }
   ]
 }
