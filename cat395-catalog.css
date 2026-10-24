@@ -237,3 +237,24 @@ html,body{max-width:100%;overflow-x:clip}
  .cat-parts-panel .cat-table-wrap td:nth-child(5){padding:10px 4px}
  .cat-parts-panel .cat-add{width:35px;height:35px;min-width:35px;min-height:35px}
 }
+
+/* === HEXCatalog CAT SIS: interaksi Drawing ↔ Parts List (tambahan aman) === */
+.cat-parts-panel #partsBody tr{cursor:pointer}
+.cat-parts-panel #partsBody tr:focus-visible{outline:2px solid #ff9417;outline-offset:-2px}
+.cat-parts-panel #partsBody tr.cat-part-highlight,
+.cat-parts-panel #partsBody tr.cat-part-highlight td{background:#fff0d9!important}
+.cat-parts-panel #partsBody tr.cat-part-highlight{box-shadow:inset 3px 0 #ff9417}
+/* Highlight nomor yang dipilih harus tetap oranye setelah mouse menjauh. */
+.cat-inline-svg g.callout.cat-svg-selected text,
+.cat-inline-svg g.callout.cat-svg-selected tspan,
+.cat-inline-svg g.callout.cat-svg-selected text *,
+.cat-inline-svg g.callout.cat-svg-selected tspan *{
+ fill:#ff8500!important;stroke:#ff8500!important;
+}
+.cat-inline-svg g.callout.cat-svg-selected{filter:drop-shadow(0 0 2px #ff9417)}
+.cat-inline-svg g.part.cat-svg-selected path,
+.cat-inline-svg g.part.cat-svg-selected line,
+.cat-inline-svg g.part.cat-svg-selected polyline,
+.cat-inline-svg g.part.cat-svg-selected polygon{
+ stroke:#ff8500!important;
+}
