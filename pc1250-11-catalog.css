@@ -300,3 +300,31 @@ html,body{max-width:100%;overflow-x:clip}
 .pc-section-btn small{font-size:10px;white-space:nowrap;color:#7890a4}
 .pc-section-hint{font-size:11px;color:#687f92;margin:4px 0 8px;line-height:1.4}
 @media(max-width:1050px){.pc-system-tabs{max-width:100%;width:100%;justify-content:flex-start;margin-left:0}}
+
+/* REV 2026-10-24: Excel-like sheet tabs; compact sidebar, no duplicate card */
+.cat-top{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important;margin-bottom:16px!important}
+.pc-catalog-heading{width:100%;max-width:100%}
+.pc-system-tabs{
+  display:flex!important;flex-flow:row nowrap!important;justify-content:flex-start!important;
+  align-items:flex-end!important;gap:2px!important;max-width:100%!important;width:100%!important;
+  margin:0!important;padding:3px 2px 0!important;overflow-x:auto!important;overflow-y:hidden!important;
+  border-bottom:2px solid #ff9015;scrollbar-width:thin;overscroll-behavior-x:contain;
+}
+.pc-system-tab{
+  flex:0 0 auto!important;white-space:nowrap!important;min-width:max-content!important;
+  padding:10px 15px!important;border-radius:9px 9px 0 0!important;
+  border:1px solid #d6e1ed!important;border-bottom:0!important;
+  background:#f3f7fb!important;color:#44627d!important;box-shadow:none!important;
+  font-size:12px!important;line-height:1.3!important;
+}
+.pc-system-tab.is-active{
+  background:#ff9015!important;border-color:#ff9015!important;color:#fff!important;
+}
+.pc-system-tab:disabled{opacity:.75!important;cursor:not-allowed}
+.pc-section-label,.pc-section-hint{display:none!important}
+.pc-section-list{margin-top:8px!important;margin-bottom:0!important;max-height:440px}
+#groupList{display:none}
+@media(max-width:600px){
+ .pc-system-tab{padding:9px 12px!important;font-size:11px!important}
+ .cat-top{gap:12px!important}
+}
