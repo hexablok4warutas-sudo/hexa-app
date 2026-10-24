@@ -229,8 +229,8 @@ function focusPartInDrawing(index){
  const width=area.clientWidth||stage.width,height=area.clientHeight||stage.height;
  if(!width||!height)return false;
  const targetWidth=Math.max(24,right-left),targetHeight=Math.max(24,bottom-top);
- const desiredZoom=Math.max(1.4,Math.min(4,Math.min(width*.42/targetWidth,height*.42/targetHeight)));
- const nextZoom=Math.max(.5,Math.min(10,desiredZoom));
+ const desiredZoom=Math.max(1,Math.min(1.5,Math.min(width*.42/targetWidth,height*.42/targetHeight)));
+ const nextZoom=desiredZoom;
  const currentCenterX=(left+right)/2-(stage.left+stage.width/2);
  const currentCenterY=(top+bottom)/2-(stage.top+stage.height/2);
  // Posisi pusat target dihitung dari transform lama, lalu diletakkan tepat di tengah stage.
