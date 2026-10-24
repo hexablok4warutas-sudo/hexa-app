@@ -1,0 +1,162 @@
+{
+  "model": "PC1250-11R",
+  "source": "Komatsu FEN04900-00, PDF page 329 (printed page 328)",
+  "status": "prototype_partial_pdf_extraction",
+  "groups": [
+    {
+      "id": "hydraulic-tank-tank",
+      "name": "Hydraulic Tank (Tank)",
+      "fig": "H0110-001001",
+      "images": [
+        "catalog-images/pc1250-11r/pc1250-hydraulic-tank-01.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "195-60-58190",
+          "description": "• Strainer",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-60-31360",
+          "description": "• Rod Assembly",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "12R-60-11230",
+          "description": "• • Spring",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "20Y-60-21320",
+          "description": "• • Holder",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-09-11140",
+          "description": "O-ring",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "208-60-41212",
+          "description": "Cap Assembly",
+          "qty": "1",
+          "serial": "50030-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "20Y-60-42211",
+          "description": "Filler Neck",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "20Y-60-21340",
+          "description": "Gasket",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-60-51161",
+          "description": "Cover",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "203-00-17210",
+          "description": "Mark, Triangle",
+          "qty": "2",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "203-00-17220",
+          "description": "Mark, Key",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "21N-60-51113",
+          "description": "Tank",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "203-60-31100",
+          "description": "Elbow Assembly",
+          "qty": "2",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21T-60-71160",
+          "description": "Tube",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "20Y-60-56260",
+          "description": "• Nut",
+          "qty": "1",
+          "serial": "50051-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "421-60-35170",
+          "description": "• Element",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "421-60-35180",
+          "description": "• Cover",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "21N-60-51131",
+          "description": "Hose Assembly",
+          "qty": "1",
+          "serial": "50001-",
+          "code": ""
+        }
+      ]
+    }
+  ],
+  "notice": "Only one assembly sampled; parts list incomplete and drawing callouts not yet mapped."
+}
