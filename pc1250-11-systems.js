@@ -1,48 +1,40 @@
-/* HEXA PC1250-11R system navigation: original PDF contents order. */
+/* PC1250-11R — Multi-system navigation, no changes to CAT 395. */
 (()=>{'use strict';
- const tabs=document.getElementById('pcSystemTabs'),sectionsEl=document.getElementById('pcSectionList');
- if(!tabs||!sectionsEl)return;
- const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- let index=null,activeSection=null;
+ const tabs=document.getElementById('pcSystemTabs');
+ const sections=document.getElementById('pcSectionList');
+ const list=document.getElementById('groupList');
  const search=document.getElementById('groupSearch');
- const groupList=document.getElementById('groupList');
- function updateSearchMode(){
-  const searching=Boolean(search?.value.trim());
-  sectionsEl.style.display=searching?'none':'';
-  if(groupList)groupList.style.display=searching?'':'none';
+ if(!tabs||!sections)return;
+ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const engineId='engine-cylinder-head-and-its-related-parts';
+ let systems=[],index=null,current='hydraulic-system',currentSection=null;
+ const fetchJSON=async url=>{const r=await fetch(url);if(!r.ok)throw Error(url+' HTTP '+r.status);return r.json()};
+ function updateVisibility(){const searching=!!search?.value.trim();
+   sections.style.display=searching?'none':(current==='hydraulic-system'?'':'none');
+   if(list)list.style.display=searching||current!== 'hydraulic-system'||!!currentSection?'':'none';
  }
- search?.addEventListener('input',updateSearchMode);
- updateSearchMode();
- function renderSections(){
-  if(!index)return;
-  sectionsEl.innerHTML=index.sections.map(s=>{
-   const n=s.figures.length;
-   return `<button type="button" class="pc-section-btn ${activeSection===s.name?'is-active':''}" data-section="${escape(s.name)}"><span>${escape(s.name)}</span><small>${n} FIG</small></button>`;
-  }).join('');
+ function renderTabs(){tabs.innerHTML=systems.map(s=>`<button type="button" data-system="${esc(s.id)}" class="pc-system-tab ${current===s.id?'is-active':''}" ${s.enabled?'':'disabled title="Sistem belum tersedia"'} ${current===s.id?'aria-current="page"':''}>${esc(s.name)}</button>`).join('');}
+ function renderSections(){if(current!=='hydraulic-system'||!index?.sections){sections.replaceChildren();return;}
+  sections.innerHTML=index.sections.map(s=>`<button type="button" class="pc-section-btn ${currentSection===s.name?'is-active':''}" data-section="${esc(s.name)}"><span>${esc(s.name)}</span><small>${s.figures?.length||0} FIG</small></button>`).join('');
  }
- function renderSystemTabs(data){
-  tabs.innerHTML=data.systems.map(s=>`<button type="button" class="pc-system-tab ${s.enabled?'is-active':''}" ${s.enabled?'aria-current="page"':'disabled title="Sistem belum tersedia"'}>${escape(s.name)}</button>`).join('');
-  const current=tabs.querySelector('.is-active');
-  if(current)requestAnimationFrame(()=>current.scrollIntoView({block:'nearest',inline:'center'}));
+ function switchSystem(id){const s=systems.find(x=>x.id===id&&x.enabled);if(!s)return;
+  current=id;currentSection=null;renderTabs();renderSections();
+  window.HEXA_PC1250_CATALOG?.setSystem(id);updateVisibility();
  }
- sectionsEl.addEventListener('click',e=>{
-  const btn=e.target.closest('[data-section]');if(!btn)return;
-  activeSection=btn.dataset.section;renderSections();
-  // If this assembly already exists in the actual parts DB, open it. Otherwise show reference-only information.
-  const groups=[...document.querySelectorAll('#groupList [data-group]')];
-  const match=groups.find(x=>x.textContent.toLowerCase().includes(activeSection.toLowerCase()));
-  if(match){match.click();return;}
-  const sec=index.sections.find(s=>s.name===activeSection);
-  const figs=(sec?.figures||[]).map(x=>x.fig).join(', ');
-  const title=document.getElementById('groupTitle');if(title)title.textContent=activeSection+' — Referensi PDF';
-  const count=document.getElementById('groupCount');if(count)count.textContent=`${sec?.figures.length||0} FIG (data belum diinput)`;
-  const hint=document.getElementById('pcSectionStatus');
-  if(hint)hint.remove();
-  const info=document.createElement('div');info.id='pcSectionStatus';info.className='pc-section-hint';info.textContent='FIG dalam PDF: '+(figs||'Belum teridentifikasi')+'. Pilih assembly pada daftar kiri setelah datanya tersedia.';
-  title?.parentElement?.append(info);
+ tabs.addEventListener('click',e=>{const b=e.target.closest('[data-system]');if(b)switchSystem(b.dataset.system)});
+ sections.addEventListener('click',e=>{const b=e.target.closest('[data-section]');if(!b)return;
+  const section=index?.sections?.find(x=>x.name===b.dataset.section);if(!section)return;
+  currentSection=section.name;renderSections();
+  window.HEXA_PC1250_CATALOG?.setSection((section.figures||[]).map(x=>x.fig));updateVisibility();
  });
- Promise.all([
-  fetch('pc1250-11-systems.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()}),
-  fetch('pc1250-11-hydraulic-index.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()})
- ]).then(([sys,idx])=>{index=idx;renderSystemTabs(sys);renderSections();updateSearchMode()}).catch(err=>{console.error('PC1250 system index:',err);sectionsEl.textContent='Indeks sistem belum tersedia. Pastikan file JSON tambahan sudah diupload.'});
+ search?.addEventListener('input',updateVisibility);
+ Promise.allSettled([fetchJSON('pc1250-11-systems.json'),fetchJSON('pc1250-11-hydraulic-index.json')]).then(results=>{
+  if(results[0].status!=='fulfilled'){sections.textContent='Gagal memuat pc1250-11-systems.json';return;}
+  systems=results[0].value.systems||[];
+  systems=systems.map(s=>({...s,enabled:s.id===engineId||s.id==='hydraulic-system'?true:!!s.enabled}));
+  if(results[1].status==='fulfilled')index=results[1].value;
+  renderTabs();renderSections();updateVisibility();
+  if(window.HEXA_PC1250_CATALOG)switchSystem(current);
+  else window.addEventListener('hexa-pc1250-data-ready',()=>switchSystem(current),{once:true});
+ }).catch(console.error);
 })();
