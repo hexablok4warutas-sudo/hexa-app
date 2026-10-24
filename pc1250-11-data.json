@@ -56665,6 +56665,6091 @@
         }
       ],
       "system": "ENGINE RELATED PARTS"
+    },
+    {
+      "id": "c0100-002001",
+      "name": "Cooling System (Shroud) (1/2)",
+      "fig": "C0100-002001",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-52512",
+          "description": "Shroud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-52560",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-52570",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-52581",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-52670",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-52730",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-52761",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-03-52521",
+          "description": "Support",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002002",
+      "name": "Cooling System (Fan Motor) (1/5)",
+      "fig": "C0100-002002",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002002.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "708-7S-00840",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1 C2",
+          "pn": "708-7S-11930",
+          "description": "• Case",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07040-11007",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07002-21023",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "702-21-55620",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07002-21423",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "C2",
+          "pn": "708-7S-01730",
+          "description": "• Cover Subassembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "C1",
+          "description": "• • Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "708-7R-11210",
+          "description": "• • Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "722-10-91130",
+          "description": "• • Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "709-32-12861",
+          "description": "• • Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07002-21823",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "C1",
+          "description": "• • Spool",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12 C2",
+          "pn": "708-7S-18310",
+          "description": "• • Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "708-7S-18320",
+          "description": "• • Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "07000-E2020",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "07000-E2025",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "07000-E2012",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01252-60845",
+          "description": "• • Bolt, Hexagon Socket Head",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18 C2",
+          "pn": "708-7S-18510",
+          "description": "• • Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "723-56-31630",
+          "description": "• • Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "07002-21623",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "708-7T-02281",
+          "description": "• • Valve, Relief",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07000-F2016",
+          "description": "• • • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "C1",
+          "description": "• • • Ring, Back-up",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "07002-22434",
+          "description": "• • • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002003",
+      "name": "Cooling System (Fan Motor) (2/5)",
+      "fig": "C0100-002003",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002003.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "708-7S-00840",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1 C2",
+          "pn": "07000-E2110",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2 C2",
+          "pn": "04020-00616",
+          "description": "• Pin, Dowel",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01252-61255",
+          "description": "• Bolt, Hexagon Socket Head",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4 C2",
+          "pn": "708-7S-12330",
+          "description": "• Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5 C2",
+          "pn": "708-7S-12140",
+          "description": "• Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6 C2",
+          "pn": "708-7S-12220",
+          "description": "• Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7 C2",
+          "pn": "708-7S-05110",
+          "description": "• Shim Kit",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Shim,T=0.85mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Shim,T=1.05mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Shim,T=1.25mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Shim,T=0.75mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Shim,T=0.95mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Shim,T=1.15mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8 C2",
+          "pn": "708-7T-12340",
+          "description": "• Seal, Oil",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "708-1S-11890",
+          "description": "• Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "04065-04518",
+          "description": "• Ring, Snap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "C1",
+          "description": "• Block",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "C1",
+          "description": "• Plate, Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13 C2",
+          "pn": "720-68-19610",
+          "description": "• Pin",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14 C2",
+          "pn": "708-2L-23360",
+          "description": "• Pin",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15 C2",
+          "pn": "708-7S-13530",
+          "description": "• Spacer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16 C2",
+          "pn": "708-7S-13560",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17 C2",
+          "pn": "04065-03212",
+          "description": "• Ring, Snap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18 C2",
+          "pn": "708-7T-13870",
+          "description": "• Guide, Retainer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19 C2",
+          "pn": "708-7S-13370",
+          "description": "• Retainer, Shoe",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20 C2",
+          "pn": "708-7S-13350",
+          "description": "• Piston Subassembly",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21 C2",
+          "pn": "708-7S-13420",
+          "description": "• Plate, Thrust",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002004",
+      "name": "Cooling System (Tube and Aftercooler) (1/2)",
+      "fig": "C0100-002004",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002004.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01583-12012",
+          "description": "Nut",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "154-03-72270",
+          "description": "Lock",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "04010-00722",
+          "description": "Key",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "600-645-7850",
+          "description": "Fan",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "423-03-31710",
+          "description": "Boss",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "02782-10425",
+          "description": "Elbow",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "02896-61012",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "07002-62434",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-62-41661",
+          "description": "Tee",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "02896-61012",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "02896-61015",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "07002-61823",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002005",
+      "name": "Cooling System (Air Piping)",
+      "fig": "C0100-002005",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002005.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "195-03-64441",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "20Y-62-51671",
+          "description": "Clamp",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-52541",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "195-03-64441",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "20Y-62-51671",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "195-03-64441",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "20Y-62-51671",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-51681",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07283-31079",
+          "description": "Clip, Pipe",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01597-01211",
+          "description": "Nut",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002006",
+      "name": "Cooling System (Aftercooler Shroud Cover)",
+      "fig": "C0100-002006",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002006.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-52691",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-42460",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-52720",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-52912",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-42951",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-03-52931",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-03-52941",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-52960",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-03-52922",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-52970",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-52981",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-03-52452",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-03-52742",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "21N-03-52751",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-03-54181",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-03-54291",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "21N-03-54391",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002007",
+      "name": "Cooling System (Tube and Aftercooler) (2/2)",
+      "fig": "C0100-002007",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002007.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-53512",
+          "description": "Aftercooler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-53551",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-53551",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-53570",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "6162-15-4750",
+          "description": "Gasket",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81250",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-53580",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "6162-15-4750",
+          "description": "Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81255",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-03-52501",
+          "description": "Isolator Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "C1",
+          "description": "• Isolator",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "21N-03-52591",
+          "description": "• Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01018-31285",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-03-37960",
+          "description": "Spacer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002008",
+      "name": "Cooling System (Reservoir Tank)",
+      "fig": "C0100-002008",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002008.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "09483-10316",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07285-00150",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "04434-51612",
+          "description": "Clip",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "195-33-11220",
+          "description": "Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81250",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-03-51710",
+          "description": "Joint",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-51620",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07285-00130",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "07285-00150",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-51630",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "07285-00130",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "07285-00150",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-03-52610",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "205-03-71440",
+          "description": "• Sheet",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "21N-03-31491",
+          "description": "Tank",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "21N-03-32360",
+          "description": "• Cap Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-03-32351",
+          "description": "• Cap Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-03-52290",
+          "description": "Band",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "01010-80825",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "01643-30823",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "21N-03-53330",
+          "description": "Hose Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "21N-03-53320",
+          "description": "Hose Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "07285-00110",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "04435-51212",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "04435-51212",
+          "description": "Clip",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002009",
+      "name": "Cooling System (Fan Guard) (1/2)",
+      "fig": "C0100-002009",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002009.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-52260",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-52271",
+          "description": "Guard",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81255",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-03-42280",
+          "description": "Bracket",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002010",
+      "name": "Cooling System (Air Intake Piping)",
+      "fig": "C0100-002010",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002010.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "195-03-64451",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "20Y-62-51671",
+          "description": "Clamp",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "208-62-73910",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-57150",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21U-01-31221",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-57120",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-57130",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "195-03-64441",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "20Y-62-51671",
+          "description": "Clamp",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-51661",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-03-57140",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "20Y-62-51671",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-03-55110",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "195-03-64441",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "20Y-62-51671",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002011",
+      "name": "Cooling System (Cooler Cover)",
+      "fig": "C0100-002011",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002011.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-52641",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-42661",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-42671",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-52650",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-52621",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-03-52430",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-52421",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-42480",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-03-52681",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002012",
+      "name": "Cooling System (Radiator) (1/2)",
+      "fig": "C0100-002012",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002012.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "21N-03-53111",
+          "description": "Radiator",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "C1",
+          "description": "• Radiator",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-51341",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-51360",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-51281",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-51291",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-51350",
+          "description": "• Sheet",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-03-53121",
+          "description": "Radiator",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "C1",
+          "description": "• Radiator",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-03-51350",
+          "description": "• Sheet",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-03-53131",
+          "description": "Radiator",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "C1",
+          "description": "• Radiator",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-51360",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-51291",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-51360",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-03-51341",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-51281",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-51350",
+          "description": "• Sheet",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "207-03-22760",
+          "description": "Cushion",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "22B-03-12590",
+          "description": "Cushion",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-03-51271",
+          "description": "Bracket",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "14X-03-51621",
+          "description": "Cushion",
+          "qty": 18,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "14X-03-51640",
+          "description": "Spacer",
+          "qty": 9,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01010-81045",
+          "description": "Bolt",
+          "qty": 9,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "14X-03-51770",
+          "description": "Washer",
+          "qty": 9,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-03-51232",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-03-51242",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "21N-03-51251",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002013",
+      "name": "Cooling System (Radiator) (2/2)",
+      "fig": "C0100-002013",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002013.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-51380",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-51391",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-51221",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-51260",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-03-57211",
+          "description": "Tank",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81640",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21T-03-43850",
+          "description": "Tube",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "21T-03-43860",
+          "description": "Gasket",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01010-81035",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-03-54360",
+          "description": "Hose",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-03-54370",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07289-00055",
+          "description": "Clamp",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "17A-03-42990",
+          "description": "Cap",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-03-51491",
+          "description": "Pipe",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01010-81245",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "206-03-31450",
+          "description": "Sheet",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002014",
+      "name": "Cooling System (Oil Cooler)",
+      "fig": "C0100-002014",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002014.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "21N-03-53141",
+          "description": "Oil Cooler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "C1",
+          "description": "• Oil Cooler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-54560",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-54590",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-03-53150",
+          "description": "Oil Cooler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "C1",
+          "description": "• Oil Cooler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-54560",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "203-54-56970",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81090",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-53462",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-51580",
+          "description": "Plate",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01010-81265",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-53491",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-51580",
+          "description": "Plate",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81265",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002015",
+      "name": "Cooling System (Cover)",
+      "fig": "C0100-002015",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002015.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-53472",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-54161",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-53482",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-54161",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-03-54150",
+          "description": "Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-54611",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-54172",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-51412",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "21N-03-51452",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-03-57430",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "21N-03-53670",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-03-53610",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "21N-03-53620",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "21N-03-53630",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "21N-03-53640",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "21N-03-53650",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "21N-03-53660",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002016",
+      "name": "Cooling System (Oil Cooler Piping)",
+      "fig": "C0100-002016",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002016.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-54211",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07000-13045",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81275",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-54231",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07000-13045",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07000-12055",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81265",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81245",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "07040-11409",
+          "description": "Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-54221",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "07000-13045",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81275",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-03-54241",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "07000-13045",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01010-81265",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01010-81245",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-03-57250",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "423-09-41110",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "07283-36155",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "22P-70-12160",
+          "description": "Nut",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "21N-03-54261",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "07283-34346",
+          "description": "U-bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "22P-70-12160",
+          "description": "Nut",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002017",
+      "name": "Cooling System (Shroud) (2/2)",
+      "fig": "C0100-002017",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002017.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-52141",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-54421",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-54431",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-54441",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-54451",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-03-51152",
+          "description": "Shroud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-03-41472",
+          "description": "Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-41481",
+          "description": "Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-52120",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-52130",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-03-57170",
+          "description": "Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-52341",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-54520",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-03-54530",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "21N-03-52781",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-03-54491",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-03-54510",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-03-52871",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-03-52880",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-03-54541",
+          "description": "Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "21N-03-54381",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "21N-03-51162",
+          "description": "Shroud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "C1",
+          "description": "• Shroud",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "21N-03-52230",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "21N-03-51370",
+          "description": "Bracket",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "01011-81205",
+          "description": "Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002018",
+      "name": "Cooling System (Radiator Mounting)",
+      "fig": "C0100-002018",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002018.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-54112",
+          "description": "Shroud",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-54122",
+          "description": "Shroud",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "209-03-42710",
+          "description": "Cushion",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "209-03-42730",
+          "description": "Collar",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-31630",
+          "description": "Plate",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01011-81600",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-51810",
+          "description": "Seat",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-51820",
+          "description": "Bracket",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "566-54-12213",
+          "description": "Cushion",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "569-03-12190",
+          "description": "Bushing",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "565-54-12841",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01011-81610",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01010-82050",
+          "description": "Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01643-32060",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "567-40-41380",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "21N-03-51980",
+          "description": "Seat",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01643-32060",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01010-82050",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "21N-03-51990",
+          "description": "Bracket",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "567-40-41380",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01010-82050",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "565-54-12841",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "569-03-12190",
+          "description": "Bushing",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "566-54-12213",
+          "description": "Cushion",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "01011-81610",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002019",
+      "name": "Cooling System (Fan Motor Related Parts)",
+      "fig": "C0100-002019",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002019.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-51192",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002020",
+      "name": "Cooling System (Fan Motor) (3/5)",
+      "fig": "C0100-002020",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002020.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "708-7W-00420",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1 C2",
+          "pn": "708-7W-11270",
+          "description": "• Case",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "708-8K-16280",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07002-21623",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "C2",
+          "pn": "708-7W-01050",
+          "description": "• Cover Subassembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "C1",
+          "description": "• • Cover, End",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "C1",
+          "description": "• • Plug, Stocking",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "709-25-11650",
+          "description": "• Valve, Check",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "709-25-11361",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "708-7S-21610",
+          "description": "• Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "07002-22434",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "C1",
+          "description": "• Spool",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11 C2",
+          "pn": "708-7W-18150",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12 C2",
+          "pn": "708-7W-18160",
+          "description": "• Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "708-7W-18170",
+          "description": "• Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "07000-F2016",
+          "description": "• O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "07000-F2035",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01252-60845",
+          "description": "• Bolt, Hexagon Socket Head",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "07000-F2010",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "708-7W-01070",
+          "description": "• Valve Assembly, Pilot",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "702-21-57230",
+          "description": "• • Solenoid",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "702-21-55870",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "C1",
+          "description": "• • Case",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "C1",
+          "description": "• • Spool",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22 C2",
+          "pn": "708-7R-18270",
+          "description": "• • Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "C1",
+          "description": "• • Plug, Stocking",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01252-60612",
+          "description": "• • Bolt, Hexagon Socket Head",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "708-7S-18360",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "702-21-54180",
+          "description": "• • Screw",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "07000-F1008",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "708-7S-18230",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "07040-11007",
+          "description": "• • Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "07002-21023",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "C1",
+          "description": "• • Orifice",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "708-7R-04160",
+          "description": "• • Filter Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01252-60835",
+          "description": "• Bolt, Hexagon Socket Head",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002021",
+      "name": "Cooling System (Fan Motor) (4/5)",
+      "fig": "C0100-002021",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002021.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "708-7W-00420",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1 C2",
+          "pn": "708-7W-11920",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2 C2",
+          "pn": "04020-01024",
+          "description": "• Pin, Dowel",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01252-61480",
+          "description": "• Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4 C2",
+          "pn": "708-7W-12130",
+          "description": "• Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5 C2",
+          "pn": "708-7W-12140",
+          "description": "• Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6 C2",
+          "pn": "708-7W-12150",
+          "description": "• Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7 C2",
+          "pn": "708-7L-05010",
+          "description": "• Spacer Kit",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Spacer,T=1.5mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Spacer,T=1.6mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Spacer,T=1.7mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Spacer,T=1.8mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Spacer,T=1.9mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "C1",
+          "description": "• • Spacer,T=2.0mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8 C2",
+          "pn": "708-25-52861",
+          "description": "• Seal, Oil",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "708-2L-22160",
+          "description": "• Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "04065-06825",
+          "description": "• Ring, Snap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "C1",
+          "description": "• Block, Cylinder",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "C1",
+          "description": "• Plate, Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13 C2",
+          "pn": "720-68-19610",
+          "description": "• Pin",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14 C2",
+          "pn": "708-8F-33360",
+          "description": "• Pin",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15 C2",
+          "pn": "708-7L-13140",
+          "description": "• Seat",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16 C2",
+          "pn": "708-8F-33160",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17 C2",
+          "pn": "04065-04818",
+          "description": "• Ring, Snap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18 C2",
+          "pn": "708-8F-33350",
+          "description": "• Guide,Retainer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19 C2",
+          "pn": "708-2L-33350",
+          "description": "• Retainer, Shoe",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20 C2",
+          "pn": "708-8F-33310",
+          "description": "• Piston Subassembly",
+          "qty": 9,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21 C2",
+          "pn": "708-7F-13420",
+          "description": "• Plate, Thrust",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002022",
+      "name": "Cooling System (Fan Motor) (5/5)",
+      "fig": "C0100-002022",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002022.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "708-7W-00420",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "702-73-01760",
+          "description": "• Valve, Relief",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "C1",
+          "description": "• • Ring, Back-up",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07000-F2016",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07002-22434",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "729-11-42000",
+          "description": "• Sensor, Pick up",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07002-21423",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "20Y-62-22790",
+          "description": "• Band,Red",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "20Y-62-22830",
+          "description": "• Band,White",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002023",
+      "name": "Cooling System (Fan)",
+      "fig": "C0100-002023",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002023.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "01010-81640",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01583-13621",
+          "description": "Nut",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01660-03650",
+          "description": "Lock",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "04010-01032",
+          "description": "Key",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "600-645-7450",
+          "description": "Fan,Cooling",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21M-03-22250",
+          "description": "Boss",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81245",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002024",
+      "name": "Cooling System (Fan Motor Piping)",
+      "fig": "C0100-002024",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002024.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-51830",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "02896-61018",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "02782-1062A",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "02896-61018",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07002-62434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07094-10518",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07095-00526",
+          "description": "Cushion",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81280",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "209-03-41860",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-51890",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-51880",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81035",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-51840",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "02896-61018",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "21N-62-41391",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "11Y-62-12440",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "02896-61018",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "07002-62434",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "07094-10518",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07095-00526",
+          "description": "Cushion",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01010-81280",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-03-51850",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "02896-61012",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "02782-10516",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "02896-61015",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "07002-62034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "07094-10417",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "07095-00420",
+          "description": "Cushion",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81280",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "21N-03-41920",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "21N-03-41930",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "21N-03-41890",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "01010-81065",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "21N-03-51941",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "21N-03-51950",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "21N-03-51960",
+          "description": "• Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "21N-06-51161",
+          "description": "Wiring Harness",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002025",
+      "name": "Cooling System (Fan Guard) (2/2)",
+      "fig": "C0100-002025",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002025.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-51791",
+          "description": "Guard",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01010-81235",
+          "description": "Bolt",
+          "qty": 7,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 7,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002026",
+      "name": "Cooling System (Fuel Cooler and Condenser)",
+      "fig": "C0100-002026",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002026.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "208-979-7520",
+          "description": "Condenser Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01010-80616",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01643-30623",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-57470",
+          "description": "Frame",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "2A6-54-11251",
+          "description": "• Hinge,Welded",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-57460",
+          "description": "Frame",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "20Y-54-74161",
+          "description": "• Hinge,Welded",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81035",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-03-57180",
+          "description": "Oil Cooler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "02782-10516",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "02782-10518",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "07002-62034",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002027",
+      "name": "Cooling System (Partition)",
+      "fig": "C0100-002027",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002027.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-52810",
+          "description": "Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-52191",
+          "description": "Sheet",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "02896-61015",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-03-52491",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-52770",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-54480",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-54550",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-52152",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-03-54462",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-03-54471",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-54620",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-03-54630",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-03-54280",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002028",
+      "name": "Cooling System (Radiator Bypass Hose)",
+      "fig": "C0100-002028",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002028.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "09415-03620",
+          "description": "Cap",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-51751",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-51771",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-51781",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-03-57260",
+          "description": "Hose Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07281-00609",
+          "description": "Clamp, Hose",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "2A5-03-11940",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002029",
+      "name": "Cooling System (Piping)",
+      "fig": "C0100-002029",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002029.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-54331",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-52410",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-54321",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07289-00070",
+          "description": "Clamp",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-03-54341",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-42360",
+          "description": "Bracket",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "07283-37671",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "22P-70-12160",
+          "description": "Nut",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21T-01-31490",
+          "description": "Valve",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07002-63634",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-57240",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01010-81045",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "207-977-5111",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "195-03-41481",
+          "description": "Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "21N-03-51731",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "07289-00095",
+          "description": "Clamp",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-03-51741",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07289-00095",
+          "description": "Clamp",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "07261-20910",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-03-57190",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "11Y-09-11140",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "11Y-09-11140",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "04435-51610",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002030",
+      "name": "Cooling System (Clip and Piping)",
+      "fig": "C0100-002030",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002030.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-51610",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-51620",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07285-00130",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07285-00150",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "17A-03-62680",
+          "description": "Joint",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01010-81225",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07043-70108",
+          "description": "Plug, Taper",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "04434-51610",
+          "description": "Clip",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
+    },
+    {
+      "id": "c0100-002031",
+      "name": "Cooling System (Mounting Parts)",
+      "fig": "C0100-002031",
+      "images": [
+        "catalog-images/pc1250-11/cooling-system/C0100-002031.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-03-52371",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-03-52211",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-03-52221",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-03-52381",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "21N-03-42250",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "21N-03-43210",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-03-52831",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-03-53231",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "203-54-62670",
+          "description": "Collar",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-03-52391",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-03-42250",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-03-43220",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "21N-03-52161",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-03-52280",
+          "description": "• Sheet",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "203-54-62670",
+          "description": "Collar",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "21N-03-51570",
+          "description": "Collar",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "3EB-41-66140",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "3EB-41-66140",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "21N-03-51561",
+          "description": "Collar",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "21N-03-51570",
+          "description": "Collar",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "3EB-41-66140",
+          "description": "Bolt",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01643-32060",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01010-82065",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "01643-32060",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "01010-82065",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01643-32060",
+          "description": "Washer",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01010-82090",
+          "description": "Bolt",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "COOLING SYSTEM"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
