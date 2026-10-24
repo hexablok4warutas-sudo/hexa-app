@@ -1,0 +1,130 @@
+{
+  "source": "PB PC1250-11R.pdf, CONTENTS, PDF pages 19–37",
+  "systems": [
+    {
+      "id": "engine-cylinder-head-and-its-related-parts",
+      "name": "ENGINE CYLINDER HEAD AND ITS RELATED PARTS",
+      "enabled": false
+    },
+    {
+      "id": "engine-cylinder-block-and-its-related-parts",
+      "name": "ENGINE CYLINDER BLOCK AND ITS RELATED PARTS",
+      "enabled": false
+    },
+    {
+      "id": "engine-lubrication-system",
+      "name": "ENGINE LUBRICATION SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "engine-fuel-system",
+      "name": "ENGINE FUEL SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "engine-cooling-system",
+      "name": "ENGINE COOLING SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "engine-electrical-system",
+      "name": "ENGINE ELECTRICAL SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "engine-accessories-and-others",
+      "name": "ENGINE ACCESSORIES AND OTHERS",
+      "enabled": false
+    },
+    {
+      "id": "engine-marks-and-plates",
+      "name": "ENGINE MARKS AND PLATES",
+      "enabled": false
+    },
+    {
+      "id": "engine-related-parts",
+      "name": "ENGINE RELATED PARTS",
+      "enabled": false
+    },
+    {
+      "id": "cooling-system",
+      "name": "COOLING SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "fuel-system",
+      "name": "FUEL SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "electrical-system",
+      "name": "ELECTRICAL SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "air-system",
+      "name": "AIR SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "hydraulic-system",
+      "name": "HYDRAULIC SYSTEM",
+      "enabled": true
+    },
+    {
+      "id": "frame-and-its-related-parts",
+      "name": "FRAME AND ITS RELATED PARTS",
+      "enabled": false
+    },
+    {
+      "id": "operator-s-compartment-and-control-system",
+      "name": "OPERATOR'S COMPARTMENT AND CONTROL SYSTEM",
+      "enabled": false
+    },
+    {
+      "id": "guards-and-covers",
+      "name": "GUARDS AND COVERS",
+      "enabled": false
+    },
+    {
+      "id": "swing-circle-and-its-related-parts",
+      "name": "SWING CIRCLE AND ITS RELATED PARTS",
+      "enabled": false
+    },
+    {
+      "id": "travel-system-and-its-related-parts",
+      "name": "TRAVEL SYSTEM AND ITS RELATED PARTS",
+      "enabled": false
+    },
+    {
+      "id": "undercarriage",
+      "name": "UNDERCARRIAGE",
+      "enabled": false
+    },
+    {
+      "id": "work-equipment",
+      "name": "WORK EQUIPMENT",
+      "enabled": false
+    },
+    {
+      "id": "marks-and-plates",
+      "name": "MARKS AND PLATES",
+      "enabled": false
+    },
+    {
+      "id": "auxiliary-parts-and-tool",
+      "name": "AUXILIARY PARTS AND TOOL",
+      "enabled": false
+    },
+    {
+      "id": "other-equipment",
+      "name": "OTHER EQUIPMENT",
+      "enabled": false
+    },
+    {
+      "id": "field-repair-service-parts",
+      "name": "FIELD REPAIR SERVICE PARTS",
+      "enabled": false
+    }
+  ]
+}

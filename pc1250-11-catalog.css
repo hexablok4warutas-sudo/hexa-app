@@ -283,3 +283,20 @@ html,body{max-width:100%;overflow-x:clip}
 /* Nomor tetap terbaca dan tidak ditutup blok warna. */
 .cat-inline-svg g.part.cat-svg-selected text,
 .cat-inline-svg g.part.cat-svg-selected tspan{stroke:none!important;filter:none!important}
+
+/* PC1250-11R: system sheet tabs, same CAT 395 layout */
+.cat-top{align-items:flex-start;gap:18px;flex-wrap:wrap}
+.pc-catalog-heading{display:flex;align-items:flex-start;gap:10px;min-width:270px}
+.pc-back-link{display:inline-flex;align-items:center;justify-content:center;flex:none;width:29px;height:29px;border:1px solid #cfdde9;border-radius:8px;color:#0063a4!important;text-decoration:none!important;font-size:19px;background:#fff}
+.pc-system-tabs{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;align-items:center;max-width:66%;margin-left:auto}
+.pc-system-tab{font:inherit;font-size:12px;font-weight:700;border:1px solid #d5e0eb;background:#f5f8fc;color:#294e70;border-radius:9px;padding:9px 12px;cursor:pointer;white-space:normal;text-align:center;line-height:1.25}
+.pc-system-tab.is-active{background:#ff9015;border-color:#ff9015;color:#fff;box-shadow:0 2px 7px #ff941744}
+.pc-system-tab:disabled{opacity:.58;cursor:not-allowed}
+.pc-system-tab:focus-visible{outline:2px solid #fa8c00;outline-offset:2px}
+.pc-section-list{display:flex;flex-direction:column;gap:5px;margin:12px 0 12px;max-height:340px;overflow:auto}
+.pc-section-label{font-size:11px;color:#61788c;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:2px 0 4px}
+.pc-section-btn{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid #e3eaf1;background:#f5f8fc;color:#24527c;padding:9px 10px;border-radius:9px;text-align:left;font-size:12px;font-weight:600;cursor:pointer}
+.pc-section-btn.is-active{border-color:#ff951d;background:#fff2e1;color:#a65b00}
+.pc-section-btn small{font-size:10px;white-space:nowrap;color:#7890a4}
+.pc-section-hint{font-size:11px;color:#687f92;margin:4px 0 8px;line-height:1.4}
+@media(max-width:1050px){.pc-system-tabs{max-width:100%;width:100%;justify-content:flex-start;margin-left:0}}

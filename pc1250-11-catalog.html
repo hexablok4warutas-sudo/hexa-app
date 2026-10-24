@@ -12,9 +12,9 @@
   <div class="cat-shell">
     <section class="cat-title"><img src="hexa-icon-partscatalog.svg" alt=""><h1>HEX<span>Catalog</span> <small>/ PC1250-11R</small></h1></section>
     <section class="cat-panel">
-      <div class="cat-top"><div><strong>KOMATSU PC1250-11R — PARTS CATALOG</strong><p>Pilih group, lihat gambar assembly dan tentukan kebutuhan part.</p></div><a href="hex-catalog.html">← Unit Catalog</a></div>
+      <div class="cat-top"><div class="pc-catalog-heading"><a class="pc-back-link" href="hex-catalog.html" aria-label="Kembali ke Unit Catalog">←</a><div><strong>KOMATSU PC1250-11R — <span id="pcCurrentSystem">HYDRAULIC SYSTEM</span></strong><p>Pilih group, lihat gambar assembly dan tentukan kebutuhan part.</p></div></div><nav class="pc-system-tabs" id="pcSystemTabs" aria-label="Pilih sistem katalog"></nav></div>
       <div class="cat-layout">
-        <aside class="cat-groups"><h2>Assembly Groups</h2><input id="groupSearch" type="search" placeholder="Cari group..."><div id="groupList"></div></aside>
+        <aside class="cat-groups"><h2>Assembly Groups</h2><input id="groupSearch" type="search" placeholder="Cari group..."><div id="pcSectionList" class="pc-section-list"></div><div id="groupList"></div></aside>
         <section class="cat-detail"><div class="cat-detail-head"><h2 id="groupTitle">Pilih Group</h2><span id="groupCount"></span></div>
           <div class="cat-workspace"><div class="cat-images"><div class="cat-image-toolbar"><strong>Assembly Drawing</strong><div><button id="prevImage" type="button">‹</button><span id="imagePosition">0 / 0</span><button id="nextImage" type="button">›</button></div></div><div id="drawingArea" class="cat-drawing">Pilih assembly untuk membuka gambar.</div></div>
           <div class="cat-parts-panel"><div class="cat-parts-heading"><strong>Parts List</strong><small>Scroll untuk melihat seluruh part</small></div><div class="cat-table-wrap"><table><thead><tr><th>No</th><th>Part No.</th><th>Description</th><th>Qty</th><th aria-label="Tambah part"></th></tr></thead><tbody id="partsBody"></tbody></table></div></div></div>
@@ -25,6 +25,6 @@
     </section>
   </div>
 </main>
-<script src="hexa-menu.js"></script><script src="hexa-header.js"></script><script src="pc1250-11-catalog.js"></script>
+<script src="hexa-menu.js"></script><script src="hexa-header.js"></script><script src="pc1250-11-catalog.js"></script><script src="pc1250-11-systems.js"></script>
 <script src="hexa-catalog-return-overlay-v2.js"></script>
 </body></html>

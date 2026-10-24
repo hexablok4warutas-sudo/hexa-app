@@ -1,0 +1,1422 @@
+{
+  "source": "PB PC1250-11R.pdf / Komatsu FEN04900-00",
+  "source_contents_pdf_pages": [
+    24,
+    25,
+    26,
+    27,
+    28
+  ],
+  "sections": [
+    {
+      "name": "Hydraulic Tank",
+      "figures": [
+        {
+          "fig": "H0110-001001",
+          "section": "Hydraulic Tank",
+          "title": "Tank",
+          "printed_page": 328
+        },
+        {
+          "fig": "H0110-005001",
+          "section": "Hydraulic Tank",
+          "title": "Tank (Sandy and Dusty Terrain Arrangement)",
+          "printed_page": 330
+        },
+        {
+          "fig": "H0110-001002",
+          "section": "Hydraulic Tank",
+          "title": "Return Filter (1/2)",
+          "printed_page": 332
+        },
+        {
+          "fig": "H0110-002002",
+          "section": "Hydraulic Tank",
+          "title": "Return Filter (1/2)",
+          "printed_page": 333
+        },
+        {
+          "fig": "H0110-001003",
+          "section": "Hydraulic Tank",
+          "title": "Return Filter (2/2)",
+          "printed_page": 334
+        },
+        {
+          "fig": "H0110-002003",
+          "section": "Hydraulic Tank",
+          "title": "Return Filter (2/2)",
+          "printed_page": 335
+        },
+        {
+          "fig": "H0110-001004",
+          "section": "Hydraulic Tank",
+          "title": "Relief Valve",
+          "printed_page": 336
+        },
+        {
+          "fig": "H0110-002004",
+          "section": "Hydraulic Tank",
+          "title": "Relief Valve",
+          "printed_page": 337
+        },
+        {
+          "fig": "H0110-001005",
+          "section": "Hydraulic Tank",
+          "title": "Relief Valve Piping",
+          "printed_page": 338
+        },
+        {
+          "fig": "H0110-004005",
+          "section": "Hydraulic Tank",
+          "title": "Relief Valve Piping (Hydraulic Stairway)",
+          "printed_page": 339
+        },
+        {
+          "fig": "H0110-003005",
+          "section": "Hydraulic Tank",
+          "title": "Relief Valve Piping (Without Link, Loading Shovel)",
+          "printed_page": 341
+        },
+        {
+          "fig": "H0110-002005",
+          "section": "Hydraulic Tank",
+          "title": "Relief Valve Piping (Without Link, Loading Shovel,Hydraulic Stairway)",
+          "printed_page": 342
+        },
+        {
+          "fig": "H0110-006006",
+          "section": "Hydraulic Tank",
+          "title": "Washer Tank and Cab Rear Cover",
+          "printed_page": 344
+        },
+        {
+          "fig": "H0110-001006A",
+          "section": "Hydraulic Tank",
+          "title": "Washer Tank and Cab Rear Cover",
+          "printed_page": 346
+        },
+        {
+          "fig": "H0110-003006A",
+          "section": "Hydraulic Tank",
+          "title": "Washer Tank and Cab Rear Cover",
+          "printed_page": 348
+        },
+        {
+          "fig": "H0110-005006A",
+          "section": "Hydraulic Tank",
+          "title": "Stairway)",
+          "printed_page": 350
+        },
+        {
+          "fig": "H0110-001007",
+          "section": "Hydraulic Tank",
+          "title": "Mounting (1/2)",
+          "printed_page": 352
+        },
+        {
+          "fig": "H0110-002007",
+          "section": "Hydraulic Tank",
+          "title": "Mounting (1/2)",
+          "printed_page": 353
+        },
+        {
+          "fig": "H0110-003007",
+          "section": "Hydraulic Tank",
+          "title": "Mounting (1/2)",
+          "printed_page": 354
+        },
+        {
+          "fig": "H0110-004007",
+          "section": "Hydraulic Tank",
+          "title": "Mounting (1/2)",
+          "printed_page": 355
+        },
+        {
+          "fig": "H0110-001008",
+          "section": "Hydraulic Tank",
+          "title": "Bypass Valve",
+          "printed_page": 356
+        },
+        {
+          "fig": "H0110-005008",
+          "section": "Hydraulic Tank",
+          "title": "Bypass Valve",
+          "printed_page": 357
+        },
+        {
+          "fig": "H0110-001009",
+          "section": "Hydraulic Tank",
+          "title": "Valve Mounting",
+          "printed_page": 358
+        },
+        {
+          "fig": "H0110-002010",
+          "section": "Hydraulic Tank",
+          "title": "Mounting (2/2)",
+          "printed_page": 359
+        },
+        {
+          "fig": "H0110-001010A",
+          "section": "Hydraulic Tank",
+          "title": "Mounting (2/2)",
+          "printed_page": 360
+        }
+      ]
+    },
+    {
+      "name": "Control Valve",
+      "figures": [
+        {
+          "fig": "H0120-002001",
+          "section": "Control Valve",
+          "title": "5-Spool (1/5)",
+          "printed_page": 361
+        },
+        {
+          "fig": "H0120-004001",
+          "section": "Control Valve",
+          "title": "Control Valve, 5-Spool (1/5)",
+          "printed_page": 362
+        },
+        {
+          "fig": "H0120-002002",
+          "section": "Control Valve",
+          "title": "5-Spool (2/5)",
+          "printed_page": 363
+        },
+        {
+          "fig": "H0120-004002",
+          "section": "Control Valve",
+          "title": "Control Valve, 5-Spool (2/5)",
+          "printed_page": 364
+        },
+        {
+          "fig": "H0120-002003",
+          "section": "Control Valve",
+          "title": "5-Spool (3/5)",
+          "printed_page": 365
+        },
+        {
+          "fig": "H0120-004003",
+          "section": "Control Valve",
+          "title": "Control Valve, 5-Spool (3/5)",
+          "printed_page": 366
+        },
+        {
+          "fig": "H0120-002004",
+          "section": "Control Valve",
+          "title": "5-Spool (4/5)",
+          "printed_page": 367
+        },
+        {
+          "fig": "H0120-004004",
+          "section": "Control Valve",
+          "title": "Control Valve, 5-Spool (4/5)",
+          "printed_page": 368
+        },
+        {
+          "fig": "H0120-002005",
+          "section": "Control Valve",
+          "title": "5-Spool (5/5)",
+          "printed_page": 369
+        },
+        {
+          "fig": "H0120-004005",
+          "section": "Control Valve",
+          "title": "Control Valve, 5-Spool (5/5)",
+          "printed_page": 370
+        },
+        {
+          "fig": "H0120-002006",
+          "section": "Control Valve",
+          "title": "Inner Parts, Line Filter (1/2) (No1)",
+          "printed_page": 371
+        },
+        {
+          "fig": "H0120-004006",
+          "section": "Control Valve",
+          "title": "Inner Parts, Line Filter (1/2) (No1)",
+          "printed_page": 372
+        },
+        {
+          "fig": "H0120-004007",
+          "section": "Control Valve",
+          "title": "Line Filter Related Parts (1/2)",
+          "printed_page": 373
+        },
+        {
+          "fig": "H0120-002007",
+          "section": "Control Valve",
+          "title": "Line Filter Related Parts (1/2) (Without Link, Loading Shovel)",
+          "printed_page": 374
+        },
+        {
+          "fig": "H0120-004008",
+          "section": "Control Valve",
+          "title": "Joint Parts (1/2)",
+          "printed_page": 375
+        },
+        {
+          "fig": "H0120-005008",
+          "section": "Control Valve",
+          "title": "Joint Parts (1/2) (For 5700mm Arm)",
+          "printed_page": 376
+        },
+        {
+          "fig": "H0120-002008",
+          "section": "Control Valve",
+          "title": "Joint Parts (1/2) (Without Link, Loading Shovel)",
+          "printed_page": 377
+        },
+        {
+          "fig": "H0120-002009",
+          "section": "Control Valve",
+          "title": "Branch Piping (1/2)",
+          "printed_page": 378
+        },
+        {
+          "fig": "H0120-002010",
+          "section": "Control Valve",
+          "title": "4-Spool (1/6)",
+          "printed_page": 379
+        },
+        {
+          "fig": "H0120-004010",
+          "section": "Control Valve",
+          "title": "Control Valve, 4-Spool (1/6)",
+          "printed_page": 380
+        },
+        {
+          "fig": "H0120-002011",
+          "section": "Control Valve",
+          "title": "4-Spool (2/6)",
+          "printed_page": 381
+        },
+        {
+          "fig": "H0120-004011",
+          "section": "Control Valve",
+          "title": "Control Valve, 4-Spool (2/6)",
+          "printed_page": 382
+        },
+        {
+          "fig": "H0120-002012",
+          "section": "Control Valve",
+          "title": "4-Spool (3/6)",
+          "printed_page": 383
+        },
+        {
+          "fig": "H0120-004012",
+          "section": "Control Valve",
+          "title": "Control Valve, 4-Spool (3/6)",
+          "printed_page": 384
+        },
+        {
+          "fig": "H0120-002013",
+          "section": "Control Valve",
+          "title": "4-Spool (4/6)",
+          "printed_page": 385
+        },
+        {
+          "fig": "H0120-004013",
+          "section": "Control Valve",
+          "title": "Control Valve, 4-Spool (4/6)",
+          "printed_page": 386
+        },
+        {
+          "fig": "H0120-002014",
+          "section": "Control Valve",
+          "title": "4-Spool (5/6)",
+          "printed_page": 387
+        },
+        {
+          "fig": "H0120-004014",
+          "section": "Control Valve",
+          "title": "Control Valve, 4-Spool (5/6)",
+          "printed_page": 388
+        },
+        {
+          "fig": "H0120-002015",
+          "section": "Control Valve",
+          "title": "4-Spool (6/6)",
+          "printed_page": 389
+        },
+        {
+          "fig": "H0120-004015",
+          "section": "Control Valve",
+          "title": "Control Valve, 4-Spool (6/6)",
+          "printed_page": 390
+        },
+        {
+          "fig": "H0120-002016",
+          "section": "Control Valve",
+          "title": "Inner Parts, Line Filter (2/2) (No2)",
+          "printed_page": 391
+        },
+        {
+          "fig": "H0120-004016",
+          "section": "Control Valve",
+          "title": "Inner Parts, Line Filter (2/2) (No2)",
+          "printed_page": 392
+        },
+        {
+          "fig": "H0120-004017",
+          "section": "Control Valve",
+          "title": "Line Filter Related Parts (2/2)",
+          "printed_page": 393
+        },
+        {
+          "fig": "H0120-002017",
+          "section": "Control Valve",
+          "title": "Line Filter Related Parts (2/2) (Without Link, Loading Shovel)",
+          "printed_page": 394
+        },
+        {
+          "fig": "H0120-002018",
+          "section": "Control Valve",
+          "title": "Joint Parts (2/2)",
+          "printed_page": 395
+        },
+        {
+          "fig": "H0120-005018",
+          "section": "Control Valve",
+          "title": "Joint Parts (2/2) (For 5700mm Arm)",
+          "printed_page": 396
+        },
+        {
+          "fig": "H0120-002019",
+          "section": "Control Valve",
+          "title": "Branch Piping (2/2)",
+          "printed_page": 397
+        },
+        {
+          "fig": "H0120-004020",
+          "section": "Control Valve",
+          "title": "Valve Stand",
+          "printed_page": 398
+        },
+        {
+          "fig": "H0120-002020",
+          "section": "Control Valve",
+          "title": "Valve Stand (Without Link, Loading Shovel)",
+          "printed_page": 399
+        }
+      ]
+    },
+    {
+      "name": "Swing Control Valve",
+      "figures": [
+        {
+          "fig": "H0121-002001",
+          "section": "Swing Control Valve",
+          "title": "Control Valve, 4-Spool (1/4)",
+          "printed_page": 400
+        },
+        {
+          "fig": "H0121-002002",
+          "section": "Swing Control Valve",
+          "title": "Control Valve, 4-Spool (2/4)",
+          "printed_page": 401
+        },
+        {
+          "fig": "H0121-002003",
+          "section": "Swing Control Valve",
+          "title": "Control Valve, 4-Spool (3/4)",
+          "printed_page": 402
+        },
+        {
+          "fig": "H0121-002004",
+          "section": "Swing Control Valve",
+          "title": "Control Valve, 4-Spool (4/4)",
+          "printed_page": 403
+        },
+        {
+          "fig": "H0121-002005",
+          "section": "Swing Control Valve",
+          "title": "Inner Parts, Line Filter",
+          "printed_page": 404
+        },
+        {
+          "fig": "H0121-002006",
+          "section": "Swing Control Valve",
+          "title": "Line Filter Related Parts",
+          "printed_page": 405
+        },
+        {
+          "fig": "H0121-002007",
+          "section": "Swing Control Valve",
+          "title": "Joint Parts",
+          "printed_page": 406
+        },
+        {
+          "fig": "H0121-002008",
+          "section": "Swing Control Valve",
+          "title": "Valve Stand",
+          "printed_page": 407
+        }
+      ]
+    },
+    {
+      "name": "No.1 Pump",
+      "figures": [
+        {
+          "fig": "H0210-002001",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (1/15)",
+          "printed_page": 408
+        },
+        {
+          "fig": "H0210-002002",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (2/15)",
+          "printed_page": 409
+        },
+        {
+          "fig": "H0210-002003",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (3/15)",
+          "printed_page": 410
+        },
+        {
+          "fig": "H0210-002004",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (4/15)",
+          "printed_page": 411
+        },
+        {
+          "fig": "H0210-002005",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (5/15)",
+          "printed_page": 413
+        },
+        {
+          "fig": "H0210-002006",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (6/15)",
+          "printed_page": 414
+        },
+        {
+          "fig": "H0210-002007",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (7/15)",
+          "printed_page": 415
+        },
+        {
+          "fig": "H0210-002008",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (8/15)",
+          "printed_page": 417
+        },
+        {
+          "fig": "H0210-002009",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (9/15)",
+          "printed_page": 419
+        },
+        {
+          "fig": "H0210-002010",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (10/15)",
+          "printed_page": 420
+        },
+        {
+          "fig": "H0210-002011",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (11/15)",
+          "printed_page": 422
+        },
+        {
+          "fig": "H0210-002012",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (12/15)",
+          "printed_page": 424
+        },
+        {
+          "fig": "H0210-002013",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (13/15)",
+          "printed_page": 425
+        },
+        {
+          "fig": "H0210-002014",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (14/15)",
+          "printed_page": 426
+        },
+        {
+          "fig": "H0210-002015",
+          "section": "No.1 Pump",
+          "title": "Piston Pump (15/15)",
+          "printed_page": 427
+        },
+        {
+          "fig": "H0210-002016",
+          "section": "No.1 Pump",
+          "title": "Gear Pump",
+          "printed_page": 428
+        },
+        {
+          "fig": "H0210-002017",
+          "section": "No.1 Pump",
+          "title": "Joint Parts",
+          "printed_page": 429
+        }
+      ]
+    },
+    {
+      "name": "No.2 Pump",
+      "figures": [
+        {
+          "fig": "H0220-001001",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (1/10)",
+          "printed_page": 431
+        },
+        {
+          "fig": "H0220-001002",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (2/10)",
+          "printed_page": 432
+        },
+        {
+          "fig": "H0220-001003",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (3/10)",
+          "printed_page": 433
+        },
+        {
+          "fig": "H0220-001004",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (4/10)",
+          "printed_page": 434
+        },
+        {
+          "fig": "H0220-001005",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (5/10)",
+          "printed_page": 436
+        },
+        {
+          "fig": "H0220-001006",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (6/10)",
+          "printed_page": 437
+        },
+        {
+          "fig": "H0220-001007",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (7/10)",
+          "printed_page": 438
+        },
+        {
+          "fig": "H0220-001008",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (8/10)",
+          "printed_page": 440
+        },
+        {
+          "fig": "H0220-001009",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (9/10)",
+          "printed_page": 442
+        },
+        {
+          "fig": "H0220-001010",
+          "section": "No.2 Pump",
+          "title": "Piston Pump (10/10)",
+          "printed_page": 443
+        },
+        {
+          "fig": "H0220-001011",
+          "section": "No.2 Pump",
+          "title": "Gear Pump",
+          "printed_page": 444
+        },
+        {
+          "fig": "H0220-001012A",
+          "section": "No.2 Pump",
+          "title": "Joint Parts",
+          "printed_page": 445
+        }
+      ]
+    },
+    {
+      "name": "No.3 Pump",
+      "figures": [
+        {
+          "fig": "H0230-001001",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (1/17)",
+          "printed_page": 446
+        },
+        {
+          "fig": "H0230-001002",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (2/17)",
+          "printed_page": 447
+        },
+        {
+          "fig": "H0230-001003",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (3/17)",
+          "printed_page": 448
+        },
+        {
+          "fig": "H0230-001004",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (4/17)",
+          "printed_page": 449
+        },
+        {
+          "fig": "H0230-001005",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (5/17)",
+          "printed_page": 450
+        },
+        {
+          "fig": "H0230-001006",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (6/17)",
+          "printed_page": 451
+        },
+        {
+          "fig": "H0230-001007",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (7/17)",
+          "printed_page": 452
+        },
+        {
+          "fig": "H0230-001008",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (8/17)",
+          "printed_page": 453
+        },
+        {
+          "fig": "H0230-001009",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (9/17)",
+          "printed_page": 454
+        },
+        {
+          "fig": "H0230-001010",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (10/17)",
+          "printed_page": 455
+        },
+        {
+          "fig": "H0230-001011",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (11/17)",
+          "printed_page": 456
+        },
+        {
+          "fig": "H0230-001012",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (12/17)",
+          "printed_page": 458
+        },
+        {
+          "fig": "H0230-001013",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (13/17)",
+          "printed_page": 460
+        },
+        {
+          "fig": "H0230-001014",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (14/17)",
+          "printed_page": 461
+        },
+        {
+          "fig": "H0230-001015",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (15/17)",
+          "printed_page": 462
+        },
+        {
+          "fig": "H0230-001016",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (16/17)",
+          "printed_page": 464
+        },
+        {
+          "fig": "H0230-001017",
+          "section": "No.3 Pump",
+          "title": "Piston Pump (17/17)",
+          "printed_page": 465
+        },
+        {
+          "fig": "H0230-001018A",
+          "section": "No.3 Pump",
+          "title": "Joint Parts",
+          "printed_page": 466
+        }
+      ]
+    },
+    {
+      "name": "Gear Pump",
+      "figures": [
+        {
+          "fig": "H0240-001001",
+          "section": "Gear Pump",
+          "title": "Fan Pump (1/7)",
+          "printed_page": 468
+        },
+        {
+          "fig": "H0240-001002",
+          "section": "Gear Pump",
+          "title": "Fan Pump (2/7)",
+          "printed_page": 469
+        },
+        {
+          "fig": "H0240-001003",
+          "section": "Gear Pump",
+          "title": "Fan Pump (3/7)",
+          "printed_page": 470
+        },
+        {
+          "fig": "H0240-001004",
+          "section": "Gear Pump",
+          "title": "Fan Pump (4/7)",
+          "printed_page": 471
+        },
+        {
+          "fig": "H0240-001005",
+          "section": "Gear Pump",
+          "title": "Fan Pump (5/7)",
+          "printed_page": 472
+        },
+        {
+          "fig": "H0240-001006",
+          "section": "Gear Pump",
+          "title": "Fan Pump (6/7)",
+          "printed_page": 473
+        },
+        {
+          "fig": "H0240-001007",
+          "section": "Gear Pump",
+          "title": "Fan Pump (7/7)",
+          "printed_page": 474
+        },
+        {
+          "fig": "H0240-001008",
+          "section": "Gear Pump",
+          "title": "Joint Parts",
+          "printed_page": 475
+        }
+      ]
+    },
+    {
+      "name": "Suction Piping",
+      "figures": [
+        {
+          "fig": "H0311-001001",
+          "section": "Suction Piping",
+          "title": "No.1 Pump and No.2 Pump Piping",
+          "printed_page": 477
+        },
+        {
+          "fig": "H0311-001002",
+          "section": "Suction Piping",
+          "title": "No.3 Pump and Gear Pump Piping",
+          "printed_page": 478
+        },
+        {
+          "fig": "H0311-001003",
+          "section": "Suction Piping",
+          "title": "Hydraulic Tank (1/3)",
+          "printed_page": 479
+        },
+        {
+          "fig": "H0311-001004",
+          "section": "Suction Piping",
+          "title": "Hydraulic Tank (2/3)",
+          "printed_page": 480
+        },
+        {
+          "fig": "H0311-001005",
+          "section": "Suction Piping",
+          "title": "Hydraulic Tank (3/3)",
+          "printed_page": 481
+        }
+      ]
+    },
+    {
+      "name": "Delivery Piping",
+      "figures": [
+        {
+          "fig": "H0312-001001",
+          "section": "Delivery Piping",
+          "title": "No.1 Pump and No.2 Pump Piping",
+          "printed_page": 482
+        },
+        {
+          "fig": "H0312-001002",
+          "section": "Delivery Piping",
+          "title": "No.3 Pump Piping",
+          "printed_page": 483
+        },
+        {
+          "fig": "H0312-001003",
+          "section": "Delivery Piping",
+          "title": "No.1, No.2 and No.3 Valve (1/2)",
+          "printed_page": 484
+        },
+        {
+          "fig": "H0312-001004",
+          "section": "Delivery Piping",
+          "title": "No.1, No.2 and No.3 Valve (2/2)",
+          "printed_page": 485
+        },
+        {
+          "fig": "H0312-001005A",
+          "section": "Delivery Piping",
+          "title": "Mounting and Valve Branch",
+          "printed_page": 487
+        }
+      ]
+    },
+    {
+      "name": "Oil Cooler Piping",
+      "figures": [
+        {
+          "fig": "H0320-001001",
+          "section": "Oil Cooler Piping",
+          "title": "Hydraulic Tank Piping",
+          "printed_page": 488
+        },
+        {
+          "fig": "H0320-001002",
+          "section": "Oil Cooler Piping",
+          "title": "Revolving Frame Side",
+          "printed_page": 489
+        },
+        {
+          "fig": "H0320-001003",
+          "section": "Oil Cooler Piping",
+          "title": "Cooling Side",
+          "printed_page": 490
+        }
+      ]
+    },
+    {
+      "name": "Return Piping",
+      "figures": [
+        {
+          "fig": "H0330-005001",
+          "section": "Return Piping",
+          "title": "No.1 Valve",
+          "printed_page": 491
+        },
+        {
+          "fig": "H0330-005002",
+          "section": "Return Piping",
+          "title": "No.2 Valve",
+          "printed_page": 492
+        },
+        {
+          "fig": "H0330-005003",
+          "section": "Return Piping",
+          "title": "No.3 Valve",
+          "printed_page": 493
+        },
+        {
+          "fig": "H0330-005004",
+          "section": "Return Piping",
+          "title": "Fan Motor Piping",
+          "printed_page": 494
+        },
+        {
+          "fig": "H0330-005005",
+          "section": "Return Piping",
+          "title": "Safety Valve Mounting",
+          "printed_page": 495
+        },
+        {
+          "fig": "H0330-005006",
+          "section": "Return Piping",
+          "title": "Safety Valve",
+          "printed_page": 496
+        },
+        {
+          "fig": "H0330-005007",
+          "section": "Return Piping",
+          "title": "Related Parts",
+          "printed_page": 497
+        },
+        {
+          "fig": "H0330-005008",
+          "section": "Return Piping",
+          "title": "Swing Suction (1/2)",
+          "printed_page": 498
+        },
+        {
+          "fig": "H0330-005009",
+          "section": "Return Piping",
+          "title": "Swing Suction (2/2)",
+          "printed_page": 500
+        },
+        {
+          "fig": "H0330-005010",
+          "section": "Return Piping",
+          "title": "Hose (1/2)",
+          "printed_page": 501
+        },
+        {
+          "fig": "H0330-005011",
+          "section": "Return Piping",
+          "title": "Hose (2/2)",
+          "printed_page": 502
+        },
+        {
+          "fig": "H0330-005012",
+          "section": "Return Piping",
+          "title": "Valve",
+          "printed_page": 503
+        },
+        {
+          "fig": "H0330-005013",
+          "section": "Return Piping",
+          "title": "Radiator Motor Piping (1/2)",
+          "printed_page": 504
+        },
+        {
+          "fig": "H0330-005014",
+          "section": "Return Piping",
+          "title": "Radiator Motor Piping (2/2)",
+          "printed_page": 505
+        }
+      ]
+    },
+    {
+      "name": "Drain Piping",
+      "figures": [
+        {
+          "fig": "H0340-001001",
+          "section": "Drain Piping",
+          "title": "Hydraulic Tank Piping",
+          "printed_page": 506
+        },
+        {
+          "fig": "H0340-001002",
+          "section": "Drain Piping",
+          "title": "Hydraulic Pump Piping",
+          "printed_page": 507
+        },
+        {
+          "fig": "H0340-001003",
+          "section": "Drain Piping",
+          "title": "Aftercooler Motor Piping",
+          "printed_page": 508
+        },
+        {
+          "fig": "H0340-001004A",
+          "section": "Drain Piping",
+          "title": "Filter",
+          "printed_page": 509
+        }
+      ]
+    },
+    {
+      "name": "Boom Piping",
+      "figures": [
+        {
+          "fig": "H1210-002001",
+          "section": "Boom Piping",
+          "title": "Front",
+          "printed_page": 511
+        },
+        {
+          "fig": "H1210-002002",
+          "section": "Boom Piping",
+          "title": "No.1 Valve",
+          "printed_page": 512
+        },
+        {
+          "fig": "H1210-002003",
+          "section": "Boom Piping",
+          "title": "No.2 Valve",
+          "printed_page": 513
+        },
+        {
+          "fig": "H1210-002004",
+          "section": "Boom Piping",
+          "title": "No.3 Valve",
+          "printed_page": 514
+        },
+        {
+          "fig": "H1210-002005",
+          "section": "Boom Piping",
+          "title": "Boom Piping Tube and Front Bracket",
+          "printed_page": 515
+        }
+      ]
+    },
+    {
+      "name": "Arm Piping",
+      "figures": [
+        {
+          "fig": "H1221-001001A",
+          "section": "Arm Piping",
+          "title": "No.1 Valve",
+          "printed_page": 516
+        },
+        {
+          "fig": "H1221-001002",
+          "section": "Arm Piping",
+          "title": "No.2 Valve",
+          "printed_page": 517
+        },
+        {
+          "fig": "H1221-001003",
+          "section": "Arm Piping",
+          "title": "No.3 Valve",
+          "printed_page": 518
+        }
+      ]
+    },
+    {
+      "name": "Bucket Piping",
+      "figures": [
+        {
+          "fig": "H1222-001001",
+          "section": "Bucket Piping",
+          "title": "No.1 Valve",
+          "printed_page": 520
+        },
+        {
+          "fig": "H1222-001002",
+          "section": "Bucket Piping",
+          "title": "No.2 Valve",
+          "printed_page": 521
+        },
+        {
+          "fig": "H1222-001003",
+          "section": "Bucket Piping",
+          "title": "No.3 Valve",
+          "printed_page": 522
+        }
+      ]
+    },
+    {
+      "name": "Bottom Dump Piping",
+      "figures": [
+        {
+          "fig": "H1223-002001",
+          "section": "Bottom Dump Piping",
+          "title": "Bottom Dump Piping",
+          "printed_page": 523
+        }
+      ]
+    },
+    {
+      "name": "Boom Foot Bracket",
+      "figures": [
+        {
+          "fig": "H1230-001001",
+          "section": "Boom Foot Bracket",
+          "title": "Boom Foot Bracket",
+          "printed_page": 524
+        }
+      ]
+    },
+    {
+      "name": "Travel Piping",
+      "figures": [
+        {
+          "fig": "H1310-001001",
+          "section": "Travel Piping",
+          "title": "Travel Piping",
+          "printed_page": 525
+        }
+      ]
+    },
+    {
+      "name": "Straight Travel Piping",
+      "figures": [
+        {
+          "fig": "H1320-001001",
+          "section": "Straight Travel Piping",
+          "title": "Straight Travel Piping",
+          "printed_page": 527
+        }
+      ]
+    },
+    {
+      "name": "Swing Piping",
+      "figures": [
+        {
+          "fig": "H1340-001001",
+          "section": "Swing Piping",
+          "title": "Swing Piping",
+          "printed_page": 528
+        }
+      ]
+    },
+    {
+      "name": "O.L.S.S. Piping",
+      "figures": [
+        {
+          "fig": "H1810-003001",
+          "section": "O.L.S.S. Piping",
+          "title": "(1/2)",
+          "printed_page": 529
+        },
+        {
+          "fig": "H1810-003002",
+          "section": "O.L.S.S. Piping",
+          "title": "(2/2)",
+          "printed_page": 530
+        }
+      ]
+    },
+    {
+      "name": "Solenoid Valve",
+      "figures": [
+        {
+          "fig": "H1831-002001",
+          "section": "Solenoid Valve",
+          "title": "Related Parts (1/2)",
+          "printed_page": 531
+        },
+        {
+          "fig": "H1831-002002",
+          "section": "Solenoid Valve",
+          "title": "Inner Parts (1/2)",
+          "printed_page": 532
+        },
+        {
+          "fig": "H1831-002003",
+          "section": "Solenoid Valve",
+          "title": "Mounting (1/3)",
+          "printed_page": 533
+        },
+        {
+          "fig": "H1831-002004",
+          "section": "Solenoid Valve",
+          "title": "Related Parts (2/2)",
+          "printed_page": 534
+        },
+        {
+          "fig": "H1831-002005",
+          "section": "Solenoid Valve",
+          "title": "Inner Parts (2/2)",
+          "printed_page": 535
+        },
+        {
+          "fig": "H1831-002006",
+          "section": "Solenoid Valve",
+          "title": "Mounting (2/3)",
+          "printed_page": 536
+        },
+        {
+          "fig": "H1831-002007",
+          "section": "Solenoid Valve",
+          "title": "Mounting (3/3)",
+          "printed_page": 537
+        },
+        {
+          "fig": "H1831-002008",
+          "section": "Solenoid Valve",
+          "title": "Wiring Harness Clamp",
+          "printed_page": 538
+        }
+      ]
+    },
+    {
+      "name": "Solenoid Valve Piping",
+      "figures": [
+        {
+          "fig": "H1832-001001",
+          "section": "Solenoid Valve Piping",
+          "title": "(1/2)",
+          "printed_page": 539
+        },
+        {
+          "fig": "H1832-001002A",
+          "section": "Solenoid Valve Piping",
+          "title": "(2/2)",
+          "printed_page": 540
+        }
+      ]
+    },
+    {
+      "name": "Shuttle Valve Piping",
+      "figures": [
+        {
+          "fig": "H1833-001002",
+          "section": "Shuttle Valve Piping",
+          "title": "Check Valve",
+          "printed_page": 542
+        },
+        {
+          "fig": "H1833-001003",
+          "section": "Shuttle Valve Piping",
+          "title": "Valve Mounting",
+          "printed_page": 543
+        }
+      ]
+    },
+    {
+      "name": "Proportional Pressure Control (PPC) Piping Joint",
+      "figures": [
+        {
+          "fig": "H1835-001001",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Deck",
+          "printed_page": 544
+        },
+        {
+          "fig": "H1835-003001",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Deck (Without Link, Loading Shovel)",
+          "printed_page": 545
+        },
+        {
+          "fig": "H1835-001002",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Hose, Deck",
+          "printed_page": 546
+        },
+        {
+          "fig": "H1835-002002",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Hose, Deck (For 5700mm Arm)",
+          "printed_page": 547
+        },
+        {
+          "fig": "H1835-001003",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Hose, Valve",
+          "printed_page": 549
+        },
+        {
+          "fig": "H1835-002003",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Hose, Valve",
+          "printed_page": 550
+        },
+        {
+          "fig": "H1835-001004",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Joint, Valve and Clamp",
+          "printed_page": 551
+        },
+        {
+          "fig": "H1835-002004",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Joint, Valve and Clamp (For 5700mm Arm)",
+          "printed_page": 553
+        },
+        {
+          "fig": "H1835-003004",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Joint, Valve and Clamp (Without Link, Loading Shovel)",
+          "printed_page": 555
+        },
+        {
+          "fig": "H1835-003005",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Related Parts (1/2)",
+          "printed_page": 557
+        },
+        {
+          "fig": "H1835-003006",
+          "section": "Proportional Pressure Control (PPC) Piping Joint",
+          "title": "Related Parts (2/2)",
+          "printed_page": 558
+        }
+      ]
+    },
+    {
+      "name": "Proportional Pressure Control (PPC) Pump Piping",
+      "figures": [
+        {
+          "fig": "H1841-002001",
+          "section": "Proportional Pressure Control (PPC) Pump Piping",
+          "title": "Pump Delivery",
+          "printed_page": 559
+        },
+        {
+          "fig": "H1841-002002",
+          "section": "Proportional Pressure Control (PPC) Pump Piping",
+          "title": "Accumulator",
+          "printed_page": 561
+        },
+        {
+          "fig": "H1841-002003",
+          "section": "Proportional Pressure Control (PPC) Pump Piping",
+          "title": "Delivery and Return Piping",
+          "printed_page": 562
+        },
+        {
+          "fig": "H1841-002004",
+          "section": "Proportional Pressure Control (PPC) Pump Piping",
+          "title": "Solenoid Valve",
+          "printed_page": 563
+        }
+      ]
+    },
+    {
+      "name": "Proportional Pressure Control (PPC) Travel Piping",
+      "figures": [
+        {
+          "fig": "H1842-001001",
+          "section": "Proportional Pressure Control (PPC) Travel Piping",
+          "title": "Proportional Pressure Control (PPC) Travel Piping",
+          "printed_page": 564
+        },
+        {
+          "fig": "H1844-001001",
+          "section": "Proportional Pressure Control (PPC) Travel Piping",
+          "title": "Proportional Pressure Control (PPC) Straight Travel Piping",
+          "printed_page": 565
+        }
+      ]
+    },
+    {
+      "name": "Proportional Pressure Control (PPC) Arm Piping",
+      "figures": [
+        {
+          "fig": "H1845-001001",
+          "section": "Proportional Pressure Control (PPC) Arm Piping",
+          "title": "Proportional Pressure Control (PPC) Arm Piping",
+          "printed_page": 566
+        },
+        {
+          "fig": "H1846-001001",
+          "section": "Proportional Pressure Control (PPC) Arm Piping",
+          "title": "Proportional Pressure Control (PPC) Boom and Bucket Piping",
+          "printed_page": 567
+        },
+        {
+          "fig": "H1846-002001",
+          "section": "Proportional Pressure Control (PPC) Arm Piping",
+          "title": "(For 5700mm Arm)",
+          "printed_page": 568
+        }
+      ]
+    },
+    {
+      "name": "Proportional Pressure Control (PPC) Swing Piping",
+      "figures": [
+        {
+          "fig": "H1847-001001",
+          "section": "Proportional Pressure Control (PPC) Swing Piping",
+          "title": "Proportional Pressure Control (PPC) Swing Piping",
+          "printed_page": 569
+        }
+      ]
+    },
+    {
+      "name": "Proportional Pressure Control (PPC) Heavy Lift Piping",
+      "figures": [
+        {
+          "fig": "H1850-002001",
+          "section": "Proportional Pressure Control (PPC) Heavy Lift Piping",
+          "title": "Proportional Pressure Control (PPC) Heavy Lift Piping",
+          "printed_page": 570
+        }
+      ]
+    }
+  ]
+}
