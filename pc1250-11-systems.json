@@ -4,12 +4,12 @@
     {
       "id": "engine-cylinder-head-and-its-related-parts",
       "name": "ENGINE CYLINDER HEAD AND ITS RELATED PARTS",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "engine-cylinder-block-and-its-related-parts",
       "name": "ENGINE CYLINDER BLOCK AND ITS RELATED PARTS",
-      "enabled": false
+      "enabled": true
     },
     {
       "id": "engine-lubrication-system",
