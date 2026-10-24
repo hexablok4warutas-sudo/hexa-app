@@ -49728,6 +49728,1737 @@
         }
       ],
       "system": "ENGINE COOLING SYSTEM"
+    },
+    {
+      "id": "a6010-001001",
+      "name": "Alternator (Inner Parts, Alternator) (90Amp.)",
+      "fig": "A6010-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6010-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "600-861-9122",
+          "description": "Alternator",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "KD0-35100-0311",
+          "description": "• Rotor Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "KD1-33923-0890",
+          "description": "• Collar",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "KD1-35923-0030",
+          "description": "• Collar",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "KD0-09201-0770",
+          "description": "• Bearing, Ball",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "KD0-35200-0320",
+          "description": "• Stator Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "KD0-35300-0201",
+          "description": "• Bracket Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "KD0-35926-0080",
+          "description": "• • Retainer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "KD0-35951-0080",
+          "description": "• • Packing",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "KD1-33926-0660",
+          "description": "• • Retainer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "KD0-09201-1400",
+          "description": "• • Bearing, Ball",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "KD1-33926-0790",
+          "description": "• • Retainer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "KD0-0083-08802",
+          "description": "• Bolt",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "KD0-35411-0650",
+          "description": "• Pulley",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "KD0-35421-0190",
+          "description": "• Fan",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "KD1-0335-20002",
+          "description": "• Washer, Spring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "KD0-0290-20022",
+          "description": "• Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "KD1-35921-0010",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "KD0-35120-0250",
+          "description": "• Coil Assembly, Field",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "KD0-35700-0765",
+          "description": "• Bracket Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "KD0-35710-0890",
+          "description": "• • Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "KD0-35730-1200",
+          "description": "• • Rectifier Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "KD0-35943-0211",
+          "description": "• • Bushing",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "KD0-33902-0090",
+          "description": "• • Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "KD0-33902-0080",
+          "description": "• • Nut",
+          "qty": 6,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "KD1-33943-0870",
+          "description": "• • Bushing",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "KD0-33901-0630",
+          "description": "• • Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "KD1-33943-0450",
+          "description": "• • Bushing",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "KD0-09103-0451",
+          "description": "• • Bushing",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "KD0-09001-5280",
+          "description": "• • Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "KD0-35784-0224",
+          "description": "• • Bar",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "KD0-09170-1860",
+          "description": "• • Condenser",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "KD0-35943-0100",
+          "description": "• • Bushing",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "KD0-33902-0100",
+          "description": "• • Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "KD1-0331-08020",
+          "description": "• • Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "KD1-0335-08002",
+          "description": "• • Washer, Spring",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "KD0-0291-08010",
+          "description": "• • Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "KD0-35923-0120",
+          "description": "• • Collar",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "KD7-35719-0183",
+          "description": "• • Regulator Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "KD1-0020-06452",
+          "description": "• Screw",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "KD1-0330-06012",
+          "description": "• Washer",
+          "qty": 5,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "KD1-0335-06002",
+          "description": "• Washer, Spring",
+          "qty": 5,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "KD0-0080-06142",
+          "description": "• Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "KD0-35761-0190",
+          "description": "• Cover",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "KD0-0055-05122",
+          "description": "• Screw",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6010-001002",
+      "name": "Alternator (Alternator Mounting) (90Amp.)",
+      "fig": "A6010-001002",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6010-001002.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "6217-81-6840",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01640-21323",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "6245-81-6190",
+          "description": "Spacer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01582-11210",
+          "description": "Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "6245-81-6610",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01050-51240",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "6245-81-6170",
+          "description": "Belt,1315mm",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "6246-81-6810",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01010-81290",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "6212-61-3980",
+          "description": "Bolt, Adjusting",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01580-11210",
+          "description": "Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6010-001003",
+      "name": "Alternator (Inner Parts, Compressor) (90Amp.)",
+      "fig": "A6010-001003",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6010-001003.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "21N-979-5280",
+          "description": "Compressor Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "ND447220-4781",
+          "description": "• Compressor Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "ND247400-1711",
+          "description": "• Clutch Assembly, Magnetic",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "ND949070-1360",
+          "description": "• Ring, Snap",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "ND949070-0640",
+          "description": "• Ring, Snap",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "ND949013-7480",
+          "description": "• Washer,T=0.1mm",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "ND949013-7500",
+          "description": "• Washer,T=0.3mm",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "ND949013-7510",
+          "description": "• Washer,T=0.5mm",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "ND949048-0430",
+          "description": "• Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "ND91310-05081",
+          "description": "• Screw",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "ND146691-4470",
+          "description": "• Clamp",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6010-001004",
+      "name": "Alternator (Compressor Mounting) (90Amp.)",
+      "fig": "A6010-001004",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6010-001004.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "01010-80875",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01643-30823",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "08193-20010",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "6218-81-8430",
+          "description": "Clamp",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "6218-81-8490",
+          "description": "Band",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "6240-81-4431",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6010-001005",
+      "name": "Alternator (Safety Cover) (90Amp.)",
+      "fig": "A6010-001005",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6010-001005.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "6245-81-6902",
+          "description": "Tension Pulley Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "6245-81-6912",
+          "description": "• Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "6162-64-3910",
+          "description": "• Bearing,Needle",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "6245-81-6840",
+          "description": "• Race",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "6162-64-3930",
+          "description": "• Seal,Dust",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "6245-81-6941",
+          "description": "• Shaft",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "6245-81-6950",
+          "description": "• Spring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "6245-81-6961",
+          "description": "• Plate",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01010-81020",
+          "description": "• Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01643-31032",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "04022-12035",
+          "description": "• Pin, Dowel",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "6245-81-6971",
+          "description": "• Shaft",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "06301-06306",
+          "description": "• Bearing",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "6245-81-6981",
+          "description": "• Spacer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "6245-81-6990",
+          "description": "• Plate",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "6245-81-6820",
+          "description": "• Pulley,Tension",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "6245-81-6830",
+          "description": "• Plate",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01435-01020",
+          "description": "• Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "07043-00108",
+          "description": "• Plug, Taper",
+          "qty": 3,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "07029-00000",
+          "description": "• Valve, Relief",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "6246-81-6220",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "6245-81-6290",
+          "description": "Block",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "6246-81-6270",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "01011-81050",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "6246-81-6320",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01010-81040",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6030-001001",
+      "name": "Alternator Drive",
+      "fig": "A6030-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6030-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "6245-21-6710",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07000-72115",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01010-81260",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "6240-61-4201",
+          "description": "Housing Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "6240-61-4210",
+          "description": "• Housing",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "6240-61-4251",
+          "description": "• Shaft",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "06330-06309",
+          "description": "• Bearing, Ball",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "06330-06307",
+          "description": "• Bearing, Ball",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "04065-01030",
+          "description": "• Ring, Snap",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "6151-71-3150",
+          "description": "• Seal, Oil",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "6240-61-4171",
+          "description": "• Flange",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "6240-61-1620",
+          "description": "Gear,Drive",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "6240-61-4260",
+          "description": "Spacer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01011-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "07000-72135",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "6245-81-6150",
+          "description": "Pulley",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01435-01020",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6210-001001",
+      "name": "Starting Motor (Inner Parts) (2-11.0KW)",
+      "fig": "A6210-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6210-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "600-813-9512",
+          "description": "Starting Motor,11Kw",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "KD0-23100-0430",
+          "description": "• Armature Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "KD1-0456-62057",
+          "description": "• • Bearing, Ball",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "KD1-0456-62017",
+          "description": "• • Bearing, Ball",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "KD0-23200-0672",
+          "description": "• Yoke Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "KD0-23310-1754",
+          "description": "• Bracket Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "KD7-23351-0085",
+          "description": "• • Metal",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "KD1-23761-0010",
+          "description": "• • Cover",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "KD1-0240-06305",
+          "description": "• Bolt",
+          "qty": 6,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "KD0-23120-0180",
+          "description": "• Shaft Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "KD0-09201-0850",
+          "description": "• Bearing, Ball",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "KD1-23181-0020",
+          "description": "• Stopper",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "KD1-23914-0020",
+          "description": "• Ring",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "KD0-23500-1024",
+          "description": "• Clutch Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "KD0-23600-0470",
+          "description": "• Bracket Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "KD0-23611-1102",
+          "description": "• Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "KD7-47100-0274",
+          "description": "• Switch Assembly, Magnetic",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "KD0-0276-08402",
+          "description": "• Bolt",
+          "qty": 3,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "KD0-0274-06202",
+          "description": "• Bolt",
+          "qty": 3,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "KD0-23320-0290",
+          "description": "• Shift Lever Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "KD0-23303-0020",
+          "description": "• Pin",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "KD1-09279-0090",
+          "description": "• Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "KD0-23710-0221",
+          "description": "• Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "KD7-23750-0150",
+          "description": "• Holder Assembly, Brush",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "KD1-23913-0040",
+          "description": "• • Spring",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "KD0-23750-0354",
+          "description": "• • Brush Assembly",
+          "qty": 4,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "KD0-09001-4380",
+          "description": "• Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "KD0-09011-3140",
+          "description": "• Screw",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "KD0-25000-8522",
+          "description": "• Switch",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "KD0-0270-06602",
+          "description": "• Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "KD0-47927-1390",
+          "description": "• Holder",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "KD1-23921-0130",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "KD1-23921-0140",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "KD1-23941-0040",
+          "description": "• Washer, Insulate",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "KD0-09057-0110",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "KD0-09057-0190",
+          "description": "• Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "KD7-09210-2910",
+          "description": "• Seal Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "KD7-47761-0010",
+          "description": "• Cover Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "KD7-47761-0030",
+          "description": "• Cover Assembly",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6210-001002",
+      "name": "Starting Motor (Mounting) (2-11.0KW)",
+      "fig": "A6210-001002",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6210-001002.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "6221-81-6810",
+          "description": "Gasket",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01010-81645",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "08028-73035",
+          "description": "Cable",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "154-06-13130",
+          "description": "Cap, Terminal",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "6245-81-6120",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "600-051-2080",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "08193-20010",
+          "description": "Clip",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01010-81025",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01584-01008",
+          "description": "Nut",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "6218-81-8470",
+          "description": "Band",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
+    },
+    {
+      "id": "a6810-001001",
+      "name": "Electric Wiring Harness (Wiring Harness)",
+      "fig": "A6810-001001",
+      "images": [
+        "catalog-images/pc1250-11/engine-electrical/A6810-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "6246-82-5140",
+          "description": "Wiring Harness",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "6263-81-8810",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "6263-81-8820",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "6263-81-8870",
+          "description": "Boot",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "6263-81-8810",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "6263-81-8820",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "6263-81-8870",
+          "description": "Boot",
+          "qty": 2,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "6162-83-4970",
+          "description": "Cap",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "01010-81020",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "6246-81-5320",
+          "description": "Wiring Harness",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "6246-81-7190",
+          "description": "Wire",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-06-51681",
+          "description": "Wiring Harness",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "21N-06-51770",
+          "description": "Cap",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "6218-81-8490",
+          "description": "Band",
+          "qty": 1,
+          "serial": "750001-",
+          "code": ""
+        }
+      ],
+      "system": "ENGINE ELECTRICAL SYSTEM"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
