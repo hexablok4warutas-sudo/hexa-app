@@ -32,7 +32,7 @@
  }
  function openEngine(id){
   const button=[...list.querySelectorAll('[data-group]')].find(b=>b.dataset.group===id);
-  if(!button){console.warn('FIG Engine tidak ditemukan dalam katalog:',id);return;}
+  if(!button){console.error('FIG belum ada di katalog utama:',id);alert('FIG '+id+' belum dimuat oleh catalog.js. Pastikan JSON gabungan 204 FIG digunakan.');return;}
   button.click();
   sections.querySelectorAll('[data-engine-fig]').forEach(b=>b.classList.toggle('is-active',b.dataset.engineFig===id));
  }
@@ -41,10 +41,10 @@
   if(mode!==ENGINE)originalSections=sections.innerHTML;
   mode=ENGINE;
   sections.innerHTML=engineHTML();
-  document.getElementById('groupSearch')?.dispatchEvent(new Event('input',{bubbles:true}));
   sections.style.display='';
   const search=document.getElementById('groupSearch');
   if(search){search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));}
+  sections.style.display='';
   markTabs();
   openEngine(engineGroups[0].id);
   const heading=document.querySelector('.pc-page-title, #pcCatalogTitle');
@@ -56,6 +56,7 @@
   sections.style.display='';
   const search=document.getElementById('groupSearch');
   if(search){search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));}
+  sections.style.display='';
   markTabs();
   const first=list.querySelector('[data-group]');
   if(first)first.click();
