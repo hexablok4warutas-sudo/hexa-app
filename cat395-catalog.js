@@ -72,41 +72,50 @@ function showGroups(filter=''){
 let locateRequest=0;
 // Cari gambar yang benar berdasarkan nomor callout atau PN dalam metadata SVG.
 // Jika tidak ditemukan, tetap sorot Parts List tanpa mengklaim posisi gambar.
+const svgCalloutCache=new Map();
+async function findImageForPart(group,part){
+ const no=parentNo(part);
+ for(let i=0;i<(group.images||[]).length;i++){
+  const url=group.images[i];
+  try{
+   let nodes=svgCalloutCache.get(url);
+   if(!nodes){
+    const r=await fetch(url);if(!r.ok)continue;
+    const doc=new DOMParser().parseFromString(await r.text(),'image/svg+xml');
+    nodes=[...doc.querySelectorAll('g.callout,g.part')].map(n=>({nums:partNumbers(n),callout:n.classList.contains('callout'),pn:normalizePN(partTitlePN(n))}));
+    svgCalloutCache.set(url,nodes);
+   }
+   if(nodes.some(n=>n.nums.includes(no)&&(n.callout||n.pn===normalizePN(part.pn))))return i;
+  }catch(e){console.warn('HEXCatalog SVG:',url,e);}
+ }
+ return -1;
+}
+async function selectPartAndLocate(index,{focus=true}={}){
+ if(!active?.parts[index])return;
+ const request=++locateRequest,group=active,part=group.parts[index];
+ pickPart(index);
+ const target=await findImageForPart(group,part);
+ if(request!==locateRequest||active!==group)return;
+ if(target>=0&&target!==imageIndex){
+  imageIndex=target;
+  await renderImage({preserveSelection:true});
+  if(request!==locateRequest||active!==group)return;
+ }
+ pickPart(index);
+ if(focus&&target>=0)requestAnimationFrame(()=>focusPartInDrawing(index));
+}
 async function locatePart(groupId,index){
- const request=++locateRequest;
  const g=groups.find(x=>x.id===groupId),part=g?.parts?.[index];
  if(!g||!part)return;
- const imgs=g.images||[];
- let foundImage=-1;
- const parent=parentNo(part);
- for(let i=0;i<imgs.length;i++){
-  try{
-   const response=await fetch(imgs[i]);
-   if(!response.ok)continue;
-   const source=await response.text();
-   const doc=new DOMParser().parseFromString(source,'image/svg+xml');
-   const nodes=[...doc.querySelectorAll('g.callout, g.part')];
-   const hasMatch=nodes.some(node=>{
-    const nums=partNumbers(node);
-    if(!nums.includes(parent))return false;
-    if(node.classList.contains('callout'))return true;
-    return normalizePN(partTitlePN(node))===normalizePN(part.pn);
-   });
-   if(hasMatch){foundImage=i;break;}
-  }catch(err){console.warn('HEXCatalog Locate: SVG tidak dapat diperiksa',imgs[i],err);}
+ if(active!==g){
+  ++locateRequest;active=g;imageIndex=0;
+  showGroups($('groupSearch').value);
+  $('groupTitle').textContent=g.name;
+  $('groupCount').textContent=`${g.parts.length} part`;
+  $('partsBody').innerHTML=partsRowsHTML(g);
+  await renderImage();
  }
- if(request!==locateRequest)return;
- active=g;
- imageIndex=foundImage>=0?foundImage:0;
- showGroups($('groupSearch').value);
- // Render daftar part sebelum memuat gambar; setelah SVG siap, ulangi highlight.
- $('groupTitle').textContent=g.name;
- $('groupCount').textContent=`${g.parts.length} part`;
- $('partsBody').innerHTML=partsRowsHTML(g);
- await renderImage();
- if(request!==locateRequest)return;
- pickPart(index);
- if(foundImage<0&&imgs.length){console.info('HEXCatalog: lokasi SVG tidak terverifikasi, hanya Parts List yang disorot.',part.pn);}
+ if(active===g)await selectPartAndLocate(index);
 }
 
  function partsRowsHTML(group){
@@ -272,11 +281,11 @@ function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
    rows.forEach((row,i)=>row.classList.toggle('cat-part-highlight',i===index));
    highlightDrawing(index);
    const row=rows[index],scroller=$('partsBody')?.closest('.cat-table-wrap');
-    if(row&&scroller){
-      const top=row.offsetTop-scroller.offsetTop;
-      const desired=top-(scroller.clientHeight-row.offsetHeight)/2;
-      scroller.scrollTo({top:Math.max(0,desired),behavior:'smooth'});
-    }
+   if(row&&scroller){
+    const rr=row.getBoundingClientRect(),sr=scroller.getBoundingClientRect();
+    const desired=scroller.scrollTop+(rr.top-sr.top)-(scroller.clientHeight-rr.height)/2;
+    scroller.scrollTop=Math.max(0,Math.min(scroller.scrollHeight-scroller.clientHeight,desired));
+   }
    // Qty Needed hanya diedit pada Selected Parts.
  }
 
@@ -289,9 +298,9 @@ function showPartPicker(clientX,clientY,onlyIndexes=null){
  picker.style.top=Math.max(8,Math.min(clientY-r.top,r.height-260))+'px';
  picker.querySelector('[data-close-picker]').onclick=hidePicker;
 }
-async function renderImage(){
- hidePicker();activePartIndex=null;
- document.querySelectorAll('#partsBody tr').forEach(r=>r.classList.remove('cat-part-highlight'));
+async function renderImage({preserveSelection=false}={}){
+ hidePicker();
+ if(!preserveSelection){activePartIndex=null;document.querySelectorAll('#partsBody tr').forEach(r=>r.classList.remove('cat-part-highlight'));}
  const imgs=active?.images||[], area=$('drawingArea'), request=++imageRequest;
  $('imagePosition').textContent=imgs.length?`${imageIndex+1} / ${imgs.length}`:'0 / 0';
  $('prevImage').disabled=imageIndex===0;
@@ -342,6 +351,7 @@ async function renderImage(){
    viewerImage=svg;
    viewer.dataset.message='';
    resetView();
+   if(preserveSelection&&activePartIndex!=null)highlightDrawing(activePartIndex);
  }catch(err){
    if(request!==imageRequest)return;
    viewer.dataset.message='Gambar gagal dimuat: '+err.message;
@@ -390,8 +400,8 @@ $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
   if(!active)return;
   const tr=e.target.closest('tr[data-index]');if(!tr)return;
   const index=Number(tr.dataset.index),p=active.parts[index];if(!p)return;
-  pickPart(index);
-  if(!e.target.closest('.cat-add'))return;
+  if(!e.target.closest('.cat-add')){void selectPartAndLocate(index);return;}
+  void selectPartAndLocate(index,{focus:false});
   if(!selected.has(key(active,p)))selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:1});
   saveSelection();renderSelected();syncPartAddButton();
  });
@@ -400,10 +410,10 @@ $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
   if(e.target.closest('button,input,select,a'))return;
   if(e.key!=='Enter'&&e.key!==' ')return;
   const tr=e.target.closest('tr[data-index]');if(!tr)return;
-  e.preventDefault();pickPart(Number(tr.dataset.index));
+  e.preventDefault();void selectPartAndLocate(Number(tr.dataset.index));
  });
-$('prevImage').addEventListener('click',()=>{if(imageIndex>0){imageIndex--;renderImage()}});
-$('nextImage').addEventListener('click',()=>{if(imageIndex<(active?.images.length||0)-1){imageIndex++;renderImage()}});
+$('prevImage').addEventListener('click',()=>{if(imageIndex>0){++locateRequest;imageIndex--;renderImage({preserveSelection:true})}});
+$('nextImage').addEventListener('click',()=>{if(imageIndex<(active?.images.length||0)-1){++locateRequest;imageIndex++;renderImage({preserveSelection:true})}});
 $('clearSelection').addEventListener('click',()=>{if(!selected.size)return;if(!confirm('Hapus semua Selected Parts?'))return;selected.clear();saveSelection();renderSelected();render()});
 $('exportSelection').addEventListener('click',async()=>{if(!selected.size){alert('Pilih part terlebih dahulu.');return}const data=[...selected.values()];const text=['Group\tNo\tPart Number\tDescription\tQty Needed',...data.map(p=>[p.group,p.no,p.pn,p.description,p.needed].join('\t'))].join('\n');try{await navigator.clipboard.writeText(text);alert('Daftar part berhasil disalin.')}catch{prompt('Salin daftar part berikut:',text)}});
 restoreSelection();renderSelected();
