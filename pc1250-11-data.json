@@ -138125,6 +138125,528 @@
         }
       ],
       "system": "MARKS AND PLATES"
+    },
+    {
+      "id": "v0100-002001",
+      "name": "Spare Parts",
+      "fig": "V0100-002001",
+      "images": [
+        "catalog-images/pc1250-11/auxiliary-parts/V0100-002001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "600-211-1341",
+          "description": "Cartridge,Oil Filter",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "600-319-3841",
+          "description": "Cartridge,Fuel Filter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "600-319-5410",
+          "description": "Cartridge Assembly",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "600-311-5430",
+          "description": "• Gasket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "6245-81-6360",
+          "description": "V-belt,1315mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21M-60-51250",
+          "description": "Element",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07000-15180",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07002-13034",
+          "description": "O-ring",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-60-12211",
+          "description": "Cartridge",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07020-00000",
+          "description": "Fitting, Grease",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "07020-00675",
+          "description": "Fitting, Grease",
+          "qty": 5,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "07020-00900",
+          "description": "Fitting, Grease",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "424-16-11140",
+          "description": "Element, Oil Filter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "421-60-35170",
+          "description": "Element",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "600-411-5110",
+          "description": "Cartridge",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AUXILIARY PARTS AND TOOL"
+    },
+    {
+      "id": "v0200-001001",
+      "name": "Cap and Overall",
+      "fig": "V0200-001001",
+      "images": [
+        "catalog-images/pc1250-11/auxiliary-parts/V0200-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "09980-92550",
+          "description": "Cap and Overall Kit",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "09980-10550",
+          "description": "• Overall",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "09982-20057",
+          "description": "• Cap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AUXILIARY PARTS AND TOOL"
+    },
+    {
+      "id": "v0300-004001",
+      "name": "Tool",
+      "fig": "V0300-004001",
+      "images": [
+        "catalog-images/pc1250-11/auxiliary-parts/V0300-004001.svg",
+        "catalog-images/pc1250-11/auxiliary-parts/V0300-004001-p995.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07950-90403",
+          "description": "Cartridge, Grease",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "07952-70014",
+          "description": "Pump Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07950-10451",
+          "description": "• Grease Pump",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07951-41017",
+          "description": "• Nozzle,L=171mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "09019-28036",
+          "description": "Wrench, Filter",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "09033-00190",
+          "description": "Driver",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "09007-00836",
+          "description": "Wrench,W=8mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "09039-00150",
+          "description": "Hammer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "09055-10390",
+          "description": "Bar",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "09020-10284",
+          "description": "Socket Wrench Set",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-01016",
+          "description": "• Socket,W=10mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-01319",
+          "description": "• Socket,W=13mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-01422",
+          "description": "• Socket,W=14mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-01725",
+          "description": "• Socket,W=17mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-01928",
+          "description": "• Socket,W=19mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-02233",
+          "description": "• Socket,W=22mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-02436",
+          "description": "• Socket,W=24mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-02739",
+          "description": "• Socket,W=27mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-03044",
+          "description": "• Socket,W=30mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-03246",
+          "description": "• Socket,W=32mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09021-03653",
+          "description": "• Socket,W=36mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09022-00150",
+          "description": "• Extension,L=150mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09022-00250",
+          "description": "• Extension,L=200mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09023-00300",
+          "description": "• Handle",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09024-00300",
+          "description": "• Handle",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09025-00075",
+          "description": "• Universal Joint",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09026-00250",
+          "description": "• Handle",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09027-00300",
+          "description": "• Bar, Socket Wrench",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "09056-05513",
+          "description": "Tool Bag",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "09000-30006",
+          "description": "Wrench Set",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09002-00810",
+          "description": "• Wrench,W=8X10mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09002-01214",
+          "description": "• Wrench,W=12X14mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09002-01317",
+          "description": "• Wrench,W=13X17mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09002-01922",
+          "description": "• Wrench,W=19X22mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09002-02427",
+          "description": "• Wrench,W=24X27mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "09002-03032",
+          "description": "• Wrench,W=30X32mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "07287-02613",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "21N-98-31490",
+          "description": "Hose Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "07285-00280",
+          "description": "• Clip, Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "07287-02613",
+          "description": "• Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "09084-01524",
+          "description": "Socket,W=5/8mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "09007-00425",
+          "description": "Wrench,W=4mm",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-38-57110",
+          "description": "Wrench",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "AUXILIARY PARTS AND TOOL"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
