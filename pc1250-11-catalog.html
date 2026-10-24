@@ -4,7 +4,20 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PC1250-11R | HEXCatalog</title>
 <link rel="stylesheet" href="hexa-header.css">
-<link rel="stylesheet" href="pc1250-11-catalog.css">
+<link rel="stylesheet" href="pc1250-11-catalog.css?v=sheet-rev3-20261024">
+<style id="pcSheetCriticalRev3">
+/* Explicit, self-contained layout override. Keep ALL tabs in one horizontally scrollable line. */
+.cat-top{display:block!important;margin-bottom:16px!important;min-width:0!important}
+.pc-catalog-heading{display:flex!important;align-items:flex-start!important;margin-bottom:16px!important}
+#pcSystemTabs{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;justify-content:flex-start!important;align-items:flex-end!important;gap:2px!important;overflow-x:auto!important;overflow-y:hidden!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:2px 0 0!important;border-bottom:2px solid #ff9015!important;scrollbar-width:thin!important;scroll-snap-type:x proximity!important}
+#pcSystemTabs .pc-system-tab{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;width:auto!important;max-width:none!important;min-width:max-content!important;white-space:nowrap!important;overflow-wrap:normal!important;word-break:normal!important;margin:0!important;padding:10px 15px!important;border:1px solid #d5e0eb!important;border-bottom:0!important;border-radius:9px 9px 0 0!important;background:#f3f7fb!important;color:#48647d!important;font-size:12px!important;font-weight:700!important;line-height:1.25!important;box-shadow:none!important}
+#pcSystemTabs .pc-system-tab.is-active{background:#ff9015!important;border-color:#ff9015!important;color:#fff!important}
+#pcSystemTabs .pc-system-tab:disabled{opacity:.75!important}
+#pcSectionList .pc-section-label,.pc-section-label,.pc-section-hint{display:none!important}
+#pcSectionList{margin-top:8px!important}
+.cat-groups #groupList{display:none}
+@media(max-width:600px){#pcSystemTabs .pc-system-tab{padding:9px 12px!important;font-size:11px!important}}
+</style>
 </head>
 <body>
 <header id="hexaHeader" data-header-type="standard" data-page="hex-catalog"></header>
@@ -12,7 +25,7 @@
   <div class="cat-shell">
     <section class="cat-title"><img src="hexa-icon-partscatalog.svg" alt=""><h1>HEX<span>Catalog</span> <small>/ PC1250-11R</small></h1></section>
     <section class="cat-panel">
-      <div class="cat-top"><div class="pc-catalog-heading"><a class="pc-back-link" href="hex-catalog.html" aria-label="Kembali ke Unit Catalog">←</a><div><strong>KOMATSU PC1250-11R — <span id="pcCurrentSystem">HYDRAULIC SYSTEM</span></strong><p>Pilih group, lihat gambar assembly dan tentukan kebutuhan part.</p></div></div><nav class="pc-system-tabs" id="pcSystemTabs" aria-label="Pilih sistem katalog"></nav></div>
+      <div class="cat-top"><div class="pc-catalog-heading"><a class="pc-back-link" href="hex-catalog.html" aria-label="Kembali ke Unit Catalog">←</a><div><strong>KOMATSU PC1250-11R — <span id="pcCurrentSystem">HYDRAULIC SYSTEM</span></strong><p>Pilih group, lihat gambar assembly dan tentukan kebutuhan part.</p></div></div><nav class="pc-system-tabs" id="pcSystemTabs" aria-label="Sheet sistem katalog" tabindex="0"></nav></div>
       <div class="cat-layout">
         <aside class="cat-groups"><h2>Assembly Groups</h2><input id="groupSearch" type="search" placeholder="Cari group..."><div id="pcSectionList" class="pc-section-list"></div><div id="groupList"></div></aside>
         <section class="cat-detail"><div class="cat-detail-head"><h2 id="groupTitle">Pilih Group</h2><span id="groupCount"></span></div>
@@ -25,6 +38,6 @@
     </section>
   </div>
 </main>
-<script src="hexa-menu.js"></script><script src="hexa-header.js"></script><script src="pc1250-11-catalog.js"></script><script src="pc1250-11-systems.js"></script>
+<script src="hexa-menu.js"></script><script src="hexa-header.js"></script><script src="pc1250-11-catalog.js?v=sheet-rev3-20261024"></script><script src="pc1250-11-systems.js?v=sheet-rev3-20261024"></script>
 <script src="hexa-catalog-return-overlay-v2.js"></script>
 </body></html>
