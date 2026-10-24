@@ -104966,6 +104966,3128 @@
         }
       ],
       "system": "GUARDS AND COVERS"
+    },
+    {
+      "id": "n1110-001001",
+      "name": "Swing Circle",
+      "fig": "N1110-001001",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1110-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-25-00201",
+          "description": "Swing Circle",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "209-25-61190",
+          "description": "• Joint",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-25-31120",
+          "description": "• Seal",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-25-31130",
+          "description": "• Wire",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-25-31110",
+          "description": "• Seal",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07020-00000",
+          "description": "Fitting, Grease",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "205-25-71280",
+          "description": "Nipple",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07214-50813",
+          "description": "Connector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-25-31321",
+          "description": "Tube",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-25-31311",
+          "description": "Tube",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "20Y-25-11270",
+          "description": "Elbow",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "08036-00814",
+          "description": "Clip",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81220",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "170-27-12250",
+          "description": "Pin, Dowel",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "198-61-11260",
+          "description": "Bolt",
+          "qty": 60,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "150-74-11140",
+          "description": "Bolt",
+          "qty": 56,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01643-33380",
+          "description": "Washer",
+          "qty": 116,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1110-002001",
+      "name": "Swing Circle (Heavy Duty Bolt)",
+      "fig": "N1110-002001",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1110-002001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-25-00201",
+          "description": "Swing Circle",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "209-25-61190",
+          "description": "• Joint",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-25-31120",
+          "description": "• Seal",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "21N-25-31130",
+          "description": "• Wire",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "21N-25-31110",
+          "description": "• Seal",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07020-00000",
+          "description": "Fitting, Grease",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "205-25-71280",
+          "description": "Nipple",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07214-50813",
+          "description": "Connector",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "21N-25-31321",
+          "description": "Tube",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "21N-25-31311",
+          "description": "Tube",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "20Y-25-11270",
+          "description": "Elbow",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "08036-00814",
+          "description": "Clip",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81220",
+          "description": "Bolt",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "170-27-12250",
+          "description": "Pin, Dowel",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-25-41111",
+          "description": "Bolt",
+          "qty": 60,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "150-74-11140",
+          "description": "Bolt",
+          "qty": 56,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "01643-33380",
+          "description": "Washer",
+          "qty": 116,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003001",
+      "name": "Swing Machinery and Motor (Inner Parts, Swing Motor) (1/6) (Front)",
+      "fig": "N1210-003001",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003001.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "706-7K-01240",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "706-7K-03160",
+          "description": "• Motor Subassembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "706-7K-41190",
+          "description": "• • Case",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "2",
+          "pn": "708-8H-11530",
+          "description": "• • Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07002-61423",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "706-7K-71130",
+          "description": "• • Housing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "5",
+          "pn": "706-7K-40010",
+          "description": "• • Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "6",
+          "pn": "706-75-42830",
+          "description": "• • Pin, Dowel",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "7",
+          "pn": "706-77-72280",
+          "description": "• • Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07002-62034",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "709-74-92810",
+          "description": "• • Valve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "709-75-92220",
+          "description": "• • Spring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "709-74-92821",
+          "description": "• • Plug",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "708-2L-23960",
+          "description": "• • O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "723-46-41950",
+          "description": "• • Ring, Back-up",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "706-77-72130",
+          "description": "• • Valve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "706-77-72140",
+          "description": "• • Spring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "706-77-72150",
+          "description": "• • Plug",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "07002-64234",
+          "description": "• • O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "706-7K-40040",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "19",
+          "pn": "01010-61495",
+          "description": "• • Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "20",
+          "pn": "01643-51445",
+          "description": "• • Washer, Flat",
+          "qty": 10,
+          "serial": "50001-",
+          "code": "C2"
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003002",
+      "name": "Swing Machinery and Motor (Inner Parts, Swing Motor) (2/6) (Front)",
+      "fig": "N1210-003002",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003002.svg",
+        "catalog-images/pc1250-11/swing-circle/N1210-003002-p748.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "706-7K-01240",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "706-7K-03160",
+          "description": "• Motor Subassembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "1",
+          "pn": "706-7K-41630",
+          "description": "• • Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "2",
+          "pn": "706-7K-40080",
+          "description": "• • Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "3",
+          "pn": "706-7K-41820",
+          "description": "• • Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "4",
+          "pn": "706-77-42051",
+          "description": "• • Spring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "5",
+          "pn": "706-77-42041",
+          "description": "• • Seat",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "6",
+          "pn": "706-7K-40070",
+          "description": "• • Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "7",
+          "pn": "706-77-05070",
+          "description": "• • Spacer Kit",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "8",
+          "pn": "04064-06525",
+          "description": "• • Ring, Snap, for Shaft Side",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "9",
+          "pn": "706-8J-41420",
+          "description": "• • Seal, Oil",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "706-7K-41920",
+          "description": "• • Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "04065-07525",
+          "description": "• • Ring, Snap, for Hole Side",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "706-7K-41210",
+          "description": "• • Cylinder Block",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "13",
+          "pn": "706-7K-41710",
+          "description": "• • Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "14",
+          "pn": "708-18-13230",
+          "description": "• • Pin",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "15",
+          "pn": "706-7K-41130",
+          "description": "• • Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "16",
+          "pn": "706-77-42130",
+          "description": "• • Ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "17",
+          "pn": "706-7K-41140",
+          "description": "• • Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "18",
+          "pn": "706-7K-41260",
+          "description": "• • Retainer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "19",
+          "pn": "708-23-12350",
+          "description": "• • Screw",
+          "qty": 7,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "20",
+          "pn": "706-7K-41160",
+          "description": "• • Piston Subassembly",
+          "qty": 7,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "21",
+          "pn": "706-7K-91370",
+          "description": "• • Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "22",
+          "pn": "706-7K-91380",
+          "description": "• • Plate",
+          "qty": 5,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "23",
+          "pn": "706-7K-91390",
+          "description": "• • Disc",
+          "qty": 4,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "24",
+          "pn": "706-7K-91120",
+          "description": "• • Piston, Brake",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "25",
+          "pn": "07000-B5230",
+          "description": "• • O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "26",
+          "pn": "706-7K-91130",
+          "description": "• • Ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "27",
+          "pn": "706-86-90290",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "28",
+          "pn": "706-7K-91360",
+          "description": "• • Spring",
+          "qty": 6,
+          "serial": "50001-",
+          "code": "C2"
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003003",
+      "name": "Swing Machinery and Motor (Inner Parts, Swing Motor) (3/6) (Front)",
+      "fig": "N1210-003003",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003003.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "706-7K-01240",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "702-77-02190",
+          "description": "• Valve, Relief",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07000-F3022",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07001-03022",
+          "description": "• • Ring, Back-up",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07002-63634",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "706-7G-71290",
+          "description": "• Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07000-B1009",
+          "description": "• O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01252-60825",
+          "description": "• Bolt, Hexagon Socket Head",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07000-B3042",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003004",
+      "name": "Swing Machinery and Motor (Front)",
+      "fig": "N1210-003004",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003004.svg",
+        "catalog-images/pc1250-11/swing-circle/N1210-003004-p751.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "207-26-71240",
+          "description": "Ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-26-33171",
+          "description": "Gauge",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-26-33260",
+          "description": "Filler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07286-01060",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07285-00130",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "208-871-5170",
+          "description": "Joint",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07002-11223",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07030-00252",
+          "description": "Breather",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "07049-01012",
+          "description": "Plug",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "21N-26-33190",
+          "description": "Case",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07049-02430",
+          "description": "Plug",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "208-26-71530",
+          "description": "Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "21N-26-31140",
+          "description": "Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "21N-26-31110",
+          "description": "Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "208-26-61291",
+          "description": "Seal, Oil",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-26-33230",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "07000-15390",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "208-26-71181",
+          "description": "Carrier",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "208-26-71140",
+          "description": "Gear",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "207-27-61390",
+          "description": "Bearing",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "20Y-27-21250",
+          "description": "Washer, Thrust",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "207-27-61250",
+          "description": "Pin",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "20Y-27-21290",
+          "description": "Pin",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "208-26-71230",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "205-32-51211",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "208-26-71151",
+          "description": "Gear",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "01010-81645",
+          "description": "Bolt",
+          "qty": 24,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 24,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "208-26-71130",
+          "description": "Gear",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "208-26-71241",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "208-26-71170",
+          "description": "Carrier",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "207-26-71521",
+          "description": "Gear",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "22U-26-21320",
+          "description": "Bearing",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "22U-26-21240",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "195-15-82550",
+          "description": "Washer, Thrust",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "21N-26-33240",
+          "description": "Pin",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "04064-04018",
+          "description": "Ring, Snap",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "208-26-71210",
+          "description": "Holder",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "04260-01270",
+          "description": "Ball",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "207-26-71511",
+          "description": "Gear",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "45",
+          "pn": "207-26-71261",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003005",
+      "name": "Swing Machinery and Motor (Drain Piping, Front)",
+      "fig": "N1210-003005",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003005.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07730-40004",
+          "description": "Valve, Drain",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07270-21535",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07281-00197",
+          "description": "Clamp",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "208-26-71380",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003006",
+      "name": "Swing Machinery and Motor (Inner Parts, Swing Motor) (4/6) (Rear)",
+      "fig": "N1210-003006",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003006.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "706-7K-01240",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "706-7K-03160",
+          "description": "• Motor Subassembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "706-7K-41190",
+          "description": "• • Case",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "2",
+          "pn": "708-8H-11530",
+          "description": "• • Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07002-61423",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "706-7K-71130",
+          "description": "• • Housing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "5",
+          "pn": "706-7K-40010",
+          "description": "• • Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "6",
+          "pn": "706-75-42830",
+          "description": "• • Pin, Dowel",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "7",
+          "pn": "706-77-72280",
+          "description": "• • Plug",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07002-62034",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "709-74-92810",
+          "description": "• • Valve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "709-75-92220",
+          "description": "• • Spring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "709-74-92821",
+          "description": "• • Plug",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "708-2L-23960",
+          "description": "• • O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "723-46-41950",
+          "description": "• • Ring, Back-up",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "706-77-72130",
+          "description": "• • Valve",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "706-77-72140",
+          "description": "• • Spring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "706-77-72150",
+          "description": "• • Plug",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "07002-64234",
+          "description": "• • O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "706-7K-40040",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "19",
+          "pn": "01010-61495",
+          "description": "• • Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "20",
+          "pn": "01643-51445",
+          "description": "• • Washer, Flat",
+          "qty": 10,
+          "serial": "50001-",
+          "code": "C2"
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003007",
+      "name": "Swing Machinery and Motor (Inner Parts, Swing Motor) (5/6) (Rear)",
+      "fig": "N1210-003007",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003007.svg",
+        "catalog-images/pc1250-11/swing-circle/N1210-003007-p755.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "706-7K-01240",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "706-7K-03160",
+          "description": "• Motor Subassembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "1",
+          "pn": "706-7K-41630",
+          "description": "• • Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "2",
+          "pn": "706-7K-40080",
+          "description": "• • Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "3",
+          "pn": "706-7K-41820",
+          "description": "• • Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "4",
+          "pn": "706-77-42051",
+          "description": "• • Spring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "5",
+          "pn": "706-77-42041",
+          "description": "• • Seat",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "6",
+          "pn": "706-7K-40070",
+          "description": "• • Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "7",
+          "pn": "706-77-05070",
+          "description": "• • Spacer Kit",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "8",
+          "pn": "04064-06525",
+          "description": "• • Ring, Snap, for Shaft Side",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "9",
+          "pn": "706-8J-41420",
+          "description": "• • Seal, Oil",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "706-7K-41920",
+          "description": "• • Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "04065-07525",
+          "description": "• • Ring, Snap, for Hole Side",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "706-7K-41210",
+          "description": "• • Cylinder Block",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "13",
+          "pn": "706-7K-41710",
+          "description": "• • Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "14",
+          "pn": "708-18-13230",
+          "description": "• • Pin",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "15",
+          "pn": "706-7K-41130",
+          "description": "• • Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "16",
+          "pn": "706-77-42130",
+          "description": "• • Ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "17",
+          "pn": "706-7K-41140",
+          "description": "• • Spring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "18",
+          "pn": "706-7K-41260",
+          "description": "• • Retainer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "19",
+          "pn": "708-23-12350",
+          "description": "• • Screw",
+          "qty": 7,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "20",
+          "pn": "706-7K-41160",
+          "description": "• • Piston Subassembly",
+          "qty": 7,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "21",
+          "pn": "706-7K-91370",
+          "description": "• • Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "22",
+          "pn": "706-7K-91380",
+          "description": "• • Plate",
+          "qty": 5,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "23",
+          "pn": "706-7K-91390",
+          "description": "• • Disc",
+          "qty": 4,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "24",
+          "pn": "706-7K-91120",
+          "description": "• • Piston, Brake",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "25",
+          "pn": "07000-B5230",
+          "description": "• • O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "26",
+          "pn": "706-7K-91130",
+          "description": "• • Ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "27",
+          "pn": "706-86-90290",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": "C2"
+        },
+        {
+          "no": "28",
+          "pn": "706-7K-91360",
+          "description": "• • Spring",
+          "qty": 6,
+          "serial": "50001-",
+          "code": "C2"
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003008",
+      "name": "Swing Machinery and Motor (Inner Parts, Swing Motor) (6/6) (Rear)",
+      "fig": "N1210-003008",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003008.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "706-7K-01240",
+          "description": "Motor Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "702-77-02190",
+          "description": "• Valve, Relief",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07000-F3022",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07001-03022",
+          "description": "• • Ring, Back-up",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07002-63634",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "706-7G-71290",
+          "description": "• Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07000-B1009",
+          "description": "• O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01252-60825",
+          "description": "• Bolt, Hexagon Socket Head",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07000-B3042",
+          "description": "• O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003009",
+      "name": "Swing Machinery and Motor (Rear)",
+      "fig": "N1210-003009",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003009.svg",
+        "catalog-images/pc1250-11/swing-circle/N1210-003009-p758.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "207-26-71240",
+          "description": "Ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-26-33211",
+          "description": "Gauge",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-26-33220",
+          "description": "Filler",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07287-01012",
+          "description": "Hose",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07285-00130",
+          "description": "Clip",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "208-871-5170",
+          "description": "Joint",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07002-11223",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07030-00252",
+          "description": "Breather",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "08034-40521",
+          "description": "Band",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "208-871-5161",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "07283-32738",
+          "description": "Clip, Pipe",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "22P-70-12160",
+          "description": "Nut",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "01010-81240",
+          "description": "Bolt",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 10,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-26-33190",
+          "description": "Case",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "07049-02430",
+          "description": "Plug",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "208-26-71530",
+          "description": "Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "21N-26-31140",
+          "description": "Bearing",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "21N-26-31110",
+          "description": "Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "208-26-61291",
+          "description": "Seal, Oil",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "24",
+          "pn": "21N-26-33230",
+          "description": "Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "25",
+          "pn": "01010-81030",
+          "description": "Bolt",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "26",
+          "pn": "01643-31032",
+          "description": "Washer",
+          "qty": 12,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "27",
+          "pn": "07000-15390",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "28",
+          "pn": "208-26-71181",
+          "description": "Carrier",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "29",
+          "pn": "208-26-71140",
+          "description": "Gear",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "30",
+          "pn": "207-27-61390",
+          "description": "Bearing",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "31",
+          "pn": "20Y-27-21250",
+          "description": "Washer, Thrust",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "32",
+          "pn": "207-27-61250",
+          "description": "Pin",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "33",
+          "pn": "20Y-27-21290",
+          "description": "Pin",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "34",
+          "pn": "208-26-71230",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "35",
+          "pn": "205-32-51211",
+          "description": "Bolt",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "36",
+          "pn": "208-26-71151",
+          "description": "Gear",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "37",
+          "pn": "01010-81645",
+          "description": "Bolt",
+          "qty": 24,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "38",
+          "pn": "01643-31645",
+          "description": "Washer",
+          "qty": 24,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "39",
+          "pn": "208-26-71130",
+          "description": "Gear",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "40",
+          "pn": "208-26-71241",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "41",
+          "pn": "208-26-71170",
+          "description": "Carrier",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "42",
+          "pn": "207-26-71521",
+          "description": "Gear",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "43",
+          "pn": "22U-26-21320",
+          "description": "Bearing",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "44",
+          "pn": "22U-26-21240",
+          "description": "Washer",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "45",
+          "pn": "195-15-82550",
+          "description": "Washer, Thrust",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "46",
+          "pn": "21N-26-33240",
+          "description": "Pin",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "47",
+          "pn": "04064-04018",
+          "description": "Ring, Snap",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "48",
+          "pn": "208-26-71210",
+          "description": "Holder",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "49",
+          "pn": "04260-01270",
+          "description": "Ball",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "50",
+          "pn": "207-26-71511",
+          "description": "Gear",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "51",
+          "pn": "207-26-71261",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003010",
+      "name": "Swing Machinery and Motor (Drain Piping, Rear)",
+      "fig": "N1210-003010",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003010.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07730-40004",
+          "description": "Valve, Drain",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07270-21535",
+          "description": "Tube",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07281-00197",
+          "description": "Clamp",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "208-26-71380",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1210-003011",
+      "name": "Swing Machinery and Motor (Mounting)",
+      "fig": "N1210-003011",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1210-003011.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "07281-00197",
+          "description": "Clamp",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "21N-62-52880",
+          "description": "Nipple",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-26-34210",
+          "description": "Block",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "01010-81255",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-31232",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "01010-82485",
+          "description": "Bolt",
+          "qty": 34,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "01643-32460",
+          "description": "Washer",
+          "qty": 34,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07000-15335",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1220-001001a",
+      "name": "",
+      "fig": "N1220-001001A",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1220-001001A.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-62-42190",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07002-13334",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "207-62-72110",
+          "description": "Union",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "207-62-64740",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07002-13334",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "02781-0021D",
+          "description": "Union",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "02896-11008",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50005-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "561-43-84940",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "02896-11008",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50005-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "02783-10522",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50005-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07002-12434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "02896-11015",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "02782-10311",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "02896-11009",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "07371-31049",
+          "description": "Flange, Split",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "07372-21035",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01643-51032",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "02781-0031D",
+          "description": "Union",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "02896-11009",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1220-001002a",
+      "name": "",
+      "fig": "N1220-001002A",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1220-001002A.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-62-42490",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07002-13334",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "207-62-72110",
+          "description": "Union",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "207-62-64740",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "07002-13334",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "11Y-62-12160",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "02896-11008",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50005-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "561-43-84940",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "02896-11008",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50005-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "02783-10522",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50005-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07002-12434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "02896-11015",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "02782-10311",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "02896-11009",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "07371-31049",
+          "description": "Flange, Split",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "07372-21035",
+          "description": "Bolt",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "01643-51032",
+          "description": "Washer",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "21",
+          "pn": "02782-10311",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "22",
+          "pn": "07002-11423",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "23",
+          "pn": "02896-11009",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1310-001001",
+      "name": "Swivel Joint (Swivel Joint)",
+      "fig": "N1310-001001",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1310-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "",
+          "pn": "703-11-00114",
+          "description": "Swivel Joint Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "",
+          "pn": "703-11-53205",
+          "description": "• Swivel Joint Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "1",
+          "pn": "703-11-94160",
+          "description": "• • Spacer",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "703-11-91133",
+          "description": "• • Rotor",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "703-11-95121",
+          "description": "• • Seal",
+          "qty": 6,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "703-11-96130",
+          "description": "• • Seal, Oil",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "04071-00140",
+          "description": "• • Ring, Snap",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "703-11-92133",
+          "description": "• • Shaft",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "703-11-98210",
+          "description": "• • Plug",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "07002-63034",
+          "description": "• • O-ring",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "703-11-94120",
+          "description": "• • Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "04064-01030",
+          "description": "• • Ring, Snap, for Shaft Side",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "703-11-93132",
+          "description": "• • Cover",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "07000-B2140",
+          "description": "• • O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "01010-81040",
+          "description": "• • Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "01643-31032",
+          "description": "• • Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1310-001002",
+      "name": "Swivel Joint (Connecting Parts) (1/2)",
+      "fig": "N1310-001002",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1310-001002.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "21N-62-31280",
+          "description": "Tee",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "07002-12434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "21N-64-36720",
+          "description": "Tee",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07002-12434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "02896-11015",
+          "description": "O-ring",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "07371-31255",
+          "description": "Flange, Split",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "07372-21035",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01643-51032",
+          "description": "Washer",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "02782-10315",
+          "description": "Elbow",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "07002-12034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "02896-11009",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "20U-62-41810",
+          "description": "Nipple",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "07002-12434",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "14",
+          "pn": "207-62-64740",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "15",
+          "pn": "02781-00315",
+          "description": "Union",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "16",
+          "pn": "07002-12034",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "17",
+          "pn": "02896-11009",
+          "description": "O-ring",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "18",
+          "pn": "21N-62-54110",
+          "description": "Hose Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "19",
+          "pn": "21N-62-54120",
+          "description": "Hose Assembly",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "20",
+          "pn": "02774-005A7",
+          "description": "Hose",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
+    },
+    {
+      "id": "n1310-001003",
+      "name": "Swivel Joint (Connecting Parts) (2/2)",
+      "fig": "N1310-001003",
+      "images": [
+        "catalog-images/pc1250-11/swing-circle/N1310-001003.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "01010-81440",
+          "description": "Bolt",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "2",
+          "pn": "01643-31445",
+          "description": "Washer, Flat",
+          "qty": 4,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "3",
+          "pn": "07371-31049",
+          "description": "Flange, Split",
+          "qty": 8,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "4",
+          "pn": "07372-21035",
+          "description": "Bolt",
+          "qty": 16,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "5",
+          "pn": "01643-51032",
+          "description": "Washer",
+          "qty": 16,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "6",
+          "pn": "21N-62-33570",
+          "description": "Plate",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "7",
+          "pn": "209-62-52560",
+          "description": "Pin",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "8",
+          "pn": "01641-21626",
+          "description": "Washer",
+          "qty": 3,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "9",
+          "pn": "04050-14028",
+          "description": "Pin, Cotter",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "10",
+          "pn": "04205-11645",
+          "description": "Pin",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "11",
+          "pn": "21N-62-33560",
+          "description": "Bracket",
+          "qty": 1,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "12",
+          "pn": "01010-81230",
+          "description": "Bolt",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        },
+        {
+          "no": "13",
+          "pn": "175-54-34170",
+          "description": "Washer",
+          "qty": 2,
+          "serial": "50001-",
+          "code": ""
+        }
+      ],
+      "system": "SWING CIRCLE AND ITS RELATED PARTS"
     }
   ],
   "notice": "Control Valve through No.2 Pump: interactive callout coordinates are NOT mapped. Do not use unverified part numbers for ordering."
