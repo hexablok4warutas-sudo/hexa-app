@@ -1,79 +1,105 @@
-/* HEXA PC1250-11R — Engine Cylinder Head addon (tanpa mengubah JS lama).
-   Pasang sebagai pc1250-11-engine-addon.js, SETELAH systems.js.
-   Membaca 18 grup Engine dari pc1250-11-data.json; membuka grup lewat catalog.js asli.
-*/
+/* HEXA PC1250-11R — ADD-ON SEMUA SISTEM, V1
+ * Simpan sebagai pc1250-11-engine-addon.js (menggantikan isi add-on lama).
+ * HARUS dimuat setelah pc1250-11-catalog.js dan pc1250-11-systems.js.
+ * Tidak mengubah kedua JS asli, JSON, SVG, maupun katalog CAT 395.
+ * Sistem baru otomatis aktif ketika groups[] pada pc1250-11-data.json
+ * memiliki properti system yang cocok dengan nama/id pada systems.json.
+ */
 (()=>{'use strict';
-const $=id=>document.getElementById(id);
-const tabs=$('pcSystemTabs'),sections=$('pcSectionList'),list=$('groupList'),search=$('groupSearch');
-if(!tabs||!sections||!list){console.error('[HEXA Engine] Elemen halaman tidak ditemukan');return;}
-const ENGINE='ENGINE CYLINDER HEAD AND ITS RELATED PARTS', BLOCK='ENGINE CYLINDER BLOCK AND ITS RELATED PARTS', HYD='HYDRAULIC SYSTEM';
-let engine=[],block=[],mode='hydraulic',hydraulicSections=null,ready=false;
+const byId=id=>document.getElementById(id);
+const tabs=byId('pcSystemTabs'), sections=byId('pcSectionList'), list=byId('groupList'), search=byId('groupSearch');
+if(!tabs||!sections||!list){console.error('[HEXA all systems] Elemen katalog tidak ditemukan');return;}
+const HYD='HYDRAULIC SYSTEM';
+const norm=s=>String(s??'').trim().toUpperCase().replace(/\s+/g,' ');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const findTab=name=>[...tabs.querySelectorAll('.pc-system-tab')].find(t=>t.textContent.trim().toUpperCase()===name);
-function decorateTabs(){
- for(const name of [ENGINE,BLOCK]){const e=findTab(name);if(e){e.disabled=false;e.removeAttribute('disabled');e.removeAttribute('title');}}
+const slug=s=>String(s??'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+let allGroups=[],systems=[],selected=HYD,originalHydraulic=null,loaded=false,loading=false;
+let pendingId=null;
+const groupSystem=g=>norm(g.system||'');
+const findSystem=s=>systems.find(x=>norm(x.name)===norm(s)||slug(x.id)===slug(s));
+const isHyd=()=>norm(selected)===HYD;
+function groupsFor(system){const s=findSystem(system);return allGroups.filter(g=>g.id&&Array.isArray(g.parts)&&(groupSystem(g)===norm(system)||(s&&slug(groupSystem(g))===slug(s.id))));}
+function setTitle(name){const el=document.querySelector('.pc-page-title, #pcCatalogTitle');if(el)el.textContent='KOMATSU PC1250-11R — '+name;}
+function decorate(){
  for(const t of tabs.querySelectorAll('.pc-system-tab')){
-  const name=t.textContent.trim().toUpperCase();if(name!==ENGINE&&name!==BLOCK&&name!==HYD)continue;
-  const active=mode==='engine'?name===ENGINE:mode==='block'?name===BLOCK:name===HYD;
+  const name=norm(t.textContent);
+  if(!systems.some(s=>norm(s.name)===name))continue;
+  t.disabled=false;t.removeAttribute('disabled');t.removeAttribute('title');
+  const active=name===norm(selected);
   t.classList.toggle('is-active',active);
   if(active)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');
  }
 }
-function renderEngine(){
- const current=mode==='block'?block:engine;
- sections.innerHTML=current.map(g=>`<button type="button" class="pc-section-btn" data-engine-group="${esc(g.id)}"><span>${esc(g.name)}</span><small>${esc(g.fig||'')} · ${g.parts.length} part</small></button>`).join('');
- sections.style.display='';
- list.style.display='none';
+function renderGroups(){
+ const gs=groupsFor(selected);
+ if(!gs.length){
+  sections.innerHTML='<p class="pc-section-hint" style="padding:12px">Data '+esc(selected)+' belum tersedia. Tambahkan FIG dan Parts List ke pc1250-11-data.json; tab ini akan membacanya otomatis.</p>';
+ }else{
+  sections.innerHTML=gs.map(g=>'<button type="button" class="pc-section-btn" data-addon-group="'+esc(g.id)+'"><span>'+esc(g.name)+'</span><small>'+esc(g.fig||'')+' · '+g.parts.length+' part</small></button>').join('');
+ }
+ sections.style.display='';list.style.display='none';
+ return gs;
 }
-function openEngine(id){
- // Katalog asli memiliki semua 204 group pada #groupList, walaupun panelnya disembunyikan.
+function openGroup(id){
  const btn=[...list.querySelectorAll('[data-group]')].find(b=>b.dataset.group===id);
- if(!btn){console.error('[HEXA Engine] Tombol FIG tidak ditemukan:',id);sections.insertAdjacentHTML('afterbegin','<p>FIG belum dimuat. Periksa pc1250-11-data.json (204 FIG).</p>');return;}
- btn.click();
- sections.querySelectorAll('[data-engine-group]').forEach(b=>b.classList.toggle('is-active',b.dataset.engineGroup===id));
+ if(!btn){
+  pendingId=id;
+  console.warn('[HEXA all systems] Menunggu catalog.js merender grup:',id);
+  return false;
+ }
+ pendingId=null;btn.click();
+ sections.querySelectorAll('[data-addon-group]').forEach(b=>b.classList.toggle('is-active',b.dataset.addonGroup===id));
+ return true;
 }
-function setHeading(name){
- const title=document.querySelector('.pc-page-title, #pcCatalogTitle');
- if(title)title.textContent='KOMATSU PC1250-11R — '+name;
+function clearView(){
+ const title=byId('groupTitle');if(title)title.textContent=selected;
+ const count=byId('groupCount');if(count)count.textContent='0 part';
+ const info=byId('pcSectionStatus');if(info)info.remove();
+ // Jangan memanipulasi internal SVG/cart milik catalog.js.
 }
-function activateEngine(next='engine'){
- const current=next==='block'?block:engine;
- if(!ready||!current.length){console.error('[HEXA Engine] Data belum siap atau 18 FIG tidak ditemukan');return;}
- if(mode==='hydraulic')hydraulicSections=sections.innerHTML;
- mode=next;
+function activate(name){
+ const s=findSystem(name);if(!s)return;
+ if(isHyd()&&originalHydraulic===null)originalHydraulic=sections.innerHTML;
+ selected=s.name;
  if(search){search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));}
- renderEngine();decorateTabs();setHeading(mode==='block'?BLOCK:ENGINE);openEngine(current[0].id);
+ setTitle(selected);
+ if(isHyd()){
+  if(originalHydraulic!==null)sections.innerHTML=originalHydraulic;
+  sections.style.display='';list.style.display='none';decorate();
+  const first=[...list.querySelectorAll('[data-group]')].find(b=>!groupSystem(allGroups.find(g=>g.id===b.dataset.group)||{}));
+  if(first)first.click();
+  return;
+ }
+ const gs=renderGroups();decorate();
+ if(gs.length)openGroup(gs[0].id);else clearView();
 }
-function activateHydraulic(){
- mode='hydraulic';
- if(search){search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));}
- if(hydraulicSections!==null)sections.innerHTML=hydraulicSections;
- sections.style.display='';list.style.display='none';decorateTabs();setHeading(HYD);
- const first=[...list.querySelectorAll('[data-group]')].find(b=>![...engine,...block].some(g=>g.id===b.dataset.group));
- if(first)first.click();
-}
-// Capture event agar handler lama tidak menimpa pilihan Engine.
-tabs.addEventListener('click',ev=>{
- const tab=ev.target.closest('.pc-system-tab');if(!tab)return;
- const name=tab.textContent.trim().toUpperCase();
- if(name!==ENGINE&&name!==BLOCK&&name!==HYD)return;
- ev.preventDefault();ev.stopImmediatePropagation();
- if(name===ENGINE)activateEngine('engine');else if(name===BLOCK)activateEngine('block');else activateHydraulic();
+// Capture tab click sebelum kode lama yang menganggap tab lain belum aktif.
+tabs.addEventListener('click',e=>{
+ const t=e.target.closest('.pc-system-tab');if(!t)return;
+ const name=norm(t.textContent);
+ if(!systems.some(s=>norm(s.name)===name))return;
+ e.preventDefault();e.stopImmediatePropagation();activate(name);
 },true);
-sections.addEventListener('click',ev=>{
- if(mode!=='engine'&&mode!=='block')return;
- const btn=ev.target.closest('[data-engine-group]');if(!btn)return;
- ev.preventDefault();ev.stopImmediatePropagation();openEngine(btn.dataset.engineGroup);
+// Gunakan katalog asli untuk membuka SVG, Parts List, zoom dan keranjang.
+sections.addEventListener('click',e=>{
+ if(isHyd())return;
+ const b=e.target.closest('[data-addon-group]');if(!b)return;
+ e.preventDefault();e.stopImmediatePropagation();openGroup(b.dataset.addonGroup);
 },true);
-// systems.js mengisi tab secara async; pastikan tab Engine tidak tetap disabled.
-const observer=new MutationObserver(()=>{decorateTabs();});
+// systems.js lama membuat tombol secara asinkron.
+const observer=new MutationObserver(()=>decorate());
 observer.observe(tabs,{childList:true});
-fetch('pc1250-11-data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(d=>{
- const all=Array.isArray(d.groups)?d.groups:[];
- engine=all.filter(g=>String(g.system||'').trim().toUpperCase()===ENGINE&&g.id&&Array.isArray(g.parts));
- block=all.filter(g=>String(g.system||'').trim().toUpperCase()===BLOCK&&g.id&&Array.isArray(g.parts));
- ready=true;decorateTabs();
- console.info('[HEXA Engine] Total FIG:',all.length,'Engine FIG:',engine.length,'Block FIG:',block.length);
- if(engine.length!==18)console.warn('[HEXA Engine] Seharusnya 18 FIG. Periksa JSON utama yang terpasang.');
-}).catch(e=>console.error('[HEXA Engine] Gagal membaca JSON:',e));
+// Katalog asli mungkin selesai membangun #groupList sedikit setelah JSON dimuat.
+const listObserver=new MutationObserver(()=>{if(pendingId)openGroup(pendingId);});
+listObserver.observe(list,{childList:true,subtree:true});
+Promise.all([
+ fetch('pc1250-11-data.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('data.json HTTP '+r.status);return r.json();}),
+ fetch('pc1250-11-systems.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('systems.json HTTP '+r.status);return r.json();})
+]).then(([data,sys])=>{
+ allGroups=Array.isArray(data.groups)?data.groups:[];
+ systems=Array.isArray(sys.systems)?sys.systems:[];
+ loaded=true;decorate();
+ console.info('[HEXA all systems] Siap:',allGroups.length,'FIG;',systems.length,'sistem.');
+ for(const s of systems){const n=groupsFor(s.name).length;if(n)console.info('[HEXA all systems]',s.name,n,'FIG');}
+}).catch(e=>console.error('[HEXA all systems] Gagal inisialisasi:',e));
 })();
