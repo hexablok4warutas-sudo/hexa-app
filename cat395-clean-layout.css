@@ -61,25 +61,21 @@
 #pcSectionList .pc-section-btn{width:100%}
 #groupList{display:none}
 
-/* FIX CAT395: Assembly Groups sejajar dengan bagian bawah workspace.
-   Hanya mengubah ukuran panel dan scroll; tidak mengubah fungsi katalog. */
-@media (min-width:851px) {
-  .cat-layout > .cat-groups {
-    display:flex !important;
-    flex-direction:column !important;
-    height:calc(clamp(390px,43vw,630px) + 96px) !important;
-    min-height:0 !important;
-    overflow:hidden !important;
-  }
-  .cat-layout > .cat-groups > h2,
-  .cat-layout > .cat-groups > #groupSearch { flex:0 0 auto; }
-  .cat-layout > .cat-groups > #pcSectionList {
-    flex:1 1 auto !important;
-    min-height:0 !important;
-    max-height:none !important;
-    overflow-y:auto !important;
-    overflow-x:hidden !important;
-    overscroll-behavior:contain;
-    scrollbar-width:thin;
-  }
+/* Panel mengikuti tinggi workspace aktual, bukan angka perkiraan. */
+@media(min-width:851px){
+ .cat-layout>.cat-groups{
+   display:flex!important;flex-direction:column!important;
+   height:var(--cat395-assembly-height,auto)!important;
+   min-height:0!important;overflow:hidden!important;
+ }
+ .cat-layout>.cat-groups>h2,
+ .cat-layout>.cat-groups>#groupSearch{flex:0 0 auto!important;}
+ .cat-layout>.cat-groups>#pcSectionList{
+   flex:1 1 auto!important;min-height:0!important;max-height:none!important;
+   overflow-y:auto!important;overflow-x:hidden!important;
+   overscroll-behavior:contain;scrollbar-width:thin;
+ }
+}
+@media(max-width:850px){
+ .cat-layout>.cat-groups{height:auto!important;}
 }
