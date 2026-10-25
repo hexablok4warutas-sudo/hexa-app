@@ -1,0 +1,62 @@
+/* Navigation layout follows PC1250-11R */
+/* PC1250-11R: system sheet tabs, same CAT 395 layout */
+.cat-top{align-items:flex-start;gap:18px;flex-wrap:wrap}
+.pc-catalog-heading{display:flex;align-items:flex-start;gap:10px;min-width:270px}
+.pc-back-link{display:inline-flex;align-items:center;justify-content:center;flex:none;width:29px;height:29px;border:1px solid #cfdde9;border-radius:8px;color:#0063a4!important;text-decoration:none!important;font-size:19px;background:#fff}
+.pc-system-tabs{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end;align-items:center;max-width:66%;margin-left:auto}
+.pc-system-tab{font:inherit;font-size:12px;font-weight:700;border:1px solid #d5e0eb;background:#f5f8fc;color:#294e70;border-radius:9px;padding:9px 12px;cursor:pointer;white-space:normal;text-align:center;line-height:1.25}
+.pc-system-tab.is-active{background:#ff9015;border-color:#ff9015;color:#fff;box-shadow:0 2px 7px #ff941744}
+.pc-system-tab:disabled{opacity:.58;cursor:not-allowed}
+.pc-system-tab:focus-visible{outline:2px solid #fa8c00;outline-offset:2px}
+.pc-section-list{display:flex;flex-direction:column;gap:5px;margin:12px 0 12px;max-height:340px;overflow:auto}
+.pc-section-label{font-size:11px;color:#61788c;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:2px 0 4px}
+.pc-section-btn{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid #e3eaf1;background:#f5f8fc;color:#24527c;padding:9px 10px;border-radius:9px;text-align:left;font-size:12px;font-weight:600;cursor:pointer}
+.pc-section-btn.is-active{border-color:#ff951d;background:#fff2e1;color:#a65b00}
+.pc-section-btn small{font-size:10px;white-space:nowrap;color:#7890a4}
+.pc-section-hint{font-size:11px;color:#687f92;margin:4px 0 8px;line-height:1.4}
+@media(max-width:1050px){.pc-system-tabs{max-width:100%;width:100%;justify-content:flex-start;margin-left:0}}
+
+/* REV 2026-10-24: Excel-like sheet tabs; compact sidebar, no duplicate card */
+.cat-top{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important;margin-bottom:16px!important}
+.pc-catalog-heading{width:100%;max-width:100%}
+.pc-system-tabs{
+  display:flex!important;flex-flow:row nowrap!important;justify-content:flex-start!important;
+  align-items:flex-end!important;gap:2px!important;max-width:100%!important;width:100%!important;
+  margin:0!important;padding:3px 2px 0!important;overflow-x:auto!important;overflow-y:hidden!important;
+  border-bottom:2px solid #ff9015;scrollbar-width:thin;overscroll-behavior-x:contain;
+}
+.pc-system-tab{
+  flex:0 0 auto!important;white-space:nowrap!important;min-width:max-content!important;
+  padding:10px 15px!important;border-radius:9px 9px 0 0!important;
+  border:1px solid #d6e1ed!important;border-bottom:0!important;
+  background:#f3f7fb!important;color:#44627d!important;box-shadow:none!important;
+  font-size:12px!important;line-height:1.3!important;
+}
+.pc-system-tab.is-active{
+  background:#ff9015!important;border-color:#ff9015!important;color:#fff!important;
+}
+.pc-system-tab:disabled{opacity:.75!important;cursor:not-allowed}
+.pc-section-label,.pc-section-hint{display:none!important}
+.pc-section-list{margin-top:8px!important;margin-bottom:0!important;max-height:440px}
+#groupList{display:none}
+@media(max-width:600px){
+ .pc-system-tab{padding:9px 12px!important;font-size:11px!important}
+ .cat-top{gap:12px!important}
+}
+
+/* HEXCatalog CAT 395 — clean layout override. Load AFTER pc1250-11-catalog.css */
+/* Hide metadata only; preserve button dimensions and behavior */
+#pcSectionList .pc-section-btn > small,
+#groupList .cat-group-btn > small { display:none !important; }
+#pcSectionList .pc-section-btn { justify-content:flex-start !important; }
+/* Remove duplicate heading but keep system tabs */
+.cat-top > .pc-catalog-heading { display:none !important; }
+/* Inline system breadcrumb and right-aligned back button */
+.cat-title { display:flex !important; align-items:center !important; }
+.cat-title h1 { min-width:0; flex:1; }
+.cat-title h1 small { display:inline !important; font-weight:500; line-height:1.5; }
+.cat-title .pc-clean-back { display:inline-flex;flex:none;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid #cfdde9;border-radius:8px;background:#fff;color:#0063a4;text-decoration:none;font-size:19px; }
+@media(max-width:600px){ .cat-title { gap:8px; } .cat-title h1 small { font-size:11px; } .cat-title .pc-clean-back { width:32px;height:32px; } }
+
+#pcSectionList .pc-section-btn{width:100%}
+#groupList{display:none}

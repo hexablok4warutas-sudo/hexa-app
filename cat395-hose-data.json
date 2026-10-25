@@ -154,7 +154,8 @@
         "catalog-images/cat395/lines-gp-swing-01.svg"
       ],
       "assemblyNumber": "619-6363",
-      "note": "S/N SGD1-UP; Part of 544-4548 DRIVE & MTG GP-SWING"
+      "note": "S/N SGD1-UP; Part of 544-4548 DRIVE & MTG GP-SWING",
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-motor",
@@ -321,7 +322,8 @@
         "catalog-images/cat395/lines-gp-motor-01.svg",
         "catalog-images/cat395/lines-gp-motor-02.svg",
         "catalog-images/cat395/lines-gp-motor-03.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-pump",
@@ -566,7 +568,8 @@
         "catalog-images/cat395/lines-gp-pump-01.svg",
         "catalog-images/cat395/lines-gp-pump-02.svg",
         "catalog-images/cat395/lines-gp-pump-03.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-pilot-a",
@@ -1162,7 +1165,8 @@
           "description": "Bolt (M12X1.75X35-MM)",
           "qty": 2
         }
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-pilot-b",
@@ -1477,7 +1481,8 @@
           "description": "Washer-Hard (8.8X16X2-MM Thk)",
           "qty": 2
         }
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-pilot-c",
@@ -1516,7 +1521,8 @@
           "description": "Hose AS",
           "qty": 1
         }
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-boom",
@@ -1645,7 +1651,8 @@
       ],
       "images": [
         "catalog-images/cat395/lines-gp-boom-01.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-boom-cylinder",
@@ -1684,7 +1691,8 @@
       ],
       "images": [
         "catalog-images/cat395/lines-gp-boom-cylinder-01.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-arc-swivel",
@@ -2023,7 +2031,8 @@
         "catalog-images/cat395/lines-gp-arc-swivel-01.svg",
         "catalog-images/cat395/lines-gp-arc-swivel-02.svg",
         "catalog-images/cat395/lines-gp-arc-swivel-03.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-control-valve",
@@ -2312,7 +2321,8 @@
         "catalog-images/cat395/lines-gp-control-valve-01.svg",
         "catalog-images/cat395/lines-gp-control-valve-02.svg",
         "catalog-images/cat395/lines-gp-control-valve-03.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-return",
@@ -2715,7 +2725,8 @@
       ],
       "images": [
         "catalog-images/cat395/lines-gp-return-01.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-stick",
@@ -2754,7 +2765,8 @@
       ],
       "images": [
         "catalog-images/cat395/lines-gp-stick-01.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-swing-motor",
@@ -3447,7 +3459,8 @@
         "catalog-images/cat395/lines-gp-wing-motor-01.svg",
         "catalog-images/cat395/lines-gp-wing-motor-02.svg",
         "catalog-images/cat395/lines-gp-wing-motor-03.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     },
     {
       "id": "lines-gp-travel-motor",
@@ -3761,7 +3774,29 @@
       "images": [
         "catalog-images/cat395/lines-gp-travel-motor-01.svg",
         "catalog-images/cat395/lines-gp-travel-motor-02.svg"
-      ]
+      ],
+      "system": "Hydraulic System"
     }
+  ],
+  "systems": [
+    "Air Inlet And Exhaust System",
+    "Basic Engine",
+    "Cooling System",
+    "Electrical And Starting System",
+    "Enclosures, Guards And Bases",
+    "Engine Arrangement",
+    "Frame And Body",
+    "Fuel System",
+    "Hydraulic System",
+    "Implements",
+    "Kit - Repair/service",
+    "Kit - Upgrades",
+    "Lubrication System",
+    "Machine Arrangement",
+    "Operator Station",
+    "Power Train",
+    "Service Equipment And Supplies",
+    "Undercarriage",
+    "Work Tools"
   ]
 }
