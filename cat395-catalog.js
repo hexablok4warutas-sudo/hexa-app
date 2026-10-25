@@ -82,7 +82,7 @@ async function findImageForPart(group,part){
    if(!nodes){
     const r=await fetch(url);if(!r.ok)continue;
     const doc=new DOMParser().parseFromString(await r.text(),'image/svg+xml');
-    nodes=[...doc.querySelectorAll('g.callout,g.part')].map(n=>({nums:partNumbers(n),callout:n.classList.contains('callout'),pn:normalizePN(partTitlePN(n))}));
+    nodes=[...doc.querySelectorAll('g.callout,g.part,g[data-callout]')].map(n=>({nums:partNumbers(n),callout:n.classList.contains('callout')||n.hasAttribute('data-callout'),pn:normalizePN(partTitlePN(n))}));
     svgCalloutCache.set(url,nodes);
    }
    if(nodes.some(n=>n.nums.includes(no)&&(n.callout||n.pn===normalizePN(part.pn))))return i;
@@ -245,6 +245,8 @@ function focusPartInDrawing(index){
 function hidePicker(){const p=$('catPartPicker');if(p)p.hidden=true;}
  // Class CAT SIS: part_14, 1 / callout_14, 1. Indeks turunan dipetakan lewat parentNo().
  function partNumbers(node){
+   const explicit=node?.getAttribute('data-callout');
+   if(explicit)return explicit.split(/[,;\s]+/).map(x=>x.trim()).filter(Boolean);
    const c=node?.getAttribute('class')||'';
    const m=c.match(/(?:part|callout)_(\d+(?:\s*,\s*\d+)*)/);
    return m?m[1].split(',').map(x=>x.trim()):[];
@@ -335,6 +337,12 @@ async function renderImage({preserveSelection=false}={}){
    svg.dataset.loaded='true';
    svg.setAttribute('role','img');
    svg.setAttribute('aria-label',`${active.name} assembly drawing`);
+   // CAT 395 tambahan memakai atribut data-callout, bukan class CAT SIS.
+   // Adaptasi hanya pada DOM SVG yang dimuat; file SVG asli tidak diubah.
+   svg.querySelectorAll('g[data-callout]').forEach(node=>{
+     node.classList.add('callout');
+     node.querySelectorAll('[data-itemtype=\"boundingBox\"]').forEach(box=>box.style.pointerEvents='none');
+   });
    // CAT SIS callout tidak memiliki <title>; tambahkan tooltip dari database.
    svg.querySelectorAll('g.callout').forEach(node=>{
      const nums=partNumbers(node);
