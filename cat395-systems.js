@@ -58,7 +58,7 @@ fetch('cat395-hose-data.json').then(r=>{
  const systems=(d.systems||[...new Set(data.map(g=>g.system))]).filter(Boolean);
  tabs.innerHTML=systems.map(s=>`<button type="button" class="pc-system-tab" data-system="${escape(s)}">${escape(s)}</button>`).join('');
  // The original 11R main JS renders groupList independently from this adapter.
- const first=systems.find(s=>norm(s)==='HYDRAULIC SYSTEM')||systems[0];
+ const first=systems.find(s=>norm(s)==='HYDRAULIC LINES')||systems[0];
  const awaitList=()=>{
   if(!list.querySelector('[data-group]'))return false;
   activate(first);return true;

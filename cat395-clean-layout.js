@@ -15,7 +15,7 @@ function init(){
  let previous='';
  const update=()=>{
   const active=tabs.querySelector('.pc-system-tab.is-active, .pc-system-tab[aria-current="page"]');
-  const name=active?.textContent?.trim()||document.getElementById('pcCurrentSystem')?.textContent?.trim()||'HYDRAULIC SYSTEM';
+  const name=active?.textContent?.trim()||document.getElementById('pcCurrentSystem')?.textContent?.trim()||'HYDRAULIC LINES';
   if(name!==previous){previous=name;breadcrumb.textContent='/ CAT 395 / '+name;}
  };
  update();
