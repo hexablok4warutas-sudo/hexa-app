@@ -845,3 +845,28 @@ function initializeHexaProfileAvatar() {
   img.src = url;
   avatar.appendChild(img);
 }
+
+// ========================================
+// HEXA GLOBAL FAVICON
+// ========================================
+
+(function initHexaFavicon() {
+
+  const faviconUrl =
+    "https://hexa-app.pages.dev/HEXA-FAVICON.png?v=3";
+
+  // Hapus favicon lama
+  document.querySelectorAll(
+    'link[rel~="icon"]'
+  ).forEach(link => link.remove());
+
+  // Tambahkan favicon HEXA
+  const favicon = document.createElement("link");
+
+  favicon.rel = "icon";
+  favicon.type = "image/png";
+  favicon.href = faviconUrl;
+
+  document.head.appendChild(favicon);
+
+})();
