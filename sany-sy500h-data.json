@@ -785,7 +785,9 @@
       "system": "WORK EQUIPMENT",
       "assemblyNumber": "14092808",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14092808-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -928,7 +930,7 @@
         "catalog-images/sy500h/14092808-01.svg",
         "catalog-images/sy500h/14092808-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-2-14092781",
@@ -936,7 +938,9 @@
       "system": "WORK EQUIPMENT",
       "assemblyNumber": "14092781",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14092781-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -987,7 +991,7 @@
       "plannedImages": [
         "catalog-images/sy500h/14092781-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-2-60248644",
@@ -995,7 +999,9 @@
       "system": "WORK EQUIPMENT",
       "assemblyNumber": "60248644",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60248644-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -1180,7 +1186,7 @@
         "catalog-images/sy500h/60248644-01.svg",
         "catalog-images/sy500h/60248644-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-2-14092790",
@@ -1188,7 +1194,9 @@
       "system": "WORK EQUIPMENT",
       "assemblyNumber": "14092790",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14092790-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -1239,7 +1247,7 @@
       "plannedImages": [
         "catalog-images/sy500h/14092790-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-2-13304037",
@@ -1247,7 +1255,9 @@
       "system": "WORK EQUIPMENT",
       "assemblyNumber": "13304037",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13304037-01.svg"
+      ],
       "parts": [
         {
           "no": "2",
@@ -1292,7 +1302,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13304037-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-2-14092797",
