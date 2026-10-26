@@ -2754,7 +2754,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "14038344",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14038344-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -2835,7 +2837,7 @@
       "plannedImages": [
         "catalog-images/sy500h/14038344-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-13308319",
@@ -2843,7 +2845,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13308319",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13308319-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -3102,7 +3106,7 @@
         "catalog-images/sy500h/13308319-02.svg",
         "catalog-images/sy500h/13308319-03.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-13510936",
@@ -3240,7 +3244,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "12353451",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/12353451-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -3285,7 +3291,7 @@
       "plannedImages": [
         "catalog-images/sy500h/12353451-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-13308021",
@@ -3293,7 +3299,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13308021",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13308021-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -3704,7 +3712,7 @@
         "catalog-images/sy500h/13308021-03.svg",
         "catalog-images/sy500h/13308021-04.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-60355586",
@@ -3712,7 +3720,10 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "60355586",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60355586-01.svg",
+        "catalog-images/sy500h/60355586-02.svg"
+      ],
       "parts": [
         {
           "no": "2",
@@ -4279,7 +4290,7 @@
         "catalog-images/sy500h/60355586-09.svg",
         "catalog-images/sy500h/60355586-10.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-60242827",
@@ -4287,7 +4298,10 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "60242827",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60242827-01.svg",
+        "catalog-images/sy500h/60242827-02.svg"
+      ],
       "parts": [
         {
           "no": "2",
@@ -4502,7 +4516,7 @@
         "catalog-images/sy500h/60242827-01.svg",
         "catalog-images/sy500h/60242827-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-13308041",
@@ -4510,7 +4524,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13308041",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13308041-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -4695,7 +4711,7 @@
         "catalog-images/sy500h/13308041-01.svg",
         "catalog-images/sy500h/13308041-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-13503268",
@@ -4703,7 +4719,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13503268",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13503268-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -4736,7 +4754,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13503268-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "candidate-needs-hotspot-review"
     },
     {
       "id": "sany-4-13301167",
