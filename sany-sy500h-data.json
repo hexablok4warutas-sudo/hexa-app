@@ -4898,7 +4898,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "60248398",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60248398-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -5009,7 +5011,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60248398-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-60129702",
@@ -5017,7 +5019,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "60129702",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60129702-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -5032,7 +5036,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60129702-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-60242783",
@@ -5040,7 +5044,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "60242783",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60242783-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -5509,7 +5515,7 @@
         "catalog-images/sy500h/60242783-11.svg",
         "catalog-images/sy500h/60242783-12.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-13310215",
@@ -5517,7 +5523,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13310215",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13310215-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -5544,7 +5552,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13310215-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-13310212",
@@ -5552,7 +5560,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13310212",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13310212-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -5933,7 +5943,7 @@
         "catalog-images/sy500h/13310212-03.svg",
         "catalog-images/sy500h/13310212-04.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-60283709",
@@ -5941,7 +5951,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "60283709",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60283709-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -6158,7 +6170,7 @@
         "catalog-images/sy500h/60283709-02.svg",
         "catalog-images/sy500h/60283709-03.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-60210245",
@@ -6166,7 +6178,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "60210245",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60210245-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -6309,7 +6323,7 @@
         "catalog-images/sy500h/60210245-01.svg",
         "catalog-images/sy500h/60210245-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-11145459",
@@ -6317,7 +6331,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "11145459",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/11145459-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -6386,7 +6402,7 @@
       "plannedImages": [
         "catalog-images/sy500h/11145459-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-11145480",
@@ -6394,7 +6410,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "11145480",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/11145480-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -6463,7 +6481,7 @@
       "plannedImages": [
         "catalog-images/sy500h/11145480-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-13309359",
@@ -6471,7 +6489,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13309359",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13309359-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -6978,7 +6998,7 @@
         "catalog-images/sy500h/13309359-06.svg",
         "catalog-images/sy500h/13309359-07.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-13309991",
@@ -6986,7 +7006,9 @@
       "system": "HYDRAULIC SYSTEM",
       "assemblyNumber": "13309991",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13309991-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -7103,7 +7125,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13309991-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "hd-source-verified-hotspots-pending"
     },
     {
       "id": "sany-4-B229900000063",
