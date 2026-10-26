@@ -283,3 +283,6 @@ html,body{max-width:100%;overflow-x:clip}
 /* Nomor tetap terbaca dan tidak ditutup blok warna. */
 .cat-inline-svg g.part.cat-svg-selected text,
 .cat-inline-svg g.part.cat-svg-selected tspan{stroke:none!important;filter:none!important}
+
+/* D375 SN info: additive only */
+.d375-sn-info{display:flex;flex-wrap:wrap;gap:8px 14px;padding:7px 12px;border:1px solid #e1eaf4;border-radius:8px;background:#f8fbff;font-size:12px;color:#274866}.d375-sn-info small{width:100%;color:#8b5b1b}.d375-part-sn{display:block;color:#78899b;font-size:10px;margin-top:3px}
