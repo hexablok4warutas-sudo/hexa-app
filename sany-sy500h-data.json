@@ -22992,7 +22992,9 @@
       "system": "OTHER FITTINGS",
       "assemblyNumber": "14206887",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14206887-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -23153,14 +23155,14 @@
         "catalog-images/sy500h/14206887-01.svg",
         "catalog-images/sy500h/14206887-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-no-hotspots"
     },
     {
       "id": "sany-11-14316369",
       "name": "Assembly 14316369",
       "system": "OTHER FITTINGS",
       "assemblyNumber": "14316369",
-      "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
+      "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified. | Source PDF p.630 is a parts-only Other Fittings list without an assembly drawing; 14316369 is the part number of list item 1, not an assembly drawing number.",
       "images": [],
       "parts": [
         {
@@ -23266,7 +23268,7 @@
       "plannedImages": [
         "catalog-images/sy500h/14316369-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "no-assembly-drawing-in-source-pdf"
     }
   ],
   "dataStatus": "Parts extracted from source PDF; SVG references for future assemblies are placeholders until uploaded. Verify descriptions and index mapping before production use."

@@ -1,0 +1,208 @@
+{
+  "model": "D375A-6R",
+  "serialNumber": "65001-UP",
+  "source": "PARTBOOK D375A-6R.pdf",
+  "systems": [
+    "ENGINE"
+  ],
+  "groups": [
+    {
+      "id": "a1010-001001",
+      "name": "Cylinder Head",
+      "system": "ENGINE",
+      "assemblyNumber": "A1010-001001",
+      "note": "SAA6D170E-5EE engine S/N 610984-UP; source PDF pages 2–3. Empty part numbers indicate Code C1 in original table. Initial sample only.",
+      "images": [
+        "catalog-images/d375/A1010-001001.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "",
+          "description": "Head, Cylinder",
+          "qty": 1
+        },
+        {
+          "no": "2",
+          "pn": "6240-11-1330",
+          "description": "Insert, Intake Valve, Standard",
+          "qty": 2
+        },
+        {
+          "no": "3",
+          "pn": "6245-11-1320",
+          "description": "Insert, Exhaust Valve, Standard",
+          "qty": 2
+        },
+        {
+          "no": "4",
+          "pn": "6240-16-1340",
+          "description": "Guide",
+          "qty": 4
+        },
+        {
+          "no": "5",
+          "pn": "6240-11-1160",
+          "description": "Tube",
+          "qty": 1
+        },
+        {
+          "no": "6",
+          "pn": "07000-73038",
+          "description": "O-ring",
+          "qty": 1
+        },
+        {
+          "no": "7",
+          "pn": "07043-70108",
+          "description": "Plug",
+          "qty": 3
+        },
+        {
+          "no": "8",
+          "pn": "6162-13-1150",
+          "description": "Plug, Expansion",
+          "qty": 17
+        },
+        {
+          "no": "9",
+          "pn": "6215-81-9530",
+          "description": "Plug",
+          "qty": 1
+        },
+        {
+          "no": "10",
+          "pn": "07043-70312",
+          "description": "Plug",
+          "qty": 1
+        },
+        {
+          "no": "11",
+          "pn": "6240-11-1140",
+          "description": "Guide",
+          "qty": 2
+        },
+        {
+          "no": "12",
+          "pn": "04020-00820",
+          "description": "Pin, Dowel",
+          "qty": 2
+        },
+        {
+          "no": "13",
+          "pn": "07042-00108",
+          "description": "Plug, Taper",
+          "qty": 1
+        },
+        {
+          "no": "14",
+          "pn": "6240-11-1370",
+          "description": "Seal",
+          "qty": 24
+        },
+        {
+          "no": "15",
+          "pn": "6240-41-4110",
+          "description": "Valve, Intake",
+          "qty": 12
+        },
+        {
+          "no": "16",
+          "pn": "6240-41-4220",
+          "description": "Valve, Exhaust",
+          "qty": 12
+        },
+        {
+          "no": "17",
+          "pn": "6240-41-4411",
+          "description": "Spring",
+          "qty": 24
+        },
+        {
+          "no": "18",
+          "pn": "6240-41-4520",
+          "description": "Cotter",
+          "qty": 48
+        },
+        {
+          "no": "19",
+          "pn": "6240-41-4430",
+          "description": "Seat",
+          "qty": 24
+        },
+        {
+          "no": "20",
+          "pn": "6240-41-4440",
+          "description": "Seat",
+          "qty": 24
+        },
+        {
+          "no": "21",
+          "pn": "6240-41-5610",
+          "description": "Crosshead",
+          "qty": 12
+        },
+        {
+          "no": "22",
+          "pn": "6240-41-5641",
+          "description": "Screw, Adjusting",
+          "qty": 12
+        },
+        {
+          "no": "23",
+          "pn": "6162-43-5630",
+          "description": "Nut, Lock",
+          "qty": 12
+        },
+        {
+          "no": "24",
+          "pn": "6240-11-1610",
+          "description": "Bolt",
+          "qty": 42
+        },
+        {
+          "no": "25",
+          "pn": "01438-01270",
+          "description": "Bolt",
+          "qty": 12
+        },
+        {
+          "no": "26",
+          "pn": "6240-11-1810",
+          "description": "Gasket Assembly, Standard",
+          "qty": 6
+        },
+        {
+          "no": "27",
+          "pn": "",
+          "description": "Grommet, Water",
+          "qty": 4
+        },
+        {
+          "no": "28",
+          "pn": "",
+          "description": "Grommet, Water",
+          "qty": 1
+        },
+        {
+          "no": "29",
+          "pn": "",
+          "description": "Grommet, Water",
+          "qty": 7
+        },
+        {
+          "no": "30",
+          "pn": "",
+          "description": "Grommet, Oil",
+          "qty": 1
+        },
+        {
+          "no": "31",
+          "pn": "",
+          "description": "Grommet, Oil, Standard",
+          "qty": 1
+        }
+      ]
+    }
+  ]
+}
