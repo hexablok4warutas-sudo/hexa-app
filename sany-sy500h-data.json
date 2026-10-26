@@ -5047,16 +5047,7 @@
       "images": [
         "catalog-images/sy500h/60242783-01.svg",
         "catalog-images/sy500h/60242783-02.svg",
-        "catalog-images/sy500h/60242783-03.svg",
-        "catalog-images/sy500h/60242783-04.svg",
-        "catalog-images/sy500h/60242783-05.svg",
-        "catalog-images/sy500h/60242783-06.svg",
-        "catalog-images/sy500h/60242783-07.svg",
-        "catalog-images/sy500h/60242783-08.svg",
-        "catalog-images/sy500h/60242783-09.svg",
-        "catalog-images/sy500h/60242783-10.svg",
-        "catalog-images/sy500h/60242783-11.svg",
-        "catalog-images/sy500h/60242783-12.svg"
+        "catalog-images/sy500h/60242783-03.svg"
       ],
       "parts": [
         {
@@ -5573,9 +5564,7 @@
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
       "images": [
         "catalog-images/sy500h/13310212-01.svg",
-        "catalog-images/sy500h/13310212-02.svg",
-        "catalog-images/sy500h/13310212-03.svg",
-        "catalog-images/sy500h/13310212-04.svg"
+        "catalog-images/sy500h/13310212-02.svg"
       ],
       "parts": [
         {
