@@ -16665,7 +16665,9 @@
       "system": "CABIN",
       "assemblyNumber": "14037913",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14037913-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -16838,7 +16840,7 @@
         "catalog-images/sy500h/14037913-01.svg",
         "catalog-images/sy500h/14037913-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13269885",
@@ -16846,7 +16848,9 @@
       "system": "CABIN",
       "assemblyNumber": "13269885",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13269885-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -16861,7 +16865,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13269885-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13269886",
@@ -16869,7 +16873,17 @@
       "system": "CABIN",
       "assemblyNumber": "13269886",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13269886-01.svg",
+        "catalog-images/sy500h/13269886-02.svg",
+        "catalog-images/sy500h/13269886-03.svg",
+        "catalog-images/sy500h/13269886-04.svg",
+        "catalog-images/sy500h/13269886-05.svg",
+        "catalog-images/sy500h/13269886-06.svg",
+        "catalog-images/sy500h/13269886-07.svg",
+        "catalog-images/sy500h/13269886-08.svg",
+        "catalog-images/sy500h/13269886-09.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -17590,7 +17604,7 @@
         "catalog-images/sy500h/13269886-11.svg",
         "catalog-images/sy500h/13269886-12.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-11162034",
@@ -17598,7 +17612,9 @@
       "system": "CABIN",
       "assemblyNumber": "11162034",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/11162034-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -17655,7 +17671,7 @@
       "plannedImages": [
         "catalog-images/sy500h/11162034-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13069429",
@@ -17663,7 +17679,12 @@
       "system": "CABIN",
       "assemblyNumber": "13069429",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13069429-01.svg",
+        "catalog-images/sy500h/13069429-02.svg",
+        "catalog-images/sy500h/13069429-03.svg",
+        "catalog-images/sy500h/13069429-04.svg"
+      ],
       "parts": [
         {
           "no": "6",
@@ -17944,7 +17965,7 @@
         "catalog-images/sy500h/13069429-04.svg",
         "catalog-images/sy500h/13069429-05.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13471741",
@@ -17952,7 +17973,9 @@
       "system": "CABIN",
       "assemblyNumber": "13471741",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13471741-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -17979,7 +18002,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13471741-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13036476",
@@ -17987,7 +18010,9 @@
       "system": "CABIN",
       "assemblyNumber": "13036476",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13036476-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18062,7 +18087,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13036476-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13471739",
@@ -18070,7 +18095,9 @@
       "system": "CABIN",
       "assemblyNumber": "13471739",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13471739-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18139,7 +18166,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13471739-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13036704",
@@ -18147,7 +18174,11 @@
       "system": "CABIN",
       "assemblyNumber": "13036704",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13036704-01.svg",
+        "catalog-images/sy500h/13036704-02.svg",
+        "catalog-images/sy500h/13036704-03.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18238,7 +18269,7 @@
         "catalog-images/sy500h/13036704-02.svg",
         "catalog-images/sy500h/13036704-03.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-A222200000147",
@@ -18246,7 +18277,9 @@
       "system": "CABIN",
       "assemblyNumber": "A222200000147",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/A222200000147-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18339,7 +18372,7 @@
       "plannedImages": [
         "catalog-images/sy500h/a222200000147-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-11181278",
@@ -18347,7 +18380,9 @@
       "system": "CABIN",
       "assemblyNumber": "11181278",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/11181278-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18484,7 +18519,7 @@
         "catalog-images/sy500h/11181278-01.svg",
         "catalog-images/sy500h/11181278-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13284295",
@@ -18492,7 +18527,9 @@
       "system": "CABIN",
       "assemblyNumber": "13284295",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13284295-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18549,7 +18586,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13284295-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-14210996",
@@ -18557,7 +18594,9 @@
       "system": "CABIN",
       "assemblyNumber": "14210996",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14210996-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18706,7 +18745,7 @@
         "catalog-images/sy500h/14210996-01.svg",
         "catalog-images/sy500h/14210996-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-60204189",
@@ -18714,7 +18753,9 @@
       "system": "CABIN",
       "assemblyNumber": "60204189",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60204189-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18843,7 +18884,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60204189-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-60204190",
@@ -18851,7 +18892,9 @@
       "system": "CABIN",
       "assemblyNumber": "60204190",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60204190-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -18926,7 +18969,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60204190-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-B229900000265",
@@ -18934,7 +18977,9 @@
       "system": "CABIN",
       "assemblyNumber": "B229900000265",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/B229900000265-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -19301,7 +19346,7 @@
         "catalog-images/sy500h/b229900000265-02.svg",
         "catalog-images/sy500h/b229900000265-03.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-7-13299430",
@@ -19309,7 +19354,9 @@
       "system": "CABIN",
       "assemblyNumber": "13299430",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13299430-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -19494,7 +19541,7 @@
         "catalog-images/sy500h/13299430-01.svg",
         "catalog-images/sy500h/13299430-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-8-14036582",
@@ -19502,7 +19549,9 @@
       "system": "COATING",
       "assemblyNumber": "14036582",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/14036582-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -19535,7 +19584,7 @@
       "plannedImages": [
         "catalog-images/sy500h/14036582-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-8-13811963",
@@ -19543,7 +19592,10 @@
       "system": "COATING",
       "assemblyNumber": "13811963",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13811963-01.svg",
+        "catalog-images/sy500h/13811963-02.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -19888,7 +19940,7 @@
         "catalog-images/sy500h/13811963-03.svg",
         "catalog-images/sy500h/13811963-04.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-9-13312148",
@@ -19896,7 +19948,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "13312148",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13312148-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -20111,7 +20165,7 @@
         "catalog-images/sy500h/13312148-01.svg",
         "catalog-images/sy500h/13312148-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-9-13901998",
@@ -20119,7 +20173,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "13901998",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13901998-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -20182,7 +20238,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13901998-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-9-13306198",
@@ -20190,7 +20246,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "13306198",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13306198-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -20283,7 +20341,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13306198-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-9-13306189",
@@ -20291,7 +20349,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "13306189",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13306189-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -20414,7 +20474,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13306189-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-9-13306069",
@@ -20422,7 +20482,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "13306069",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13306069-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -20479,7 +20541,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13306069-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-9-13306105",
@@ -20487,7 +20549,9 @@
       "system": "STRUCTURE & COVERS",
       "assemblyNumber": "13306105",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/13306105-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -20532,7 +20596,7 @@
       "plannedImages": [
         "catalog-images/sy500h/13306105-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-9-13306271",
