@@ -326,7 +326,7 @@ async function renderImage({preserveSelection=false}={}){
    root.querySelectorAll('*').forEach(el=>{
      for(const attr of [...el.attributes]){
        const name=attr.name.toLowerCase(),value=attr.value.trim();
-       if(name.startsWith('on') || ((name==='href'||name.endsWith(':href')) && !value.startsWith('#')) ||
+       if(name.startsWith('on') || ((name==='href'||name.endsWith(':href')) && !value.startsWith('#') && !(el.localName==='image' && /^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/i.test(value))) ||
           /url\s*\(\s*['"]?\s*(?:https?:|data:|javascript:)/i.test(value) ||
           (name==='style' && /@import|expression\s*\(/i.test(value))) el.removeAttribute(attr.name);
      }
