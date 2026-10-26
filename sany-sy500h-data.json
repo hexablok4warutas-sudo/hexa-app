@@ -10461,7 +10461,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320134",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320134-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -10712,7 +10714,7 @@
         "catalog-images/sy500h/60320134-01.svg",
         "catalog-images/sy500h/60320134-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60016650",
@@ -10720,7 +10722,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60016650",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60016650-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -11003,7 +11007,7 @@
         "catalog-images/sy500h/60016650-02.svg",
         "catalog-images/sy500h/60016650-03.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320135",
@@ -11011,7 +11015,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320135",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320135-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -11172,7 +11178,7 @@
         "catalog-images/sy500h/60320135-01.svg",
         "catalog-images/sy500h/60320135-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320136",
@@ -11180,7 +11186,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320136",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320136-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -11475,7 +11483,7 @@
         "catalog-images/sy500h/60320136-02.svg",
         "catalog-images/sy500h/60320136-03.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320137",
@@ -11483,7 +11491,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320137",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320137-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -11588,7 +11598,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320137-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320138",
@@ -11596,7 +11606,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320138",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320138-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -11665,7 +11677,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320138-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320139",
@@ -11673,7 +11685,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320139",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320139-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -11754,7 +11768,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320139-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320141",
@@ -11762,7 +11776,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320141",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320141-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -12013,7 +12029,7 @@
         "catalog-images/sy500h/60320141-01.svg",
         "catalog-images/sy500h/60320141-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320142",
@@ -12021,7 +12037,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320142",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320142-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -12212,7 +12230,7 @@
         "catalog-images/sy500h/60320142-01.svg",
         "catalog-images/sy500h/60320142-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320143",
@@ -12220,7 +12238,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320143",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320143-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -12405,7 +12425,7 @@
         "catalog-images/sy500h/60320143-01.svg",
         "catalog-images/sy500h/60320143-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320144",
@@ -12413,7 +12433,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320144",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320144-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -12494,7 +12516,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320144-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320147",
@@ -12502,7 +12524,12 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320147",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320147-01.svg",
+        "catalog-images/sy500h/60320147-02.svg",
+        "catalog-images/sy500h/60320147-03.svg",
+        "catalog-images/sy500h/60320147-04.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13045,7 +13072,7 @@
         "catalog-images/sy500h/60320147-06.svg",
         "catalog-images/sy500h/60320147-07.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320148",
@@ -13053,7 +13080,10 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320148",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320148-01.svg",
+        "catalog-images/sy500h/60320148-02.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13250,7 +13280,7 @@
         "catalog-images/sy500h/60320148-01.svg",
         "catalog-images/sy500h/60320148-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320115",
@@ -13258,7 +13288,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320115",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320115-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13285,7 +13317,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320115-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320114",
@@ -13293,7 +13325,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320114",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320114-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13314,7 +13348,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320114-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320149",
@@ -13322,7 +13356,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320149",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320149-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13451,7 +13487,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320149-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320150",
@@ -13459,7 +13495,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320150",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320150-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13704,7 +13742,7 @@
         "catalog-images/sy500h/60320150-01.svg",
         "catalog-images/sy500h/60320150-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320151",
@@ -13712,7 +13750,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320151",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320151-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13763,7 +13803,7 @@
       "plannedImages": [
         "catalog-images/sy500h/60320151-01.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320152",
@@ -13771,7 +13811,10 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320152",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320152-01.svg",
+        "catalog-images/sy500h/60320152-02.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -13950,7 +13993,7 @@
         "catalog-images/sy500h/60320152-01.svg",
         "catalog-images/sy500h/60320152-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320153",
@@ -13958,7 +14001,9 @@
       "system": "POWER SYSTEM",
       "assemblyNumber": "60320153",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
-      "images": [],
+      "images": [
+        "catalog-images/sy500h/60320153-01.svg"
+      ],
       "parts": [
         {
           "no": "1",
@@ -14173,7 +14218,7 @@
         "catalog-images/sy500h/60320153-01.svg",
         "catalog-images/sy500h/60320153-02.svg"
       ],
-      "svgStatus": "pending"
+      "svgStatus": "original-source-unique-artwork-hotspots-pending"
     },
     {
       "id": "sany-6-60320154",
