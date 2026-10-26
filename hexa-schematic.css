@@ -1,0 +1,23 @@
+/* HEXA Schematic — landing page, mengikuti HEXCatalog */
+:root{--sc-blue:#0866b2;--sc-navy:#17314c;--sc-orange:#ff9a24}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{font-family:Arial,Helvetica,sans-serif;color:var(--sc-navy);background:#f4f8fd url('hexa-doodle.png') center top / 430px repeat}
+.schematic-main{min-height:100vh;padding:calc(88px + 10px) 22px 64px}.schematic-shell{max-width:1160px;margin:0 auto}
+.schematic-heading{display:flex;align-items:center;gap:15px;padding:0 8px 15px;margin:0 0 10px;border-bottom:2px solid var(--sc-orange);background:rgba(255,255,255,.92)}
+.schematic-title-icon{width:76px;height:76px;object-fit:contain;flex-shrink:0}
+.schematic-heading h1{margin:0;font-size:clamp(26px,4vw,46px);color:#111;font-weight:800;letter-spacing:-1.4px}.schematic-heading h1 span{color:var(--sc-orange)}
+.schematic-container{padding:30px;border:1px solid #d8e7f7;border-radius:24px;background:rgba(255,255,255,.94);box-shadow:0 18px 52px rgba(6,75,137,.12)}
+.schematic-section-heading{margin-bottom:22px}.schematic-eyebrow{color:#ff8d14;font-size:17px;font-weight:800;letter-spacing:1.2px}.schematic-section-heading p{color:#667b90;margin:9px 0 0;font-size:14px}
+.schematic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.schematic-card{appearance:none;display:flex;flex-direction:column;width:100%;min-width:0;text-align:left;cursor:pointer;padding:0;overflow:hidden;border:1px solid #dce9f4;border-radius:18px;background:#fff;color:inherit;font:inherit;box-shadow:0 5px 16px rgba(6,75,137,.06);transition:transform .2s,box-shadow .2s,border-color .2s}
+.schematic-card:hover{transform:translateY(-5px);border-color:#ffb452;box-shadow:0 14px 28px rgba(6,75,137,.14)}.schematic-card:focus-visible{outline:3px solid var(--sc-orange);outline-offset:3px}
+.schematic-card-visual{position:relative;display:grid;place-items:center;width:100%;height:190px;overflow:hidden;background:linear-gradient(155deg,#fff 25%,#f1f7fd)}
+.schematic-card-visual img{position:relative;z-index:1;display:block;width:100%;height:100%;object-fit:contain;padding:12px}.schematic-card-visual img.image-missing{display:none}
+.schematic-image-fallback{position:absolute;color:#8da6bb;font-size:15px;font-weight:700}.schematic-card-visual img:not(.image-missing)+.schematic-image-fallback{display:none}
+.schematic-card-info{display:flex;flex-direction:column;padding:16px 18px 19px;width:100%;border-top:1px solid #edf2f8}.schematic-card-name{font-size:22px;font-weight:800;color:#17314c}.schematic-card-maker{color:#667b90;font-size:12px;margin-top:4px}.schematic-card-action{margin-top:17px;color:#075eaa;font-size:12px;font-weight:800}
+.schematic-model-detail{margin-top:25px;padding:22px;border:1px solid #d8e7f7;border-radius:18px;background:#f8fbff}.schematic-model-detail[hidden]{display:none}
+.schematic-detail-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.schematic-detail-heading h2{margin:0 0 14px;font-size:20px}.schematic-detail-heading button{border:0;background:transparent;font-size:27px;cursor:pointer;color:#657a90}
+.schematic-system-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px;background:white;border:1px solid #e1eaf4;border-radius:12px;margin-top:10px}.schematic-system-card p{margin:6px 0;color:#425d76;font-size:14px}.schematic-system-card small,.schematic-detail-note{color:#77899b;font-size:12px}.schematic-status{white-space:nowrap;background:#fff2dd;color:#ad6809;border-radius:20px;padding:7px 10px;font-size:11px;font-weight:700}.schematic-system-card-muted{opacity:.7}.schematic-detail-note{margin:15px 0 0}
+@media(max-width:1000px){.schematic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.schematic-main{padding:calc(88px + 8px) 12px 36px}.schematic-heading{gap:10px;margin-bottom:12px}.schematic-title-icon{width:50px;height:50px}.schematic-container{padding:18px 14px;border-radius:18px}.schematic-eyebrow{font-size:13px}.schematic-grid{gap:11px}.schematic-card-visual{height:125px}.schematic-card-visual img{padding:5px}.schematic-card-info{padding:12px 10px}.schematic-card-name{font-size:17px}.schematic-card-action{font-size:11px}.schematic-system-card{align-items:flex-start;flex-direction:column}.schematic-status{white-space:normal}}
+@media(prefers-reduced-motion:reduce){.schematic-card{transition:none}}

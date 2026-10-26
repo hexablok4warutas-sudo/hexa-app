@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HEXA Schematic | HEXA</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="hexa-header.css">
+  <link rel="stylesheet" href="hexa-schematic.css">
+</head>
+<body>
+  <header id="hexaHeader" data-header-type="standard" data-page="hexa-schematic"></header>
+  <main class="schematic-main">
+    <div class="schematic-shell">
+      <section class="schematic-heading" aria-labelledby="schematic-title">
+        <img class="schematic-title-icon" src="hexa-icon-SCHEMATiC.svg" alt="" onerror="this.style.display='none'">
+        <h1 id="schematic-title">HEXA <span>SCHEMATIC</span></h1>
+      </section>
+      <section class="schematic-container" aria-labelledby="unit-heading">
+        <div class="schematic-section-heading">
+          <div class="schematic-eyebrow">INTERACTIVE SCHEMATIC LIBRARY</div>
+          <p id="unit-heading">Pilih model unit untuk membuka daftar diagram electrical dan hydraulic.</p>
+        </div>
+        <div class="schematic-grid">
+          <button type="button" class="schematic-card" data-model="CAT 395" aria-label="Pilih schematic CAT 395">
+            <span class="schematic-card-visual"><img src="cat-395.png" alt="Excavator CAT 395" loading="lazy" onerror="this.classList.add('image-missing')"><span class="schematic-image-fallback">CAT 395</span></span>
+            <span class="schematic-card-info"><span class="schematic-card-name">CAT 395</span><span class="schematic-card-maker">Caterpillar</span><span class="schematic-card-action">View Schematics</span></span>
+          </button>
+          <button type="button" class="schematic-card" data-model="PC1250-8" aria-label="Pilih schematic PC1250-8">
+            <span class="schematic-card-visual"><img src="pc1250-8.png" alt="Excavator PC1250-8" loading="lazy" onerror="this.classList.add('image-missing')"><span class="schematic-image-fallback">PC1250-8</span></span>
+            <span class="schematic-card-info"><span class="schematic-card-name">PC1250-8</span><span class="schematic-card-maker">Komatsu</span><span class="schematic-card-action">Coming Soon</span></span>
+          </button>
+          <button type="button" class="schematic-card" data-model="PC1250-11" aria-label="Pilih schematic PC1250-11">
+            <span class="schematic-card-visual"><img src="pc1250-11.png" alt="Excavator PC1250-11" loading="lazy" onerror="this.classList.add('image-missing')"><span class="schematic-image-fallback">PC1250-11</span></span>
+            <span class="schematic-card-info"><span class="schematic-card-name">PC1250-11</span><span class="schematic-card-maker">Komatsu</span><span class="schematic-card-action">Coming Soon</span></span>
+          </button>
+          <button type="button" class="schematic-card" data-model="PC500" aria-label="Pilih schematic PC500">
+            <span class="schematic-card-visual"><img src="pc500.png" alt="Excavator PC500" loading="lazy" onerror="this.classList.add('image-missing')"><span class="schematic-image-fallback">PC500</span></span>
+            <span class="schematic-card-info"><span class="schematic-card-name">PC500</span><span class="schematic-card-maker">Komatsu</span><span class="schematic-card-action">Coming Soon</span></span>
+          </button>
+        </div>
+        <section id="schematic-model-detail" class="schematic-model-detail" hidden aria-live="polite">
+          <div class="schematic-detail-heading"><h2 id="schematic-detail-title">CAT 395 — Schematic Library</h2><button type="button" id="schematic-detail-close" aria-label="Tutup pilihan diagram">×</button></div>
+          <div class="schematic-system-card"><div><strong>Electrical System</strong><p>Volume 1 — Cab Wiring</p><small>CAT 395 · M0133521 · Volume 1 of 4</small></div><span class="schematic-status">Viewer belum dipasang</span></div>
+          <div class="schematic-system-card schematic-system-card-muted"><div><strong>Hydraulic System</strong><p>Dokumen belum ditambahkan</p></div><span class="schematic-status">Coming Soon</span></div>
+          <p class="schematic-detail-note">Halaman ini merupakan tahap awal navigasi. PDF dan interactive viewer akan dihubungkan pada tahap berikutnya.</p>
+        </section>
+      </section>
+    </div>
+  </main>
+  <script src="hexa-menu.js"></script>
+  <script src="hexa-header.js"></script>
+  <script src="hexa-schematic.js"></script>
+</body>
+</html>
