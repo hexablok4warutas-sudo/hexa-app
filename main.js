@@ -76,6 +76,7 @@ const HEXA_PAGES = {
   "hexa-games": { url: "hexa-games.html", enabled: true },
   "my-development": { url: "my-development.html", enabled: true },
   "hex-catalog": { url: "hex-catalog.html", enabled: true },
+  "hexa-schematic": { url: "hexa-schematic.html", enabled: true },
   "knibal": { url: "knibal.html", enabled: true },
   "settings": { url: "/settings", enabled: true }
 };
