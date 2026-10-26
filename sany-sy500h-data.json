@@ -4290,7 +4290,7 @@
         "catalog-images/sy500h/60355586-09.svg",
         "catalog-images/sy500h/60355586-10.svg"
       ],
-      "svgStatus": "candidate-needs-hotspot-review"
+      "svgStatus": "HD-source-diagram; interactive-index-mapping-pending"
     },
     {
       "id": "sany-4-60242827",
@@ -4299,8 +4299,7 @@
       "assemblyNumber": "60242827",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
       "images": [
-        "catalog-images/sy500h/60242827-01.svg",
-        "catalog-images/sy500h/60242827-02.svg"
+        "catalog-images/sy500h/60242827-01.svg"
       ],
       "parts": [
         {
@@ -4516,7 +4515,7 @@
         "catalog-images/sy500h/60242827-01.svg",
         "catalog-images/sy500h/60242827-02.svg"
       ],
-      "svgStatus": "candidate-needs-hotspot-review"
+      "svgStatus": "HD-source-diagram; interactive-index-mapping-pending"
     },
     {
       "id": "sany-4-13308041",
