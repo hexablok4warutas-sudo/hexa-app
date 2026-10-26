@@ -1,0 +1,287 @@
+:root{--cat-blue:#075eaa;--cat-orange:#ff9417}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#18324c;background:#f7fafc url('hexa-doodle.png') center/430px repeat}.cat-main{padding:108px 18px 60px;min-height:100vh}.cat-shell{max-width:1320px;margin:auto}.cat-title{display:flex;align-items:center;gap:15px;padding:10px 12px 16px;background:#fff;border-bottom:2px solid var(--cat-orange);margin-bottom:14px}.cat-title img{width:68px;height:68px;object-fit:contain}.cat-title h1{font-size:clamp(27px,4vw,44px);margin:0;color:#111}.cat-title h1 span{color:var(--cat-orange)}.cat-title small{font-size:16px;color:#6b7f91}.cat-panel{padding:28px;background:rgba(255,255,255,.97);border:1px solid #e2edf6;border-radius:24px;box-shadow:0 14px 36px #16476a15}.cat-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:22px}.cat-top strong{font-size:19px;color:var(--cat-orange);letter-spacing:1px}.cat-top p{font-size:13px;color:#678;margin:8px 0}.cat-top a{color:var(--cat-blue);text-decoration:none;font-size:13px;font-weight:700}.cat-layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:18px}.cat-groups,.cat-detail,.cat-selection{border:1px solid #dce9f5;border-radius:16px;background:white;padding:16px}.cat-groups h2,.cat-detail h2,.cat-selection h2{font-size:16px;margin:0 0 14px}.cat-groups input{width:100%;padding:11px;border:1px solid #d7e4f1;border-radius:10px;margin-bottom:12px}.cat-group-btn{width:100%;display:flex;justify-content:space-between;gap:8px;text-align:left;padding:12px 10px;background:#f7fbff;border:1px solid transparent;border-radius:9px;margin-bottom:6px;cursor:pointer;color:#315674;font-weight:600}.cat-group-btn.active{background:#fff3e4;border-color:#ffa735;color:#925000}.cat-group-btn small{white-space:nowrap}.cat-detail-head,.cat-image-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px}.cat-detail-head span{font-size:12px;color:#6b8095}.cat-images{border:1px solid #e4edf5;border-radius:12px;overflow:hidden;margin:12px 0 18px}.cat-image-toolbar{padding:10px 14px;background:#f5f9fd;font-size:13px}.cat-image-toolbar button{border:1px solid #cadce9;background:#fff;border-radius:6px;cursor:pointer;padding:5px 11px}.cat-image-toolbar button:disabled{opacity:.35;cursor:default}.cat-drawing{height:340px;display:flex;align-items:center;justify-content:center;color:#7c90a2;background:#fff;text-align:center;padding:16px}.cat-drawing img{width:100%;height:100%;object-fit:contain}.cat-table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:11px 9px;border-bottom:1px solid #e5edf5;text-align:left;white-space:nowrap}th{background:#f3f8fc;color:#42617c}td:nth-child(3){white-space:normal}tbody tr:hover{background:#fff9f1}.cat-qty{width:65px;padding:7px;border:1px solid #d0deea;border-radius:6px}.cat-add{border:0;border-radius:7px;background:var(--cat-blue);color:#fff;padding:8px 11px;cursor:pointer}.cat-selection{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:16px}.cat-selection p{font-size:12px;color:#637d91;line-height:1.6;max-width:780px}.cat-selection-actions{display:flex;gap:8px}.cat-selection-actions button{padding:10px 14px;border-radius:9px;border:1px solid #d2e2f0;background:white;cursor:pointer;white-space:nowrap}.cat-selection-actions button:last-child{background:var(--cat-blue);color:#fff;border-color:var(--cat-blue)}@media(max-width:850px){.cat-layout{grid-template-columns:1fr}.cat-groups #groupList{display:flex;gap:7px;overflow-x:auto}.cat-group-btn{min-width:180px}.cat-drawing{height:290px}}@media(max-width:600px){.cat-main{padding:98px 10px 28px}.cat-panel{padding:13px;border-radius:15px}.cat-title img{width:45px;height:45px}.cat-title small{display:block;font-size:12px}.cat-top{align-items:flex-start;flex-direction:column}.cat-top strong{font-size:15px}.cat-selection{align-items:stretch;flex-direction:column}.cat-selection-actions{flex-wrap:wrap}.cat-drawing{height:235px}}
+
+/* HEXCatalog SVG interactive viewer */
+.cat-image-toolbar{flex-wrap:wrap;gap:8px}
+.cat-zoom-controls{display:flex;align-items:center;gap:5px;margin-left:auto}
+.cat-zoom-controls button{min-width:34px;min-height:32px;font-weight:700;color:#075eaa}
+.cat-zoom-controls button:hover{background:#fff3e4;border-color:#ff9417}
+.cat-zoom-label{min-width:47px;text-align:center;font-size:12px;color:#315674;font-variant-numeric:tabular-nums}
+.cat-drawing.cat-viewer{position:relative;height:clamp(390px,43vw,630px);overflow:hidden;padding:0;touch-action:none;cursor:grab;user-select:none}
+.cat-drawing.cat-viewer.is-dragging{cursor:grabbing}
+.cat-viewer-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cat-viewer-stage:after{content:attr(data-message);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#7c90a2;pointer-events:none;font-size:14px}
+.cat-viewer-stage:not([data-message=""]):after{background:white}
+.cat-viewer-stage[data-message=""]:after{display:none}
+.cat-viewer-image{display:block;max-width:none!important;max-height:none!important;width:100%!important;height:100%!important;object-fit:contain;transform-origin:center center;will-change:transform;pointer-events:none}
+.cat-images.cat-fullscreen{position:fixed;z-index:100000;inset:10px;margin:0;border-radius:12px;display:flex;flex-direction:column;background:#fff;box-shadow:0 0 0 20px #000b}
+.cat-fullscreen .cat-drawing{flex:1;height:auto!important;min-height:0}
+.cat-viewer-open{overflow:hidden}
+@media(max-width:600px){.cat-drawing.cat-viewer{height:360px}.cat-zoom-controls{width:100%;justify-content:flex-end}.cat-images.cat-fullscreen{inset:0;border-radius:0}}
+
+/* Part number selection from drawing: manual matching until SVG callouts are mapped */
+.cat-part-picker{position:absolute;z-index:12;width:min(285px,calc(100% - 16px));max-height:260px;overflow:auto;text-align:left;background:#fff;border:1px solid #d2e3f0;border-radius:12px;box-shadow:0 14px 35px #15364b33;padding:10px;cursor:default;touch-action:pan-y;user-select:text}
+.cat-part-picker[hidden]{display:none!important}
+.cat-picker-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px;color:#163a5c}
+.cat-picker-head button{border:0;background:#f0f5fa;border-radius:7px;font-size:20px;cursor:pointer}
+.cat-picker-list{display:grid;gap:4px;max-height:170px;overflow:auto}
+.cat-picker-list button{display:flex;align-items:center;gap:9px;padding:8px;text-align:left;border:1px solid #e4edf6;background:#f8fbff;border-radius:7px;cursor:pointer;font-size:12px}
+.cat-picker-list button:hover{background:#fff1df;border-color:#ff9417}
+.cat-picker-list b{color:#075eaa;white-space:nowrap}
+.cat-picker-list span{overflow-wrap:anywhere}
+.cat-part-picker small{display:block;color:#778da1;margin-top:8px;font-size:10px;line-height:1.4}
+#partsBody tr.cat-part-highlight{background:#fff0d9;outline:2px solid #ff9417;outline-offset:-2px}
+.cat-viewer-stage[data-message=""]{cursor:crosshair}
+
+/* SVG CAT SIS: grup part asli dapat diklik, tanpa mengganggu zoom/pan */
+.cat-inline-svg{pointer-events:auto!important;overflow:visible}
+.cat-inline-svg g.part{cursor:pointer}
+.cat-inline-svg g.part:hover{filter:drop-shadow(0 0 1.1px #ff9417)}
+.cat-inline-svg g.part:hover path,
+.cat-inline-svg g.part:hover polyline,
+.cat-inline-svg g.part:hover line{stroke:#ff9417!important;stroke-width:.3!important}
+
+/* ===== HEXCatalog CAT395: mobile layout / overflow containment ===== */
+html,body{max-width:100%;overflow-x:clip}
+.cat-main,.cat-shell,.cat-panel,.cat-layout,.cat-detail,.cat-groups,.cat-images,.cat-table-wrap{min-width:0;max-width:100%}
+.cat-layout{grid-template-columns:minmax(0,265px) minmax(0,1fr)}
+.cat-drawing.cat-viewer,.cat-viewer-stage{max-width:100%;min-width:0;contain:layout paint}
+.cat-inline-svg{overflow:hidden!important;max-width:none}
+.cat-image-toolbar>div:first-of-type{display:flex;align-items:center;gap:5px}
+.cat-image-toolbar button{min-height:36px}
+@media(max-width:850px){
+ .cat-layout{display:grid;grid-template-columns:minmax(0,1fr)}
+ .cat-groups #groupList{display:flex;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;padding-bottom:5px}
+ .cat-group-btn{flex:0 0 165px;min-width:0;scroll-snap-align:start}
+ .cat-detail,.cat-groups{width:100%}
+}
+@media(max-width:600px){
+ html{-webkit-text-size-adjust:100%}
+ .cat-main{width:100%;padding:96px 10px 30px}
+ .cat-shell{width:100%}
+ .cat-title{padding:9px 10px;gap:9px}
+ .cat-title img{width:42px;height:42px;flex:none}
+ .cat-title h1{font-size:25px;line-height:1.12}
+ .cat-title small{font-size:11px;margin-top:4px}
+ .cat-panel{padding:12px;border-radius:14px}
+ .cat-top{gap:7px;margin-bottom:14px}
+ .cat-top strong{font-size:14px;line-height:1.4}
+ .cat-top p{font-size:12px;line-height:1.5}
+ .cat-groups,.cat-detail,.cat-selection{padding:12px;border-radius:12px}
+ .cat-groups h2,.cat-detail h2,.cat-selection h2{font-size:16px}
+ .cat-groups input{font-size:16px;min-height:43px}
+ .cat-group-btn{flex-basis:150px;font-size:12px;min-height:44px;padding:11px 9px}
+ .cat-image-toolbar{display:flex;flex-wrap:wrap;gap:9px;padding:9px}
+ .cat-image-toolbar strong{font-size:12px}
+ .cat-zoom-controls{width:100%;justify-content:space-between;gap:4px}
+ .cat-zoom-controls button{flex:1;min-height:40px;min-width:0;padding:5px 6px;font-size:14px}
+ .cat-zoom-label{min-width:44px}
+ .cat-drawing.cat-viewer{height:clamp(310px,88vw,470px);width:100%;overflow:hidden}
+ .cat-viewer-stage{overflow:hidden}
+ .cat-part-picker{position:absolute!important;width:min(300px,calc(100% - 16px));max-height:230px;font-size:13px}
+ .cat-picker-list button{min-height:43px}
+ .cat-table-wrap{overflow:visible}
+ .cat-table-wrap table,.cat-table-wrap tbody,.cat-table-wrap tr,.cat-table-wrap td{display:block;width:100%}
+ .cat-table-wrap thead{display:none}
+ .cat-table-wrap tbody{display:grid;gap:10px}
+ .cat-table-wrap tbody tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;padding:12px;border:1px solid #dce9f5;border-radius:12px;background:#fff}
+ .cat-table-wrap tbody tr.cat-part-highlight{border-color:#ff9417;outline:1px solid #ff9417}
+ .cat-table-wrap td{min-width:0;white-space:normal;padding:0;border:0;overflow-wrap:anywhere;font-size:13px}
+ .cat-table-wrap td::before{display:block;margin-bottom:5px;color:#668198;font-size:10px;font-weight:700;letter-spacing:.2px}
+ .cat-table-wrap td:nth-child(1)::before{content:'No'}
+ .cat-table-wrap td:nth-child(2)::before{content:'Part Number'}
+ .cat-table-wrap td:nth-child(3){grid-column:1/-1}
+ .cat-table-wrap td:nth-child(3)::before{content:'Description'}
+ .cat-table-wrap td:nth-child(4)::before{content:'Qty Assembly'}
+ .cat-table-wrap td:nth-child(5)::before{content:'Qty Needed'}
+ .cat-table-wrap td:nth-child(6){grid-column:1/-1}
+ .cat-qty{width:100%;max-width:140px;min-height:42px;font-size:16px}
+ .cat-add{width:100%;min-height:43px;font-size:14px}
+ .cat-selection{gap:12px}
+ .cat-selection-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+ .cat-selection-actions button{white-space:normal;min-height:44px;padding:9px;font-size:12px}
+ .cat-selection p{overflow-wrap:anywhere}
+ .cat-images.cat-fullscreen{inset:0;max-width:none;border-radius:0}
+ .cat-fullscreen .cat-drawing.cat-viewer{height:auto}
+}
+
+/* ===== v2: readable dense part cards on phones ===== */
+@media(max-width:600px){
+ .cat-panel{padding:12px}.cat-top strong{font-size:15px;letter-spacing:.25px}
+ .cat-top p,.cat-top a{font-size:13px;line-height:1.45}
+ .cat-detail-head h2,.cat-groups h2,.cat-selection h2{font-size:17px}
+ .cat-image-toolbar strong{font-size:13px}
+ .cat-group-btn{font-size:13px;line-height:1.25}
+ .cat-table-wrap tbody{gap:9px}
+ .cat-table-wrap tbody tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 12px;padding:13px;border-radius:12px;align-items:start}
+ .cat-table-wrap td{font-size:14px;line-height:1.4}
+ .cat-table-wrap td::before{font-size:10px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px}
+ .cat-table-wrap td:nth-child(1){grid-column:1;grid-row:1;color:#668198;font-size:11px;font-weight:700}
+ .cat-table-wrap td:nth-child(1)::before{content:'NO.';display:inline;margin-right:5px}
+ .cat-table-wrap td:nth-child(2){grid-column:1;grid-row:2;font-size:18px;color:#075eaa;font-weight:800;margin:4px 0 0}
+ .cat-table-wrap td:nth-child(2)::before{display:none}
+ .cat-table-wrap td:nth-child(3){grid-column:1/-1;grid-row:3;font-size:14px;padding:3px 0 11px;border-bottom:1px solid #e6edf4}
+ .cat-table-wrap td:nth-child(3)::before{display:none}
+ .cat-table-wrap td:nth-child(4){grid-column:2;grid-row:1/3;align-self:center;background:#f0f5fa;border-radius:20px;padding:6px 9px;font-size:12px;white-space:nowrap}
+ .cat-table-wrap td:nth-child(4)::before{content:'Qty Assy:';display:inline;margin-right:5px;font-size:11px;letter-spacing:0;text-transform:none}
+ .cat-table-wrap td:nth-child(5){grid-column:1;grid-row:4;padding-top:12px;align-self:end}
+ .cat-table-wrap td:nth-child(6){grid-column:2;grid-row:4;padding-top:12px;align-self:end}
+ .cat-qty{max-width:none;width:100%;height:44px;font-size:16px}
+ .cat-add{width:100%;min-width:105px;height:44px;font-size:14px}
+ .cat-drawing.cat-viewer{touch-action:none}
+ .cat-viewer-stage{touch-action:none}
+ .cat-part-picker{font-size:14px}
+}
+
+/* ===== HEXCatalog Selected Parts v3: responsive table/cards ===== */
+.cat-selection{display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px}
+.cat-selection>div:first-child{flex:1 1 100%;min-width:0}
+.cat-selection #selectionSummary{margin-top:12px;line-height:1.5;overflow:visible}
+.cat-selected-table-wrap{max-width:100%;overflow-x:auto;border:1px solid #dce9f5;border-radius:12px;background:#fff}
+.cat-selected-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}
+.cat-selected-table th{background:#f1f6fc;color:#143b5b;padding:11px 12px;white-space:nowrap;font-size:12px}
+.cat-selected-table td{padding:11px 12px;border-top:1px solid #e7edf5;vertical-align:middle;color:#234760}
+.cat-selected-table td strong{color:#075eaa;font-size:14px}
+.cat-selected-qty{width:82px;min-height:40px;border:1px solid #c9dbea;border-radius:8px;padding:6px 8px;font-size:16px;background:#fff;color:#143b5b}
+.cat-selected-remove{min-height:40px;border:1px solid #f0c4c4;background:#fff5f5;color:#aa2634;border-radius:8px;padding:7px 12px;font-weight:700;cursor:pointer}
+.cat-selected-remove:hover{background:#ffe6e6}
+.cat-selection-empty{display:block;padding:14px;color:#698096;background:#f5f8fc;border-radius:9px}
+.cat-selection-actions{margin-left:auto;display:flex;gap:9px;flex-wrap:wrap}
+@media(max-width:700px){
+ .cat-selection{display:block}
+ .cat-selected-table-wrap{overflow:visible;border:0;background:transparent}
+ .cat-selected-table,.cat-selected-table tbody,.cat-selected-table tr,.cat-selected-table td{display:block;width:100%}
+ .cat-selected-table thead{display:none}
+ .cat-selected-table tbody{display:grid;gap:10px}
+ .cat-selected-table tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;border:1px solid #dce9f5;border-radius:12px;background:#fff;padding:12px}
+ .cat-selected-table td{padding:0;border:0;min-width:0;overflow-wrap:anywhere;font-size:13px}
+ .cat-selected-table td::before{content:attr(data-label);display:block;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#668198;margin-bottom:3px}
+ .cat-selected-table td:nth-child(1){grid-column:1/-1}
+ .cat-selected-table td:nth-child(2){grid-column:2;grid-row:2}
+ .cat-selected-table td:nth-child(3){grid-column:1;grid-row:2}
+ .cat-selected-table td:nth-child(4){grid-column:1/-1;padding-bottom:9px;border-bottom:1px solid #e6edf4}
+ .cat-selected-table td:nth-child(5){grid-column:1;align-self:end}
+ .cat-selected-table td:nth-child(6){grid-column:2;align-self:end}
+ .cat-selected-table td:nth-child(6)::before{content:'Aksi'}
+ .cat-selected-qty{width:100%;max-width:130px;min-height:44px}
+ .cat-selected-remove{min-height:44px;width:100%}
+ .cat-selection-actions{display:grid;grid-template-columns:1fr 1.4fr;margin-top:12px}
+}
+
+/* FIX: CAT SIS SVG clickable callouts and part shapes */
+.cat-inline-svg g.callout,
+.cat-inline-svg g.part { cursor:pointer!important; pointer-events:visiblePainted!important; }
+.cat-inline-svg g.callout *,
+.cat-inline-svg g.part * { cursor:pointer!important; pointer-events:visiblePainted!important; }
+.cat-inline-svg g.callout:hover,
+.cat-inline-svg g.part:hover { filter:drop-shadow(0 0 2px #ff9417); }
+.cat-inline-svg g.callout:hover text,
+.cat-inline-svg g.callout:hover tspan { fill:#ff8500!important; }
+.cat-inline-svg g.callout.cat-svg-selected,
+.cat-inline-svg g.part.cat-svg-selected { filter:drop-shadow(0 0 2.5px #ff9417); }
+
+/* Single and multi-number callouts: cursor + orange hover + browser tooltip via SVG title */
+.cat-inline-svg g.callout text,.cat-inline-svg g.callout tspan{cursor:pointer!important}
+.cat-inline-svg g.callout:hover text,.cat-inline-svg g.callout:hover tspan{fill:#ff8500!important;stroke:#ff8500!important}
+
+/* HEXCatalog Global Search - tambahkan pada AKHIR cat395-catalog.css */
+.cat-search-section{margin:12px 4px 7px;color:#52728c;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.cat-group-btn.cat-search-result{width:100%;text-align:left;align-items:center;gap:8px;min-height:65px}
+.cat-search-result>span{display:flex;flex-direction:column;gap:3px;min-width:0;overflow-wrap:anywhere}
+.cat-search-result strong{color:#075eaa;font-size:13px}
+.cat-search-desc{font-size:11px;color:#354e64;font-weight:400}
+.cat-search-group{font-size:10px;color:#71879a;font-weight:400}
+.cat-search-hint{padding:10px 5px;font-size:12px;color:#688096}
+.cat-search-result:hover strong{color:#ff8500}
+
+
+
+/* === HEXCatalog CAT 395 | Drawing + Parts List side-by-side === */
+.cat-layout{grid-template-columns:minmax(0,265px) minmax(0,1fr);align-items:start}
+.cat-detail{min-width:0}
+.cat-workspace{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,1fr);gap:12px;align-items:stretch;min-width:0}
+.cat-workspace .cat-images{margin:12px 0 0;min-width:0;display:flex;flex-direction:column}
+.cat-workspace .cat-images .cat-drawing.cat-viewer{height:clamp(390px,43vw,630px);min-height:0;flex:1}
+.cat-parts-panel{min-width:0;margin-top:12px;border:1px solid #e4edf5;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;height:calc(clamp(390px,43vw,630px) + 57px)}
+.cat-parts-heading{flex:none;min-height:57px;padding:11px 12px;background:#f5f9fd;display:flex;flex-direction:column;gap:4px;color:#18324c}
+.cat-parts-heading small{font-size:11px;color:#74889b;font-weight:normal}
+.cat-parts-panel .cat-table-wrap{min-height:0;flex:1;overflow-y:auto;overflow-x:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.cat-parts-panel table{font-size:12px;table-layout:auto}
+.cat-parts-panel thead{position:sticky;top:0;z-index:2}
+.cat-parts-panel th,.cat-parts-panel td{padding:10px 6px;white-space:normal;overflow-wrap:anywhere;vertical-align:middle}
+.cat-parts-panel th:nth-child(1),.cat-parts-panel td:nth-child(1){width:38px}
+.cat-parts-panel th:nth-child(2),.cat-parts-panel td:nth-child(2){min-width:94px}
+.cat-parts-panel th:nth-child(4),.cat-parts-panel td:nth-child(4){width:39px;text-align:center}
+.cat-parts-panel th:nth-child(5),.cat-parts-panel td:nth-child(5){width:45px;text-align:center}
+.cat-parts-panel .cat-add{display:inline-flex;align-items:center;justify-content:center;background:#ff9417;color:#fff;border:0;width:35px;height:35px;padding:0;border-radius:9px;cursor:pointer}
+.cat-parts-panel .cat-add:hover{background:#e67d00}
+.cat-parts-panel .cat-add.is-selected{background:#fff1de;color:#c96b00;outline:1px solid #ffb95e}
+.cat-selection{margin-top:14px;width:100%}
+.cat-images.cat-fullscreen{margin:0;display:flex}
+.cat-images.cat-fullscreen .cat-drawing.cat-viewer{height:auto!important;flex:1}
+@media(max-width:1200px){.cat-workspace{grid-template-columns:minmax(0,1.1fr) minmax(255px,1fr)}}
+@media(max-width:1000px){.cat-layout{grid-template-columns:minmax(0,1fr)}.cat-workspace{grid-template-columns:minmax(0,1.2fr) minmax(255px,1fr)}}
+@media(max-width:700px){
+ .cat-workspace{grid-template-columns:minmax(0,1fr)}
+ .cat-workspace .cat-images .cat-drawing.cat-viewer{height:clamp(310px,88vw,470px);flex:none}
+ .cat-parts-panel{height:390px;margin-top:0}
+ .cat-parts-panel .cat-table-wrap{overflow-y:auto;overflow-x:hidden}
+ .cat-parts-panel .cat-table-wrap table{display:table;width:100%}
+ .cat-parts-panel .cat-table-wrap thead{display:table-header-group}
+ .cat-parts-panel .cat-table-wrap tbody{display:table-row-group}
+ .cat-parts-panel .cat-table-wrap tr{display:table-row;background:transparent;border:0;padding:0}
+ .cat-parts-panel .cat-table-wrap td{display:table-cell;width:auto;grid-column:auto;grid-row:auto;padding:10px 5px;border-bottom:1px solid #e5edf5;font-size:12px;line-height:1.35;white-space:normal;background:transparent}
+ .cat-parts-panel .cat-table-wrap td::before{display:none!important}
+ .cat-parts-panel .cat-table-wrap td:nth-child(2){font-size:12px;margin:0;color:#075eaa}
+ .cat-parts-panel .cat-table-wrap td:nth-child(3){padding:10px 5px;border-bottom:1px solid #e5edf5}
+ .cat-parts-panel .cat-table-wrap td:nth-child(4){border-radius:0;white-space:normal}
+ .cat-parts-panel .cat-table-wrap td:nth-child(5){padding:10px 4px}
+ .cat-parts-panel .cat-add{width:35px;height:35px;min-width:35px;min-height:35px}
+}
+
+/* === HEXCatalog CAT SIS: interaksi Drawing ↔ Parts List (tambahan aman) === */
+.cat-parts-panel #partsBody tr{cursor:pointer}
+.cat-parts-panel #partsBody tr:focus-visible{outline:2px solid #ff9417;outline-offset:-2px}
+.cat-parts-panel #partsBody tr.cat-part-highlight,
+.cat-parts-panel #partsBody tr.cat-part-highlight td{background:#fff0d9!important}
+.cat-parts-panel #partsBody tr.cat-part-highlight{box-shadow:inset 3px 0 #ff9417}
+/* Highlight nomor yang dipilih harus tetap oranye setelah mouse menjauh. */
+.cat-inline-svg g.callout.cat-svg-selected text,
+.cat-inline-svg g.callout.cat-svg-selected tspan,
+.cat-inline-svg g.callout.cat-svg-selected text *,
+.cat-inline-svg g.callout.cat-svg-selected tspan *{
+ fill:#ff8500!important;stroke:#ff8500!important;
+}
+.cat-inline-svg g.callout.cat-svg-selected{filter:drop-shadow(0 0 2px #ff9417)}
+.cat-inline-svg g.part.cat-svg-selected path,
+.cat-inline-svg g.part.cat-svg-selected line,
+.cat-inline-svg g.part.cat-svg-selected polyline,
+.cat-inline-svg g.part.cat-svg-selected polygon{
+ stroke:#ff8500!important;
+}
+
+/* v4: selected callout — thin orange text, no opaque stroke or glow. */
+.cat-inline-svg g.callout.cat-svg-selected,.cat-inline-svg g.part.cat-svg-selected{filter:none!important}
+.cat-inline-svg g.callout.cat-svg-selected text,.cat-inline-svg g.callout.cat-svg-selected tspan,
+.cat-inline-svg g.callout.cat-svg-selected text *,.cat-inline-svg g.callout.cat-svg-selected tspan *{
+ fill:#c86b00!important;stroke:none!important;filter:none!important;paint-order:normal!important;
+}
+.cat-inline-svg g.callout.cat-svg-selected circle,.cat-inline-svg g.callout.cat-svg-selected rect,
+.cat-inline-svg g.callout.cat-svg-selected ellipse{stroke:#ef8a13!important;stroke-width:1.1!important;fill:none!important}
+.cat-inline-svg g.callout:hover text,.cat-inline-svg g.callout:hover tspan{stroke:none!important;fill:#c86b00!important}
+
+/* v5: highlight bentuk part terpilih, hanya untuk SVG yang memiliki g.part. */
+.cat-inline-svg g.part.cat-svg-selected path,
+.cat-inline-svg g.part.cat-svg-selected line,
+.cat-inline-svg g.part.cat-svg-selected polyline,
+.cat-inline-svg g.part.cat-svg-selected polygon,
+.cat-inline-svg g.part.cat-svg-selected circle,
+.cat-inline-svg g.part.cat-svg-selected ellipse,
+.cat-inline-svg g.part.cat-svg-selected rect{
+ stroke:#e98313!important;
+ filter:none!important;
+}
+/* Nomor tetap terbaca dan tidak ditutup blok warna. */
+.cat-inline-svg g.part.cat-svg-selected text,
+.cat-inline-svg g.part.cat-svg-selected tspan{stroke:none!important;filter:none!important}
+
+.cat-inline-svg g.callout.cat-svg-selected rect{fill:#ffcc83!important;stroke:#f28c18!important;stroke-width:3!important}.cat-inline-svg g.callout{cursor:pointer}

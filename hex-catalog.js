@@ -4,6 +4,7 @@
 
 const catalogPages = {
   'CAT 395': 'cat395-catalog.html',
+  'SANY SY500H': 'sany-sy500h-catalog.html',
   'PC1250-11': 'pc1250-11-catalog.html'
 };
 

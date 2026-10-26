@@ -1,0 +1,144 @@
+{
+  "model": "SANY SY500H",
+  "sourceModel": "SY500C1I3KH / SY500C1 (verify machine applicability)",
+  "systems": [
+    "WORK EQUIPMENT",
+    "ELECTRICAL SYSTEM",
+    "HYDRAULIC SYSTEM",
+    "UNDERCARRIAGE",
+    "POWER SYSTEM",
+    "CABIN",
+    "STRUCTURE & COVERS",
+    "COATING",
+    "ACCESSORIES",
+    "OTHER FITTINGS"
+  ],
+  "groups": [
+    {
+      "id": "hydraulic-tank",
+      "name": "Hydraulic Tank",
+      "system": "HYDRAULIC SYSTEM",
+      "assemblyNumber": "13510936",
+      "note": "Source PDF 4-10 drawing / 4-11 parts list; machine variant applicability requires confirmation",
+      "images": [
+        "sany-sy500h-hydraulic-tank.svg"
+      ],
+      "parts": [
+        {
+          "no": "1",
+          "pn": "13493377",
+          "description": "Hydraulic oil tank body",
+          "qty": 1
+        },
+        {
+          "no": "2",
+          "pn": "A210111000101",
+          "description": "Bolt",
+          "qty": 12
+        },
+        {
+          "no": "3",
+          "pn": "A210401000002",
+          "description": "Washer",
+          "qty": 12
+        },
+        {
+          "no": "4",
+          "pn": "13302886",
+          "description": "suction cover",
+          "qty": 1
+        },
+        {
+          "no": "5",
+          "pn": "A210609000112",
+          "description": "O-Ring-212×5.3GB3452.1",
+          "qty": 1
+        },
+        {
+          "no": "6",
+          "pn": "60251436",
+          "description": "Oil suction filter",
+          "qty": 1
+        },
+        {
+          "no": "7",
+          "pn": "12353451",
+          "description": "oil drainage filter core",
+          "qty": 1
+        },
+        {
+          "no": "8",
+          "pn": "A210405000001",
+          "description": "Washer",
+          "qty": 6
+        },
+        {
+          "no": "9",
+          "pn": "A210204000338",
+          "description": "Screw",
+          "qty": 4
+        },
+        {
+          "no": "10",
+          "pn": "A250100000044",
+          "description": "Liquid Level Meter YWZ-200",
+          "qty": 1
+        },
+        {
+          "no": "11",
+          "pn": "60014122",
+          "description": "Oil Return Filter",
+          "qty": 1
+        },
+        {
+          "no": "12",
+          "pn": "A210609000219",
+          "description": "O-ring",
+          "qty": 1
+        },
+        {
+          "no": "13",
+          "pn": "10695860",
+          "description": "Cover PlateSY420C5MK.1.2.6.3-1",
+          "qty": 1
+        },
+        {
+          "no": "14",
+          "pn": "B230101000366",
+          "description": "O-ring",
+          "qty": 1
+        },
+        {
+          "no": "15",
+          "pn": "A210111000202",
+          "description": "Bolt",
+          "qty": 2
+        },
+        {
+          "no": "16",
+          "pn": "B230101000356",
+          "description": "O-Ring-23.7",
+          "qty": 1
+        },
+        {
+          "no": "17",
+          "pn": "10514225",
+          "description": "Screw Plug",
+          "qty": 1
+        },
+        {
+          "no": "18",
+          "pn": "21005186",
+          "description": "Bolt",
+          "qty": 2
+        },
+        {
+          "no": "19",
+          "pn": "24000512",
+          "description": "Washer",
+          "qty": 2
+        }
+      ]
+    }
+  ]
+}
