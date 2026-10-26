@@ -5045,7 +5045,18 @@
       "assemblyNumber": "60242783",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
       "images": [
-        "catalog-images/sy500h/60242783-01.svg"
+        "catalog-images/sy500h/60242783-01.svg",
+        "catalog-images/sy500h/60242783-02.svg",
+        "catalog-images/sy500h/60242783-03.svg",
+        "catalog-images/sy500h/60242783-04.svg",
+        "catalog-images/sy500h/60242783-05.svg",
+        "catalog-images/sy500h/60242783-06.svg",
+        "catalog-images/sy500h/60242783-07.svg",
+        "catalog-images/sy500h/60242783-08.svg",
+        "catalog-images/sy500h/60242783-09.svg",
+        "catalog-images/sy500h/60242783-10.svg",
+        "catalog-images/sy500h/60242783-11.svg",
+        "catalog-images/sy500h/60242783-12.svg"
       ],
       "parts": [
         {
@@ -5515,7 +5526,7 @@
         "catalog-images/sy500h/60242783-11.svg",
         "catalog-images/sy500h/60242783-12.svg"
       ],
-      "svgStatus": "hd-source-verified-hotspots-pending"
+      "svgStatus": "hd-complete-pages-hotspots-pending"
     },
     {
       "id": "sany-4-13310215",
@@ -5561,7 +5572,10 @@
       "assemblyNumber": "13310212",
       "note": "Source: SY500C1I3KH parts book; SY500H applicability not verified.",
       "images": [
-        "catalog-images/sy500h/13310212-01.svg"
+        "catalog-images/sy500h/13310212-01.svg",
+        "catalog-images/sy500h/13310212-02.svg",
+        "catalog-images/sy500h/13310212-03.svg",
+        "catalog-images/sy500h/13310212-04.svg"
       ],
       "parts": [
         {
@@ -5943,7 +5957,7 @@
         "catalog-images/sy500h/13310212-03.svg",
         "catalog-images/sy500h/13310212-04.svg"
       ],
-      "svgStatus": "hd-source-verified-hotspots-pending"
+      "svgStatus": "hd-complete-pages-hotspots-pending"
     },
     {
       "id": "sany-4-60283709",
