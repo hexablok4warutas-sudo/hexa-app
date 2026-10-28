@@ -6726,10 +6726,65 @@ const updateHmActionPlus = $("updateHmActionPlus");
 const cancelUpdateButton = $("cancelUpdateButton");
 const submitUpdateButton = $("submitUpdateButton");
 
+// Master Group Component: sumber sama dengan Start Inspection.
+let groupComponentsLoaded = false;
+let groupComponentsLoading = null;
+async function loadUpdateGroupComponents() {
+  if (!updateGroupComponent) return;
+  if (groupComponentsLoading) return groupComponentsLoading;
+  const previousValue = updateGroupComponent.value || selectedRecord?.groupComponent || '';
+  const apply = (items, offline = false) => {
+    if (!Array.isArray(items) || !items.length) return false;
+    const ordered = [...items].sort((a, b) => {
+      const x = Number(String(a?.code ?? '').trim());
+      const y = Number(String(b?.code ?? '').trim());
+      if (Number.isFinite(x) && Number.isFinite(y) && x !== y) return x - y;
+      return String(a?.groupComponent ?? '').localeCompare(String(b?.groupComponent ?? ''), 'id', {numeric:true,sensitivity:'base'});
+    });
+    updateGroupComponent.replaceChildren(new Option(offline ? 'Select Component (offline)' : 'Select Component', ''));
+    for (const item of ordered) {
+      const name = String(item?.groupComponent ?? '').trim();
+      if (!name || [...updateGroupComponent.options].some(o => o.value === name)) continue;
+      const option = new Option(name, name);
+      option.dataset.code = String(item?.code ?? '').trim();
+      updateGroupComponent.add(option);
+    }
+    const selected = selectedRecord?.groupComponent || previousValue;
+    if (selected && ![...updateGroupComponent.options].some(o => o.value === selected)) {
+      updateGroupComponent.add(new Option(selected + ' (existing record)', selected));
+    }
+    updateGroupComponent.value = selected || '';
+    updateGroupComponent.disabled = updateGroupComponent.options.length <= 1;
+    groupComponentsLoaded = updateGroupComponent.options.length > 1;
+    return groupComponentsLoaded;
+  };
+  groupComponentsLoading = (async () => {
+    let hasCache = false;
+    try {
+      const cached = await window.HEXAOffline?.loadMaster('groupComponents');
+      if (cached?.data) hasCache = apply(cached.data, true);
+    } catch (error) { console.warn('Unit History Group Component cache:', error); }
+    if (!navigator.onLine) {
+      if (!hasCache) { updateGroupComponent.replaceChildren(new Option('Group Component unavailable offline', '')); updateGroupComponent.disabled = true; }
+      return;
+    }
+    try {
+      const result = await apiRequest({action:'getGroupComponentList'});
+      if (result?.success !== true || !apply(result.groupComponents)) throw new Error(result?.message || 'Group Component kosong');
+      try { await window.HEXAOffline?.saveMaster('groupComponents', result.groupComponents); } catch (error) { console.warn('Cache Group Component:', error); }
+    } catch (error) {
+      console.warn('Unit History Group Component API:', error);
+      if (!hasCache) { updateGroupComponent.replaceChildren(new Option('Unable to load Group Component', '')); updateGroupComponent.disabled = true; }
+    }
+  })().finally(() => { groupComponentsLoading = null; });
+  return groupComponentsLoading;
+}
+
 function openUpdateForm() {
   if (!canEdit || !selectedRecord) return;
   populateUpdateUnitOptions();
   fillUpdateForm(selectedRecord);
+  void loadUpdateGroupComponents();
   if (detailModal) detailModal.hidden = true;
   updateModal.hidden = false;
   updateModal.scrollTop = 0;
