@@ -41,7 +41,7 @@
         <div class="profile-hero-info">
           <div class="profile-name-row">
             <h2 id="profileHeroName">User Name</h2>
-            <span id="profileActiveMark" class="profile-active-mark" title="Active Account">
+            <span id="profileActiveMark" class="profile-active-mark" title="Telegram Connected" hidden>
               <svg viewBox="0 0 24 24"><path d="M12 2.5 14.1 4l2.6-.2.9 2.4L20 7.3l-.4 2.6 1.9 2.1-1.9 2.1.4 2.6-2.4 1.1-.9 2.4-2.6-.2-2.1 1.5L9.9 20l-2.6.2-.9-2.4L4 16.7l.4-2.6L2.5 12l1.9-2.1L4 7.3l2.4-1.1.9-2.4 2.6.2z"></path><path class="profile-active-check" d="M8.3 12.1l2.3 2.3 5.2-5.2"></path></svg>
             </span>
           </div>
@@ -62,6 +62,13 @@
           <div class="profile-field"><label>Name</label><div id="profileName" class="profile-field-value">-</div></div>
           <div class="profile-field"><label>Phone Number</label><div id="profilePhone" class="profile-field-value">-</div></div>
           <div class="profile-field"><label>Email</label><div id="profileEmail" class="profile-field-value">-</div></div>
+          <div class="profile-field profile-telegram-field">
+            <label>Telegram Account</label>
+            <div class="profile-telegram-summary">
+              <span id="profileTelegramUsername" class="profile-field-value">Not Connected</span>
+              <button type="button" id="profileTelegramSettings" class="profile-telegram-settings" aria-label="Pengaturan Telegram" title="Pengaturan Telegram">⚙</button>
+            </div>
+          </div>
           <div class="profile-field profile-quote-field">
             <label>Kutipan</label>
             <div id="profileQuote" class="profile-field-value profile-quote-value">-</div>
@@ -99,27 +106,22 @@
       </section>
 
 
-      <!-- TAS TELEGRAM ACCOUNT: ADD-ONLY -->
-      <section class="profile-section" id="profileTelegramSection">
-        <div class="profile-section-heading"><span class="profile-section-accent"></span><div><h2>Telegram Account</h2><p>Connect Telegram to report Daily Maintenance findings</p></div></div>
-        <div class="profile-card profile-telegram-card">
-          <div class="profile-field"><label>Connection Status</label><div id="profileTelegramStatus" class="profile-field-value">Checking...</div></div>
-          <div class="profile-field"><label>Telegram Username</label><div id="profileTelegramUsername" class="profile-field-value">-</div></div>
-          <div class="profile-field"><label>Linked At</label><div id="profileTelegramLinkedAt" class="profile-field-value">-</div></div>
-          <div class="profile-field"><label>Telegram User ID</label><div id="profileTelegramUserId" class="profile-field-value">-</div></div>
-          <div class="profile-telegram-controls">
-            <button type="button" id="profileTelegramLink" class="profile-primary-button" hidden>Link Telegram Account</button>
-            <button type="button" id="profileTelegramRefresh" class="profile-secondary-button">Refresh Status</button>
-            <button type="button" id="profileTelegramUnlink" class="profile-secondary-button" hidden>Unlink Telegram</button>
-          </div>
-          <div id="profileTelegramCodeBox" class="profile-telegram-code" hidden>
-            <strong>One-time linking code: <span id="profileTelegramCode"></span></strong>
-            <small>Valid for 5 minutes. Send <code>/link KODE</code> in a private chat with TAS.</small>
-            <a href="https://t.me/TAS_HEXA_Bot" target="_blank" rel="noopener noreferrer">Open TAS on Telegram</a>
-          </div>
-          <div class="profile-telegram-auth"><label for="profileTelegramPassword">Password HEXA untuk verifikasi Link / Unlink</label><input id="profileTelegramPassword" type="password" autocomplete="current-password" placeholder="Masukkan password HEXA" /></div>
-          <p id="profileTelegramMessage" class="profile-telegram-message" role="status"></p>
+      <!-- Telegram controls are integrated into Personal Information -->
+      <section id="profileTelegramPanel" class="profile-telegram-panel" hidden>
+        <div class="profile-telegram-panel-heading"><strong>Telegram Account Settings</strong><button type="button" id="profileTelegramClose" aria-label="Tutup">✕</button></div>
+        <div id="profileTelegramStatus" class="profile-telegram-status">VERIFY REQUIRED</div>
+        <div class="profile-telegram-auth"><label for="profileTelegramPassword">Password HEXA untuk verifikasi Link / Unlink</label><input id="profileTelegramPassword" type="password" autocomplete="off" placeholder="Masukkan password HEXA" /></div>
+        <div class="profile-telegram-controls">
+          <button type="button" id="profileTelegramLink" class="profile-primary-button" hidden>Link Telegram</button>
+          <button type="button" id="profileTelegramRefresh" class="profile-secondary-button">Refresh Status</button>
+          <button type="button" id="profileTelegramUnlink" class="profile-secondary-button" hidden>Unlink Telegram</button>
         </div>
+        <div id="profileTelegramCodeBox" class="profile-telegram-code" hidden>
+          <strong>One-time linking code: <span id="profileTelegramCode"></span></strong>
+          <small>Kirim /link KODE ke TAS dalam 5 menit.</small>
+          <a href="https://t.me/TAS_HEXA_Bot" target="_blank" rel="noopener noreferrer">Open TAS on Telegram</a>
+        </div>
+        <p id="profileTelegramMessage" class="profile-telegram-message" role="status"></p>
       </section>
 
       <!-- DIGITAL SIGNATURE -->

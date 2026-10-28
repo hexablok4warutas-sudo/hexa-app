@@ -1866,6 +1866,13 @@ async function saveProfileSignature() {
   const show = (id, visible) => { const el=$(id); if(el) el.hidden=!visible; };
   const set = (id, value) => { const el=$(id); if(el) el.textContent=value; };
   const message = value => set("profileTelegramMessage",value);
+  function updateBadge(linked, username) {
+    const badge=$("profileActiveMark");
+    if(badge) badge.hidden=!linked;
+    set("profileTelegramUsername",linked?(username?("@"+String(username).replace(/^@/,"")):"Connected"):"Not Connected");
+  }
+  function clearPassword(){const input=$("profileTelegramPassword");if(input) input.value="";}
+
 
   function credentials() {
     const user = currentProfileUser;
@@ -1885,25 +1892,27 @@ async function saveProfileSignature() {
     return result;
   }
   async function refresh() {
-    if(!$("profileTelegramPassword")?.value){message("Masukkan password HEXA, lalu klik Refresh Status.");set("profileTelegramStatus","VERIFY REQUIRED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);return;}
+    if(!$("profileTelegramPassword")?.value){message("Masukkan password HEXA untuk memeriksa status Telegram.");set("profileTelegramStatus","VERIFY REQUIRED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);return;}
     message("Checking Telegram connection...");
     try {
       const result=await request("tasProfileStatus");
       const item=result.telegram || {};
       const linked=!!item.linked;
       set("profileTelegramStatus",linked?"LINKED":"NOT LINKED");
-      set("profileTelegramUsername",linked?(item.username?"@"+item.username:"(no username)"):"-");
-      set("profileTelegramUserId",linked?(item.telegramUserId||"-"):"-");
-      set("profileTelegramLinkedAt",linked?(item.linkedAt||"-"):"-");
+      updateBadge(linked,item.username);
+
+
       show("profileTelegramLink",!linked);
       show("profileTelegramUnlink",linked);
       if(linked) show("profileTelegramCodeBox",false);
       message(linked?"Telegram connected to your HEXA account.":"Telegram is not linked yet.");
+      clearPassword();
     } catch(e) {
       set("profileTelegramStatus","UNAVAILABLE");
       show("profileTelegramLink",false);
       show("profileTelegramUnlink",false);
       message(e.message);
+      clearPassword();
     }
   }
   async function link() {
@@ -1914,18 +1923,22 @@ async function saveProfileSignature() {
       show("profileTelegramCodeBox",true);
       $("profileTelegramPassword").value="";
       message("Buka chat pribadi TAS dan kirim /link "+result.code+" dalam 5 menit. Masukkan password lagi untuk Refresh Status.");
-    } catch(e){message(e.message);}
+    } catch(e){message(e.message);} finally {clearPassword();}
   }
   async function unlink() {
     if(!confirm("Disconnect Telegram from your HEXA account?"))return;
-    try {await request("tasProfileUnlink");$("profileTelegramPassword").value="";set("profileTelegramStatus","NOT LINKED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);show("profileTelegramCodeBox",false);message("Telegram diputus. Masukkan password lagi dan Refresh Status.");}
-    catch(e){message(e.message);}
+    try {await request("tasProfileUnlink");$("profileTelegramPassword").value="";set("profileTelegramStatus","NOT LINKED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);show("profileTelegramCodeBox",false);updateBadge(false,"");message("Telegram diputus. Masukkan password lagi dan Refresh Status.");}
+    catch(e){message(e.message);} finally {clearPassword();}
   }
   document.addEventListener("DOMContentLoaded",()=>{
-    if(!$("profileTelegramSection"))return;
+    if(!$("profileTelegramPanel"))return;
+    updateBadge(false,"");
+    $("profileTelegramSettings")?.addEventListener("click",()=>show("profileTelegramPanel",true));
+    $("profileTelegramClose")?.addEventListener("click",()=>{show("profileTelegramPanel",false);clearPassword();});
     $("profileTelegramRefresh")?.addEventListener("click",refresh);
     $("profileTelegramLink")?.addEventListener("click",link);
     $("profileTelegramUnlink")?.addEventListener("click",unlink);
-    refresh();
+    // Without a server-authenticated session, the badge is only confirmed
+    // after password verification via Refresh Status.
   });
 })();

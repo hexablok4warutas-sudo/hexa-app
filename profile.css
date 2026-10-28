@@ -921,3 +921,16 @@ body.theme-orange .profile-telegram-code{background:#fff8ed;border-color:#f4d7a8
 
 /* Telegram password confirmation - additive */
 .profile-telegram-auth{grid-column:1/-1;display:flex;flex-direction:column;gap:7px;color:#65717a;font-size:12px;font-weight:700}.profile-telegram-auth input{width:100%;min-height:44px;border:1px solid #cddbe3;border-radius:11px;padding:10px 13px;font:inherit;background:#fff;color:#273038}.profile-telegram-auth input:focus{outline:2px solid #64b6e8;outline-offset:1px}
+
+/* Telegram in Personal Information */
+.profile-active-mark[hidden],.profile-telegram-panel[hidden],.profile-telegram-panel [hidden]{display:none!important}
+.profile-telegram-summary{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.profile-telegram-settings{border:1px solid #d2dfe7;background:white;border-radius:9px;cursor:pointer;padding:7px 11px;color:#455b6d}
+.profile-telegram-panel{margin:12px 0 24px;padding:18px;border:1px solid #dce6ec;border-radius:18px;background:#fff}
+.profile-telegram-panel-heading{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.profile-telegram-panel-heading button{border:0;background:transparent;cursor:pointer;font-size:18px}
+.profile-telegram-status{font-size:12px;font-weight:700;color:#526c7c;margin-bottom:12px}
+.profile-telegram-panel .profile-telegram-controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.profile-telegram-panel .profile-telegram-controls button{flex:1 1 180px}
+.profile-telegram-panel .profile-telegram-code{margin-top:12px}
+.profile-telegram-panel .profile-telegram-message{margin-top:12px}
