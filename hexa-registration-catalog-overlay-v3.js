@@ -1,4 +1,4 @@
-/* HEXA — HEXCatalog bridge for Backlog Registration (V1) */
+/* HEXA — HEXCatalog bridge for Backlog Registration (V3.1 iframe fix) */
 (()=>{
 'use strict';
 const TARGET_ORIGIN=location.origin;
