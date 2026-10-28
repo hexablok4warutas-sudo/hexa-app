@@ -934,3 +934,9 @@ body.theme-orange .profile-telegram-code{background:#fff8ed;border-color:#f4d7a8
 .profile-telegram-panel .profile-telegram-controls button{flex:1 1 180px}
 .profile-telegram-panel .profile-telegram-code{margin-top:12px}
 .profile-telegram-panel .profile-telegram-message{margin-top:12px}
+
+/* Integrated settings expand INSIDE Personal Information card */
+.profile-card > .profile-telegram-panel{grid-column:1/-1;width:100%;box-sizing:border-box;margin:0 0 12px;background:#f8fbff;border:1px solid #dce6ec;border-radius:14px}
+.profile-card > .profile-telegram-panel[hidden]{display:none!important}
+.profile-card > .profile-telegram-panel .profile-telegram-code{display:flex;flex-direction:column;gap:8px;padding:14px;background:#edf6ff;border:1px solid #b7d7f3;border-radius:12px;overflow-wrap:anywhere}
+.profile-card > .profile-telegram-panel .profile-telegram-code[hidden]{display:none!important}

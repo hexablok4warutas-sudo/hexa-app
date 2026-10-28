@@ -74,6 +74,25 @@
             <div id="profileQuote" class="profile-field-value profile-quote-value">-</div>
           </div>
 
+      <!-- Telegram controls are integrated into Personal Information -->
+      <section id="profileTelegramPanel" class="profile-telegram-panel" hidden>
+        <div class="profile-telegram-panel-heading"><strong>Telegram Account Settings</strong><button type="button" id="profileTelegramClose" aria-label="Tutup">✕</button></div>
+        <div id="profileTelegramStatus" class="profile-telegram-status">VERIFY REQUIRED</div>
+        <div class="profile-telegram-auth"><label for="profileTelegramPassword">Password HEXA untuk verifikasi Link / Unlink</label><input id="profileTelegramPassword" type="password" autocomplete="off" placeholder="Masukkan password HEXA" /></div>
+        <div class="profile-telegram-controls">
+          <button type="button" id="profileTelegramLink" class="profile-primary-button">Link Telegram</button>
+          <button type="button" id="profileTelegramRefresh" class="profile-secondary-button">Refresh Status</button>
+          <button type="button" id="profileTelegramUnlink" class="profile-secondary-button" hidden>Unlink Telegram</button>
+        </div>
+        <div id="profileTelegramCodeBox" class="profile-telegram-code" hidden>
+          <strong>Kode penghubung Telegram: <span id="profileTelegramCode"></span></strong>
+          <small>Buka bot Telegram, lalu kirim perintah <strong>/link KODE</strong> (ganti KODE dengan angka di atas). Berlaku 5 menit. Username dan Telegram ID terdeteksi otomatis dari akun pengirim.</small>
+          <a href="https://t.me/TAS_HEXA_Bot" target="_blank" rel="noopener noreferrer">Open TAS on Telegram</a>
+        </div>
+        <p id="profileTelegramMessage" class="profile-telegram-message" role="status"></p>
+      </section>
+
+
           <div id="profileViewActions" class="profile-actions">
             <button type="button" id="profileEditButton" class="profile-primary-button">
               <svg viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z"></path><path d="M13.5 6.5l4 4"></path></svg>
@@ -105,24 +124,6 @@
         </div>
       </section>
 
-
-      <!-- Telegram controls are integrated into Personal Information -->
-      <section id="profileTelegramPanel" class="profile-telegram-panel" hidden>
-        <div class="profile-telegram-panel-heading"><strong>Telegram Account Settings</strong><button type="button" id="profileTelegramClose" aria-label="Tutup">✕</button></div>
-        <div id="profileTelegramStatus" class="profile-telegram-status">VERIFY REQUIRED</div>
-        <div class="profile-telegram-auth"><label for="profileTelegramPassword">Password HEXA untuk verifikasi Link / Unlink</label><input id="profileTelegramPassword" type="password" autocomplete="off" placeholder="Masukkan password HEXA" /></div>
-        <div class="profile-telegram-controls">
-          <button type="button" id="profileTelegramLink" class="profile-primary-button" hidden>Link Telegram</button>
-          <button type="button" id="profileTelegramRefresh" class="profile-secondary-button">Refresh Status</button>
-          <button type="button" id="profileTelegramUnlink" class="profile-secondary-button" hidden>Unlink Telegram</button>
-        </div>
-        <div id="profileTelegramCodeBox" class="profile-telegram-code" hidden>
-          <strong>One-time linking code: <span id="profileTelegramCode"></span></strong>
-          <small>Kirim /link KODE ke TAS dalam 5 menit.</small>
-          <a href="https://t.me/TAS_HEXA_Bot" target="_blank" rel="noopener noreferrer">Open TAS on Telegram</a>
-        </div>
-        <p id="profileTelegramMessage" class="profile-telegram-message" role="status"></p>
-      </section>
 
       <!-- DIGITAL SIGNATURE -->
       <section class="profile-section profile-signature-section">

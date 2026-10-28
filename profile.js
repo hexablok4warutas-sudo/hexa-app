@@ -1892,7 +1892,7 @@ async function saveProfileSignature() {
     return result;
   }
   async function refresh() {
-    if(!$("profileTelegramPassword")?.value){message("Masukkan password HEXA untuk memeriksa status Telegram.");set("profileTelegramStatus","VERIFY REQUIRED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);return;}
+    if(!$("profileTelegramPassword")?.value){message("Masukkan password HEXA untuk memeriksa status Telegram.");set("profileTelegramStatus","VERIFY REQUIRED");show("profileTelegramLink",true);show("profileTelegramUnlink",false);return;}
     message("Checking Telegram connection...");
     try {
       const result=await request("tasProfileStatus");
@@ -1909,7 +1909,7 @@ async function saveProfileSignature() {
       clearPassword();
     } catch(e) {
       set("profileTelegramStatus","UNAVAILABLE");
-      show("profileTelegramLink",false);
+      show("profileTelegramLink",true);
       show("profileTelegramUnlink",false);
       message(e.message);
       clearPassword();
@@ -1927,12 +1927,13 @@ async function saveProfileSignature() {
   }
   async function unlink() {
     if(!confirm("Disconnect Telegram from your HEXA account?"))return;
-    try {await request("tasProfileUnlink");$("profileTelegramPassword").value="";set("profileTelegramStatus","NOT LINKED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);show("profileTelegramCodeBox",false);updateBadge(false,"");message("Telegram diputus. Masukkan password lagi dan Refresh Status.");}
+    try {await request("tasProfileUnlink");$("profileTelegramPassword").value="";set("profileTelegramStatus","NOT LINKED");show("profileTelegramLink",true);show("profileTelegramUnlink",false);show("profileTelegramCodeBox",false);updateBadge(false,"");message("Telegram diputus. Masukkan password lagi dan Refresh Status.");}
     catch(e){message(e.message);} finally {clearPassword();}
   }
   document.addEventListener("DOMContentLoaded",()=>{
     if(!$("profileTelegramPanel"))return;
     updateBadge(false,"");
+    show("profileTelegramLink",true);
     $("profileTelegramSettings")?.addEventListener("click",()=>show("profileTelegramPanel",true));
     $("profileTelegramClose")?.addEventListener("click",()=>{show("profileTelegramPanel",false);clearPassword();});
     $("profileTelegramRefresh")?.addEventListener("click",refresh);
