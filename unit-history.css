@@ -2706,3 +2706,68 @@ body.modal-open {
 
 #unitHistoryUpdateModal { z-index: 2500; }
 #unitHistoryUpdateModal[hidden] { display: none !important; }
+
+/* =====================================================
+   UNIT HISTORY: UPDATE FORM MATCHES DAILY OUTSTANDING
+   Scoped overrides; existing JS IDs and data flow unchanged.
+   ===================================================== */
+#unitHistoryUpdateModal { background:rgba(0,0,0,.58); padding:24px; }
+#unitHistoryUpdateModal .update-modal {
+  position:relative; width:min(94vw,820px); margin:auto; overflow:hidden;
+  border:1px solid rgba(17,17,17,.12); border-top:5px solid #f5a000;
+  border-radius:22px; background:#f7f7f7;
+  box-shadow:0 22px 55px rgba(0,0,0,.28);
+}
+#unitHistoryUpdateModal .update-title {
+  position:relative; padding:22px 20px 20px; background:#fff;
+  border-bottom:1px solid #ececec; text-align:center;
+}
+#unitHistoryUpdateModal .update-title h2 {
+  margin:0; font-size:25px; font-weight:800; letter-spacing:-.3px; color:#111;
+}
+#unitHistoryUpdateModal .update-title::after {
+  content:""; position:absolute; left:50%; bottom:9px; width:54px; height:3px;
+  border-radius:3px; background:#f5a000; transform:translateX(-50%);
+}
+#unitHistoryUpdateModal .update-form {
+  width:min(calc(100% - 40px),660px); margin:20px auto 26px;
+  padding:24px; border:1px solid #e7e7e7; border-radius:14px;
+  background:#fff; box-shadow:0 7px 22px rgba(0,0,0,.06);
+}
+#unitHistoryUpdateModal .form-group { margin-bottom:18px; }
+#unitHistoryUpdateModal .form-group label { color:#3f3f3f; font-weight:700; }
+#unitHistoryUpdateModal .form-group input,
+#unitHistoryUpdateModal .form-group select,
+#unitHistoryUpdateModal .form-group textarea,
+#unitHistoryUpdateModal .number-control {
+  border-color:#d8dadd; border-radius:8px;
+  transition:border-color .15s ease,box-shadow .15s ease;
+}
+#unitHistoryUpdateModal .form-group input:focus,
+#unitHistoryUpdateModal .form-group select:focus,
+#unitHistoryUpdateModal .form-group textarea:focus { border-color:#f5a000; box-shadow:0 0 0 3px rgba(245,160,0,.1); }
+#unitHistoryUpdateModal .existing-photo { overflow:hidden; border-radius:10px; }
+#unitHistoryUpdateModal .existing-photo img { display:block; width:100%; object-fit:contain; }
+#unitHistoryUpdateModal .file-upload-button { border-radius:9px; }
+#unitHistoryUpdateModal .update-form-actions { padding-top:20px; }
+#unitHistoryUpdateModal .cancel-update-button,
+#unitHistoryUpdateModal .submit-update-button { border-radius:24px; }
+/* All detail action icons: identical circular dimensions */
+#unitHistoryDetailModal .unit-history-detail-actions { display:flex; align-items:center; justify-content:flex-end; gap:14px; }
+#unitHistoryDetailModal .unit-history-detail-action-button {
+  box-sizing:border-box; flex:0 0 64px; width:64px; height:64px; min-width:64px;
+  min-height:64px; padding:0; display:inline-flex; align-items:center;
+  justify-content:center; border-radius:50%; font-size:26px; line-height:1;
+}
+#unitHistoryDetailModal #unitHistoryDeleteDetailButton { background:#dc2626; color:#fff; border:0; font-size:0; }
+#unitHistoryDetailModal #unitHistoryDeleteDetailButton svg { width:27px; height:27px; display:block; }
+#unitHistoryDetailModal #unitHistoryDeleteDetailButton[hidden] { display:none !important; }
+@media(max-width:600px) {
+  #unitHistoryUpdateModal { padding:12px; }
+  #unitHistoryUpdateModal .update-modal { border-top-width:4px; border-radius:16px; }
+  #unitHistoryUpdateModal .update-title { padding:18px 12px; }
+  #unitHistoryUpdateModal .update-title h2 { font-size:21px; }
+  #unitHistoryUpdateModal .update-title::after { bottom:7px; width:44px; }
+  #unitHistoryUpdateModal .update-form { width:calc(100% - 16px); margin:10px auto 12px; padding:16px 12px 22px; border-radius:11px; }
+  #unitHistoryDetailModal .unit-history-detail-action-button { flex-basis:52px; width:52px; height:52px; min-width:52px; min-height:52px; }
+}
