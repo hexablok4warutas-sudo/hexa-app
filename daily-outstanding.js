@@ -2289,6 +2289,48 @@ function setPhotoZoom(
 }
 
 
+// Group Component: same master API as Start Inspection.
+async function loadOutstandingGroupComponents(selectedValue = "") {
+  if (!updateGroupComponent) return;
+  const selected = String(selectedValue || updateGroupComponent.value || "").trim();
+  updateGroupComponent.disabled = true;
+  try {
+    const result = await apiRequest({ action: "getGroupComponentList" });
+    if (result?.success !== true || !Array.isArray(result.groupComponents)) {
+      throw new Error(result?.message || "Group Component tidak tersedia");
+    }
+    const items = [...result.groupComponents].sort((a, b) => {
+      const x = Number(String(a?.code ?? "").trim());
+      const y = Number(String(b?.code ?? "").trim());
+      if (String(a?.code ?? "").trim() && String(b?.code ?? "").trim() && Number.isFinite(x) && Number.isFinite(y) && x !== y) return x - y;
+      return String(a?.groupComponent ?? "").localeCompare(String(b?.groupComponent ?? ""), "id", { numeric: true, sensitivity: "base" });
+    });
+    updateGroupComponent.replaceChildren(new Option("Select Component", ""));
+    const seen = new Set();
+    for (const item of items) {
+      const name = String(item?.groupComponent ?? "").trim();
+      if (!name || seen.has(name.toUpperCase())) continue;
+      seen.add(name.toUpperCase());
+      updateGroupComponent.add(new Option(name, name));
+    }
+    // Preserve the saved value, including legacy components no longer in the master.
+    if (selected && !Array.from(updateGroupComponent.options).some(o => o.value === selected)) {
+      updateGroupComponent.add(new Option(selected + " (saved record)", selected));
+    }
+    updateGroupComponent.value = selected;
+    updateGroupComponent.disabled = false;
+  } catch (error) {
+    console.warn("Unable to load Group Component master:", error);
+    // Never silently substitute the obsolete hardcoded component list.
+    updateGroupComponent.replaceChildren(new Option("Unable to load Group Component", ""));
+    if (selected) {
+      updateGroupComponent.add(new Option(selected + " (saved record)", selected));
+      updateGroupComponent.value = selected;
+    }
+    updateGroupComponent.disabled = true;
+  }
+}
+
 // =====================================================
 // OPEN UPDATE FORM
 // =====================================================
@@ -2303,6 +2345,8 @@ function openUpdateForm() {
   fillUpdateForm(
     selectedRecord
   );
+
+  loadOutstandingGroupComponents(selectedRecord.groupComponent);
 
   if (detailModal) {
 
