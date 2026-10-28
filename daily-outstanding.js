@@ -4552,3 +4552,54 @@ window.addEventListener(
   "resize",
   updateScrollNavigation
 );
+
+ document.addEventListener("DOMContentLoaded", setupOutstandingDetailDeleteOnce);
+function setupOutstandingDetailDeleteOnce() {
+
+// =====================================================
+// DELETE DETAIL - MASTER ONLY (UI CHECK)
+// Backend deleteUnitHistory MUST verify Master authorization.
+// =====================================================
+(function () {
+  const button = document.getElementById('deleteOutstandingDetailButton');
+  if (!button) return;
+  const level = String(currentUser?.level ?? currentUser?.levelUser ?? '').trim().toUpperCase();
+  const isMaster = level === '1' || level === 'MASTER';
+  button.hidden = !isMaster;
+  button.style.display = isMaster ? 'inline-flex' : 'none';
+  if (!isMaster) return;
+  button.addEventListener('click', async function () {
+    const record = selectedRecord;
+    const recordId = record?.id ?? record?.inspectionId;
+    if (!recordId) {
+      alert('Unique ID temuan tidak tersedia. Penghapusan dibatalkan.');
+      return;
+    }
+    const unit = String(record.unitCode || '-');
+    const problem = String(record.problemDescription || '-');
+    const confirmed = window.confirm(
+      `HAPUS PERMANEN TEMUAN?\n\nUnit: ${unit}\nProblem: ${problem}\nID: ${recordId}\n\nData akan dihapus dari DM Database. Tindakan ini tidak dapat dibatalkan.`
+    );
+    if (!confirmed) return;
+    button.disabled = true;
+    try {
+      const result = await apiRequest({
+        action: 'deleteUnitHistory',
+        inspectionIds: [String(recordId)]
+      });
+      if (!result || result.success !== true) {
+        throw new Error(result?.message || 'Gagal menghapus temuan dari database.');
+      }
+      closeDetail();
+      await loadDailyOutstanding();
+      alert(result.message || `Temuan ${unit} berhasil dihapus.`);
+    } catch (error) {
+      console.error('Delete Daily Outstanding:', error);
+      alert(error.message || 'Penghapusan gagal.');
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+
+}

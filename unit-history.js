@@ -6683,6 +6683,35 @@ const $ = id => document.getElementById(id);
 const updateModal = $('unitHistoryUpdateModal');
 const detailModal = $('unitHistoryDetailModal');
 const editButton = $('unitHistoryEditDetailButton');
+const detailDeleteButton = $('unitHistoryDeleteDetailButton');
+const masterLevel = String(currentUser?.level ?? currentUser?.levelUser ?? '').trim().toUpperCase();
+const isMasterForDetailDelete = ['1', 'MASTER'].includes(masterLevel);
+if (detailDeleteButton) {
+  detailDeleteButton.hidden = !isMasterForDetailDelete;
+  detailDeleteButton.addEventListener('click', async () => {
+    if (!isMasterForDetailDelete || !selectedRecord?.id) return;
+    const recordId = String(selectedRecord.id);
+    const unit = String(selectedRecord.unitCode || '-');
+    const problem = String(selectedRecord.problemDescription || '-');
+    if (!window.confirm(`HAPUS PERMANEN TEMUAN?\n\nUnit: ${unit}\nProblem: ${problem}\nID: ${recordId}\n\nData akan dihapus dari DM Database. Tindakan ini tidak dapat dibatalkan.`)) return;
+    detailDeleteButton.disabled = true;
+    try {
+      // Endpoint deleteUnitHistory telah dipakai oleh fitur Delete tabel.
+      // Backend wajib memvalidasi session dan role Master sebelum menghapus.
+      const result = await apiRequest({ action: 'deleteUnitHistory', inspectionIds: [recordId] });
+      if (!result || result.success !== true) throw new Error(result?.message || 'Gagal menghapus data.');
+      closeDetail();
+      await loadUnitHistory();
+      alert(result.message || `Temuan ${unit} berhasil dihapus.`);
+    } catch (error) {
+      console.error('Delete detail Unit History:', error);
+      alert(error.message || 'Penghapusan gagal.');
+    } finally {
+      detailDeleteButton.disabled = false;
+    }
+  });
+}
+
 const updateOutstandingForm = $('updateOutstandingForm');
 if (!updateModal || !editButton || !updateOutstandingForm) return;
 const rawLevel = String(currentUser?.level ?? currentUser?.levelUser ?? '').trim().toUpperCase();
