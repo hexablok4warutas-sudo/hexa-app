@@ -1916,14 +1916,29 @@ async function saveProfileSignature() {
     }
   }
   async function link() {
+    // Open a placeholder synchronously to avoid browser popup blocking after fetch.
+    let telegramTab = null;
     try {
-      const result=await request("tasProfileIssueCode");
-      if(!/^\d{6}$/.test(String(result.code||""))) throw Error("Invalid linking code response.");
-      set("profileTelegramCode",result.code);
-      show("profileTelegramCodeBox",true);
-      $("profileTelegramPassword").value="";
-      message("Buka chat pribadi TAS dan kirim /link "+result.code+" dalam 5 menit. Masukkan password lagi untuk Refresh Status.");
-    } catch(e){message(e.message);} finally {clearPassword();}
+      credentials(); // Check password before opening a tab.
+      telegramTab = window.open("about:blank", "_blank");
+      const result = await request("tasProfileIssueCode");
+      const code = String(result.code || "");
+      if (!/^\d{6}$/.test(code)) throw Error("Invalid linking code response.");
+      set("profileTelegramCode", code);
+      show("profileTelegramCodeBox", true);
+      const url = "https://t.me/TAS_HEXA_Bot?start=link_" + encodeURIComponent(code);
+      const openLink = $("profileTelegramOpenLink");
+      if (openLink) openLink.href = url;
+      if (telegramTab && !telegramTab.closed) {
+        telegramTab.location.replace(url);
+      } else {
+        message("Browser memblokir tab Telegram. Klik tombol Buka TAS di bawah.");
+      }
+      message("Telegram dibuka. Tekan Start pada bot TAS untuk menghubungkan akun. Jika sudah, kembali ke HEXA dan Refresh Status (masukkan password kembali).");
+    } catch (e) {
+      if (telegramTab && !telegramTab.closed) telegramTab.close();
+      message(e.message);
+    } finally { clearPassword(); }
   }
   async function unlink() {
     if(!confirm("Disconnect Telegram from your HEXA account?"))return;
