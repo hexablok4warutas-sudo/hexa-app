@@ -174,7 +174,8 @@ function renderProfileStatus(status) {
   element.textContent = cleanStatus || "-";
   element.classList.toggle("is-inactive", isInactive);
 
-  if (activeMark) activeMark.hidden = isInactive;
+  // Telegram badge is controlled ONLY by verified Telegram linking status.
+  if (activeMark) activeMark.hidden = true;
 }
 
 function renderProfileMotto(motto) {
@@ -1908,6 +1909,7 @@ async function saveProfileSignature() {
       message(linked?"Telegram connected to your HEXA account.":"Telegram is not linked yet.");
       clearPassword();
     } catch(e) {
+      updateBadge(false, "");
       set("profileTelegramStatus","UNAVAILABLE");
       show("profileTelegramLink",true);
       show("profileTelegramUnlink",false);
