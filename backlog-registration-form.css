@@ -1273,3 +1273,16 @@ body {
   opacity: 0.7;
   cursor: wait;
 }
+
+/* HEXA Part Requirement action buttons — V3.3 */
+.brf-part-section .brf-subheading { align-items:center; gap:14px; }
+.brf-part-section .brf-subheading > div:first-child { min-width:0; flex:1; }
+.brf-catalog-actions { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:10px; flex-shrink:0; }
+.brf-catalog-actions .brf-add-part-button,
+.brf-catalog-actions .brf-browse-catalog { display:inline-flex; align-items:center; justify-content:center; min-height:42px; margin:0; padding:0 16px; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer; transition:background .15s,box-shadow .15s; white-space:nowrap; }
+.brf-catalog-actions .brf-add-part-button { border:1px solid #174b92; background:#174b92; color:#fff; }
+.brf-catalog-actions .brf-add-part-button:hover { background:#103b75; }
+.brf-catalog-actions .brf-browse-catalog { border:1px solid #e67c00; background:#ff941f; color:#fff; box-shadow:0 3px 9px rgba(230,124,0,.16); }
+.brf-catalog-actions .brf-browse-catalog:hover { background:#e77e00; }
+.brf-catalog-actions button:focus-visible { outline:3px solid rgba(23,75,146,.25); outline-offset:2px; }
+@media(max-width:650px) { .brf-part-section .brf-subheading { flex-wrap:wrap; } .brf-catalog-actions { width:100%; justify-content:flex-start; } .brf-catalog-actions button { flex:1; } }
