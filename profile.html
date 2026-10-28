@@ -388,5 +388,19 @@
   <script src="hexa-menu.js"></script>
   <script src="hexa-header.js"></script>
   <script src="profile.js"></script>
+
+  <div id="tasLinkModal" class="tas-link-modal" hidden role="dialog" aria-modal="true" aria-labelledby="tasLinkModalTitle">
+    <div class="tas-link-dialog">
+      <h3 id="tasLinkModalTitle">Hubungkan Akun Telegram</h3>
+      <p>Anda akan beralih ke Telegram. Salin kode berikut untuk registrasi ke bot TAS:</p>
+      <div class="tas-link-command" id="tasLinkCommand" aria-label="Perintah Telegram"></div>
+      <p class="tas-link-hint">Klik <b>Copy &amp; Go to Telegram</b>, lalu tempel (Paste) perintah di chat TAS dan tekan Send. Kode berlaku 5 menit. Jika chat belum aktif, tekan Start terlebih dahulu.</p>
+      <div class="tas-link-buttons">
+        <button type="button" id="tasLinkCancel">Cancel</button>
+        <button type="button" id="tasLinkCopyGo">Copy &amp; Go to Telegram</button>
+      </div>
+      <p id="tasLinkCopyError" role="status"></p>
+    </div>
+  </div>
 </body>
 </html>

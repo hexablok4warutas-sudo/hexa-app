@@ -940,3 +940,15 @@ body.theme-orange .profile-telegram-code{background:#fff8ed;border-color:#f4d7a8
 .profile-card > .profile-telegram-panel[hidden]{display:none!important}
 .profile-card > .profile-telegram-panel .profile-telegram-code{display:flex;flex-direction:column;gap:8px;padding:14px;background:#edf6ff;border:1px solid #b7d7f3;border-radius:12px;overflow-wrap:anywhere}
 .profile-card > .profile-telegram-panel .profile-telegram-code[hidden]{display:none!important}
+
+/* Telegram confirmation modal */
+.tas-link-modal[hidden]{display:none!important}
+.tas-link-modal{position:fixed;inset:0;background:rgba(10,25,42,.58);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px}
+.tas-link-dialog{width:min(100%,520px);background:#fff;border-radius:20px;padding:25px;box-shadow:0 20px 60px rgba(0,0,0,.22);color:#142b3e}
+.tas-link-dialog h3{margin:0 0 14px;font-size:21px}.tas-link-dialog p{line-height:1.5}
+.tas-link-command{background:#eef6ff;border:1px solid #a6d3ff;border-radius:12px;padding:16px;font-size:24px;font-weight:800;letter-spacing:1px;text-align:center;user-select:all}
+.tas-link-hint{font-size:13px;color:#526678}.tas-link-buttons{display:flex;gap:10px;margin-top:18px}
+.tas-link-buttons button{flex:1;border-radius:11px;padding:13px 10px;font-weight:700;cursor:pointer;border:1px solid #cbd6df;background:#fff}
+#tasLinkCopyGo{color:#fff;background:linear-gradient(100deg,#2997ef,#5366ef);border:0}
+#tasLinkCopyError{color:#a33122;font-size:12px;margin:8px 0 0}
+@media(max-width:540px){.tas-link-buttons{flex-direction:column}.tas-link-dialog{padding:18px}}

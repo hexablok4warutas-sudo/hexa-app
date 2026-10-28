@@ -1915,30 +1915,50 @@ async function saveProfileSignature() {
       clearPassword();
     }
   }
+  let pendingTelegramCode = "";
   async function link() {
-    // Open a placeholder synchronously to avoid browser popup blocking after fetch.
-    let telegramTab = null;
     try {
-      credentials(); // Check password before opening a tab.
-      telegramTab = window.open("about:blank", "_blank");
+      credentials();
+      message("Membuat kode Telegram...");
       const result = await request("tasProfileIssueCode");
       const code = String(result.code || "");
-      if (!/^\d{6}$/.test(code)) throw Error("Invalid linking code response.");
-      set("profileTelegramCode", code);
-      show("profileTelegramCodeBox", true);
-      const url = "https://t.me/TAS_HEXA_Bot?start=link_" + encodeURIComponent(code);
-      const openLink = $("profileTelegramOpenLink");
-      if (openLink) openLink.href = url;
-      if (telegramTab && !telegramTab.closed) {
-        telegramTab.location.replace(url);
-      } else {
-        message("Browser memblokir tab Telegram. Klik tombol Buka TAS di bawah.");
-      }
-      message("Telegram dibuka. Tekan Start pada bot TAS untuk menghubungkan akun. Jika sudah, kembali ke HEXA dan Refresh Status (masukkan password kembali).");
-    } catch (e) {
-      if (telegramTab && !telegramTab.closed) telegramTab.close();
-      message(e.message);
-    } finally { clearPassword(); }
+      if (!/^\d{6}$/.test(code)) throw Error("Kode registrasi dari server tidak valid.");
+      pendingTelegramCode = code;
+      set("profileTelegramCode",code);
+      set("tasLinkCommand","/link " + code);
+      set("tasLinkCopyError","");
+      show("profileTelegramCodeBox",false);
+      show("tasLinkModal",true);
+      message("Kode dibuat. Pilih Copy & Go to Telegram pada pop-up.");
+    } catch(e) { message(e.message); }
+    finally { clearPassword(); }
+  }
+  function fallbackCopy_(value) {
+    const t=document.createElement("textarea");t.value=value;t.setAttribute("readonly","");
+    t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);
+    t.select();const ok=document.execCommand("copy");t.remove();return ok;
+  }
+  async function copyAndGoTelegram() {
+    if (!/^\d{6}$/.test(pendingTelegramCode)) return;
+    const command="/link " + pendingTelegramCode;
+    // Open a tab in the direct click handler to avoid browser popup blockers.
+    const tab=window.open("about:blank","_blank");
+    let copied=false;
+    try {
+      if(navigator.clipboard && window.isSecureContext){
+        await navigator.clipboard.writeText(command);copied=true;
+      } else copied=fallbackCopy_(command);
+    } catch(e) { try {copied=fallbackCopy_(command);}catch(ignore){} }
+    if(!copied){
+      if(tab && !tab.closed)tab.close();
+      set("tasLinkCopyError","Browser menolak penyalinan otomatis. Salin kode di atas secara manual, lalu buka Telegram.");
+      return;
+    }
+    const url="https://t.me/TAS_HEXA_Bot";
+    show("tasLinkModal",false);
+    if(tab && !tab.closed){tab.location.replace(url);}
+    else { window.location.href=url; }
+    message("Perintah " + command + " sudah disalin. Di Telegram, tekan Start jika diperlukan, lalu Paste dan Send.");
   }
   async function unlink() {
     if(!confirm("Disconnect Telegram from your HEXA account?"))return;
@@ -1954,6 +1974,8 @@ async function saveProfileSignature() {
     $("profileTelegramRefresh")?.addEventListener("click",refresh);
     $("profileTelegramLink")?.addEventListener("click",link);
     $("profileTelegramUnlink")?.addEventListener("click",unlink);
+    $("tasLinkCancel")?.addEventListener("click",()=>show("tasLinkModal",false));
+    $("tasLinkCopyGo")?.addEventListener("click",copyAndGoTelegram);
     // Without a server-authenticated session, the badge is only confirmed
     // after password verification via Refresh Status.
   });
