@@ -907,3 +907,17 @@ body.profile-signature-overlay-open {
 #profileSignaturePendingActions:not([hidden]) {
   display: grid !important;
 }
+
+/* TAS TELEGRAM ACCOUNT - ADD ONLY */
+.profile-telegram-card .profile-telegram-controls{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px}
+.profile-telegram-controls button{flex:1 1 180px;min-width:0}
+.profile-telegram-card [hidden]{display:none!important}
+.profile-telegram-code{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;padding:15px;border:1px solid #b8d9e8;border-radius:14px;background:#f0faff;overflow-wrap:anywhere}
+.profile-telegram-code strong{font-size:15px}.profile-telegram-code small{font-size:12px;color:#53616a}
+.profile-telegram-code a{font-size:13px;font-weight:700;color:#147db5}
+.profile-telegram-message{grid-column:1/-1;margin:0;color:#68757d;font-size:12px;line-height:1.5}
+body.theme-orange .profile-telegram-code{background:#fff8ed;border-color:#f4d7a8}
+@media(max-width:560px){.profile-telegram-card .profile-telegram-controls{flex-direction:column}.profile-telegram-controls button{flex-basis:auto;width:100%}}
+
+/* Telegram password confirmation - additive */
+.profile-telegram-auth{grid-column:1/-1;display:flex;flex-direction:column;gap:7px;color:#65717a;font-size:12px;font-weight:700}.profile-telegram-auth input{width:100%;min-height:44px;border:1px solid #cddbe3;border-radius:11px;padding:10px 13px;font:inherit;background:#fff;color:#273038}.profile-telegram-auth input:focus{outline:2px solid #64b6e8;outline-offset:1px}

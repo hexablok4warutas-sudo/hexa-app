@@ -98,6 +98,30 @@
         </div>
       </section>
 
+
+      <!-- TAS TELEGRAM ACCOUNT: ADD-ONLY -->
+      <section class="profile-section" id="profileTelegramSection">
+        <div class="profile-section-heading"><span class="profile-section-accent"></span><div><h2>Telegram Account</h2><p>Connect Telegram to report Daily Maintenance findings</p></div></div>
+        <div class="profile-card profile-telegram-card">
+          <div class="profile-field"><label>Connection Status</label><div id="profileTelegramStatus" class="profile-field-value">Checking...</div></div>
+          <div class="profile-field"><label>Telegram Username</label><div id="profileTelegramUsername" class="profile-field-value">-</div></div>
+          <div class="profile-field"><label>Linked At</label><div id="profileTelegramLinkedAt" class="profile-field-value">-</div></div>
+          <div class="profile-field"><label>Telegram User ID</label><div id="profileTelegramUserId" class="profile-field-value">-</div></div>
+          <div class="profile-telegram-controls">
+            <button type="button" id="profileTelegramLink" class="profile-primary-button" hidden>Link Telegram Account</button>
+            <button type="button" id="profileTelegramRefresh" class="profile-secondary-button">Refresh Status</button>
+            <button type="button" id="profileTelegramUnlink" class="profile-secondary-button" hidden>Unlink Telegram</button>
+          </div>
+          <div id="profileTelegramCodeBox" class="profile-telegram-code" hidden>
+            <strong>One-time linking code: <span id="profileTelegramCode"></span></strong>
+            <small>Valid for 5 minutes. Send <code>/link KODE</code> in a private chat with TAS.</small>
+            <a href="https://t.me/TAS_HEXA_Bot" target="_blank" rel="noopener noreferrer">Open TAS on Telegram</a>
+          </div>
+          <div class="profile-telegram-auth"><label for="profileTelegramPassword">Password HEXA untuk verifikasi Link / Unlink</label><input id="profileTelegramPassword" type="password" autocomplete="current-password" placeholder="Masukkan password HEXA" /></div>
+          <p id="profileTelegramMessage" class="profile-telegram-message" role="status"></p>
+        </div>
+      </section>
+
       <!-- DIGITAL SIGNATURE -->
       <section class="profile-section profile-signature-section">
         <div class="profile-section-heading">

@@ -1854,3 +1854,78 @@ async function saveProfileSignature() {
     }
   }
 }
+
+// =====================================================
+// TAS TELEGRAM PROFILE: ADD-ONLY
+// The backend must authenticate the user server-side.
+// Never authorize linking from uniqId supplied by browser.
+// =====================================================
+(function () {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const show = (id, visible) => { const el=$(id); if(el) el.hidden=!visible; };
+  const set = (id, value) => { const el=$(id); if(el) el.textContent=value; };
+  const message = value => set("profileTelegramMessage",value);
+
+  function credentials() {
+    const user = currentProfileUser;
+    const password = $("profileTelegramPassword")?.value || "";
+    if(!user?.userId) throw new Error("Silakan login kembali ke HEXA.");
+    if(!password) throw new Error("Masukkan password HEXA untuk verifikasi.");
+    return {userId:user.userId,password};
+  }
+  async function request(action, extra={}) {
+    const response=await fetch(API_URL,{
+      method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify({action,...credentials(),...extra})
+    });
+    if(!response.ok) throw new Error("HTTP "+response.status);
+    const result=await response.json();
+    if(!result || result.success!==true) throw new Error(result?.message || "Permintaan gagal.");
+    return result;
+  }
+  async function refresh() {
+    if(!$("profileTelegramPassword")?.value){message("Masukkan password HEXA, lalu klik Refresh Status.");set("profileTelegramStatus","VERIFY REQUIRED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);return;}
+    message("Checking Telegram connection...");
+    try {
+      const result=await request("tasProfileStatus");
+      const item=result.telegram || {};
+      const linked=!!item.linked;
+      set("profileTelegramStatus",linked?"LINKED":"NOT LINKED");
+      set("profileTelegramUsername",linked?(item.username?"@"+item.username:"(no username)"):"-");
+      set("profileTelegramUserId",linked?(item.telegramUserId||"-"):"-");
+      set("profileTelegramLinkedAt",linked?(item.linkedAt||"-"):"-");
+      show("profileTelegramLink",!linked);
+      show("profileTelegramUnlink",linked);
+      if(linked) show("profileTelegramCodeBox",false);
+      message(linked?"Telegram connected to your HEXA account.":"Telegram is not linked yet.");
+    } catch(e) {
+      set("profileTelegramStatus","UNAVAILABLE");
+      show("profileTelegramLink",false);
+      show("profileTelegramUnlink",false);
+      message(e.message);
+    }
+  }
+  async function link() {
+    try {
+      const result=await request("tasProfileIssueCode");
+      if(!/^\d{6}$/.test(String(result.code||""))) throw Error("Invalid linking code response.");
+      set("profileTelegramCode",result.code);
+      show("profileTelegramCodeBox",true);
+      $("profileTelegramPassword").value="";
+      message("Buka chat pribadi TAS dan kirim /link "+result.code+" dalam 5 menit. Masukkan password lagi untuk Refresh Status.");
+    } catch(e){message(e.message);}
+  }
+  async function unlink() {
+    if(!confirm("Disconnect Telegram from your HEXA account?"))return;
+    try {await request("tasProfileUnlink");$("profileTelegramPassword").value="";set("profileTelegramStatus","NOT LINKED");show("profileTelegramLink",false);show("profileTelegramUnlink",false);show("profileTelegramCodeBox",false);message("Telegram diputus. Masukkan password lagi dan Refresh Status.");}
+    catch(e){message(e.message);}
+  }
+  document.addEventListener("DOMContentLoaded",()=>{
+    if(!$("profileTelegramSection"))return;
+    $("profileTelegramRefresh")?.addEventListener("click",refresh);
+    $("profileTelegramLink")?.addEventListener("click",link);
+    $("profileTelegramUnlink")?.addEventListener("click",unlink);
+    refresh();
+  });
+})();
