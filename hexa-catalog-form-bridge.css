@@ -1,0 +1,12 @@
+
+/* HEXA Browse Catalog — shared UI */
+.hexa-catalog-actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:10px!important;flex-wrap:wrap!important}
+.hexa-catalog-actions>button{margin:0!important;min-height:43px!important}
+.hexa-catalog-browse{padding:10px 17px!important;border:1px solid #dc7900!important;border-radius:10px!important;background:#f59a18!important;color:#fff!important;font:700 13px Arial,sans-serif!important;cursor:pointer!important;box-shadow:0 3px 8px #df84002b!important}
+.hexa-catalog-browse:hover{background:#dc7900!important}
+.hexa-catalog-overlay{position:fixed;inset:0;z-index:2147483000;background:white;display:flex;flex-direction:column}
+.hexa-catalog-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:#101b2c;color:white;min-height:55px}
+.hexa-catalog-bar select,.hexa-catalog-bar button{padding:9px;border-radius:8px;background:white;color:#111;border:1px solid #ddd;max-width:42vw}
+.hexa-catalog-bar button{cursor:pointer}
+.hexa-catalog-frame{border:0;flex:1;width:100%;min-height:0}
+@media(max-width:600px){.hexa-catalog-bar{padding:8px;gap:6px;font-size:12px}.hexa-catalog-bar select{min-width:0}.hexa-catalog-actions{justify-content:flex-end!important}}
