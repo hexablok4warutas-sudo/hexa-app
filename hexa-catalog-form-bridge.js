@@ -29,7 +29,7 @@ function unitModel(){
  return catalogs.find(c=>c.re.test(text));
 }
 function value(row,selector){return row.querySelector(selector)?.value.trim()||'';}
-const classes=isStart?{row:'.part-item',name:'.part-description-input',pn:'.part-no-input',qty:'.part-quantity-input'}:{row:'.update-part-requirement-item',name:'.update-part-description-input',pn:'.update-part-no-input',qty:'.update-part-quantity-input'};
+const classes=isStart?{row:'.part-requirement-item',name:'.part-description-input',pn:'.part-no-input',qty:'.part-quantity-input'}:{row:'.update-part-requirement-item',name:'.update-part-description-input',pn:'.update-part-no-input',qty:'.update-part-quantity-input'};
 function rows(){return [...list.querySelectorAll(classes.row)];}
 function write(input,v){if(!input)return;input.value=v;input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));}
 function applyParts(parts){let added=0;for(const part of parts){
@@ -64,6 +64,9 @@ window.addEventListener('message',event=>{
  const entry=active,data=event.data;
  if(!entry||event.origin!==location.origin||event.source!==entry.frame.contentWindow||!data||data.type!=='HEXA_CATALOG_SELECTED_PARTS_V1'||data.token!==entry.token||!Array.isArray(data.parts)||data.parts.length>200)return;
  const parts=data.parts.filter(p=>p&&typeof p.pn==='string'&&p.pn.length<=100&&typeof p.description==='string'&&p.description.length<=300);
+ // Review the exact payload before writing to any database-bound form.
+ const preview=parts.map((p,i)=>`${i+1}. ${p.pn} | ${p.description} | Qty ${p.needed||1}`).join('\n');
+ if(!parts.length || !window.confirm('Periksa data yang dikirim HEXCatalog sebelum mengisi form:\n\n'+preview+'\n\nApakah seluruh part sudah sesuai dengan pilihan di katalog?')) return;
  const count=applyParts(parts);
  entry.frame.contentWindow.postMessage({type:'HEXA_CATALOG_IMPORT_ACK_V1',token:entry.token},location.origin);
  close();if(count)alert(count+' part masuk ke form. Periksa Qty lalu simpan melalui tombol form.');
