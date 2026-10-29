@@ -480,6 +480,18 @@ if(hexaEmbedded && window.parent!==window){
  const anchor=document.getElementById('exportSelection');
  if(anchor)anchor.insertAdjacentElement('afterend',send);
  else document.getElementById('selectionSummary')?.insertAdjacentElement('afterend',send);
+ // Remove legacy Registration buttons (including buttons injected later by other scripts).
+ // The only authorized transfer button is hexaUseSelectedParts, which uses hexaSessionSelected.
+ const removeLegacyRegistrationButtons=()=>{
+   document.querySelectorAll('button,a,[role="button"]').forEach(el=>{
+     if(el===send || send.contains(el))return;
+     const label=(el.textContent||'').replace(/\s+/g,' ').trim();
+     if(/use\s+selected\s+parts\s*(?:→|->|➡|to)\s*registration/i.test(label))el.remove();
+   });
+ };
+ removeLegacyRegistrationButtons();
+ const legacyButtonObserver=new MutationObserver(removeLegacyRegistrationButtons);
+ legacyButtonObserver.observe(document.body,{childList:true,subtree:true});
  send.addEventListener('click',()=>{
    const parts=[...hexaSessionSelected].map(k=>selected.get(k)).filter(Boolean).map(p=>({pn:String(p.pn),description:String(p.description||''),needed:qty(p.needed),group:p.group,no:p.no}));
    if(!parts.length){alert('Pilih part melalui tombol keranjang pada sesi Browse ini terlebih dahulu.');return;}
