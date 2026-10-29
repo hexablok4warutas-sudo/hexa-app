@@ -8,6 +8,7 @@ let groups=[],active=null,imageIndex=0;
 let activePartIndex=null;
 let lastPointer={x:0,y:0};
 const selected=new Map();
+ const hexaSessionSelected=new Set(); // hanya part yang dipilih dalam sesi Browse saat ini
 const STORAGE_KEY='hexa_pc1250_11_selected_parts_v1';
 function saveSelection(){
  try{localStorage.setItem(STORAGE_KEY,JSON.stringify([...selected.entries()]));}
@@ -393,7 +394,7 @@ $('selectionSummary').addEventListener('click',e=>{
  const button=e.target.closest('.cat-selected-remove');if(!button)return;
  const row=button.closest('[data-selected-index]'),entry=[...selected.entries()][Number(row?.dataset.selectedIndex)];
  if(!entry)return;
- selected.delete(entry[0]);saveSelection();renderSelected();syncPartAddButton();
+ selected.delete(entry[0]);hexaSessionSelected.delete(entry[0]);saveSelection();renderSelected();syncPartAddButton();
 });
 $('groupList').addEventListener('click',e=>{const locate=e.target.closest('[data-locate-group]');if(locate){locatePart(locate.dataset.locateGroup,Number(locate.dataset.locateIndex));return;}const btn=e.target.closest('[data-group]');if(btn)openGroup(btn.dataset.group)});
 $('groupSearch').placeholder='Cari Group / Part Number / Part...';
@@ -407,6 +408,7 @@ $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
   if(!e.target.closest('.cat-add')){void selectPartAndLocate(index);return;}
   void selectPartAndLocate(index,{focus:false});
   if(!selected.has(key(active,p)))selected.set(key(active,p),{group:active.name,no:p.no,pn:p.pn,description:p.description,needed:1});
+  hexaSessionSelected.add(key(active,p));
   saveSelection();renderSelected();syncPartAddButton();
  });
  // Akses keyboard untuk pemilihan baris Parts List tanpa mengganggu tombol keranjang.
@@ -418,7 +420,7 @@ $('groupSearch').addEventListener('input',e=>showGroups(e.target.value));
  });
 $('prevImage').addEventListener('click',()=>{if(imageIndex>0){++locateRequest;imageIndex--;renderImage({preserveSelection:true})}});
 $('nextImage').addEventListener('click',()=>{if(imageIndex<(active?.images.length||0)-1){++locateRequest;imageIndex++;renderImage({preserveSelection:true})}});
-$('clearSelection').addEventListener('click',()=>{if(!selected.size)return;if(!confirm('Hapus semua Selected Parts?'))return;selected.clear();saveSelection();renderSelected();render()});
+$('clearSelection').addEventListener('click',()=>{if(!selected.size)return;if(!confirm('Hapus semua Selected Parts?'))return;selected.clear();hexaSessionSelected.clear();saveSelection();renderSelected();render()});
 $('exportSelection').addEventListener('click',async()=>{if(!selected.size){alert('Pilih part terlebih dahulu.');return}const data=[...selected.values()];const text=['Group\tNo\tPart Number\tDescription\tQty Needed',...data.map(p=>[p.group,p.no,p.pn,p.description,p.needed].join('\t'))].join('\n');try{await navigator.clipboard.writeText(text);alert('Daftar part berhasil disalin.')}catch{prompt('Salin daftar part berikut:',text)}});
 
 // FIG continuation handling:
@@ -465,6 +467,28 @@ function prepareGroups(sourceGroups){
   result.push(g);
  }
  return result;
+}
+// HEXA Browse integration: send ONLY items explicitly selected in this iframe session.
+const hexaParams=new URLSearchParams(location.search);
+const hexaToken=hexaParams.get('hexaToken');
+const hexaEmbedded=hexaParams.get('hexaEmbed')==='1' && hexaParams.get('hexaReturn')==='registration' && !!hexaToken;
+if(hexaEmbedded && window.parent!==window){
+ const send=document.createElement('button');
+ send.type='button';send.id='hexaUseSelectedParts';
+ send.textContent='Use Selected Parts → Registration';
+ send.style.cssText='background:#f7941d;color:#fff;border:0;border-radius:9px;padding:12px 16px;font-weight:700;cursor:pointer;margin:8px;';
+ const anchor=document.getElementById('exportSelection');
+ if(anchor)anchor.insertAdjacentElement('afterend',send);
+ else document.getElementById('selectionSummary')?.insertAdjacentElement('afterend',send);
+ send.addEventListener('click',()=>{
+   const parts=[...hexaSessionSelected].map(k=>selected.get(k)).filter(Boolean).map(p=>({pn:String(p.pn),description:String(p.description||''),needed:qty(p.needed),group:p.group,no:p.no}));
+   if(!parts.length){alert('Pilih part melalui tombol keranjang pada sesi Browse ini terlebih dahulu.');return;}
+   window.parent.postMessage({type:'HEXA_CATALOG_SELECTED_PARTS_V1',token:hexaToken,parts},location.origin);
+ });
+ window.addEventListener('message',e=>{
+   if(e.source!==window.parent||e.origin!==location.origin||e.data?.type!=='HEXA_CATALOG_IMPORT_ACK_V1'||e.data.token!==hexaToken)return;
+   hexaSessionSelected.clear();
+ });
 }
 restoreSelection();renderSelected();
 fetch('pc1250-11-data.json').then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()}).then(data=>{groups=prepareGroups(data.groups);showGroups();if(groups.length)openGroup(groups[0].id)}).catch(e=>{$('groupList').textContent='Gagal memuat data katalog. Periksa pc1250-11-data.json';console.error(e)});

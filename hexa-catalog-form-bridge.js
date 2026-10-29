@@ -3,6 +3,8 @@
 const catalogs=[
  {label:'CAT 395',url:'cat395-catalog.html',re:/\b(?:CAT\s*395|395)\b/i},
  {label:'Komatsu PC1250-11',url:'pc1250-11-catalog.html',re:/PC\s*1250[-\s]*(?:11|11R)\b/i},
+ {label:'Komatsu PC1250-8',url:'pc1250-8-catalog.html',re:/PC\s*1250[-\s]*(?:8|8R)\b/i},
+ {label:'Komatsu PC500LC-10R',url:'pc500-catalog.html',re:/PC\s*500/i},
  {label:'SANY SY500H',url:'sany-sy500h-catalog.html',re:/SY\s*500H\b/i},
  {label:'Komatsu D375A-6R',url:'d375-catalog.html',re:/D375/i},
  {label:'Komatsu D85ESS-2',url:'d85-catalog.html',re:/D85/i}
@@ -65,8 +67,7 @@ window.addEventListener('message',event=>{
  if(!entry||event.origin!==location.origin||event.source!==entry.frame.contentWindow||!data||data.type!=='HEXA_CATALOG_SELECTED_PARTS_V1'||data.token!==entry.token||!Array.isArray(data.parts)||data.parts.length>200)return;
  const parts=data.parts.filter(p=>p&&typeof p.pn==='string'&&p.pn.length<=100&&typeof p.description==='string'&&p.description.length<=300);
  // Review the exact payload before writing to any database-bound form.
- const preview=parts.map((p,i)=>`${i+1}. ${p.pn} | ${p.description} | Qty ${p.needed||1}`).join('\n');
- if(!parts.length || !window.confirm('Periksa data yang dikirim HEXCatalog sebelum mengisi form:\n\n'+preview+'\n\nApakah seluruh part sudah sesuai dengan pilihan di katalog?')) return;
+ if(!parts.length)return;
  const count=applyParts(parts);
  entry.frame.contentWindow.postMessage({type:'HEXA_CATALOG_IMPORT_ACK_V1',token:entry.token},location.origin);
  close();if(count)alert(count+' part masuk ke form. Periksa Qty lalu simpan melalui tombol form.');
