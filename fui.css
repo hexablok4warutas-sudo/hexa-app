@@ -7,3 +7,6 @@
 .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
 .preview-note.connected{background:#e8f7ef;color:#176a40}
 @media(max-width:600px){.tag{max-width:145px;font-size:9px;padding:6px 9px}.fui-item-top{gap:8px}}
+
+/* FUI manager CTA */
+#createBtn{margin-left:auto;min-height:43px;box-shadow:0 3px 10px #ff9a2430}#createBtn:hover{filter:brightness(.97)}
